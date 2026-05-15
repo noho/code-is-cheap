@@ -4,13 +4,15 @@ English | [中文](README.zh.md)
 
 An engineering control framework for automated AI coding. Its core assumption is that architecture, phase boundaries,
 entry/exit criteria, and implementation control plans are prepared first; after that, a controller agent can advance each
-phase automatically until the local branch reaches `ready-to-create-PR`.
+phase automatically until the local branch reaches `ready-to-open-draft-PR`.
 
 This is not a loose collection of prompts. It is a workflow for putting AI coding inside an engineering loop: adjudicate
 design and plans, implement by slices, review code, fix findings, re-review, run aggregate deep review, track residual
 risks, and create local accepted commits. The controller stops for the user only when there is a blocking open question,
-unclear scope or ownership, validation failure, residual risk requiring human judgment, or external action such as PR
-creation, push, merge, approval, or public comments.
+unclear scope or ownership, validation failure, residual risk requiring human judgment, first entry into the draft PR gate,
+or external actions such as merge, approval, marking a PR ready for review, or public comments. After the user authorizes
+the draft PR gate, it automatically pushes, creates a draft PR, runs PR review, fixes findings, re-reviews, creates an
+accepted PR review commit, and pushes again until `draft-PR-pass`.
 
 This repository contains local skills and supporting scripts for Codex / Claude Code, covering phase-driven development,
 gated feature development, plan review, deep code review, and multi-agent handoff.
@@ -20,12 +22,13 @@ This repository is the source of truth for the skills under `skills/`. Local Cod
 ## Screenshot
 
 ![code-is-cheap running with multiple agents in tmux](working.png)
+![code-is-cheap running with multiple agents in tmux](working-2.png)
 
 ## Included Skills
 
 | Skill | Use it when |
 | --- | --- |
-| `gateflow` | You want to advance a complex feature, migration, refactor, schema change, public contract change, or architecture-sensitive task from plan to `ready-to-create-PR`. |
+| `gateflow` | You want to advance a complex feature, migration, refactor, schema change, public contract change, or architecture-sensitive task from plan to `ready-to-open-draft-PR`, then through the draft PR gate to `draft-PR-pass` after user authorization. |
 | `phaseflow` | You have a design source document and an implementation control document, and want to advance phase design, planning, implementation, review, risk tracking, and status updates. |
 | `planreview` | You want adversarial review of a plan, implementation plan, migration phase plan, feature slice plan, or Gateflow handoff plan. |
 | `deepreview` | You want strict code review of current workspace changes, a GitHub PR, or the whole repository. |
@@ -52,7 +55,8 @@ A typical flow is:
 3. Use `phaseflow` to read both documents, identify the current phase, refine design, and produce an implementation-ready plan.
 4. `phaseflow` then follows the `gateflow` gate order to automatically run plan review, plan fix, plan re-review, slice implementation, code review, code fix, code re-review, and accepted local commits.
 5. After all slices are complete, run aggregate deep review automatically; after fixes and re-review pass, update the control document and mark the phase complete.
-6. Stop at `ready-to-create-PR` and report the branch, commits, artifacts, validation results, remaining risks, and PR readiness.
+6. Stop at `ready-to-open-draft-PR` and report the branch, commits, artifacts, validation results, remaining risks, and draft PR readiness.
+7. After user authorization, `phaseflow` / `gateflow` automatically pushes, creates a draft PR, runs PR review, fixes accepted findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
 
 The point is not to let the agent invent architecture on the fly. The point is to let agents execute reliably inside
 explicit design boundaries and implementation plans, while leaving durable artifacts for every review conclusion, fix
@@ -292,7 +296,7 @@ Use /gateflow to develop <feature>.
 If the requirements are unclear, discuss first.
 ```
 
-`gateflow` is intended for complex work. It creates a plan, reviews the plan, runs implementation slices, reviews code, tracks residual risks, creates local accepted commits, and stops at `ready-to-create-PR` unless the user authorizes external actions.
+`gateflow` is intended for complex work. It creates a plan, reviews the plan, runs implementation slices, reviews code, tracks residual risks, creates local accepted commits, and stops at `ready-to-open-draft-PR` for user authorization. After the user authorizes the draft PR gate, it automatically pushes, creates a draft PR, runs PR review, fixes findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
 
 ### Phaseflow
 

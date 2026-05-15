@@ -3,12 +3,14 @@
 [English](README.md) | 中文
 
 一套面向自动化 AI Coding 的工程控制框架。它的核心前提是：先把架构设计、phase 边界、进入 / 退出条件和
-implementation control plan 做扎实；之后由总控 Agent 按 phase 自动推进开发，直到本地达到 `ready-to-create-PR`。
+implementation control plan 做扎实；之后由总控 Agent 按 phase 自动推进开发，直到本地达到 `ready-to-open-draft-PR`。
 
 它不是一组零散 prompt，而是一套把 AI Coding 纳入工程闭环的工作流：先裁决设计和计划，再按 slice 实施，再做
 code review、fix、re-review、aggregate deepreview、residual risk tracking 和本地 accepted commits。只有遇到
-blocking open question、scope / ownership 不清、验证失败、残余风险需要人类裁决，或 PR / push / merge / 外部 comment
-这类对外动作时，才停下来交给用户确认。
+blocking open question、scope / ownership 不清、验证失败、残余风险需要人类裁决，或首次进入 draft PR gate、
+merge / approve / mark ready for review / 外部 comment 这类对外动作时，才停下来交给用户确认。用户授权 draft PR gate 后，
+它会自动 push、创建 draft PR、执行 PR review、fix、re-review、accepted PR review commit 和 follow-up push，直到
+`draft-PR-pass`。
 
 本仓库包含用于 Codex / Claude Code 的本地 skills 和配套脚本，覆盖 phase-driven development、gated feature
 development、plan review、deep code review 和多 Agent handoff。
@@ -18,12 +20,13 @@ development、plan review、deep code review 和多 Agent handoff。
 ## 运行截图
 
 ![code-is-cheap 在 tmux 中运行多个 Agent](working.png)
+![code-is-cheap 在 tmux 中运行多个 Agent](working-2.png)
 
 ## 包含的 Skills
 
 | Skill | 适用场景 |
 | --- | --- |
-| `gateflow` | 需要把复杂 feature、migration、refactor、schema change、public contract change 或 architecture-sensitive task 从 plan 自动推进到 `ready-to-create-PR`。 |
+| `gateflow` | 需要把复杂 feature、migration、refactor、schema change、public contract change 或 architecture-sensitive task 从 plan 自动推进到 `ready-to-open-draft-PR`，并在用户授权后推进 draft PR gate 到 `draft-PR-pass`。 |
 | `phaseflow` | 项目有设计真源文档和实施总控文档，需要按 phase 自动推进 design refinement、plan、implementation、review、risk tracking 和状态更新。 |
 | `planreview` | 需要 adversarial review 一个 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow handoff plan。 |
 | `deepreview` | 需要严格 review 当前 workspace 改动、GitHub PR 或整个仓库。 |
@@ -50,7 +53,8 @@ $phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-c
 3. 使用 `phaseflow` 读取这两个文档，让总控 Agent 判断当前 phase、细化设计、生成可直接落地的 plan。
 4. `phaseflow` 随后按 `gateflow` 的 gate 顺序自动推进 plan review、plan fix、plan re-review、slice implementation、code review、code fix、code re-review，并生成本地 accepted commits。
 5. 所有 slices 完成后自动执行 aggregate deepreview；修复并复核通过后，更新总控文档，把 phase 标记为完成。
-6. 到达 `ready-to-create-PR` 后停止，报告 branch、commits、artifacts、validation results、remaining risks 和 PR readiness。
+6. 到达 `ready-to-open-draft-PR` 后停止，报告 branch、commits、artifacts、validation results、remaining risks 和 draft PR readiness。
+7. 用户授权后，`phaseflow` / `gateflow` 自动 push、创建 draft PR、执行 PR review；若有 accepted findings，则自动 fix、re-review、提交 accepted PR review commit 并再次 push，直到 `draft-PR-pass`。
 
 这个流程的目标不是让 Agent 自行发明架构，而是让 Agent 在已经明确的设计边界和总控计划内稳定执行，并把每一步的证据、
 review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
@@ -289,7 +293,7 @@ Claude Code:
 如果需求不够清楚，先讨论。
 ```
 
-`gateflow` 适合复杂任务。它会创建 plan、review plan、按 slice 实施、做 code review、跟踪 residual risk、创建本地 accepted commits，并在 `ready-to-create-PR` 停下，除非用户明确授权对外动作。
+`gateflow` 适合复杂任务。它会创建 plan、review plan、按 slice 实施、做 code review、跟踪 residual risk、创建本地 accepted commits，并在 `ready-to-open-draft-PR` 停下等待用户授权。用户授权 draft PR gate 后，它会自动 push、创建 draft PR、执行 PR review、fix、re-review、accepted PR review commit 和 follow-up push，直到 `draft-PR-pass`。
 
 ### Phaseflow
 
