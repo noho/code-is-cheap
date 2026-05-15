@@ -15,6 +15,10 @@ development、plan review、deep code review 和多 Agent handoff。
 
 本仓库是 `skills/` 目录下所有 skill 的真源。Codex / Claude 的本地 skill 目录只是安装目标，不应作为编辑源。修改 skill 时先改本仓库，验证通过后再同步到本地运行环境。
 
+## 运行截图
+
+![code-is-cheap 在 tmux 中运行多个 Agent](working.png)
+
 ## 包含的 Skills
 
 | Skill | 适用场景 |

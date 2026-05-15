@@ -17,6 +17,10 @@ gated feature development, plan review, deep code review, and multi-agent handof
 
 This repository is the source of truth for the skills under `skills/`. Local Codex and Claude skill directories are installation targets only. Edit skills here, validate them here, then sync them out.
 
+## Screenshot
+
+![code-is-cheap running with multiple agents in tmux](working.png)
+
 ## Included Skills
 
 | Skill | Use it when |
