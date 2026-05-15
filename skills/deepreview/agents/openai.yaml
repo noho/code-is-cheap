@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deepreview"
+  short_description: "严格深度 code / PR review"
+  default_prompt: "$deepreview 当前改动，或 $deepreview --pr 123。"

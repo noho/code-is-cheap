@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gateflow"
+  short_description: "按固定 gate 编排复杂 feature 开发"
+  default_prompt: "使用 $gateflow 开发这个 feature。如果需求不够清楚，先讨论。"

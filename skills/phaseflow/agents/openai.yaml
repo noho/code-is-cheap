@@ -1,0 +1,6 @@
+interface:
+  display_name: "Phaseflow"
+  short_description: "按设计真源和总控文档推进 phase"
+  default_prompt: "使用 $phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-control.md 推进当前 phase。"
+policy:
+  allow_implicit_invocation: true

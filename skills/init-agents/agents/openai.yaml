@@ -1,0 +1,6 @@
+interface:
+  display_name: "Init Agents"
+  short_description: "初始化多 Agent 通信约定"
+  default_prompt: "使用 $init-agents 初始化当前会话的 AgentMiMo、AgentDS、AgentGLM、AgentOpus、AgentCodex 通信约定。"
+policy:
+  allow_implicit_invocation: true

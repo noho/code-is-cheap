@@ -1,0 +1,4 @@
+interface:
+  display_name: "Planreview"
+  short_description: "对 plan 做反方深度 review"
+  default_prompt: "$planreview review this plan。"

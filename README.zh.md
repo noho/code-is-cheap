@@ -1,0 +1,436 @@
+# code-is-cheap
+
+[English](README.md) | 中文
+
+一套面向自动化 AI Coding 的工程控制框架。它的核心前提是：先把架构设计、phase 边界、进入 / 退出条件和
+implementation control plan 做扎实；之后由总控 Agent 按 phase 自动推进开发，直到本地达到 `ready-to-create-PR`。
+
+它不是一组零散 prompt，而是一套把 AI Coding 纳入工程闭环的工作流：先裁决设计和计划，再按 slice 实施，再做
+code review、fix、re-review、aggregate deepreview、residual risk tracking 和本地 accepted commits。只有遇到
+blocking open question、scope / ownership 不清、验证失败、残余风险需要人类裁决，或 PR / push / merge / 外部 comment
+这类对外动作时，才停下来交给用户确认。
+
+本仓库包含用于 Codex / Claude Code 的本地 skills 和配套脚本，覆盖 phase-driven development、gated feature
+development、plan review、deep code review 和多 Agent handoff。
+
+本仓库是 `skills/` 目录下所有 skill 的真源。Codex / Claude 的本地 skill 目录只是安装目标，不应作为编辑源。修改 skill 时先改本仓库，验证通过后再同步到本地运行环境。
+
+## 包含的 Skills
+
+| Skill | 适用场景 |
+| --- | --- |
+| `gateflow` | 需要把复杂 feature、migration、refactor、schema change、public contract change 或 architecture-sensitive task 从 plan 自动推进到 `ready-to-create-PR`。 |
+| `phaseflow` | 项目有设计真源文档和实施总控文档，需要按 phase 自动推进 design refinement、plan、implementation、review、risk tracking 和状态更新。 |
+| `planreview` | 需要 adversarial review 一个 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow handoff plan。 |
+| `deepreview` | 需要严格 review 当前 workspace 改动、GitHub PR 或整个仓库。 |
+| `init-agents` | 总控 Agent 需要通过 tmux pane 向其它 Codex / Claude Code Agent 派发任务。 |
+
+## 使用演示
+
+```text
+使用 $phaseflow，设计在 docs/host/design.md，总控文档是 docs/host/implementation-control.md。
+```
+
+等价的显式参数写法：
+
+```text
+$phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-control.md
+```
+
+## 核心工作流
+
+典型使用方式是：
+
+1. 先写好设计真源文档，例如 `docs/design.md` 或 `docs/host/design.md`。
+2. 再写好实施总控文档，例如 `docs/implementation-control.md`，记录 phase 列表、依赖、进入条件、退出条件、验证要求和后续追踪项。
+3. 使用 `phaseflow` 读取这两个文档，让总控 Agent 判断当前 phase、细化设计、生成可直接落地的 plan。
+4. `phaseflow` 随后按 `gateflow` 的 gate 顺序自动推进 plan review、plan fix、plan re-review、slice implementation、code review、code fix、code re-review，并生成本地 accepted commits。
+5. 所有 slices 完成后自动执行 aggregate deepreview；修复并复核通过后，更新总控文档，把 phase 标记为完成。
+6. 到达 `ready-to-create-PR` 后停止，报告 branch、commits、artifacts、validation results、remaining risks 和 PR readiness。
+
+这个流程的目标不是让 Agent 自行发明架构，而是让 Agent 在已经明确的设计边界和总控计划内稳定执行，并把每一步的证据、
+review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
+
+## 环境要求
+
+- Codex CLI、Claude Code，或其它支持本地 skill-style instruction files 的 Agent runtime。
+- 如果要运行本仓库自带的 skill 校验脚本，需要 Python 3.11+。
+- 如果使用 `init-agents` 做多 Agent handoff，需要安装 `tmux` 和 `tmux-cli`。
+
+`tmux-cli` 属于 `claude-code-tools` 包，安装命令：
+
+```bash
+uv tool install claude-code-tools
+```
+
+官方文档：
+
+- `tmux-cli`: https://pchalasani.github.io/claude-code-tools/tools/tmux-cli/
+- `claude-code-tools` 安装说明: https://pchalasani.github.io/claude-code-tools/getting-started/
+
+## 安装
+
+克隆仓库：
+
+```bash
+git clone <repo-url> code-is-cheap
+cd code-is-cheap
+```
+
+同步 skills 到已存在的本地 Codex / Claude skill 目录：
+
+```bash
+./scripts/sync-skills.sh
+```
+
+同步脚本会安装到以下已存在的目录：
+
+```text
+~/.codex/skills
+~/.codex-pro/skills
+~/.codex-business/skills
+~/.claude/skills
+```
+
+同步后，重新打开一个 Codex / Claude session，让运行时重新加载 skill 列表。
+
+## 准备 Agent 环境
+
+`init-agents` 最适合配合多个 tmux pane 使用：每个 CLI Agent 独占一个 pane，并设置稳定的 pane title。下面是一套基于 `~/.zshrc` 函数的实用配置。
+
+前置要求：
+
+- `claude`、`codex`、`tmux`、`jq`、`tmux-cli` 已在 `PATH` 中。
+- 启动对应 Claude Code wrapper 前，先导出 provider API key：
+  - `DEEPSEEK_API_KEY`
+  - `MIMO_PLAN_API_KEY`
+  - `GLM_API_KEY`
+- Codex Pro 使用 `CODEX_HOME="$HOME/.codex-pro"`，这样可以和默认 controller Codex 使用不同身份 / 配置。
+
+把下面函数加入 `~/.zshrc`：
+
+```zsh
+ds_claude() {
+  [[ -z "$DEEPSEEK_API_KEY" ]] && echo "DEEPSEEK_API_KEY 未设置" && return 1
+
+  local set_title=false
+  local -a claude_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentDS" >/dev/null 2>&1 || true
+  fi
+
+  local settings_json
+  settings_json="$(jq -nc \
+    --arg base_url "https://api.deepseek.com/anthropic" \
+    --arg auth_token "$DEEPSEEK_API_KEY" \
+    --arg model "deepseek-v4-pro" \
+    '{
+      env: {
+        ANTHROPIC_BASE_URL: $base_url,
+        ANTHROPIC_AUTH_TOKEN: $auth_token,
+        ANTHROPIC_MODEL: $model,
+        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
+        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
+      },
+      effortLevel: "xhigh"
+    }')"
+
+  claude --settings "$settings_json" --model "deepseek-v4-pro" "${claude_args[@]}"
+}
+
+mimo_claude() {
+  [[ -z "$MIMO_PLAN_API_KEY" ]] && echo "MIMO_PLAN_API_KEY 未设置" && return 1
+
+  local set_title=false
+  local -a claude_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentMiMo" >/dev/null 2>&1 || true
+  fi
+
+  local settings_json
+  settings_json="$(jq -nc \
+    --arg base_url "https://token-plan-cn.xiaomimimo.com/anthropic" \
+    --arg auth_token "$MIMO_PLAN_API_KEY" \
+    --arg model "mimo-v2.5-pro" \
+    '{
+      env: {
+        ANTHROPIC_BASE_URL: $base_url,
+        ANTHROPIC_AUTH_TOKEN: $auth_token,
+        ANTHROPIC_MODEL: $model,
+        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
+        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
+      },
+      effortLevel: "xhigh"
+    }')"
+
+  claude --settings "$settings_json" --model "mimo-v2.5-pro" "${claude_args[@]}"
+}
+
+glm_claude() {
+  [[ -z "$GLM_API_KEY" ]] && echo "GLM_API_KEY 未设置" && return 1
+
+  local set_title=false
+  local -a claude_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentGLM" >/dev/null 2>&1 || true
+  fi
+
+  local settings_json
+  settings_json="$(jq -nc \
+    --arg base_url "https://open.bigmodel.cn/api/anthropic" \
+    --arg auth_token "$GLM_API_KEY" \
+    --arg model "GLM-5.1" \
+    '{
+      env: {
+        ANTHROPIC_BASE_URL: $base_url,
+        ANTHROPIC_AUTH_TOKEN: $auth_token,
+        ANTHROPIC_MODEL: $model,
+        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
+        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
+      },
+      effortLevel: "xhigh"
+    }')"
+
+  claude --settings "$settings_json" --model "GLM-5.1" "${claude_args[@]}"
+}
+
+controller_codex() {
+  local set_title=false
+  local -a codex_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentController" >/dev/null 2>&1 || true
+  fi
+
+  codex -s danger-full-access -a on-request -c shell_environment_policy.inherit=all "${codex_args[@]}"
+}
+
+pro_codex() {
+  local set_title=false
+  local -a codex_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentCodex" >/dev/null 2>&1 || true
+  fi
+
+  mkdir -p "$HOME/.codex-pro"
+  CODEX_HOME="$HOME/.codex-pro" codex -s danger-full-access -a on-request -c shell_environment_policy.inherit=all "${codex_args[@]}"
+}
+```
+
+在不同 tmux pane 中启动 Agent，并传入 `--title`，让 `init-agents` 能识别它们：
+
+```bash
+controller_codex --title
+pro_codex --title
+ds_claude --title
+mimo_claude --title
+glm_claude --title
+```
+
+预期 pane title：
+
+| Function | Pane title | 常见角色 |
+| --- | --- | --- |
+| `controller_codex --title` | `AgentController` | 总控 |
+| `pro_codex --title` | `AgentCodex` | Implementation / fix |
+| `ds_claude --title` | `AgentDS` | Review / re-review |
+| `mimo_claude --title` | `AgentMiMo` | Review / re-review |
+| `glm_claude --title` | `AgentGLM` | Review / re-review |
+
+## 使用方式
+
+### Gateflow
+
+当你希望 Agent 从 plan 到 implementation review 和本地 ready 状态全程按 gate 推进时，使用 `gateflow`。
+
+Codex:
+
+```text
+使用 $gateflow 开发 <feature>。
+如果需求不够清楚，先讨论。
+```
+
+Claude Code:
+
+```text
+使用 /gateflow 开发 <feature>。
+如果需求不够清楚，先讨论。
+```
+
+`gateflow` 适合复杂任务。它会创建 plan、review plan、按 slice 实施、做 code review、跟踪 residual risk、创建本地 accepted commits，并在 `ready-to-create-PR` 停下，除非用户明确授权对外动作。
+
+### Phaseflow
+
+当项目有设计真源文档和实施总控文档时，使用 `phaseflow`。
+
+Codex:
+
+```text
+使用 $phaseflow，design_doc=<path/to/design.md>，control_doc=<path/to/control.md>，继续下一阶段。
+```
+
+Claude Code:
+
+```text
+使用 /phaseflow，design_doc=<path/to/design.md>，control_doc=<path/to/control.md>，继续下一阶段。
+```
+
+`phaseflow` 遵循 `gateflow`，并额外维护总控文档、phase 状态、风险追踪和多 Agent review 约定。
+
+### Planreview
+
+使用 `planreview` 检查 plan 是否具体、可直接实施、切片合理、架构边界清晰，并且没有过度设计。
+
+Codex:
+
+```text
+$planreview docs/path/to/plan.md
+```
+
+Claude Code:
+
+```text
+/planreview docs/path/to/plan.md
+```
+
+预期输出是 durable review artifact，通常写到 `docs/reviews/` 或项目指定的 review 目录。
+
+### Deepreview
+
+使用 `deepreview` 做严格 code review。
+
+review 当前分支相对 `main` 的改动：
+
+```text
+$deepreview
+```
+
+等价显式写法：
+
+```text
+$deepreview --base main
+```
+
+review 指定 PR：
+
+```text
+$deepreview --pr 123
+```
+
+review 整个仓库：
+
+```text
+$deepreview --all
+```
+
+Claude Code 使用 `/deepreview`，参数相同。
+
+预期输出是 durable review artifact，包含基于证据的 findings、状态追踪和 residual risk 说明。
+
+### Init Agents
+
+当你希望总控 Agent 不使用内置子 Agent，而是通过 tmux pane 向已经启动的其它 CLI Agent 派发任务时，使用 `init-agents`。
+
+Codex:
+
+```text
+使用 $init-agents 初始化多 Agent 通信约定。
+```
+
+Claude Code:
+
+```text
+使用 /init-agents 初始化多 Agent 通信约定。
+```
+
+`init-agents` 假设 controller 只和当前 tmux session/window 可见 panes 通信，基本命令如下：
+
+```bash
+tmux-cli status
+tmux-cli send "<prompt>" --pane=<full-pane-id>
+tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=<seconds>
+tmux-cli capture --pane=<full-pane-id>
+```
+
+Agent-to-agent chat 使用 `tmux-cli send` + `wait_idle` + `capture`。`tmux-cli execute` 只用于需要 exit code 的 shell command。
+
+## 仓库结构
+
+```text
+skills/
+  gateflow/
+    SKILL.md
+    agents/openai.yaml
+  phaseflow/
+    SKILL.md
+    agents/openai.yaml
+  planreview/
+    SKILL.md
+    agents/openai.yaml
+  deepreview/
+    SKILL.md
+    agents/openai.yaml
+  init-agents/
+    SKILL.md
+    agents/openai.yaml
+scripts/
+  validate-skills.sh
+  sync-skills.sh
+```
+
+## 维护流程
+
+只编辑本仓库中的真源文件：
+
+```text
+skills/<skill-name>/SKILL.md
+skills/<skill-name>/agents/openai.yaml
+```
+
+校验全部 skills：
+
+```bash
+./scripts/validate-skills.sh
+```
+
+同步到本地 Codex / Claude homes：
+
+```bash
+./scripts/sync-skills.sh
+```
+
+同步脚本会先 validate，再把每个 skill 复制到已存在的本地目标目录。脚本不会 push、publish、create PR，也不会修改远程仓库。
+
+## 说明
+
+- `gateflow` 和 `phaseflow` 是 controller workflows。派给 worker 的 prompt 应该是 role-scoped handoff，不应让 worker 重新启动完整 workflow。
+- `planreview` 和 `deepreview` 是 review skills。它们应该输出 durable artifacts，而不是只在聊天里给结论。
+- 只有在通过 tmux 同时运行多个 CLI Agent 时才需要 `init-agents`。
