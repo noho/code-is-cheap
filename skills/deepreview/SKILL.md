@@ -63,7 +63,7 @@ changes、PR mode 还是 All Repository Mode，只问一个简短澄清问题。
 
 ```bash
 mkdir -p docs/reviews
-ts="$(date +%Y%m%d-%H%M)"
+ts="$(date +%Y%m%d-%H%M%S)"
 ```
 
 Current Changes Mode 使用生成的 timestamp：
@@ -87,9 +87,9 @@ docs/reviews/repo-review-${ts}.md
 写入前，确认路径匹配以下格式之一：
 
 ```text
-docs/reviews/code-review-[0-9]{8}-[0-9]{4}.md
-docs/reviews/pr-<pr_number>-review-[0-9]{8}-[0-9]{4}.md
-docs/reviews/repo-review-[0-9]{8}-[0-9]{4}.md
+docs/reviews/code-review-[0-9]{8}-[0-9]{6}.md
+docs/reviews/pr-<pr_number>-review-[0-9]{8}-[0-9]{6}.md
+docs/reviews/repo-review-[0-9]{8}-[0-9]{6}.md
 ```
 
 最终回复用户时，只简要说明 review conclusion 和 output file path。
