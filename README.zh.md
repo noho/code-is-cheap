@@ -108,16 +108,59 @@ cd code-is-cheap
 
 前置要求：
 
-- `claude`、`codex`、`tmux`、`jq`、`tmux-cli` 已在 `PATH` 中。
+- `claude`、`codex`、`tmux`、`jq`、`curl`、`tmux-cli` 已在 `PATH` 中。
 - 启动对应 Claude Code wrapper 前，先导出 provider API key：
   - `DEEPSEEK_API_KEY`
   - `MIMO_PLAN_API_KEY`
   - `GLM_API_KEY`
+  - `KIMI_API_KEY`
+- `opus_claude` 使用本机 Claude proxy：`http://localhost:4141`。
 - Codex Pro 使用 `CODEX_HOME="$HOME/.codex-pro"`，这样可以和默认 controller Codex 使用不同身份 / 配置。
 
 把下面函数加入 `~/.zshrc`：
 
 ```zsh
+opus_claude() {
+  curl -fsS --max-time 2 "http://localhost:4141" >/dev/null 2>&1 || {
+    echo "localhost:4141 代理未启动或不可访问"
+    return 1
+  }
+
+  local set_title=false
+  local -a claude_args=()
+  local arg
+  for arg in "$@"; do
+    case "$arg" in
+      --title)
+        set_title=true
+        ;;
+      *)
+        claude_args+=("$arg")
+        ;;
+    esac
+  done
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentOpus" >/dev/null 2>&1 || true
+  fi
+
+  local settings_json
+  settings_json="$(jq -nc \
+    --arg base_url "http://localhost:4141" \
+    --arg auth_token "dummy" \
+    --arg model "claude-opus-4.7" \
+    '{
+      env: {
+        ANTHROPIC_BASE_URL: $base_url,
+        ANTHROPIC_AUTH_TOKEN: $auth_token,
+        ANTHROPIC_MODEL: $model
+      },
+      effortLevel: "high"
+    }')"
+
+  claude --settings "$settings_json" --model "claude-opus-4.7" "${claude_args[@]}"
+}
+
 ds_claude() {
   [[ -z "$DEEPSEEK_API_KEY" ]] && echo "DEEPSEEK_API_KEY 未设置" && return 1
 
@@ -141,16 +184,20 @@ ds_claude() {
         ANTHROPIC_BASE_URL: $base_url,
         ANTHROPIC_AUTH_TOKEN: $auth_token,
         ANTHROPIC_MODEL: $model,
+        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
+        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
+        CLAUDE_CODE_SUBAGENT_MODEL: $model,
         CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
         DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
       },
-      effortLevel: "xhigh"
+      effortLevel: "max"
     }')"
 
-  claude --settings "$settings_json" --model "deepseek-v4-pro" "${claude_args[@]}"
+  claude --settings "$settings_json" --model "deepseek-v4-pro" --effort max "${claude_args[@]}"
 }
 
 mimo_claude() {
@@ -176,16 +223,20 @@ mimo_claude() {
         ANTHROPIC_BASE_URL: $base_url,
         ANTHROPIC_AUTH_TOKEN: $auth_token,
         ANTHROPIC_MODEL: $model,
+        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
+        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
+        CLAUDE_CODE_SUBAGENT_MODEL: $model,
         CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
         DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
       },
-      effortLevel: "xhigh"
+      effortLevel: "max"
     }')"
 
-  claude --settings "$settings_json" --model "mimo-v2.5-pro" "${claude_args[@]}"
+  claude --settings "$settings_json" --model "mimo-v2.5-pro" --effort max "${claude_args[@]}"
 }
 
 glm_claude() {
@@ -211,16 +262,59 @@ glm_claude() {
         ANTHROPIC_BASE_URL: $base_url,
         ANTHROPIC_AUTH_TOKEN: $auth_token,
         ANTHROPIC_MODEL: $model,
+        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
+        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
+        CLAUDE_CODE_SUBAGENT_MODEL: $model,
         CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
         DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
       },
-      effortLevel: "xhigh"
+      effortLevel: "max"
     }')"
 
-  claude --settings "$settings_json" --model "GLM-5.1" "${claude_args[@]}"
+  claude --settings "$settings_json" --model "GLM-5.1" --effort max "${claude_args[@]}"
+}
+
+kimi_claude() {
+  [[ -z "$KIMI_API_KEY" ]] && echo "KIMI_API_KEY 未设置" && return 1
+
+  local set_title=false
+  local -a claude_args=("${(@)argv:#--title}")
+  if (( ${argv[(Ie)--title]} )); then
+    set_title=true
+  fi
+
+  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
+    tmux select-pane -T "AgentKIMI" >/dev/null 2>&1 || true
+  fi
+
+  local settings_json
+  settings_json="$(jq -nc \
+    --arg base_url "https://api.kimi.com/coding/" \
+    --arg auth_token "$KIMI_API_KEY" \
+    --arg model "kimi-for-coding" \
+    '{
+      env: {
+        ANTHROPIC_BASE_URL: $base_url,
+        ANTHROPIC_AUTH_TOKEN: $auth_token,
+        ANTHROPIC_MODEL: $model,
+        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
+        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
+        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
+        CLAUDE_CODE_SUBAGENT_MODEL: $model,
+        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
+        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
+        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
+        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
+      },
+      effortLevel: "max"
+    }')"
+
+  claude --settings "$settings_json" --model "kimi-for-coding" --effort max "${claude_args[@]}"
 }
 
 controller_codex() {
@@ -251,6 +345,7 @@ pro_codex() {
   mkdir -p "$HOME/.codex-pro"
   CODEX_HOME="$HOME/.codex-pro" codex -s danger-full-access -a on-request -c shell_environment_policy.inherit=all "${codex_args[@]}"
 }
+
 ```
 
 在不同 tmux pane 中启动 Agent，并传入 `--title`，让 `init-agents` 能识别它们：
@@ -258,9 +353,11 @@ pro_codex() {
 ```bash
 controller_codex --title
 pro_codex --title
+opus_claude --title
 ds_claude --title
 mimo_claude --title
 glm_claude --title
+kimi_claude --title
 ```
 
 预期 pane title：
@@ -269,9 +366,11 @@ glm_claude --title
 | --- | --- | --- |
 | `controller_codex --title` | `AgentController` | 总控 |
 | `pro_codex --title` | `AgentCodex` | Implementation / fix |
+| `opus_claude --title` | `AgentOpus` | Review / re-review |
 | `ds_claude --title` | `AgentDS` | Review / re-review |
 | `mimo_claude --title` | `AgentMiMo` | Review / re-review |
 | `glm_claude --title` | `AgentGLM` | Review / re-review |
+| `kimi_claude --title` | `AgentKIMI` | Review / re-review |
 
 ## 使用方式
 
