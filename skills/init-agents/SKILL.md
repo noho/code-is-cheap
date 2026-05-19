@@ -55,12 +55,14 @@ review worker prompt 里应写清 current gate、assigned scope、allowed files/
 
 ## Tmux Pane Discovery
 
-每次实际通信前，必须先确认目标 Agent 的当前 pane id：
+每次实际通信前，必须用两步 discovery 确认目标 Agent 的当前 full pane id：
 
 ```bash
 tmux-cli status
+tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
 ```
 
+第一步用 `tmux-cli status` 确认当前 tmux 上下文。第二步用 `tmux list-panes -a` 获取跨 window 的 full pane id。
 查找到目标 Agent 后，记录 full pane id，例如：
 
 ```text
@@ -71,8 +73,8 @@ ai-2:1.3
 
 要求：
 
-- 每次发送前都重新确认目标 full pane id，即使刚刚确认过。
-- 应优先使用 full pane id，避免发错目标。
+- 每次发送前都重新执行两步 discovery 并确认目标 full pane id，即使刚刚确认过。
+- 后续统一使用 full pane id，避免发错目标。
 - 如果目标 Agent 不在线、pane id 不明确、名称冲突、命令不可用，先停下来向用户报告，不要盲发 prompt。
 
 ## Session Clear
@@ -121,6 +123,7 @@ Codex Agent 使用：
 
 ```bash
 tmux-cli status
+tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
 tmux-cli send "/clear" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=60
 tmux-cli capture --pane=<full-pane-id>
@@ -133,6 +136,7 @@ tmux-cli capture --pane=<full-pane-id>
 
 ```bash
 tmux-cli status
+tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
 tmux-cli send "<follow-up prompt>" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=<task-timeout-seconds>
 tmux-cli capture --pane=<full-pane-id>
@@ -145,12 +149,13 @@ tmux-cli capture --pane=<full-pane-id>
 
 每次向任何 Agent 发送 prompt 前，必须：
 
-1. 运行 `tmux-cli status` 确认目标 full pane id；
-2. 判断这是新任务还是未完成任务 follow-up；新任务先 clear，未完成任务不 clear；
-3. 检查 prompt 文本，避免裸 `#数字`；
-4. 确认目标 Agent 的 recommended task type 与当前任务匹配，或确认用户/上层 skill 明确授权了该分工；
-5. 按目标 Agent 类型选择 `/skill` 或 `$skill`；
-6. 写清 role-scoped handoff：current gate、assigned scope、allowed files/modules、artifact path、stop condition；
-7. 明确 worker 不 commit、不 push、不 PR、不进入其它 gate，除非用户或上层流程明确授权。
+1. 运行 `tmux-cli status` 确认当前 tmux 上下文；
+2. 运行 `tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'` 确认跨 window 的目标 full pane id；
+3. 判断这是新任务还是未完成任务 follow-up；新任务先 clear，未完成任务不 clear；
+4. 检查 prompt 文本，避免裸 `#数字`；
+5. 确认目标 Agent 的 recommended task type 与当前任务匹配，或确认用户/上层 skill 明确授权了该分工；
+6. 按目标 Agent 类型选择 `/skill` 或 `$skill`；
+7. 写清 role-scoped handoff：current gate、assigned scope、allowed files/modules、artifact path、stop condition；
+8. 明确 worker 不 commit、不 push、不 PR、不进入其它 gate，除非用户或上层流程明确授权。
 
 如果目标 Agent 不可用，不要假装已经派发；报告不可用证据，并只在职责匹配或已获授权的 Agent 中选择替补，否则询问用户。
