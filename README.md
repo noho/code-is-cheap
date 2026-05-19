@@ -68,6 +68,13 @@ status, validation result, and residual risk.
 - Python 3.11+ if you want to run the bundled skill validator.
 - `tmux` and `tmux-cli` if you use `init-agents` for multi-agent handoff.
 
+If you use the zsh agent launcher functions below, their `tmux select-pane -T` calls rely on stable pane titles. Add this to `~/.tmux.conf` first so running programs cannot overwrite the title:
+
+```tmux
+# Keep pane titles fixed; do not let running programs overwrite them.
+set -gw allow-set-title off
+```
+
 `tmux-cli` is part of the `claude-code-tools` package. Install it with:
 
 ```bash
@@ -156,12 +163,12 @@ opus_claude() {
       env: {
         ANTHROPIC_BASE_URL: $base_url,
         ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model
-      },
-      effortLevel: "high"
+        ANTHROPIC_MODEL: $model,
+        CLAUDE_CODE_EFFORT_LEVEL: "high"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "claude-opus-4.7" "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 ds_claude() {
@@ -181,7 +188,7 @@ ds_claude() {
   settings_json="$(jq -nc \
     --arg base_url "https://api.deepseek.com/anthropic" \
     --arg auth_token "$DEEPSEEK_API_KEY" \
-    --arg model "deepseek-v4-pro" \
+    --arg model "deepseek-v4-pro[1m]" \
     '{
       env: {
         ANTHROPIC_BASE_URL: $base_url,
@@ -195,12 +202,12 @@ ds_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "deepseek-v4-pro" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 mimo_claude() {
@@ -220,7 +227,7 @@ mimo_claude() {
   settings_json="$(jq -nc \
     --arg base_url "https://token-plan-cn.xiaomimimo.com/anthropic" \
     --arg auth_token "$MIMO_PLAN_API_KEY" \
-    --arg model "mimo-v2.5-pro" \
+    --arg model "mimo-v2.5-pro[1m]" \
     '{
       env: {
         ANTHROPIC_BASE_URL: $base_url,
@@ -234,12 +241,12 @@ mimo_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "mimo-v2.5-pro" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 glm_claude() {
@@ -273,12 +280,12 @@ glm_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "GLM-5.1" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 kimi_claude() {
@@ -312,12 +319,12 @@ kimi_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "kimi-for-coding" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 controller_codex() {

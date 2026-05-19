@@ -65,6 +65,13 @@ review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
 - 如果要运行本仓库自带的 skill 校验脚本，需要 Python 3.11+。
 - 如果使用 `init-agents` 做多 Agent handoff，需要安装 `tmux` 和 `tmux-cli`。
 
+如果要使用后文几个启动 Agent 的 zsh 函数中的 `tmux select-pane -T` 自动设置 pane title，需要先在 `~/.tmux.conf` 中固定 pane 标题，避免运行中的程序覆盖：
+
+```tmux
+# 固定 pane 标题，不让运行的程序覆盖
+set -gw allow-set-title off
+```
+
 `tmux-cli` 属于 `claude-code-tools` 包，安装命令：
 
 ```bash
@@ -153,12 +160,12 @@ opus_claude() {
       env: {
         ANTHROPIC_BASE_URL: $base_url,
         ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model
-      },
-      effortLevel: "high"
+        ANTHROPIC_MODEL: $model,
+        CLAUDE_CODE_EFFORT_LEVEL: "high"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "claude-opus-4.7" "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 ds_claude() {
@@ -178,7 +185,7 @@ ds_claude() {
   settings_json="$(jq -nc \
     --arg base_url "https://api.deepseek.com/anthropic" \
     --arg auth_token "$DEEPSEEK_API_KEY" \
-    --arg model "deepseek-v4-pro" \
+    --arg model "deepseek-v4-pro[1m]" \
     '{
       env: {
         ANTHROPIC_BASE_URL: $base_url,
@@ -192,12 +199,12 @@ ds_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "deepseek-v4-pro" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 mimo_claude() {
@@ -217,7 +224,7 @@ mimo_claude() {
   settings_json="$(jq -nc \
     --arg base_url "https://token-plan-cn.xiaomimimo.com/anthropic" \
     --arg auth_token "$MIMO_PLAN_API_KEY" \
-    --arg model "mimo-v2.5-pro" \
+    --arg model "mimo-v2.5-pro[1m]" \
     '{
       env: {
         ANTHROPIC_BASE_URL: $base_url,
@@ -231,12 +238,12 @@ mimo_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "mimo-v2.5-pro" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 glm_claude() {
@@ -270,12 +277,12 @@ glm_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "GLM-5.1" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 kimi_claude() {
@@ -309,12 +316,12 @@ kimi_claude() {
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
         CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1"
-      },
-      effortLevel: "max"
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
+        CLAUDE_CODE_EFFORT_LEVEL: "max"
+      }
     }')"
 
-  claude --settings "$settings_json" --model "kimi-for-coding" --effort max "${claude_args[@]}"
+  claude --settings "$settings_json" "${claude_args[@]}"
 }
 
 controller_codex() {
