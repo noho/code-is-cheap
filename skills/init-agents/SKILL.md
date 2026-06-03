@@ -1,34 +1,21 @@
 ---
 name: init-agents
-description: "初始化多 Agent 通信约定。用于总控流程在通过 tmux pane 派发任务前确认 AgentMiMo、AgentDS、AgentGLM、AgentOpus、AgentCodex 的 CLI 类型、推荐任务类型、/skill 或 $skill prompt 写法、pane 发现方式、清 session 方式和 tmux-cli send/wait_idle/capture 流程。"
+description: "初始化多 Agent tmux 通信约定。用于确认 Agent CLI 类型、/skill 或 $skill 写法、pane discovery、clear/session 规则，以及 tmux-cli send/wait_idle/capture 流程。"
 ---
 
 # Init Agents
 
-## Purpose
+Init Agents 只定义多 Agent 通信步骤和安全规则。
 
-`init-agents` 负责加载多 Agent 通信约定：每个 Agent 属于哪类 CLI、推荐处理什么任务、发送 prompt 时用什么技能触发格式、
-发送前如何确认 pane、何时清 session。具体项目或流程里的最终职责由用户当前任务、`$gateflow`、`$phaseflow`
-或其它上层 skill 决定。
+## Agent CLI Types
 
-## Agent Map
-
-| Agent | CLI type | Recommended task type |
+| Agent | CLI type | Skill trigger |
 | --- | --- | --- |
-| `AgentMiMo` | Claude Code Agent | review / re-review |
-| `AgentDS` | Claude Code Agent | review / re-review |
-| `AgentGLM` | Claude Code Agent | review / re-review |
-| `AgentOpus` | Claude Code Agent | implementation / fix |
-| `AgentCodex` | Codex Agent | implementation / fix |
-
-Routing priority:
-
-1. 用户或上层 skill 的明确分工优先。
-2. 没有明确分工时，按上表选择适合任务类型的 Agent。
-3. Agent 是否在线只影响可用性，不应让 review-only Agent 接 implementation / fix，也不应让 implementation/fix
-   Agent 接 review / re-review，除非用户或上层 skill 明确授权。
-
-## Prompt Syntax
+| `AgentMiMo` | Claude Code Agent | slash command |
+| `AgentDS` | Claude Code Agent | slash command |
+| `AgentGLM` | Claude Code Agent | slash command |
+| `AgentOpus` | Claude Code Agent | slash command |
+| `AgentCodex` | Codex Agent | dollar skill |
 
 Claude Code Agent 使用 slash command：
 
@@ -46,49 +33,27 @@ $deepreview
 $gateflow
 ```
 
-派发 role-scoped worker handoff 时，不要让 worker 重新启动完整 workflow。也就是说，implementation / fix /
-review worker prompt 里应写清 current gate、assigned scope、allowed files/modules、artifact path、stop condition，
-而不是只写“使用 `$gateflow`”或“启动 `/gateflow`”。
+## Pane Discovery
 
-如果目标 Agent 环境不支持对应 skill/slash command，controller 应把关键 criteria 内联进 handoff prompt，
-不要只写 skill 名称。
-
-## Tmux Pane Discovery
-
-每次实际通信前，必须用两步 discovery 确认目标 Agent 的当前 full pane id：
+每次发送前都重新确认目标 full pane id：
 
 ```bash
 tmux-cli status
 tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
 ```
 
-第一步用 `tmux-cli status` 确认当前 tmux 上下文。第二步用 `tmux list-panes -a` 获取跨 window 的 full pane id。
-查找到目标 Agent 后，记录 full pane id，例如：
+使用跨 window 的 full pane id，例如：
 
 ```text
 ai-2:1.3
 ```
 
-后续 `tmux-cli send`、`tmux-cli wait_idle`、`tmux-cli capture` 都使用这个 full pane id。
-
-要求：
-
-- 每次发送前都重新执行两步 discovery 并确认目标 full pane id，即使刚刚确认过。
-- 后续统一使用 full pane id，避免发错目标。
-- 如果目标 Agent 不在线、pane id 不明确、名称冲突、命令不可用，先停下来向用户报告，不要盲发 prompt。
+后续 `tmux-cli send`、`tmux-cli wait_idle`、`tmux-cli capture` 都使用 full pane id。若目标 Agent 不在线、pane id 不明确、
+名称冲突或命令不可用，先报告，不要盲发。
 
 ## Session Clear
 
-确认目标 full pane id 后，如果这是新的 assigned task 或新的 gate/slice，先向目标 pane 发送清 session 命令，再发送正式
-handoff prompt。
-
-Claude Code Agent 使用：
-
-```text
-/clear
-```
-
-Codex Agent 使用：
+新 assigned task 或新的 gate/slice，先发送 clear，再发送正式任务：
 
 ```text
 /clear
@@ -96,30 +61,28 @@ Codex Agent 使用：
 
 要求：
 
-- 等目标 Agent 完成 clear 并回到可输入状态后，再发送正式 handoff prompt；
-- 不要把 clear 命令和正式任务 prompt 合并发送；
-- 如果 clear 失败、目标 Agent 没有回到可输入状态，先停下来报告。
+- clear 和正式任务分开发送；
+- 等目标 Agent 完成 clear 并回到可输入状态后，再发送正式任务；
+- clear 失败或目标未回到可输入状态时，先报告。
 
-例外：如果判断该目标 Agent 当前 assigned task 尚未全部完成，正在等待补充信息、继续执行、返回 artifact、
-修正同一轮输出或回答同一任务 follow-up，则不能 clear。此时保留现有 session，直接发送与当前未完成任务相关的补充指令。
+如果目标 Agent 当前任务尚未完成，正在等待补充信息、继续执行、返回 artifact、修正同一轮输出或回答同一任务 follow-up，
+不要 clear，直接发送补充指令。
 
-## Tmux Send Text Safety
+## Send Safety
 
-通过 `tmux-cli send` 发送 handoff prompt 时，避免正文中使用裸 `#数字`，某些环境会把 `PR #45` 这类文本截断。
+通过 `tmux-cli send` 发送文本时，避免裸 `#数字`，某些环境会截断 `PR #45` 这类文本。
 
-写法要求：
+写法：
 
-- 不写 `PR #45`、`issue #123`；
-- 改写为 `PR 45`、`PR-45`、`Pull Request 45`、`issue 123` 或 `issue-123`；
-- 如果需要保留 GitHub URL，优先写完整 URL，而不是依赖 `#数字`；
-- 如果发现目标 Agent 只收到截断内容，这属于同一未完成 assigned task 的补充场景，不要 clear；刷新
-  `tmux-cli status` 后重新发送去掉 `#数字` 的完整 handoff。
+- 用 `PR 45`、`PR-45`、`Pull Request 45`；
+- 用 `issue 123`、`issue-123`；
+- 需要链接时写完整 URL。
 
-## Agent Chat Workflow
+如果发现内容被截断，不要 clear；重新 discovery 后发送去掉裸 `#数字` 的完整文本。
 
-与其它 CLI Agent 通信时，使用 `tmux-cli send` + `tmux-cli wait_idle` + `tmux-cli capture`。
+## Chat Workflow
 
-新 assigned task 的标准流程：
+新 assigned task：
 
 ```bash
 tmux-cli status
@@ -127,35 +90,31 @@ tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_na
 tmux-cli send "/clear" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=60
 tmux-cli capture --pane=<full-pane-id>
-tmux-cli send "<handoff prompt>" --pane=<full-pane-id>
+tmux-cli send "<task text>" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=<task-timeout-seconds>
 tmux-cli capture --pane=<full-pane-id>
 ```
 
-未完成 assigned task 的补充流程：
+未完成 task 的 follow-up：
 
 ```bash
 tmux-cli status
 tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
-tmux-cli send "<follow-up prompt>" --pane=<full-pane-id>
+tmux-cli send "<follow-up text>" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=<task-timeout-seconds>
 tmux-cli capture --pane=<full-pane-id>
 ```
 
-`tmux-cli execute` 只用于 shell command 且需要 exit code 的场景，例如测试、构建或脚本执行；不要用
-`tmux-cli execute` 做 agent-to-agent chat。
+`tmux-cli execute` 只用于需要 exit code 的 shell command；不要用于 agent-to-agent chat。
 
-## Handoff Checklist
+## Checklist
 
-每次向任何 Agent 发送 prompt 前，必须：
+发送前确认：
 
-1. 运行 `tmux-cli status` 确认当前 tmux 上下文；
-2. 运行 `tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'` 确认跨 window 的目标 full pane id；
-3. 判断这是新任务还是未完成任务 follow-up；新任务先 clear，未完成任务不 clear；
-4. 检查 prompt 文本，避免裸 `#数字`；
-5. 确认目标 Agent 的 recommended task type 与当前任务匹配，或确认用户/上层 skill 明确授权了该分工；
-6. 按目标 Agent 类型选择 `/skill` 或 `$skill`；
-7. 写清 role-scoped handoff：current gate、assigned scope、allowed files/modules、artifact path、stop condition；
-8. 明确 worker 不 commit、不 push、不 PR、不进入其它 gate，除非用户或上层流程明确授权。
-
-如果目标 Agent 不可用，不要假装已经派发；报告不可用证据，并只在职责匹配或已获授权的 Agent 中选择替补，否则询问用户。
+- 已运行 `tmux-cli status`；
+- 已运行 `tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'`；
+- 已确认目标 full pane id；
+- 已判断是否需要 clear；
+- 已避免裸 `#数字`；
+- 已按目标 CLI 类型选择 `/skill` 或 `$skill`；
+- 发送后使用 `wait_idle` 和 `capture` 读取结果。
