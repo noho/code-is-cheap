@@ -112,6 +112,8 @@ git status --short
 
 如果用户指定 Agent，就按用户指定。若用户要求使用 `$init-agents` / `/init-agents`，按其通信规则确认 pane、clear、send、wait、capture。
 
+总控派发 Agent 后，若有证据表明 Agent 在工作、或 Agent 所在的 pane 的显示在变化，不得擅自停止该 gate。
+
 并行派发前必须确认 file ownership 不重叠。
 
 ## Gate Order Dispatch
