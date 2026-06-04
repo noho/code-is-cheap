@@ -199,7 +199,7 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - aggregate deepreview/re-review 通过后：aggregate review artifact、accepted deepreview commit hash；
 - ready-to-open-draft-PR 前：draft PR readiness、剩余风险、owner、后续 phase/work unit destination；
 - draft-PR-pass 后：draft PR URL、PR review artifacts、accepted PR review commit hash、follow-up push 状态、remaining risks /
-  owners、当前 phase/work unit 完成状态、next entry point。
+  owners、当前 phase/work unit 完成状态、issue 更新/关闭状态（如当前 work unit 是 issue）、next entry point。
 
 如果 `control_doc` 没有合适位置记录这些内容，先提出具体写入位置或结构。
 
@@ -209,7 +209,9 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 
 - 收集 final closeout、review artifacts、fix artifacts 和裁决记录中的 residual risks；
 - 为仍存在的 residual risk 写入 owner、destination、后续 phase/work unit、issue 或 user decision；
-- 删除、关闭或标记已解决的历史 residual risk；
+- 删除已 close 的 residual risk；
+- 对已解决但尚未 close 的 residual risk，关闭或标记已解决；
+- 如果当前 work unit 是 issue，更新对应 issue；若该 issue 已完成，close issue；
 - 确认 next entry point 指向用户 merge 当前 PR 后可以直接进入的下一个 phase/work unit。
 
 存在没有 owner/destination 的 residual risk 时，不得关闭 phase/work unit。
