@@ -2,15 +2,14 @@
 
 [English](README.md) | 中文
 
-一套面向自动化 AI Coding 的工程控制框架。它的核心前提是：先把架构设计、phase 边界、进入 / 退出条件和
-implementation control plan 做扎实；之后由总控 Agent 按 phase 自动推进开发，直到本地达到 `ready-to-open-draft-PR`。
+一套面向自动化 AI Coding 的工程控制框架。它的核心前提是：先把架构设计、phase/work unit 边界、进入 / 退出条件和
+implementation control plan 做扎实；之后让 Agent 在明确 gate 内执行，留下 durable artifact、review decision、
+residual-risk tracking 和 accepted checkpoint。
 
-它不是一组零散 prompt，而是一套把 AI Coding 纳入工程闭环的工作流：先裁决设计和计划，再按 slice 实施，再做
-code review、fix、re-review、aggregate deepreview、residual risk tracking 和本地 accepted commits。只有遇到
-blocking open question、scope / ownership 不清、验证失败、残余风险需要人类裁决，或首次进入 draft PR gate、
-merge / approve / mark ready for review / 外部 comment 这类对外动作时，才停下来交给用户确认。用户授权 draft PR gate 后，
-它会自动 push、创建 draft PR、执行 PR review、fix、re-review、accepted PR review commit 和 follow-up push，直到
-`draft-PR-pass`。
+它不是一组零散 prompt，而是一套把 AI Coding 纳入工程闭环的工作流：确认目标和非目标，plan、review、按 slice 实施、
+code review、fix、re-review、aggregate deepreview、residual risk tracking、本地 accepted commits、创建 draft PR、执行
+PR review，并持续推进到 `draft-PR-pass`。merge、approve、mark ready for review、request reviewers、delete branch、
+对外 comment、创建/修改外部 issue 仍然需要用户额外授权。
 
 本仓库包含用于 Codex / Claude Code 的本地 skills 和配套脚本，覆盖 phase-driven development、gated feature
 development、plan review、deep code review 和多 Agent handoff。
@@ -24,24 +23,25 @@ development、plan review、deep code review 和多 Agent handoff。
 
 ## 包含的 Skills
 
-| Skill | 适用场景 |
+| Skill | 职责 |
 | --- | --- |
-| `gateflow` | 需要把复杂 feature、migration、refactor、schema change、public contract change 或 architecture-sensitive task 从 plan 自动推进到 `ready-to-open-draft-PR`，并在用户授权后推进 draft PR gate 到 `draft-PR-pass`。 |
-| `phaseflow` | 项目有设计真源文档和实施总控文档，需要按 phase 自动推进 design refinement、plan、implementation、review、risk tracking 和状态更新。 |
-| `planreview` | 需要 adversarial review 一个 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow handoff plan。 |
+| `gateflow` | 定义单个 work unit 的 gated workflow：preflight、goal confirmation、固定 gate order、artifacts、residual risks、accepted commits、draft PR gate 和 final closeout。它不定义项目级总控文档，也不定义多 Agent 路由。 |
+| `phaseflow` | 项目分步总控。读取 `design_doc` 和 `control_doc`，识别当前 `phase = work unit`，和用户完成 preflight / goal confirmation，读取 Gateflow 的 `Gate Order`，逐 gate 派发 Agent，裁决结果，更新 `control_doc`，并 reconcile residual risks。 |
+| `planreview` | 需要 adversarial review 一个 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow plan。 |
 | `deepreview` | 需要严格 review 当前 workspace 改动、GitHub PR 或整个仓库。 |
-| `init-agents` | 总控 Agent 需要通过 tmux pane 向其它 Codex / Claude Code Agent 派发任务。 |
+| `init-agents` | 只定义 tmux 通信：Agent CLI 类型、`/skill` vs `$skill`、pane discovery、clear/session 规则、`tmux-cli send/wait_idle/capture` 和发送安全规则。它不分配角色。 |
 
 ## 使用演示
 
 ```text
-使用 $phaseflow，设计在 docs/host/design.md，总控文档是 docs/host/implementation-control.md。
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+严格遵循 AGENTS.md 的约束。
 ```
 
 等价的显式参数写法：
 
 ```text
-$phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-control.md
+$phaseflow design_doc=docs/host/design.md control_doc=docs/host/issues-implementation-control.md
 ```
 
 ## 核心工作流
@@ -49,12 +49,13 @@ $phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-c
 典型使用方式是：
 
 1. 先写好设计真源文档，例如 `docs/design.md` 或 `docs/host/design.md`。
-2. 再写好实施总控文档，例如 `docs/implementation-control.md`，记录 phase 列表、依赖、进入条件、退出条件、验证要求和后续追踪项。
-3. 使用 `phaseflow` 读取这两个文档，让总控 Agent 判断当前 phase、细化设计、生成可直接落地的 plan。
-4. `phaseflow` 随后按 `gateflow` 的 gate 顺序自动推进 plan review、plan fix、plan re-review、slice implementation、code review、code fix、code re-review，并生成本地 accepted commits。
-5. 所有 slices 完成后自动执行 aggregate deepreview；修复并复核通过后，更新总控文档，把 phase 标记为完成。
-6. 到达 `ready-to-open-draft-PR` 后停止，报告 branch、commits、artifacts、validation results、remaining risks 和 draft PR readiness。
-7. 用户授权后，`phaseflow` / `gateflow` 自动 push、创建 draft PR、执行 PR review；若有 accepted findings，则自动 fix、re-review、提交 accepted PR review commit 并再次 push，直到 `draft-PR-pass`。
+2. 再写好实施总控文档，例如 `docs/implementation-control.md`，记录 phases/work units、状态、验证要求、artifacts、residual risks 和 next entry point。
+3. 使用 `phaseflow` 读取这两个文档，识别当前 `phase = work unit`，并和用户完成 preflight 与 goal confirmation。
+4. `phaseflow` 读取 Gateflow 的 `Gate Order`，逐 gate 把 plan / implementation / review / fix 等具体任务派发给 Agent。
+5. 每个 Agent 返回后，`phaseflow` 读取 artifact、裁决 findings、更新 `control_doc`，再进入下一个 gate。
+6. 所有 slices 完成后执行 aggregate deepreview；修复并复核通过后，记录 draft PR readiness 和 residual-risk owner。
+7. draft PR gate 自动 push、创建 draft PR、执行 PR review；若有 accepted findings，则自动 fix、re-review、提交 accepted PR review commit 并再次 push，直到 `draft-PR-pass`。
+8. 每个 phase/work unit 完成后，`phaseflow` reconcile residual risks、关闭已解决风险、标记当前 phase 完成，并写入 next entry point，方便用户 merge PR 后继续下一个 phase。
 
 这个流程的目标不是让 Agent 自行发明架构，而是让 Agent 在已经明确的设计边界和总控计划内稳定执行，并把每一步的证据、
 review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
@@ -367,57 +368,71 @@ glm_claude --title
 kimi_claude --title
 ```
 
-预期 pane title：
+预期 pane title 和一种可能的分工：
 
-| Function | Pane title | 常见角色 |
+| Function | Pane title | 示例分工 |
 | --- | --- | --- |
-| `controller_codex --title` | `AgentController` | 总控 |
-| `pro_codex --title` | `AgentCodex` | Implementation / fix |
+| `controller_codex --title` | `AgentController` | Phaseflow 总控 |
+| `pro_codex --title` | `AgentCodex` | Plan / implementation / fix |
 | `opus_claude --title` | `AgentOpus` | Review / re-review |
 | `ds_claude --title` | `AgentDS` | Review / re-review |
 | `mimo_claude --title` | `AgentMiMo` | Review / re-review |
 | `glm_claude --title` | `AgentGLM` | Review / re-review |
 | `kimi_claude --title` | `AgentKIMI` | Review / re-review |
 
+`init-agents` 不分配这些角色。请在当前用户 prompt 中写清期望分工。
+
 ## 使用方式
 
 ### Gateflow
 
-当你希望 Agent 从 plan 到 implementation review 和本地 ready 状态全程按 gate 推进时，使用 `gateflow`。
+`gateflow` 用于单个 work unit：feature、issue、bug fix、migration、refactor、schema/public contract change 或
+architecture-sensitive task。Gateflow 只定义 gates：preflight、goal confirmation、plan、review、implementation slices、
+fixes、aggregate deepreview、accepted commits、draft PR gate 和 final closeout。
 
-Codex:
-
-```text
-使用 $gateflow 开发 <feature>。
-如果需求不够清楚，先讨论。
-```
-
-Claude Code:
+单独使用 Gateflow 示例：
 
 ```text
-使用 /gateflow 开发 <feature>。
-如果需求不够清楚，先讨论。
+按照 $gateflow 开发 <work-unit>。
+可选设计依据：docs/host/design.md。
+先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 draft-PR-pass。
+严格遵循 AGENTS.md 的约束。
 ```
 
-`gateflow` 适合复杂任务。它会创建 plan、review plan、按 slice 实施、做 code review、跟踪 residual risk、创建本地 accepted commits，并在 `ready-to-open-draft-PR` 停下等待用户授权。用户授权 draft PR gate 后，它会自动 push、创建 draft PR、执行 PR review、fix、re-review、accepted PR review commit 和 follow-up push，直到 `draft-PR-pass`。
+Gateflow + `init-agents` 示例：
+
+```text
+按照 $gateflow 开发 <work-unit>。
+$init-agents 路由 Agents，AgentCodex 负责 plan / implement / fix，AgentMiMo / AgentDS 负责两路同时 review / re-review。
+每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
+严格遵循 AGENTS.md 的约束。
+```
 
 ### Phaseflow
 
-当项目有设计真源文档和实施总控文档时，使用 `phaseflow`。
+当项目有设计真源文档和实施总控文档时，使用 `phaseflow`。Phaseflow 是项目分步总控：读取当前 `phase = work unit`，
+和用户完成 preflight / goal confirmation，读取 Gateflow 的 `Gate Order`，逐 gate 派发 Agent，裁决结果，更新
+`control_doc`，并 reconcile residual risks。
 
-Codex:
-
-```text
-使用 $phaseflow，design_doc=<path/to/design.md>，control_doc=<path/to/control.md>，继续下一阶段。
-```
-
-Claude Code:
+单独使用 Phaseflow 示例：
 
 ```text
-使用 /phaseflow，design_doc=<path/to/design.md>，control_doc=<path/to/control.md>，继续下一阶段。
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
+总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
+每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
+严格遵循 AGENTS.md 的约束。
 ```
 
-`phaseflow` 遵循 `gateflow`，并额外维护总控文档、phase 状态、风险追踪和多 Agent review 约定。
+Phaseflow + `init-agents` 示例：
+
+```text
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+$init-agents 路由 Agents，AgentMiMo / AgentDS 负责两路同时 review，AgentCodex 负责 plan / implement / fix。
+总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
+每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
+严格遵循 AGENTS.md 的约束。
+```
 
 ### Planreview
 
@@ -471,7 +486,8 @@ Claude Code 使用 `/deepreview`，参数相同。
 
 ### Init Agents
 
-当你希望总控 Agent 不使用内置子 Agent，而是通过 tmux pane 向已经启动的其它 CLI Agent 派发任务时，使用 `init-agents`。
+当需要通过 tmux pane 向已经启动的 CLI Agent 发送任务时，使用 `init-agents`。它只定义通信：CLI 类型、`/skill` vs `$skill`、
+pane discovery、clear/session 规则、`tmux-cli send/wait_idle/capture` 和发送安全规则。它不分配角色。
 
 Codex:
 
@@ -485,7 +501,7 @@ Claude Code:
 使用 /init-agents 初始化多 Agent 通信约定。
 ```
 
-`init-agents` 假设 controller 只和当前 tmux session/window 可见 panes 通信，基本命令如下：
+`init-agents` 使用以下基本命令：
 
 ```bash
 tmux-cli status
@@ -545,6 +561,7 @@ skills/<skill-name>/agents/openai.yaml
 
 ## 说明
 
-- `gateflow` 和 `phaseflow` 是 controller workflows。派给 worker 的 prompt 应该是 role-scoped handoff，不应让 worker 重新启动完整 workflow。
+- `gateflow` 定义单个 work unit 的 gates。
+- `phaseflow` 是项目分步总控；具体 plan / implementation / review / fix 任务交给 Agent 完成。
 - `planreview` 和 `deepreview` 是 review skills。它们应该输出 durable artifacts，而不是只在聊天里给结论。
-- 只有在通过 tmux 同时运行多个 CLI Agent 时才需要 `init-agents`。
+- 只有在通过 tmux 路由多个 CLI Agent 时才需要 `init-agents`。

@@ -2,17 +2,15 @@
 
 English | [中文](README.zh.md)
 
-An engineering control framework for automated AI coding. Its core assumption is that architecture, phase boundaries,
-entry/exit criteria, and implementation control plans are prepared first; after that, a controller agent can advance each
-phase automatically until the local branch reaches `ready-to-open-draft-PR`.
+An engineering control framework for automated AI coding. Its core assumption is that architecture, phase/work-unit
+boundaries, entry/exit criteria, and implementation control plans are prepared first; after that, agents can execute inside
+explicit gates with durable artifacts, review decisions, residual-risk tracking, and accepted checkpoints.
 
-This is not a loose collection of prompts. It is a workflow for putting AI coding inside an engineering loop: adjudicate
-design and plans, implement by slices, review code, fix findings, re-review, run aggregate deep review, track residual
-risks, and create local accepted commits. The controller stops for the user only when there is a blocking open question,
-unclear scope or ownership, validation failure, residual risk requiring human judgment, first entry into the draft PR gate,
-or external actions such as merge, approval, marking a PR ready for review, or public comments. After the user authorizes
-the draft PR gate, it automatically pushes, creates a draft PR, runs PR review, fixes findings, re-reviews, creates an
-accepted PR review commit, and pushes again until `draft-PR-pass`.
+This is not a loose collection of prompts. It is a workflow for putting AI coding inside an engineering loop: confirm goals
+and non-goals, plan, review, implement by slices, review code, fix findings, re-review, run aggregate deep review, track
+residual risks, create accepted commits, open a draft PR, run PR review, and continue until `draft-PR-pass`. Merge,
+approval, marking a PR ready for review, requesting reviewers, deleting branches, public comments, and external issue
+changes still require explicit user authorization.
 
 This repository contains local skills and supporting scripts for Codex / Claude Code, covering phase-driven development,
 gated feature development, plan review, deep code review, and multi-agent handoff.
@@ -26,24 +24,25 @@ This repository is the source of truth for the skills under `skills/`. Local Cod
 
 ## Included Skills
 
-| Skill | Use it when |
+| Skill | Responsibility |
 | --- | --- |
-| `gateflow` | You want to advance a complex feature, migration, refactor, schema change, public contract change, or architecture-sensitive task from plan to `ready-to-open-draft-PR`, then through the draft PR gate to `draft-PR-pass` after user authorization. |
-| `phaseflow` | You have a design source document and an implementation control document, and want to advance phase design, planning, implementation, review, risk tracking, and status updates. |
-| `planreview` | You want adversarial review of a plan, implementation plan, migration phase plan, feature slice plan, or Gateflow handoff plan. |
+| `gateflow` | Defines the gated workflow for one work unit: preflight, goal confirmation, fixed gate order, artifacts, residual risks, accepted commits, draft PR gate, and final closeout. It does not define project-level control documents or multi-agent routing. |
+| `phaseflow` | Project step controller. It reads `design_doc` and `control_doc`, identifies the current `phase = work unit`, performs preflight and goal confirmation with the user, reads Gateflow's `Gate Order`, dispatches concrete gates to Agents, adjudicates results, updates `control_doc`, and reconciles residual risks. |
+| `planreview` | You want adversarial review of a plan, implementation plan, migration phase plan, feature slice plan, or Gateflow plan. |
 | `deepreview` | You want strict code review of current workspace changes, a GitHub PR, or the whole repository. |
-| `init-agents` | You want a controller agent to communicate with other Codex / Claude Code agents through tmux panes. |
+| `init-agents` | Defines tmux communication only: Agent CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send-safety rules. It does not assign roles. |
 
 ## Demo
 
 ```text
-Use $phaseflow. The design is in docs/host/design.md, and the control document is docs/host/implementation-control.md.
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+严格遵循 AGENTS.md 的约束。
 ```
 
 Equivalent explicit argument form:
 
 ```text
-$phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-control.md
+$phaseflow design_doc=docs/host/design.md control_doc=docs/host/issues-implementation-control.md
 ```
 
 ## Core Workflow
@@ -51,12 +50,13 @@ $phaseflow design_doc=docs/host/design.md control_doc=docs/host/implementation-c
 A typical flow is:
 
 1. Prepare the design source document, such as `docs/design.md` or `docs/host/design.md`.
-2. Prepare the implementation control document, such as `docs/implementation-control.md`, with phases, dependencies, entry criteria, exit criteria, validation requirements, and tracking items.
-3. Use `phaseflow` to read both documents, identify the current phase, refine design, and produce an implementation-ready plan.
-4. `phaseflow` then follows the `gateflow` gate order to automatically run plan review, plan fix, plan re-review, slice implementation, code review, code fix, code re-review, and accepted local commits.
-5. After all slices are complete, run aggregate deep review automatically; after fixes and re-review pass, update the control document and mark the phase complete.
-6. Stop at `ready-to-open-draft-PR` and report the branch, commits, artifacts, validation results, remaining risks, and draft PR readiness.
-7. After user authorization, `phaseflow` / `gateflow` automatically pushes, creates a draft PR, runs PR review, fixes accepted findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
+2. Prepare the implementation control document, such as `docs/implementation-control.md`, with phases/work units, status, validation requirements, artifacts, residual risks, and the next entry point.
+3. Use `phaseflow` to read both documents, identify the current `phase = work unit`, and perform preflight plus goal confirmation with the user.
+4. `phaseflow` reads Gateflow's `Gate Order` and dispatches concrete plan / implementation / review / fix gates to Agents.
+5. After each Agent return, `phaseflow` reads the artifact, adjudicates findings, updates `control_doc`, and advances to the next gate.
+6. After all slices are complete, run aggregate deep review; after fixes and re-review pass, record draft PR readiness and residual-risk ownership.
+7. The draft PR gate pushes, creates a draft PR, runs PR review, fixes accepted findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
+8. After each phase/work unit, `phaseflow` reconciles residual risks, closes resolved risks, marks the current phase complete, and writes the next entry point so the user can merge the PR and continue to the next phase.
 
 The point is not to let the agent invent architecture on the fly. The point is to let agents execute reliably inside
 explicit design boundaries and implementation plans, while leaving durable artifacts for every review conclusion, fix
@@ -370,57 +370,72 @@ glm_claude --title
 kimi_claude --title
 ```
 
-Expected pane titles:
+Expected pane titles and one possible assignment:
 
-| Function | Pane title | Typical role |
+| Function | Pane title | Example assignment |
 | --- | --- | --- |
-| `controller_codex --title` | `AgentController` | Controller |
-| `pro_codex --title` | `AgentCodex` | Implementation / fix |
+| `controller_codex --title` | `AgentController` | Phaseflow controller |
+| `pro_codex --title` | `AgentCodex` | Plan / implementation / fix |
 | `opus_claude --title` | `AgentOpus` | Review / re-review |
 | `ds_claude --title` | `AgentDS` | Review / re-review |
 | `mimo_claude --title` | `AgentMiMo` | Review / re-review |
 | `glm_claude --title` | `AgentGLM` | Review / re-review |
 | `kimi_claude --title` | `AgentKIMI` | Review / re-review |
 
+`init-agents` does not assign these roles. Put the desired assignment in the current user prompt.
+
 ## Usage
 
 ### Gateflow
 
-Use `gateflow` when you want the agent to run a gated controller workflow from plan to implementation review and local readiness.
+Use `gateflow` for one work unit: a feature, issue, bug fix, migration, refactor, schema/public contract change, or
+architecture-sensitive task. Gateflow defines the gates only: preflight, goal confirmation, plan, review, implementation
+slices, fixes, aggregate deep review, accepted commits, draft PR gate, and final closeout.
 
-Codex:
-
-```text
-Use $gateflow to develop <feature>.
-If the requirements are unclear, discuss first.
-```
-
-Claude Code:
+Standalone Gateflow example:
 
 ```text
-Use /gateflow to develop <feature>.
-If the requirements are unclear, discuss first.
+按照 $gateflow 开发 <work-unit>。
+可选设计依据：docs/host/design.md。
+先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 draft-PR-pass。
+严格遵循 AGENTS.md 的约束。
 ```
 
-`gateflow` is intended for complex work. It creates a plan, reviews the plan, runs implementation slices, reviews code, tracks residual risks, creates local accepted commits, and stops at `ready-to-open-draft-PR` for user authorization. After the user authorizes the draft PR gate, it automatically pushes, creates a draft PR, runs PR review, fixes findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
+Gateflow with `init-agents` example:
+
+```text
+按照 $gateflow 开发 <work-unit>。
+$init-agents 路由 Agents，AgentCodex 负责 plan / implement / fix，AgentMiMo / AgentDS 负责两路同时 review / re-review。
+每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
+严格遵循 AGENTS.md 的约束。
+```
 
 ### Phaseflow
 
-Use `phaseflow` when a project has a design source document and an implementation control document.
+Use `phaseflow` when a project has a design source document and an implementation control document. Phaseflow is the
+project step controller: it reads the current `phase = work unit`, performs preflight and goal confirmation with the user,
+reads Gateflow's `Gate Order`, dispatches concrete gates to Agents, adjudicates results, updates `control_doc`, and
+reconciles residual risks.
 
-Codex:
-
-```text
-Use $phaseflow with design_doc=<path/to/design.md> and control_doc=<path/to/control.md> to continue the next phase.
-```
-
-Claude Code:
+Standalone Phaseflow example:
 
 ```text
-Use /phaseflow with design_doc=<path/to/design.md> and control_doc=<path/to/control.md> to continue the next phase.
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
+总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
+每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
+严格遵循 AGENTS.md 的约束。
 ```
 
-`phaseflow` follows `gateflow`, but adds control-document maintenance, phase status updates, risk tracking, and multi-agent review conventions.
+Phaseflow with `init-agents` example:
+
+```text
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+$init-agents 路由 Agents，AgentMiMo / AgentDS 负责两路同时 review，AgentCodex 负责 plan / implement / fix。
+总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
+每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
+严格遵循 AGENTS.md 的约束。
+```
 
 ### Planreview
 
@@ -474,7 +489,9 @@ Expected output is a durable review artifact with evidence-based findings, statu
 
 ### Init Agents
 
-Use `init-agents` when the controller should not spawn built-in subagents, but should instead delegate work to already-running CLI agents through tmux panes.
+Use `init-agents` when work should be sent to already-running CLI agents through tmux panes. It only defines communication:
+CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send safety.
+It does not assign roles.
 
 Codex:
 
@@ -488,7 +505,7 @@ Claude Code:
 Use /init-agents to initialize multi-agent communication conventions.
 ```
 
-`init-agents` assumes the controller only works with panes visible in the current tmux session/window via:
+`init-agents` works through:
 
 ```bash
 tmux-cli status
@@ -548,6 +565,7 @@ The sync script validates first, then copies every skill directory to existing l
 
 ## Notes
 
-- `gateflow` and `phaseflow` are controller workflows. Worker prompts should be role-scoped handoffs, not instructions to restart the full workflow.
+- `gateflow` defines the gates for one work unit.
+- `phaseflow` is the project step controller; concrete plan / implementation / review / fix work is delegated to Agents.
 - `planreview` and `deepreview` are review skills. They should produce durable artifacts, not just chat-only conclusions.
-- `init-agents` is optional unless you run multiple CLI agents through tmux.
+- `init-agents` is only needed when you route work to multiple CLI agents through tmux.
