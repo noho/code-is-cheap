@@ -90,6 +90,8 @@ goal confirmation
 -> final closeout
 ```
 
+`plan review` gate 必须使用 `planreview` skill；`code review`、`aggregate deepreview` 和 `PR review` gates 必须使用 `deepreview` skill。
+
 多 slice 时重复：
 
 ```text
