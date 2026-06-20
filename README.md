@@ -67,7 +67,7 @@ status, validation result, and residual risk.
 ## Requirements
 
 - Codex CLI, Claude Code, or another agent runtime that supports local skill-style instruction files.
-- Python 3.11+ if you want to run the bundled skill validator.
+- Python 3.11+ (invoked as `python3`) and the `pyyaml` package if you want to run the bundled skill validator.
 - `tmux` and `tmux-cli` if you use `init-agents` for multi-agent handoff.
 
 If you use the zsh agent launcher functions below, their `tmux select-pane -T` calls rely on stable pane titles. Add this to `~/.tmux.conf` first so running programs cannot overwrite the title:
@@ -96,6 +96,14 @@ Clone the repository:
 git clone <repo-url> code-is-cheap
 cd code-is-cheap
 ```
+
+Install the Python dependency required by the skill validator:
+
+```bash
+python3 -m pip install pyyaml
+```
+
+> **Note:** On macOS with Homebrew Python you may need `--break-system-packages`, or use a virtual environment.
 
 Sync skills to any local Codex / Claude skill homes that already exist:
 

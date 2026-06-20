@@ -13,6 +13,6 @@ fi
 for skill_dir in "$repo_root"/skills/*; do
   [[ -d "$skill_dir" ]] || continue
   echo "Validating ${skill_dir#$repo_root/}"
-  python "$validator" "$skill_dir"
+  python3 "$validator" "$skill_dir"
 done
 
