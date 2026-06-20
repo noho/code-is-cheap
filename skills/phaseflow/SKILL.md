@@ -1,6 +1,6 @@
 ---
 name: phaseflow
-description: "项目分步总控。基于 design_doc 和 control_doc 推进 phase/work unit；phase = work unit，每个 phase 可是 feature、issue 或 bug fix；总控读取 Gateflow 的 Gate Order，自己完成 preflight 和 goal confirmation，然后按固定 gate 顺序派发 Agent 完成具体 plan/implementation/review/fix，裁决结果、更新 control_doc、追踪 residual risk。"
+description: "项目分步总控。基于 design_doc 和 control_doc 推进 phase/work unit；phase = work unit，每个 phase 可是 feature、issue 或 bug fix；总控读取 Gateflow 的 Gate Order 和 Gate State Machine，自己完成 preflight 和 goal confirmation，然后按固定 gate 顺序派发 Agent 完成具体 plan/implementation/review/fix，裁决结果、更新 control_doc、追踪 residual risk。"
 ---
 
 # Phaseflow
@@ -59,7 +59,7 @@ $phaseflow docs/host/design.md docs/host/implementation-control.md
 
 ## Startup
 
-启动后先读取 `control_doc`，再按需要读取 `design_doc`，并读取 Gateflow 的 `Gate Order`。首次回复必须包含：
+启动后先读取 `control_doc`，再按需要读取 `design_doc`，并读取 Gateflow 的 `Gate Order` 和 `Gate State Machine`。首次回复必须包含：
 
 - 当前 phase/work unit；
 - 它属于 feature、issue、bug fix 还是其它可交付单元；
@@ -118,8 +118,8 @@ git status --short
 
 ## Gate Order Dispatch
 
-phaseflow 必须读取 Gateflow 中 `Gate Order` 定义，并按其中固定顺序总控当前 phase/work unit。不要把整个 work unit 交给其它
-Agent 启动完整 Gateflow；phaseflow 自己维护 current gate，并逐 gate 派发具体任务。
+phaseflow 必须读取 Gateflow 中 `Gate Order` 和 `Gate State Machine` 定义，并按其中固定顺序总控当前 phase/work unit。
+不要把整个 work unit 交给其它 Agent 启动完整 Gateflow；phaseflow 自己维护 current gate，并逐 gate 派发具体任务。
 
 以读取到的 Gateflow `Gate Order` 为准；当前定义为：
 
@@ -178,6 +178,25 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 
 每个 Agent 返回后，phaseflow 读取 artifact，裁决结果，更新 `control_doc`，再进入下一个 gate。
 
+## Gateflow State Machine Execution
+
+Gateflow 定义通用 gate state machine；phaseflow 负责执行它，并把状态写回 `control_doc`。
+
+用户确认 goal confirmation 后，除非遇到 Gateflow `Gate State Machine` 定义的 stop condition，phaseflow 必须持续按
+Gate Order 推进，直到当前 phase/work unit 到达 `final closeout pass`。
+
+每个 gate 完成后，phaseflow 必须立即：
+
+1. 读取 gate artifact / validation / decision；
+2. 裁决 findings 和 residual risks；
+3. 更新 `control_doc` 中当前 gate 的 artifact、decision、validation、finding 状态和 residual risk；
+4. 将 `control_doc` 的 current gate / next entry point 写成 Gate Order 中下一个未完成 gate；
+5. 继续执行总控 gate，或派发下一个具体 gate 给 Agent。
+
+`control_doc` 的 current gate / next entry point 必须表示下一个未完成 gate，而不是刚完成的 gate。不得 invent、skip、
+collapse 或 reorder gates。PR gate chain 必须遵守 Gateflow `Gate State Machine` 的状态不变量；`create draft PR`
+成功后，`control_doc` 必须进入 `PR review`，不得写成 `draft-PR-pass`。
+
 ## Judgment
 
 裁决 plan、review finding、fix scope、defer decision 和 residual risk 时，优先依据：
@@ -205,8 +224,8 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - 每个 slice commit 后：slice 状态、artifact、review 结论、commit hash、未覆盖项；
 - aggregate deepreview/re-review 通过后：aggregate review artifact、accepted deepreview commit hash；
 - ready-to-open-draft-PR 前：draft PR readiness、剩余风险、owner、后续 phase/work unit destination；
-- final closeout gate：按 `## Gate: final closeout` 写入 draft PR、review、commit、risk、issue、completion 和 next entry
-  point 状态。
+- final closeout gate：按 `## Gate: final closeout` 写入 draft PR、review、commit、risk、issue、final closeout summary、
+  final closeout pass、completion 和 next entry point 状态。
 
 如果 `control_doc` 没有合适位置记录这些内容，先提出具体写入位置或结构。
 
@@ -221,11 +240,12 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 
 1. 重新读取 `control_doc`，确认当前 phase/work unit、当前 gate、draft PR URL、PR review artifacts、accepted PR review
    commit hash、follow-up push 状态和 next entry point。
-2. 读取 final closeout summary、review artifacts、fix artifacts 和 finding 裁决记录。
+2. 读取 review artifacts、fix artifacts 和 finding 裁决记录；如 final closeout summary 尚不存在，由 phaseflow 创建。
 3. 汇总 what changed、what was verified、docs updates、finding status、draft PR URL。
 4. 执行 residual risk reconciliation：收集所有 remaining risks，确认每项都有 owner 和 destination。
 5. 更新 `control_doc`：draft PR URL、PR review artifacts、accepted PR review commit hash、follow-up push 状态、remaining
-   risks / owners、当前 phase/work unit 完成状态、issue 关联/评论/关闭预期（如当前 work unit 是 issue）、next entry point。
+   risks / owners、final closeout summary、final closeout pass、当前 phase/work unit completed 状态、issue 关联/评论/关闭预期
+   （如当前 work unit 是 issue）、next entry point。
 6. 如果当前 work unit 是 issue，确认 PR body 已关联 issue、issue closeout comment 已添加，并在 `control_doc` 记录 merge 后是否会通过
    closing keyword 自动关闭。只有项目流程明确要求手动关闭且用户授权时，才手动 close issue。
 7. 确认 next entry point 指向用户 merge 当前 PR 后可以直接进入的下一个 phase/work unit。
@@ -237,7 +257,8 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - 缺少必须 artifact；
 - accepted finding 没有最终状态；
 - residual risk 没有 owner/destination；
-- `control_doc` 未记录 draft PR / review / commit / risk / issue / completion / next entry point 状态；
+- `control_doc` 未记录 draft PR / review / commit / risk / issue / final closeout summary / final closeout pass / completion /
+  next entry point 状态；
 - issue work unit 的 issue 状态未处理，或处理需要用户授权；
 - next entry point 不明确，或没有指向 merge 当前 PR 后可继续进入的下一个 phase/work unit；
 - final closeout 输出未说明 merge 当前 PR 后如何从 base branch 和 `control_doc` next entry point 继续下一轮 phaseflow。
@@ -260,7 +281,7 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 每次 resume、上下文压缩后继续、Agent 返回、review loop 结束、进入新 gate 或准备修改文件前，先恢复状态：
 
 - 重新读取或确认 `control_doc` 中的当前 phase/work unit；
-- 确认 current gate 和 next entry point；
+- 确认 current gate 和 next entry point 指向 Gate Order 中下一个未完成 gate，而不是刚完成的 gate；
 - 判断下一步是总控任务还是具体任务；
 - 总控任务自己做并写回 `control_doc`；
 - 具体任务派发给 Agent。
