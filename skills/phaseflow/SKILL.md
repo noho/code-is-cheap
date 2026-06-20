@@ -153,6 +153,9 @@ goal confirmation
 
 `plan review` gate 必须使用 `planreview` skill；`code review`、`aggregate deepreview` 和 `PR review` gates 必须使用 `deepreview` skill。
 
+`final closeout` gate 在下方 `## Gate: final closeout` 定义。不得把 `draft-PR-pass` 当作 phase/work unit 完成；必须继续执行
+`final closeout` gate。
+
 多 slice 时重复：
 
 ```text
@@ -202,20 +205,52 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - 每个 slice commit 后：slice 状态、artifact、review 结论、commit hash、未覆盖项；
 - aggregate deepreview/re-review 通过后：aggregate review artifact、accepted deepreview commit hash；
 - ready-to-open-draft-PR 前：draft PR readiness、剩余风险、owner、后续 phase/work unit destination；
-- draft-PR-pass 后：draft PR URL、PR review artifacts、accepted PR review commit hash、follow-up push 状态、remaining risks /
-  owners、当前 phase/work unit 完成状态、issue 更新/关闭状态（如当前 work unit 是 issue）、next entry point。
+- final closeout gate：按 `## Gate: final closeout` 写入 draft PR、review、commit、risk、issue、completion 和 next entry
+  point 状态。
 
 如果 `control_doc` 没有合适位置记录这些内容，先提出具体写入位置或结构。
 
+## Gate: final closeout
+
+`draft-PR-pass` 后，phaseflow 不得直接结束。必须先执行 `final closeout` gate。
+
+`final closeout` 是总控任务，由 phaseflow 自己完成，不派发给 Agent。缺少必须 artifact、issue 状态需要外部授权，或
+`control_doc` 没有合适位置记录结果时，停止并询问用户。
+
+`final closeout` gate 必须按顺序完成：
+
+1. 重新读取 `control_doc`，确认当前 phase/work unit、当前 gate、draft PR URL、PR review artifacts、accepted PR review
+   commit hash、follow-up push 状态和 next entry point。
+2. 读取 final closeout summary、review artifacts、fix artifacts 和 finding 裁决记录。
+3. 汇总 what changed、what was verified、docs updates、finding status、draft PR URL。
+4. 执行 residual risk reconciliation：收集所有 remaining risks，确认每项都有 owner 和 destination。
+5. 更新 `control_doc`：draft PR URL、PR review artifacts、accepted PR review commit hash、follow-up push 状态、remaining
+   risks / owners、当前 phase/work unit 完成状态、issue 关联/评论/关闭预期（如当前 work unit 是 issue）、next entry point。
+6. 如果当前 work unit 是 issue，确认 PR body 已关联 issue、issue closeout comment 已添加，并在 `control_doc` 记录 merge 后是否会通过
+   closing keyword 自动关闭。只有项目流程明确要求手动关闭且用户授权时，才手动 close issue。
+7. 确认 next entry point 指向用户 merge 当前 PR 后可以直接进入的下一个 phase/work unit。
+8. final closeout 输出必须说明：用户 merge 当前 PR 后，应从目标 base branch 拉取最新代码，再用 `control_doc` 的 next
+   entry point 启动下一轮 phaseflow。
+
+存在以下任一情况时，不得关闭 phase/work unit 或输出 final closeout pass：
+
+- 缺少必须 artifact；
+- accepted finding 没有最终状态；
+- residual risk 没有 owner/destination；
+- `control_doc` 未记录 draft PR / review / commit / risk / issue / completion / next entry point 状态；
+- issue work unit 的 issue 状态未处理，或处理需要用户授权；
+- next entry point 不明确，或没有指向 merge 当前 PR 后可继续进入的下一个 phase/work unit；
+- final closeout 输出未说明 merge 当前 PR 后如何从 base branch 和 `control_doc` next entry point 继续下一轮 phaseflow。
+
 ## Residual Risk Reconciliation
 
-每个 phase/work unit 完成后必须：
+`final closeout` gate 内必须执行 residual risk reconciliation：
 
 - 收集 final closeout、review artifacts、fix artifacts 和裁决记录中的 residual risks；
 - 为仍存在的 residual risk 写入 owner、destination、后续 phase/work unit、issue 或 user decision；
 - 删除已 close 的 residual risk；
 - 对已解决但尚未 close 的 residual risk，关闭或标记已解决；
-- 如果当前 work unit 是 issue，更新对应 issue；若该 issue 已完成，close issue；
+- 如果当前 work unit 是 issue，确认 issue 已关联 draft PR、已有 closeout comment，并记录 merge 后关闭预期；只有项目流程明确要求手动关闭且用户授权时，才手动 close issue；
 - 确认 next entry point 指向用户 merge 当前 PR 后可以直接进入的下一个 phase/work unit。
 
 存在没有 owner/destination 的 residual risk 时，不得关闭 phase/work unit。

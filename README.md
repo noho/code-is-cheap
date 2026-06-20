@@ -8,7 +8,7 @@ explicit gates with durable artifacts, review decisions, residual-risk tracking,
 
 This is not a loose collection of prompts. It is a workflow for putting AI coding inside an engineering loop: confirm goals
 and non-goals, plan, review, implement by slices, review code, fix findings, re-review, run aggregate deep review, track
-residual risks, create accepted commits, open a draft PR, run PR review, and continue until `draft-PR-pass`. Merge,
+residual risks, create accepted commits, open a draft PR, run PR review, and continue through final closeout. Merge,
 approval, marking a PR ready for review, requesting reviewers, deleting branches, public comments, and external issue
 changes still require explicit user authorization.
 
@@ -56,7 +56,9 @@ A typical flow is:
 5. After each Agent return, `phaseflow` reads the artifact, adjudicates findings, updates `control_doc`, and advances to the next gate.
 6. After all slices are complete, run aggregate deep review; after fixes and re-review pass, record draft PR readiness and residual-risk ownership.
 7. The draft PR gate pushes, creates a draft PR, runs PR review, fixes accepted findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
-8. After each phase/work unit, `phaseflow` reconciles residual risks, closes resolved risks, marks the current phase complete, and writes the next entry point so the user can merge the PR and continue to the next phase.
+8. Final closeout then records what changed, what was verified, docs updates, finding status, remaining risks and owners, the draft PR URL, and the next entry point.
+9. For issue work units, the draft PR body should link the issue; final closeout should confirm the issue closeout comment and the merge-time closing expectation.
+10. After final closeout passes, the user manually merges the PR, pulls the latest target base branch, clears the agent session if desired, and resumes `phaseflow` from the `control_doc` next entry point.
 
 The point is not to let the agent invent architecture on the fly. The point is to let agents execute reliably inside
 explicit design boundaries and implementation plans, while leaving durable artifacts for every review conclusion, fix
@@ -397,7 +399,7 @@ Standalone Gateflow example:
 ```text
 按照 $gateflow 开发 <work-unit>。
 可选设计依据：docs/host/design.md。
-先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 draft-PR-pass。
+先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 final closeout。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -424,6 +426,7 @@ Standalone Phaseflow example:
 先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
 总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
 每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
+final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -434,6 +437,7 @@ Phaseflow with `init-agents` example:
 $init-agents 路由 Agents，AgentMiMo / AgentDS 负责两路同时 review，AgentCodex 负责 plan / implement / fix。
 总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
+final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
 ```
 

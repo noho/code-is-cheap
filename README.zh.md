@@ -8,7 +8,7 @@ residual-risk tracking 和 accepted checkpoint。
 
 它不是一组零散 prompt，而是一套把 AI Coding 纳入工程闭环的工作流：确认目标和非目标，plan、review、按 slice 实施、
 code review、fix、re-review、aggregate deepreview、residual risk tracking、本地 accepted commits、创建 draft PR、执行
-PR review，并持续推进到 `draft-PR-pass`。merge、approve、mark ready for review、request reviewers、delete branch、
+PR review，并持续推进到 final closeout。merge、approve、mark ready for review、request reviewers、delete branch、
 对外 comment、创建/修改外部 issue 仍然需要用户额外授权。
 
 本仓库包含用于 Codex / Claude Code 的本地 skills 和配套脚本，覆盖 phase-driven development、gated feature
@@ -55,7 +55,9 @@ $phaseflow design_doc=docs/host/design.md control_doc=docs/host/issues-implement
 5. 每个 Agent 返回后，`phaseflow` 读取 artifact、裁决 findings、更新 `control_doc`，再进入下一个 gate。
 6. 所有 slices 完成后执行 aggregate deepreview；修复并复核通过后，记录 draft PR readiness 和 residual-risk owner。
 7. draft PR gate 自动 push、创建 draft PR、执行 PR review；若有 accepted findings，则自动 fix、re-review、提交 accepted PR review commit 并再次 push，直到 `draft-PR-pass`。
-8. 每个 phase/work unit 完成后，`phaseflow` reconcile residual risks、关闭已解决风险、标记当前 phase 完成，并写入 next entry point，方便用户 merge PR 后继续下一个 phase。
+8. final closeout 随后记录变更内容、验证结果、文档更新、finding 状态、剩余风险和 owner、draft PR URL，以及 next entry point。
+9. 如果 work unit 是 issue，draft PR body 应关联 issue；final closeout 应确认 issue closeout comment 和 merge 后关闭预期。
+10. final closeout 通过后，用户手工 merge PR，拉取最新目标 base branch，按需 `/clear`，再从 `control_doc` 的 next entry point 恢复 `phaseflow`。
 
 这个流程的目标不是让 Agent 自行发明架构，而是让 Agent 在已经明确的设计边界和总控计划内稳定执行，并把每一步的证据、
 review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
@@ -395,7 +397,7 @@ fixes、aggregate deepreview、accepted commits、draft PR gate 和 final closeo
 ```text
 按照 $gateflow 开发 <work-unit>。
 可选设计依据：docs/host/design.md。
-先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 draft-PR-pass。
+先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 final closeout。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -421,6 +423,7 @@ $init-agents 路由 Agents，AgentCodex 负责 plan / implement / fix，AgentMiM
 先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
 总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
 每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
+final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -431,6 +434,7 @@ Phaseflow + `init-agents` 示例：
 $init-agents 路由 Agents，AgentMiMo / AgentDS 负责两路同时 review，AgentCodex 负责 plan / implement / fix。
 总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
+final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
 ```
 
