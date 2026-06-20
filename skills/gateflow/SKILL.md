@@ -45,7 +45,7 @@ git status --short
 如果当前 branch 是 `main`、`master`、`develop`、`release/*` 或项目定义的 protected trunk branch，先停下来让用户确认创建
 工作分支。若 branch、dirty changes 或 scope ownership 不清，也先停下来问用户。
 
-## Goal Confirmation
+## Gate: goal confirmation
 
 进入 plan 前必须完成 goal confirmation：
 
@@ -92,6 +92,17 @@ goal confirmation
 
 `plan review` gate 必须使用 `planreview` skill；`code review`、`aggregate deepreview` 和 `PR review` gates 必须使用 `deepreview` skill。
 
+Gate Order entry 与下方 section 的绑定是执行约束。必须按对应的 `## Gate: ...` 或 `## Gate Group: ...` section 执行：
+
+- `goal confirmation` -> `## Gate: goal confirmation`
+- `plan` -> `## Gate: plan`
+- `implementation -> code review -> fix -> re-review -> accepted slice commit` -> `## Gate Group: implementation slice`
+- `plan review`、`code review`、`aggregate deepreview`、`PR review` 及其 `fix` / `re-review` -> `## Gate Group: review / fix / re-review`
+- `ready-to-open-draft-PR -> ... -> draft-PR-pass` -> `## Gate Group: draft PR`
+- `final closeout` -> `## Gate: final closeout`
+
+不得把 `draft-PR-pass` 当作 work unit 完成；必须继续执行 `final closeout` gate。
+
 多 slice 时重复：
 
 ```text
@@ -110,7 +121,7 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - validation failure、unclassified residual risk、deferred finding 或 missing artifact 需要用户决策；
 - 需要 merge、approve、mark ready for review、request reviewers、delete branch、对外 comment 或创建/修改外部 issue。
 
-## Plan Gate
+## Gate: plan
 
 plan 必须 code-generation-ready，即可以直接指导实现，不需要重新设计方案、发明契约、猜 file ownership、猜 state transition
 或决定 test scope。
@@ -132,7 +143,7 @@ plan 必须包含：
 
 plan 必须显式说明为什么当前方案没有过度设计。
 
-## Slice Gate
+## Gate Group: implementation slice
 
 每个 slice 必须足够小，适合一次 implementation pass 和一次 review pass。每个 slice 必须写清：
 
@@ -147,7 +158,7 @@ plan 必须显式说明为什么当前方案没有过度设计。
 
 implementation 只能做当前 approved slice，除非 approved plan 明确允许一次做多个 slice。
 
-## Review Gate
+## Gate Group: review / fix / re-review
 
 review / re-review 必须 evidence-based，并产出 durable artifact。finding 必须能被裁决为：
 
@@ -212,7 +223,7 @@ gateflow: accept PR review for <work-unit>
 
 commit 前必须确认 branch 不是 protected trunk，检查 `git status`，只 stage 当前 gate 相关文件，避免 unrelated dirty changes。
 
-## Draft PR Gate
+## Gate Group: draft PR
 
 `ready-to-open-draft-PR` 前确认：
 
@@ -223,6 +234,7 @@ commit 前必须确认 branch 不是 protected trunk，检查 `git status`，只
 - tests/type checks 已运行或失败已说明；
 - docs decision 已完成；
 - deferred findings/residual risks 有 owner/destination；
+- 如果当前 work unit 是 issue，创建 draft PR 时 PR body 必须关联 issue：完整解决时使用 GitHub closing keyword（如 `Closes #123`），部分解决或仅关联时使用非关闭引用（如 `Related to #123`）并说明剩余 owner/destination；
 - draft PR summary 匹配真实代码，不把 future work 写成已完成。
 
 到达 `ready-to-open-draft-PR` 后自动：
@@ -241,9 +253,9 @@ push
 PR review 有 accepted findings 时，必须自动修复并 re-review。PR review 若无 accepted findings，也必须提交 PR review artifact /
 pass evidence 并 push。
 
-## Final Closeout
+## Gate: final closeout
 
-`draft-PR-pass` 后输出 final closeout：
+`draft-PR-pass` 后必须输出 final closeout：
 
 - what changed；
 - what was verified；
@@ -251,4 +263,13 @@ pass evidence 并 push。
 - finding status；
 - remaining risks / owners；
 - draft PR URL；
+- issue link status（如果当前 work unit 是 issue，确认 draft PR body 已用 closing keyword 或非关闭引用关联 issue）；
+- issue closeout comment status（如果当前 work unit 是 issue，给 issue 添加 closeout comment，包含 draft PR URL、finding status、remaining risks / owners 和 merge 后关闭预期）；
 - next entry point。
+
+如果当前 work unit 是 issue，`final closeout` gate 必须确认：
+
+- PR body 已关联 issue；完整解决时使用 closing keyword，部分解决时不得使用会错误关闭 issue 的 closing keyword；
+- issue 已添加 closeout comment，指向 draft PR，并说明 remaining risks / owners 和 merge 后 issue 是否会自动关闭。
+
+若 draft PR 未关联 issue、issue closeout comment 未添加、缺少权限、issue number 不明确，或 closing keyword 会错误关闭未完成 issue，不得输出 final closeout pass，必须停止并询问用户。
