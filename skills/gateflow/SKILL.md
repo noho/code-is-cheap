@@ -1,6 +1,6 @@
 ---
 name: gateflow
-description: "单个 work unit 的 gated 开发流程。用于 feature、issue、bug fix、migration、refactor、schema/public contract change 或 architecture-sensitive task；可选接收 design document；先读代码并从第一性原理确认目标/非目标，经用户确认后按 plan、review、implementation、review、deepreview、draft PR gate 自动推进到 draft-PR-pass。"
+description: "单个 work unit 的 gated 开发流程。用于 feature、issue、bug fix、migration、refactor、schema/public contract change 或 architecture-sensitive task；可选接收 design document；先读代码并从第一性原理确认目标/非目标，经用户确认后按 plan、review、implementation、review、deepreview、draft PR 和 final closeout gate 自动推进到 final closeout pass。"
 ---
 
 # Gateflow
@@ -110,6 +110,40 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 ```
 
 直到所有 approved slices 完成。
+
+## Gate State Machine
+
+Gateflow 是确定性的 gate state machine。用户确认 goal confirmation 后，除非遇到明确 stop condition，必须持续按
+Gate Order 推进，直到当前 work unit 到达 `final closeout pass`。
+
+普通 gate 完成不是停止条件，而是转移条件。每个 gate 完成后必须立即：
+
+1. 读取 gate artifact / validation / decision；
+2. 裁决 findings 和 residual risks；
+3. 记录当前 gate 的 artifact、decision、validation、finding 状态和 residual risk；
+4. 将 current gate / next entry point 写成 Gate Order 中下一个未完成 gate；
+5. 继续执行下一个 gate。
+
+不得因为某个 gate 刚完成就停止、总结或等待用户，除非出现以下情况之一：
+
+- blocking open question 影响 scope、architecture、contract、schema、file ownership、state transition、implementation strategy、
+  test expectation 或 user-visible behavior；
+- required artifact、code state、external state 或 validation 缺失，且当前允许的 gate 不能产生它；
+- review/fix gate 返回 blocking failure，且 required fixing path 不可用或被阻塞；
+- branch、dirty changes、file ownership、commit scope 不清，无法安全创建 checkpoint；
+- 需要 merge、approve、mark ready for review、request reviewers、delete branch、对外 comment 或创建/修改外部 issue；
+- 用户明确要求 pause、stop 或 redirect。
+
+current gate / next entry point 必须表示下一个未完成 gate，而不是刚完成的 gate。不得 invent、skip、collapse 或
+reorder gates。
+
+PR gate chain 的状态不变量：
+
+- `create draft PR` 成功后，current gate / next entry point 必须变为 `PR review`，不得写成 `draft-PR-pass`；
+- `draft-PR-pass` 只有满足下方 `Gate Group: draft PR` 的 entry criteria 后才能进入；
+- 缺少 PR review artifacts、accepted PR review commit hash / no-commit pass 记录、或 final push 状态时，不得进入
+  `draft-PR-pass` 或 `final closeout`；
+- `final closeout` 不得补做、假设或跳过 PR review gate。
 
 ## Stop Conditions
 
@@ -253,6 +287,14 @@ push
 PR review 有 accepted findings 时，必须自动修复并 re-review。PR review 若无 accepted findings，也必须提交 PR review artifact /
 pass evidence 并 push。
 
+进入 `draft-PR-pass` 前必须满足：
+
+- PR review artifacts 已存在；
+- 所有 PR review findings 已裁决；
+- required fixes / re-review 已通过，或 PR review artifact 明确记录 pass 且无需 fix；
+- accepted PR review commit 已创建，或已明确记录 PR review pass 且无需 commit；
+- PR review / fix 后的 final push 已完成。
+
 ## Gate: final closeout
 
 `draft-PR-pass` 后必须输出 final closeout：
@@ -266,6 +308,9 @@ pass evidence 并 push。
 - issue link status（如果当前 work unit 是 issue，确认 draft PR body 已用 closing keyword 或非关闭引用关联 issue）；
 - issue closeout comment status（如果当前 work unit 是 issue，给 issue 添加 closeout comment，包含 draft PR URL、finding status、remaining risks / owners 和 merge 后关闭预期）；
 - next entry point。
+
+如 final closeout summary 尚不存在，`final closeout` gate 必须创建它。`final closeout pass` 后必须记录 work unit completed
+status，以及用户 merge 当前 PR 后可继续的 next entry point。
 
 如果当前 work unit 是 issue，`final closeout` gate 必须确认：
 
