@@ -1,6 +1,6 @@
 ---
 name: deepreview
-description: "用于对当前未合并 workspace changes、指定 GitHub Pull Request 或仓库全部代码做严格深度 code review；支持 `$deepreview`、`$deepreview 当前改动`、`$deepreview --base main`、`$deepreview --base ref`、`$deepreview --pr 123` 和 `$deepreview --all`；在 docs/reviews 下写完整 review artifact，优先 correctness、stability、maintainability findings，包含 adversarial failure pass、项目指令检查、过度耦合检查，并最终只简要报告结论和输出路径。"
+description: "用于对当前未合并 workspace changes、指定 GitHub Pull Request 或仓库全部代码做严格深度 code review；支持 `$deepreview`、`$deepreview 当前改动`、`$deepreview --base main`、`$deepreview --base ref`、`$deepreview --pr 123` 和 `$deepreview --all`；在 docs/reviews 下写完整 review artifact，优先 correctness、stability、maintainability findings，包含 adversarial failure pass、项目指令检查、过度耦合检查、semantic ownership drift 检查，并最终只简要报告结论和输出路径。"
 ---
 
 # Deepreview
@@ -116,8 +116,9 @@ Current Changes Mode：
    如果值只进入中间对象但最终未被执行层读取，或在链路中被重新默认化、覆盖、丢失、静默忽略，即报告。
 8. 对返回值、持久化状态、外部可见状态、event/log/trace 做一致性检查。任何“返回成功但状态半提交”“外部显示完成但系统仍可恢复或运行中”
    或“错误被默认成功值掩盖”的情况，都必须沿同一执行事实追踪。
-9. 执行 adversarial failure pass：默认怀疑，寻找最强的、基于证据的理由说明该 change 还不该 ship。如果只覆盖
-   happy path，把它视为真实弱点。
+9. 执行 adversarial failure pass 和 semantic ownership drift pass：默认怀疑，寻找最强的、基于证据的理由说明该
+   change 还不该 ship；特别检查是否由无所有权的下游通过 fallback、特例、重复计算、loose parsing、兼容 shim
+   或测试固化来补齐上游 contract。如果只覆盖 happy path，把它视为真实弱点。
 10. 最后 review tests and risk：判断 tests 是否覆盖真实行为、failure paths、boundary conditions 和 regression
    surfaces，识别重要剩余未覆盖风险。
 
@@ -150,6 +151,8 @@ adversarial failure pass 中，优先寻找高成本、危险、用户可见或�
   response handling gaps、protocol-layer product semantics leakage；
 - overcoupling issues：本应独立演进的层、模块、状态机、数据模型、工具、测试或 rollout 被绑成一个必须同步修改的整体；
   本应基于 Protocol / interface 的结构被设计成基于具体实现，导致替换实现、隔离测试或跨层复用时需要穿透修改；
+- semantic ownership drift：事实、状态、错误原因、格式、业务裁决、协议语义或展示语义由错误 owner 产生、解释、
+  持久化或修正，导致下游用 fallback、特例、重复计算、loose parsing、兼容 shim 或测试固化补齐 contract；
 - statically provable performance problems：loop-internal expensive recomputation or I/O、repeated
   JSON/regex parsing、list membership where set is required、unnecessary full loading、blocking I/O
   in async code、N+1 I/O patterns；
@@ -196,6 +199,11 @@ subagent 适合做并行深挖，不适合替代主 reviewer 的最终判断。�
   诱导上层或调用方绕过稳定契约。若暴露面会造成 contract drift 或错误依赖内部对象，即报告。
 - 审查 contract ownership：如果语义真源只在一层，契约归属该语义真源所在层；如果多个层都需要独立实现、产生、
   解释或持久化同一语义，且它描述的是层间协作协议而不是某一层的调用参数，则契约应落在公共契约。
+- 审查 semantic ownership drift / minimum-design trap：事实、状态、错误原因、格式、业务裁决、协议语义或展示语义必须由正确
+  owner 产生、解释、持久化并对外承诺。只有存在直接证据时才报告，例如当前 change 正在扩大该模式，或已有 fallback、
+  特例、`hasattr` / `getattr`、loose parsing、重复计算、二次格式化、兼容 shim、测试固化、隐性字符串协议、
+  多真源状态、下游修正上游语义。不要把“未来也许更通用”或个人抽象偏好当 finding。报告此类 finding 时，必须说明：
+  正确 owner 是谁、语义漂移到了哪里、哪条直接证据证明风险已存在、如何把 contract 收束回 owner 或显式化。
 - 审查 branch ordering：宽条件是否抢先命中导致更具体分支不可达；条件是否重叠但无明确优先级；是否缺少默认分支导致异常输入悄悄落空；
   dispatch/router/builder/handler 是否同时承担参数转换、分支选择和结果合并，导致分支逻辑被错误复用或漏判。
 - 审查 structural clarity / spaghetti-code risk：控制流是否清晰，职责是否收敛，函数或类是否承担过多分支，状态是否被多处隐式修改；
