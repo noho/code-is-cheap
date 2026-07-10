@@ -103,6 +103,7 @@ git status --short
 - `design_doc` 路径；
 - 目标、非目标、scope boundary；
 - 从 `control_doc` 提炼出的当前 gate 约束和风险；
+- 从 `control_doc` 提炼出的 Slice 切分原则（如有）；
 - allowed files/modules；
 - expected artifact path；
 - required validation；
@@ -115,6 +116,19 @@ git status --short
 总控派发 Agent 后，若有证据表明 Agent 在工作、或 Agent 所在的 pane 的显示在变化，不得擅自停止该 gate。
 
 并行派发前必须确认 file ownership 不重叠。
+
+## Slice Principle Handoff
+
+如果 `control_doc` 中有 Slice 切分原则，phaseflow 必须在进入 `plan` gate 前读取并提炼它。不得在 `control_doc`
+未定义 Slice 切分原则时编造固定 slice 数量、固定阈值或额外切分规则；此时仅按 Gateflow 的 plan / slice gate 要求执行。
+
+当 `control_doc` 中存在 Slice 切分原则时：
+
+- 派发 `plan` gate 时，必须把 Slice 切分原则作为 planning constraints 写入 Agent 任务说明；
+- plan artifact 必须说明 implementation slice 数量、切分依据，以及是否符合该 Slice 切分原则；
+- 如果 plan 的 implementation slices 超过 `control_doc` 中定义的建议上限或阈值（例如 3 个），plan artifact 必须说明为什么不能合并或减少；
+- 派发 `plan review` gate 时，必须要求 reviewer 审查是否存在按模块 / 文件 / owner 机械拆分、slice 过多、gate 成本超过实现风险、或违反 `control_doc` Slice 切分原则的问题；
+- 如果 `control_doc` 定义了具体阈值（例如超过 3 个 slices），plan review handoff 必须把该阈值列为 checklist 项。
 
 ## Gate Order Dispatch
 
@@ -166,7 +180,7 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 
 - work unit 名称和类型；
 - `design_doc` 路径；
-- 目标、非目标、success signal、约束和风险；
+- 目标、非目标、success signal、约束和风险；`plan` / `plan review` gate 还必须包含从 `control_doc` 提炼出的 Slice 切分原则（如有）；
 - current gate；
 - allowed files/modules；
 - accepted findings（fix / re-review gate）；
