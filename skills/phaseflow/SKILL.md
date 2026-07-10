@@ -117,6 +117,26 @@ git status --short
 
 并行派发前必须确认 file ownership 不重叠。
 
+## Agent Liveness and Completion
+
+Agent 派发后，默认状态是 `in-flight`，直到出现明确 completion / blocked / failed / user-stop 证据。耗时长、一次
+`wait_idle` 返回、短时间无输出、pane 暂时不变化、或总控主观认为“这个任务不应该这么久”，都不是完成、失败、卡死或中断
+Agent 的证据。
+
+只有以下情况之一成立时，phaseflow 才能认为 Agent gate 返回：
+
+- Agent 按 completion report format 明确报告完成，并给出 expected artifact path；
+- expected artifact 已存在，且 Agent 明确表示该 gate 完成；
+- Agent 明确报告 blocked / needs user input / failed，并说明 blocker；
+- Agent 进程或 pane 已结束，且 capture / exit evidence 表明任务不再运行；
+- 用户明确要求停止、接管、clear、重派或改变 gate。
+
+在 Agent 仍为 `in-flight` 时，phaseflow 不得 clear pane、发送新任务覆盖原任务、重派同一 gate、接管具体任务、修改
+current gate / next entry point、或进入下一个 gate。
+
+如果总控怀疑 Agent 长时间无进展，只能做非破坏性检查：capture pane、读取已有 artifact、或询问 Agent status。status probe
+不得改变 Agent 当前任务，不得包含新任务，不得要求 Agent 停止；除非 Agent 返回明确 blocked / failed / completion，否则继续等待。
+
 ## Slice Principle Handoff
 
 如果 `control_doc` 中有 Slice 切分原则，phaseflow 必须在进入 `plan` gate 前读取并提炼它。不得在 `control_doc`
