@@ -105,6 +105,7 @@ cd code-is-cheap
 
 ```text
 ~/.codex/skills
+~/.codex-controller/skills
 ~/.codex-pro/skills
 ~/.codex-business/skills
 ~/.claude/skills
