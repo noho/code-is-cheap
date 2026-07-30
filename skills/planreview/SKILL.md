@@ -59,6 +59,7 @@ docs 和 code facts 来判断。
 优先寻找高成本、危险、用户可见或难以发现的失败：
 
 - scope、non-goals、ownership、file boundaries 或 implementation slice boundaries 不清；
+- goal drift：plan 增加 Goal Confirmation 未确认的目标、验收标准、设计强化、风险修复或 future-slice work；
 - plan 不够 code-generation-ready，迫使 implementation agent 重新设计；
 - 过度耦合：plan 把本应独立的层、模块、状态机、数据模型、工具、测试或 rollout 步骤绑在一起，导致局部变更需要跨层联动；
 - auth、permissions、tenant isolation、trust boundaries、privilege escalation；
@@ -72,7 +73,9 @@ docs 和 code facts 来判断。
 
 ## Review Method
 
-1. 识别 plan 声称的 goal、non-goals、success signal 和 implementation boundary。
+1. 识别 Goal Confirmation（若存在）和 plan 声称的 goal、non-goals、success signal、implementation boundary。
+   Gateflow / Phaseflow plan review 必须把 Goal Confirmation 当作 binding scope contract；缺少 Goal Confirmation
+   artifact 或等价 handoff 时，必须作为 open question 或 finding 记录。
 2. 列出 plan 的关键 assumptions。
 3. 用 code facts、design docs、tests 和 realistic edge cases 尝试证伪每个 assumption。
 4. 压测 architecture boundaries：layering、ownership、dependency direction、public contracts、
@@ -88,6 +91,10 @@ docs 和 code facts 来判断。
 
 review 任何非平凡 plan 时，必须显式应用这些 lenses：
 
+- **Goal-bound minimal design review**：检查每个 slice、design decision、验收标准和 validation 是否能直接映射到
+  Goal Confirmation 已确认的 goal、success signal 或必要 correctness/safety 条件。若 plan 把实现中发现的潜在风险升级成
+  新目标、架构强化、额外验收标准或 future-slice work，即作为 goal drift / scope creep 报告；正确处理应是 residual risk、
+  deferred follow-up、open question，或重新做 goal confirmation。
 - **Architecture boundary review**：验证 layering、ownership、dependency direction、public contracts、
   schema/storage boundaries、external protocol boundaries，以及 implementation details 是否泄漏到错误层级。
 - **Best-practice review**：把 plan 与该问题类型的工程最佳实践对照，包括 testability、maintainability、
@@ -136,7 +143,7 @@ finding 不应重复普通 code review nit。它应该暴露会导致 plan 失�
 ```markdown
 ### 编号-未修复-[严重程度（低/中/高/严重）]-finding简述
 - **位置**: 相关章节、slice、目标、非目标、契约、状态机、测试或 open question 位置
-- **问题类型**: 动机不成立 / 范围漂移 / 架构边界 / 过度耦合 / 最佳实践偏离 / 非最优方案 / 过度设计 / 契约缺失 / 状态机漏洞 / 并发恢复风险 / 切片过粗 / 不可直接实施 / 测试缺口 / open question 未收敛 / 其它
+- **问题类型**: 动机不成立 / 目标漂移 / 范围漂移 / 过度验收标准 / 架构边界 / 过度耦合 / 最佳实践偏离 / 非最优方案 / 过度设计 / 契约缺失 / 状态机漏洞 / 并发恢复风险 / 切片过粗 / 不可直接实施 / 测试缺口 / open question 未收敛 / 其它
 - **当前写法**: 当前 plan 如何描述
 - **反例/失败场景**: 什么场景会让该方案失败或跑偏
 - **为什么有问题**: 与用户目标、设计真源、项目约束、代码事实或可实施性要求的冲突
