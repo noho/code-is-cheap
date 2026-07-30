@@ -115,6 +115,7 @@ The sync script installs to these directories when present:
 
 ```text
 ~/.codex/skills
+~/.codex-controller/skills
 ~/.codex-pro/skills
 ~/.codex-business/skills
 ~/.claude/skills

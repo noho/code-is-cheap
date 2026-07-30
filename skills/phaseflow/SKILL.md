@@ -101,7 +101,7 @@ git status --short
 - 当前 phase/work unit；
 - 当前 gate；
 - `design_doc` 路径；
-- 目标、非目标、scope boundary；
+- Goal Confirmation 中已确认的目标、非目标、success signal 和 scope boundary；
 - 从 `control_doc` 提炼出的当前 gate 约束和风险；
 - 从 `control_doc` 提炼出的 Slice 切分原则（如有）；
 - allowed files/modules；
@@ -147,8 +147,9 @@ current gate / next entry point、或进入下一个 gate。
 - 派发 `plan` gate 时，必须把 Slice 切分原则作为 planning constraints 写入 Agent 任务说明；
 - plan artifact 必须说明 implementation slice 数量、切分依据，以及是否符合该 Slice 切分原则；
 - 如果 plan 的 implementation slices 超过 `control_doc` 中定义的建议上限或阈值（例如 3 个），plan artifact 必须说明为什么不能合并或减少；
-- 派发 `plan review` gate 时，必须要求 reviewer 审查是否存在按模块 / 文件 / owner 机械拆分、slice 过多、gate 成本超过实现风险、或违反 `control_doc` Slice 切分原则的问题；
-- 如果 `control_doc` 定义了具体阈值（例如超过 3 个 slices），plan review handoff 必须把该阈值列为 checklist 项。
+- 派发 `plan review` gate 时，必须把 `control_doc` 中的 Slice 切分原则和具体阈值（如有）列为 checklist 项；
+- 通用 slice 数量、机械切分和 gate 成本审查由 Gateflow / Planreview 规则定义，phaseflow 只负责传递 `control_doc`
+  中的项目级覆盖约束，不另行定义额外阈值。
 
 ## Gate Order Dispatch
 
@@ -200,7 +201,8 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 
 - work unit 名称和类型；
 - `design_doc` 路径；
-- 目标、非目标、success signal、约束和风险；`plan` / `plan review` gate 还必须包含从 `control_doc` 提炼出的 Slice 切分原则（如有）；
+- Goal Confirmation 中已确认的目标、非目标、success signal、scope boundary、约束和风险；`plan` / `plan review` gate
+  还必须包含从 `control_doc` 提炼出的 Slice 切分原则（如有）；
 - current gate；
 - allowed files/modules；
 - accepted findings（fix / re-review gate）；
@@ -211,6 +213,11 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - 禁止 commit、push、PR、merge、进入其它 gate，除非当前 gate 明确要求。
 
 每个 Agent 返回后，phaseflow 读取 artifact，裁决结果，更新 `control_doc`，再进入下一个 gate。
+
+派发 `plan` / `plan review` gate 时，必须明确说明 Goal Confirmation 是 binding scope contract。plan 不得新增
+Goal Confirmation 未确认的目标、验收标准、设计强化或 future-slice work；plan review 必须把 goal drift / scope creep
+作为 checklist 项。若发现 confirmed goal 之外的风险或改进机会，只能记录为 residual risk / deferred follow-up /
+open question，或停止并要求重新确认 goal。
 
 ## Gateflow State Machine Execution
 

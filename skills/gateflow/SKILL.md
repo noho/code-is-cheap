@@ -12,6 +12,7 @@ schema/public contract change 或 architecture-sensitive task。
 
 - 先看代码和事实，再判断 work unit 是否成立。
 - 进入 plan 前，先用通俗语言向用户确认目标、非目标、边界和成功信号。
+- Goal confirmation 是 binding scope contract；后续 gate 不得扩大目标、非目标、success signal 或验收标准，除非先停下来让用户重新确认。
 - 只做当前 work unit 需要的设计；不得引入无当前需求、真实风险或明确扩展压力支撑的过度设计。
 - 每个 gate 都必须有 artifact、decision、validation 或明确说明；conversation-only 结果不足以通过 gate。
 - draft PR gate 自动推进到 `draft-PR-pass`；merge、approve、mark ready for review、request reviewers、delete branch、
@@ -160,10 +161,15 @@ PR gate chain 的状态不变量：
 plan 必须 code-generation-ready，即可以直接指导实现，不需要重新设计方案、发明契约、猜 file ownership、猜 state transition
 或决定 test scope。
 
+plan 必须是最小化 plan/design：只规划 Goal Confirmation 已确认目标所必需的设计、实现和验证。每个 design decision、
+验收标准和 implementation slice 都必须能映射到已确认的 goal、success signal 或必要 correctness/safety 条件。不得把实现层
+发现的潜在风险升级成新的目标、验收标准、架构强化或 future-slice work。
+
 plan 必须包含：
 
 - goal / motivation / success signal；
 - non-goals / scope boundary；
+- goal alignment：每个 slice / design decision / validation 对应的已确认 goal 或 success signal；
 - design document alignment（如有）；
 - first-principles judgment and direct code evidence；
 - affected files/modules；
@@ -175,11 +181,22 @@ plan 必须包含：
 - risks/open questions；
 - completion report format。
 
-plan 必须显式说明为什么当前方案没有过度设计。
+plan 必须显式说明为什么当前方案没有过度设计、没有 goal drift。若代码阅读发现 confirmed goal 之外的风险或改进机会，
+plan 只能把它记录为 residual risk / deferred follow-up / open question，或停止并要求重新做 goal confirmation；不得直接纳入
+当前 work unit。
+
+implementation slices 必须以可验证行为增量为边界，而不是按模块、文件、owner 或技术层机械拆分。slice 数量应尽量少；
+每个 slice 都必须值得一次 implementation pass 和一次 review pass 的 gate 成本。默认避免超过 3 个 implementation
+slices；若超过，plan 必须说明为什么不能合并或减少。若 design_doc、用户输入或上游 handoff 定义了不同 Slice 切分原则
+或阈值，以其为准。
+
+`plan review` gate 必须审查 slices 是否过多、是否按模块 / 文件 / owner 机械拆分、是否能合并、是否 gate 成本超过实现风险，
+以及是否容易让 implementation agent 提前做 future-slice work。
 
 ## Gate Group: implementation slice
 
-每个 slice 必须足够小，适合一次 implementation pass 和一次 review pass。每个 slice 必须写清：
+每个 slice 必须足够小，适合一次 implementation pass 和一次 review pass；同时必须代表一个可验证行为增量，不能只是
+机械文件拆分、模块拆分或 owner 拆分。每个 slice 必须写清：
 
 - id/name、objective、expected outcome；
 - allowed files/modules；
@@ -191,6 +208,9 @@ plan 必须显式说明为什么当前方案没有过度设计。
 - completion signal and stop condition。
 
 implementation 只能做当前 approved slice，除非 approved plan 明确允许一次做多个 slice。
+
+implementation 不得实现 approved slice 之外的修复、重构、硬化、兼容、验收标准或设计扩展。若实现过程中发现当前 slice
+之外的风险，必须记录为 residual risk / deferred follow-up，或停止请求重新确认 goal；不得顺手扩大实现范围。
 
 ## Gate Group: review / fix / re-review
 
