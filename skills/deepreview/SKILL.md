@@ -127,8 +127,9 @@ CI/check information。
 
 All Repository Mode 使用相同方法，但没有单一 diff intent。reviewer 必须先建立 repository map：读取项目指令、
 目录结构、README/design docs、public entry points、package/module boundaries、tests、schemas、storage、
-external protocol adapters 和关键 runtime paths。然后按风险优先级选择真实入口与关键链路逐条走读。不能只做
-文件列表式扫描，也不能把没有覆盖的区域写成已 review。
+external protocol adapters 和关键 runtime paths。然后对 included scope 做逐文件全仓走读。风险优先级只决定
+走读顺序、深挖程度和 subagent 分片，不得作为跳过已纳入 scope 文件的理由。不能只做文件列表式扫描，也不能把
+没有实际打开并阅读的文件写成已 review。
 
 ## Adversarial Attack Surface
 
@@ -312,13 +313,22 @@ review scope：
 - schemas、storage/migration、configuration、external protocol adapters；
 - CI/check 配置，若它影响 review 结论。
 
-先建立 repository map，再按风险优先级划分 review slices。至少记录：
+All Repository Mode 是 exhaustive file-by-file review。必须先建立 included file manifest，再逐文件打开并阅读
+manifest 中的每个文件。可以按目录、模块、入口、调用链或风险面切分顺序，也可以使用 subagents 并行覆盖，但不得用抽样、
+spot check、只读入口文件、只读高风险文件或只读 `rg` 命中结果代替逐文件走读。
+
+允许从 included scope 中排除 generated/vendor/build/cache/lockfile/binary artifact 等非人工维护或不可读文件，但必须记录
+excluded file patterns、具体原因和可能的 residual risk。对大文件可以按结构分段阅读；若因体量、编码、工具限制或时间限制
+无法完整阅读，必须把该文件列为 `partially-covered` 或 `not-covered`，不得写成 covered。
+
+先建立 repository map 和 included file manifest，再按风险优先级划分 review slices。至少记录：
 
 - repository root；
 - branch；
 - review date/time；
 - included directories；
 - excluded directories and reason，例如 generated/vendor/build/cache；
+- included file count、covered file count、partially-covered file count、not-covered file count；
 - high-risk entry points and subsystems；
 - parallel review coverage，若使用 subagents；
 - not-covered areas，若因为范围过大无法完整走读。
@@ -333,8 +343,8 @@ find . -maxdepth 3 -type f \( -name 'README*' -o -name 'AGENTS.md' -o -name 'CLA
 ```
 
 All Repository Mode 默认应使用 Large Scope Parallel Review。每个 subagent 或 review slice 必须有明确范围：
-目录、入口、调用链、状态机、contract boundary、storage/schema、external protocol 或测试面。最终 artifact 必须清楚区分
-covered、partially-covered 和 not-covered areas。
+目录、文件集合、入口、调用链、状态机、contract boundary、storage/schema、external protocol 或测试面。最终 artifact
+必须清楚区分 covered、partially-covered 和 not-covered files/areas。
 
 不要把全仓 review 做成纯 lint、命名或风格 review。仍然只报告有直接证据、真实执行路径或明确架构风险支撑的 material findings。
 
