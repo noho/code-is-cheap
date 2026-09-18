@@ -19,11 +19,6 @@ This repository is the source of truth for the skills under `skills/`, the agent
 `scripts/agent-tools.zsh`, and the child-agent runners under `scripts/*-agent-run`. Local runtime files are installation
 targets only. Edit and validate sources here, then sync them out.
 
-## Screenshot
-
-![code-is-cheap running with multiple agents in tmux](working.png)
-![code-is-cheap running with multiple agents in tmux](working-2.png)
-
 ## Included Skills
 
 | Skill | Responsibility |
@@ -38,8 +33,8 @@ targets only. Edit and validate sources here, then sync them out.
 ## Demo
 
 ```text
-按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-严格遵循 AGENTS.md 的约束。
+Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 Equivalent explicit argument form:
@@ -203,28 +198,28 @@ slices, fixes, aggregate deep review, accepted commits, draft PR gate, and final
 Standalone Gateflow example:
 
 ```text
-按照 $gateflow 开发 <work-unit>。
-可选设计依据：docs/host/design.md。
-先做 preflight 和 goal confirmation；用户确认目标、非目标和边界后，按 Gate Order 推进到 final closeout。
-严格遵循 AGENTS.md 的约束。
+Develop <work-unit> with $gateflow.
+Optional design basis: docs/host/design.md.
+Start with preflight and goal confirmation; after the user confirms goals, non-goals, and boundaries, advance through the Gate Order to final closeout.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 Gateflow with `tmux-agents` example:
 
 ```text
-按照 $gateflow 开发 <work-unit>。
-$tmux-agents 路由 Agents，CodexAgent-GPT 负责 plan / implement / fix，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review / re-review。
-每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
-严格遵循 AGENTS.md 的约束。
+Develop <work-unit> with $gateflow.
+$tmux-agents routes Agents: CodexAgent-GPT handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review / re-review passes.
+Re-discover panes before every send, clear the session for new tasks, and avoid bare #numbers.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 Gateflow with `sub-agents` example:
 
 ```text
-按照 $gateflow 开发 <work-unit>。
-$sub-agents 通过 runner 子进程派发：Codex gpt 负责 plan / implement / fix，Claude mimo / ds 负责两路 review / re-review。
-所有调用显式传入 workspace 绝对路径，并使用独立 output / stderr 文件；总控检查结构化结果后自行裁决。
-严格遵循 AGENTS.md 的约束。
+Develop <work-unit> with $gateflow.
+$sub-agents dispatches through runner subprocesses: Codex gpt handles plan / implement / fix, while Claude mimo / ds run the two review / re-review passes.
+Pass the workspace absolute path explicitly in every call and use separate output / stderr files; the controller checks the structured results and adjudicates itself.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 ### Phaseflow
@@ -240,32 +235,32 @@ When no dispatch protocol is named, Phaseflow uses `sub-agents` by default. Use 
 already-running tmux panes.
 
 ```text
-按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
-总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
-每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
-final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
-严格遵循 AGENTS.md 的约束。
+Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
+Read control_doc first to identify the current phase/work unit, then read design_doc.
+The controller Agent completes preflight and goal confirmation first; after user confirmation, dispatch Agents gate by gate following Gateflow's Gate Order to do the concrete work.
+After each gate returns, update control_doc and record the artifact / finding adjudication / residual risk.
+After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 Phaseflow with `tmux-agents` example:
 
 ```text
-按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$tmux-agents 路由 Agents，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review，CodexAgent-GPT 负责 plan / implement / fix。
-总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
-每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
-final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
-严格遵循 AGENTS.md 的约束。
+Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
+$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review passes, while CodexAgent-GPT handles plan / implement / fix.
+The controller Agent completes preflight and goal confirmation first; after confirmation, dispatch gate by gate following Gateflow's Gate Order.
+After each Agent returns, the controller reads the artifact, adjudicates findings, updates control_doc, collects residual risks, and closes resolved risks.
+After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 Phaseflow with `sub-agents` example:
 
 ```text
-按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$sub-agents 通过 runner 子进程派发，Claude mimo / ds 负责两路 review，Codex gpt 负责 plan / implement / fix。
-总控按 Gateflow 的 Gate Order 推进，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
-严格遵循 AGENTS.md 的约束。
+Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
+$sub-agents dispatches through runner subprocesses: Claude mimo / ds run the two review passes, while Codex gpt handles plan / implement / fix.
+The controller advances through Gateflow's Gate Order, checks each subprocess's exit status and structured output, and updates control_doc.
+Strictly follow the constraints in AGENTS.md.
 ```
 
 ### Planreview
