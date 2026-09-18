@@ -1,0 +1,336 @@
+#!/bin/zsh
+
+# Orchestrator contract: always pass --cwd explicitly so every child agent has
+# a deterministic workspace instead of inheriting the controller's directory.
+
+emulate -LR zsh
+setopt no_unset pipe_fail
+
+readonly PROGRAM_NAME="${0:t}"
+readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  claude-agent-run --provider <ds|mimo|qwen|kimi|glm|local> [options] --prompt <text>
+  claude-agent-run --provider <provider> [options] --prompt-file <path>
+  printf '%s' '<prompt>' | claude-agent-run --provider <provider> [options]
+
+Required:
+  --provider <name>          Model provider: ds, mimo, qwen, kimi, glm, or local.
+
+Prompt input (choose one):
+  --prompt <text>            Prompt text.
+  --prompt-file <path>       Read the prompt from a UTF-8 text file; use - for stdin.
+  <positional text>          Remaining positional arguments are joined with spaces.
+  stdin                      Used when no other prompt input is supplied.
+
+Run options:
+  --instance <name>          Unique display name. Defaults to <provider>-<uuid-prefix>.
+  --cwd <directory>          Working directory. Defaults to the current directory.
+  --output-format <format>   text, json, or stream-json. Defaults to json.
+  --output <path>            Write stdout to a file instead of the terminal.
+  --stderr <path>            Write stderr to a file instead of the terminal.
+  --permission-mode <mode>   Pass a Claude Code permission mode unchanged.
+  --persist                  Save the session; generates a UUID when needed.
+  --session-id <uuid>        Save a new session with this UUID.
+  --resume <session-id>      Resume an existing session.
+  --no-persist               Do not save the session (default for new runs).
+  --list-providers           Print supported providers and exit.
+  -h, --help                 Show this help.
+  -- <claude arguments...>   Pass additional arguments directly to Claude Code.
+
+Environment:
+  AGENT_TOOLS_FILE           Override the launcher file used by this script.
+
+Orchestrator note:
+  Always pass --cwd explicitly. Do not rely on the controller's current
+  directory when launching a child agent.
+
+Examples:
+  claude-agent-run --provider ds --cwd ~/workspace/project \
+    --instance collector-01 --prompt-file task.md \
+    --output runs/collector-01.json
+
+  claude-agent-run --provider kimi --persist --prompt 'Collect the requested data'
+
+  claude-agent-run --provider qwen --resume <session-id> --prompt 'Continue the review'
+
+  claude-agent-run --provider glm --prompt-file task.md -- --allowedTools Read,Grep,Glob
+
+  claude-agent-run --provider local --cwd ~/workspace/project \
+    --prompt 'Review this repository with the local model'
+
+Parallel runs:
+  claude-agent-run --provider ds --cwd ~/workspace/project --instance ds-01 --prompt-file task-a.md --output ds-01.json &
+  claude-agent-run --provider ds --cwd ~/workspace/project --instance ds-02 --prompt-file task-b.md --output ds-02.json &
+  wait
+EOF
+}
+
+die() {
+  print -u2 -- "$PROGRAM_NAME: $*"
+  exit 2
+}
+
+require_value() {
+  local option="$1"
+  local count="$2"
+  (( count >= 2 )) || die "$option requires a value"
+}
+
+new_uuid() {
+  if command -v uuidgen >/dev/null 2>&1; then
+    uuidgen | tr '[:upper:]' '[:lower:]'
+    return
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c 'import uuid; print(uuid.uuid4())'
+    return
+  fi
+
+  die "uuidgen or python3 is required to generate a session ID"
+}
+
+prepare_output_path() {
+  local output_path="$1"
+  local parent="${output_path:h}"
+
+  [[ -n "$output_path" && "$output_path" != "/" ]] || die "invalid output path: $output_path"
+  [[ -d "$parent" ]] || mkdir -p -- "$parent" || die "cannot create directory: $parent"
+}
+
+provider=""
+instance=""
+workdir="$PWD"
+output_format="json"
+output_file=""
+stderr_file=""
+permission_mode=""
+prompt_text=""
+prompt_file=""
+session_id=""
+resume_id=""
+persist=false
+explicit_prompt=false
+typeset -a positional_prompt=()
+typeset -a extra_args=()
+
+while (( $# > 0 )); do
+  case "$1" in
+    --provider)
+      require_value "$1" "$#"
+      provider="$2"
+      shift 2
+      ;;
+    --instance)
+      require_value "$1" "$#"
+      instance="$2"
+      shift 2
+      ;;
+    --cwd)
+      require_value "$1" "$#"
+      workdir="$2"
+      shift 2
+      ;;
+    --output-format)
+      require_value "$1" "$#"
+      output_format="$2"
+      shift 2
+      ;;
+    --output)
+      require_value "$1" "$#"
+      output_file="$2"
+      shift 2
+      ;;
+    --stderr)
+      require_value "$1" "$#"
+      stderr_file="$2"
+      shift 2
+      ;;
+    --permission-mode)
+      require_value "$1" "$#"
+      permission_mode="$2"
+      shift 2
+      ;;
+    --prompt)
+      require_value "$1" "$#"
+      [[ "$explicit_prompt" == false ]] || die "choose only one prompt input"
+      prompt_text="$2"
+      explicit_prompt=true
+      shift 2
+      ;;
+    --prompt-file)
+      require_value "$1" "$#"
+      [[ "$explicit_prompt" == false ]] || die "choose only one prompt input"
+      prompt_file="$2"
+      explicit_prompt=true
+      shift 2
+      ;;
+    --session-id)
+      require_value "$1" "$#"
+      session_id="$2"
+      persist=true
+      shift 2
+      ;;
+    --resume)
+      require_value "$1" "$#"
+      resume_id="$2"
+      persist=true
+      shift 2
+      ;;
+    --persist)
+      persist=true
+      shift
+      ;;
+    --no-persist)
+      persist=false
+      session_id=""
+      shift
+      ;;
+    --list-providers)
+      printf '%s\n' ds mimo qwen kimi glm local
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      extra_args=("$@")
+      break
+      ;;
+    -*)
+      die "unknown option: $1 (put Claude Code options after --)"
+      ;;
+    *)
+      positional_prompt+=("$1")
+      shift
+      ;;
+  esac
+done
+
+[[ -n "$provider" ]] || die "--provider is required"
+
+case "$provider" in
+  ds|deepseek)
+    provider="ds"
+    runner="ds_claude"
+    ;;
+  mimo|xiaomi)
+    provider="mimo"
+    runner="mimo_claude"
+    ;;
+  qwen)
+    runner="qwen_claude"
+    ;;
+  kimi)
+    runner="kimi_claude"
+    ;;
+  glm)
+    runner="glm_claude"
+    ;;
+  local)
+    runner="local_claude"
+    ;;
+  *)
+    die "unsupported provider: $provider"
+    ;;
+esac
+
+case "$output_format" in
+  text|json|stream-json) ;;
+  *) die "unsupported output format: $output_format" ;;
+esac
+
+[[ -d "$workdir" ]] || die "working directory does not exist: $workdir"
+[[ -z "$session_id" || -z "$resume_id" ]] || die "--session-id and --resume cannot be used together"
+[[ "$persist" == true || -z "$resume_id" ]] || die "--resume requires session persistence"
+[[ "$persist" == true || -z "$session_id" ]] || die "--session-id requires session persistence"
+
+if (( ${#positional_prompt[@]} > 0 )); then
+  [[ "$explicit_prompt" == false ]] || die "positional prompt cannot be combined with --prompt or --prompt-file"
+  prompt_text="${(j: :)positional_prompt}"
+  explicit_prompt=true
+fi
+
+if [[ -n "$prompt_file" ]]; then
+  if [[ "$prompt_file" == "-" ]]; then
+    prompt_text="$(<&0)"
+  else
+    [[ -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
+    prompt_text="$(<"$prompt_file")"
+  fi
+elif [[ "$explicit_prompt" == false ]]; then
+  [[ ! -t 0 ]] || die "provide --prompt, --prompt-file, positional text, or stdin"
+  prompt_text="$(<&0)"
+fi
+
+[[ -n "$prompt_text" ]] || die "prompt is empty"
+
+run_uuid="$(new_uuid)"
+[[ -n "$instance" ]] || instance="${provider}-${run_uuid[1,8]}"
+[[ -n "$instance" ]] || die "instance name is empty"
+
+if [[ "$persist" == true && -z "$session_id" && -z "$resume_id" ]]; then
+  session_id="$run_uuid"
+fi
+
+readonly agent_tools_file="${AGENT_TOOLS_FILE:-$DEFAULT_AGENT_TOOLS_FILE}"
+[[ -r "$agent_tools_file" ]] || die "cannot read launcher file: $agent_tools_file"
+
+source "$agent_tools_file" || die "failed to load launcher file: $agent_tools_file"
+
+(( $+functions[$runner] )) || die "launcher function not found: $runner"
+command -v claude >/dev/null 2>&1 || die "claude command not found"
+command -v jq >/dev/null 2>&1 || die "jq command not found"
+
+cd -- "$workdir" || die "cannot enter working directory: $workdir"
+
+if [[ "$output_file" == "-" ]]; then
+  output_file=""
+elif [[ -n "$output_file" ]]; then
+  prepare_output_path "$output_file"
+fi
+
+if [[ "$stderr_file" == "-" ]]; then
+  stderr_file=""
+elif [[ -n "$stderr_file" ]]; then
+  prepare_output_path "$stderr_file"
+fi
+
+if [[ -n "$output_file" && -n "$stderr_file" && "$output_file" == "$stderr_file" ]]; then
+  die "--output and --stderr must use different files"
+fi
+
+typeset -a claude_args=(
+  --print
+  --output-format "$output_format"
+  --name "$instance"
+)
+
+[[ "$output_format" == "stream-json" ]] && claude_args+=(--verbose)
+[[ -n "$permission_mode" ]] && claude_args+=(--permission-mode "$permission_mode")
+
+if [[ -n "$resume_id" ]]; then
+  claude_args+=(--resume "$resume_id")
+elif [[ -n "$session_id" ]]; then
+  claude_args+=(--session-id "$session_id")
+else
+  claude_args+=(--no-session-persistence)
+fi
+
+claude_args+=("${extra_args[@]}")
+claude_args+=("$prompt_text")
+
+if [[ -n "$output_file" && -n "$stderr_file" ]]; then
+  "$runner" "${claude_args[@]}" >"$output_file" 2>"$stderr_file"
+elif [[ -n "$output_file" ]]; then
+  "$runner" "${claude_args[@]}" >"$output_file"
+elif [[ -n "$stderr_file" ]]; then
+  "$runner" "${claude_args[@]}" 2>"$stderr_file"
+else
+  "$runner" "${claude_args[@]}"
+fi

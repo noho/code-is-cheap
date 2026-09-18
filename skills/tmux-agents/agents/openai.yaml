@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tmux Agents"
+  short_description: "通过 tmux pane 与已运行的 CLI Agent 通信"
+  default_prompt: "使用 $tmux-agents 通过已有 tmux pane 派发任务并读取结果。"
+policy:
+  allow_implicit_invocation: true

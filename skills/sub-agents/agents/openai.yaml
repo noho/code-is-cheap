@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sub Agents"
+  short_description: "通过 runner 子进程并发调用和裁决外部 Agent"
+  default_prompt: "使用 $sub-agents 通过 runner 子进程并行派发并裁决当前任务。"
+policy:
+  allow_implicit_invocation: true

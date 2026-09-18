@@ -15,7 +15,9 @@ changes still require explicit user authorization.
 This repository contains local skills and supporting scripts for Codex / Claude Code, covering phase-driven development,
 gated feature development, plan review, deep code review, and multi-agent handoff.
 
-This repository is the source of truth for the skills under `skills/`. Local Codex and Claude skill directories are installation targets only. Edit skills here, validate them here, then sync them out.
+This repository is the source of truth for the skills under `skills/`, the agent launcher under
+`scripts/agent-tools.zsh`, and the child-agent runners under `scripts/*-agent-run`. Local runtime files are installation
+targets only. Edit and validate sources here, then sync them out.
 
 ## Screenshot
 
@@ -30,7 +32,8 @@ This repository is the source of truth for the skills under `skills/`. Local Cod
 | `phaseflow` | Project step controller. It reads `design_doc` and `control_doc`, identifies the current `phase = work unit`, performs preflight and goal confirmation with the user, reads Gateflow's `Gate Order`, dispatches concrete gates to Agents, adjudicates results, updates `control_doc`, and reconciles residual risks. |
 | `planreview` | You want adversarial review of a plan, implementation plan, migration phase plan, feature slice plan, or Gateflow plan. |
 | `deepreview` | You want strict code review of current workspace changes, a GitHub PR, or the whole repository. |
-| `init-agents` | Defines tmux communication only: Agent CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send-safety rules. It does not assign roles. |
+| `tmux-agents` | Defines tmux communication only: Agent CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send-safety rules. It does not assign roles. |
+| `sub-agents` | Launches external Claude Code or Codex child agents through runner subprocesses, validates structured results, and supports isolated parallel dispatch without assigning roles. |
 
 ## Demo
 
@@ -68,7 +71,7 @@ status, validation result, and residual risk.
 
 - Codex CLI, Claude Code, or another agent runtime that supports local skill-style instruction files.
 - Python 3.11+ (invoked as `python3`) and the `pyyaml` package if you want to run the bundled skill validator.
-- `tmux` and `tmux-cli` if you use `init-agents` for multi-agent handoff.
+- `tmux` and `tmux-cli` if you use `tmux-agents` for multi-agent handoff.
 
 If you use the zsh agent launcher functions below, their `tmux select-pane -T` calls rely on stable pane titles. Add this to `~/.tmux.conf` first so running programs cannot overwrite the title:
 
@@ -115,9 +118,6 @@ The sync script installs to these directories when present:
 
 ```text
 ~/.codex/skills
-~/.codex-controller/skills
-~/.codex-pro/skills
-~/.codex-business/skills
 ~/.claude/skills
 ```
 
@@ -125,275 +125,72 @@ After syncing, start a new Codex / Claude session so the runtime reloads the ski
 
 ## Prepare Agent Environment
 
-`init-agents` works best when each CLI agent runs in its own tmux pane with a stable pane title. The examples below show one practical setup using zsh functions in `~/.zshrc`.
+The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
+installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
+editing installed copies.
 
 Prerequisites:
 
-- `claude`, `codex`, `tmux`, `jq`, `curl`, and `tmux-cli` are available on `PATH`.
-- Provider API keys are exported before starting the matching Claude Code wrappers:
-  - `DEEPSEEK_API_KEY`
-  - `MIMO_PLAN_API_KEY`
-  - `GLM_API_KEY`
-  - `KIMI_API_KEY`
-- `opus_claude` uses the local Claude proxy at `http://localhost:4141`.
-- Codex Pro uses `CODEX_HOME="$HOME/.codex-pro"` so it can use a separate Codex identity/config from the default controller Codex.
+- `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
+- `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
+- Provider credentials are exported before launching the matching agent:
+  `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
+- Each Codex profile has a readable `~/.codex-agent/<agent-id>/config.toml`.
+- The `local` launchers require a healthy OpenAI-compatible service at `http://127.0.0.1:8080`.
 
-Add these functions to `~/.zshrc`:
+Keep credentials in the environment or in the untracked local file
+`~/.config/zsh/agent-tools.local.zsh`. The installed launcher loads that file automatically when it exists. Never add
+credentials to `scripts/agent-tools.zsh`.
 
-```zsh
-opus_claude() {
-  curl -fsS --max-time 2 "http://localhost:4141" >/dev/null 2>&1 || {
-    echo "localhost:4141 代理未启动或不可访问"
-    return 1
-  }
-
-  local set_title=false
-  local -a claude_args=()
-  local arg
-  for arg in "$@"; do
-    case "$arg" in
-      --title)
-        set_title=true
-        ;;
-      *)
-        claude_args+=("$arg")
-        ;;
-    esac
-  done
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentOpus" >/dev/null 2>&1 || true
-  fi
-
-  local settings_json
-  settings_json="$(jq -nc \
-    --arg base_url "http://localhost:4141" \
-    --arg auth_token "dummy" \
-    --arg model "claude-opus-4.7" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model,
-        CLAUDE_CODE_EFFORT_LEVEL: "high"
-      }
-    }')"
-
-  claude --settings "$settings_json" "${claude_args[@]}"
-}
-
-ds_claude() {
-  [[ -z "$DEEPSEEK_API_KEY" ]] && echo "DEEPSEEK_API_KEY 未设置" && return 1
-
-  local set_title=false
-  local -a claude_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentDS" >/dev/null 2>&1 || true
-  fi
-
-  local settings_json
-  settings_json="$(jq -nc \
-    --arg base_url "https://api.deepseek.com/anthropic" \
-    --arg auth_token "$DEEPSEEK_API_KEY" \
-    --arg model "deepseek-v4-pro[1m]" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model,
-        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
-        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
-        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL: $model,
-        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
-        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
-        CLAUDE_CODE_EFFORT_LEVEL: "max"
-      }
-    }')"
-
-  claude --settings "$settings_json" "${claude_args[@]}"
-}
-
-mimo_claude() {
-  [[ -z "$MIMO_PLAN_API_KEY" ]] && echo "MIMO_PLAN_API_KEY 未设置" && return 1
-
-  local set_title=false
-  local -a claude_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentMiMo" >/dev/null 2>&1 || true
-  fi
-
-  local settings_json
-  settings_json="$(jq -nc \
-    --arg base_url "https://token-plan-cn.xiaomimimo.com/anthropic" \
-    --arg auth_token "$MIMO_PLAN_API_KEY" \
-    --arg model "mimo-v2.5-pro[1m]" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model,
-        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
-        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
-        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL: $model,
-        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
-        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
-        CLAUDE_CODE_EFFORT_LEVEL: "max"
-      }
-    }')"
-
-  claude --settings "$settings_json" "${claude_args[@]}"
-}
-
-glm_claude() {
-  [[ -z "$GLM_API_KEY" ]] && echo "GLM_API_KEY 未设置" && return 1
-
-  local set_title=false
-  local -a claude_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentGLM" >/dev/null 2>&1 || true
-  fi
-
-  local settings_json
-  settings_json="$(jq -nc \
-    --arg base_url "https://open.bigmodel.cn/api/anthropic" \
-    --arg auth_token "$GLM_API_KEY" \
-    --arg model "GLM-5.1" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model,
-        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
-        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
-        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL: $model,
-        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
-        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
-        CLAUDE_CODE_EFFORT_LEVEL: "max"
-      }
-    }')"
-
-  claude --settings "$settings_json" "${claude_args[@]}"
-}
-
-kimi_claude() {
-  [[ -z "$KIMI_API_KEY" ]] && echo "KIMI_API_KEY 未设置" && return 1
-
-  local set_title=false
-  local -a claude_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentKIMI" >/dev/null 2>&1 || true
-  fi
-
-  local settings_json
-  settings_json="$(jq -nc \
-    --arg base_url "https://api.kimi.com/coding/" \
-    --arg auth_token "$KIMI_API_KEY" \
-    --arg model "kimi-for-coding" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
-        ANTHROPIC_MODEL: $model,
-        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
-        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
-        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL: $model,
-        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
-        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
-        CLAUDE_CODE_EFFORT_LEVEL: "max"
-      }
-    }')"
-
-  claude --settings "$settings_json" "${claude_args[@]}"
-}
-
-controller_codex() {
-  local set_title=false
-  local -a codex_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentController" >/dev/null 2>&1 || true
-  fi
-
-  codex -s danger-full-access -a on-request -c shell_environment_policy.inherit=all "${codex_args[@]}"
-}
-
-pro_codex() {
-  local set_title=false
-  local -a codex_args=("${(@)argv:#--title}")
-  if (( ${argv[(Ie)--title]} )); then
-    set_title=true
-  fi
-
-  if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
-    tmux select-pane -T "AgentCodex" >/dev/null 2>&1 || true
-  fi
-
-  mkdir -p "$HOME/.codex-pro"
-  CODEX_HOME="$HOME/.codex-pro" codex -s danger-full-access -a on-request -c shell_environment_policy.inherit=all "${codex_args[@]}"
-}
-
-```
-
-Start agents in separate tmux panes and pass `--title` so `init-agents` can identify them:
+Install or update the launcher and child-agent runners:
 
 ```bash
-controller_codex --title
-pro_codex --title
-opus_claude --title
-ds_claude --title
-mimo_claude --title
-glm_claude --title
-kimi_claude --title
+./scripts/sync-agent-tools.sh
 ```
 
-Expected pane titles and one possible assignment:
+Load it from `~/.zshrc`:
 
-| Function | Pane title | Example assignment |
+```zsh
+[[ -r "$HOME/.config/zsh/agent-tools.zsh" ]] && source "$HOME/.config/zsh/agent-tools.zsh"
+```
+
+Reload the current shell after syncing:
+
+```bash
+source ~/.zshrc
+```
+
+Available launchers:
+
+| Runtime | Agent IDs | Commands |
 | --- | --- | --- |
-| `controller_codex --title` | `AgentController` | Phaseflow controller |
-| `pro_codex --title` | `AgentCodex` | Plan / implementation / fix |
-| `opus_claude --title` | `AgentOpus` | Review / re-review |
-| `ds_claude --title` | `AgentDS` | Review / re-review |
-| `mimo_claude --title` | `AgentMiMo` | Review / re-review |
-| `glm_claude --title` | `AgentGLM` | Review / re-review |
-| `kimi_claude --title` | `AgentKIMI` | Review / re-review |
+| Claude Code | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local`, `gpt`, `business` | `<agent-id>_codex [args...]` |
+| Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
-`init-agents` does not assign these roles. Put the desired assignment in the current user prompt.
+Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT`.
+The app launchers open a new Codex app instance with the selected profile and optional workspace.
+
+```bash
+mimo_claude --title
+gpt_codex --title
+business_codex_app /path/to/workspace
+```
+
+`tmux-agents` discovers these pane titles but does not assign roles. Put the desired assignment in the current user
+prompt.
+
+For non-interactive child-agent calls, use the installed runner commands:
+
+```bash
+claude-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
+codex-agent-run --provider gpt --cwd /path/to/workspace --prompt-file task.md
+```
+
+The runners accept prompts through `--prompt`, `--prompt-file`, positional text, or stdin, and support output files,
+ephemeral or persistent sessions, and provider-specific passthrough arguments. Run either command with `--help` for the
+complete interface. Orchestrators must always pass `--cwd` explicitly so child agents do not accidentally inherit the
+controller's workspace.
 
 ## Usage
 
@@ -412,12 +209,21 @@ Standalone Gateflow example:
 严格遵循 AGENTS.md 的约束。
 ```
 
-Gateflow with `init-agents` example:
+Gateflow with `tmux-agents` example:
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$init-agents 路由 Agents，AgentCodex 负责 plan / implement / fix，AgentMiMo / AgentDS 负责两路同时 review / re-review。
+$tmux-agents 路由 Agents，CodexAgent-GPT 负责 plan / implement / fix，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review / re-review。
 每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
+严格遵循 AGENTS.md 的约束。
+```
+
+Gateflow with `sub-agents` example:
+
+```text
+按照 $gateflow 开发 <work-unit>。
+$sub-agents 通过 runner 子进程派发：Codex gpt 负责 plan / implement / fix，Claude mimo / ds 负责两路 review / re-review。
+所有调用显式传入 workspace 绝对路径，并使用独立 output / stderr 文件；总控检查结构化结果后自行裁决。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -430,6 +236,9 @@ reconciles residual risks.
 
 Standalone Phaseflow example:
 
+When no dispatch protocol is named, Phaseflow uses `sub-agents` by default. Use `$tmux-agents` explicitly to route through
+already-running tmux panes.
+
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
 先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
@@ -439,14 +248,23 @@ final closeout 后说明用户 merge PR、拉取目标 base branch，并从 cont
 严格遵循 AGENTS.md 的约束。
 ```
 
-Phaseflow with `init-agents` example:
+Phaseflow with `tmux-agents` example:
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$init-agents 路由 Agents，AgentMiMo / AgentDS 负责两路同时 review，AgentCodex 负责 plan / implement / fix。
+$tmux-agents 路由 Agents，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review，CodexAgent-GPT 负责 plan / implement / fix。
 总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
 final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
+严格遵循 AGENTS.md 的约束。
+```
+
+Phaseflow with `sub-agents` example:
+
+```text
+按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
+$sub-agents 通过 runner 子进程派发，Claude mimo / ds 负责两路 review，Codex gpt 负责 plan / implement / fix。
+总控按 Gateflow 的 Gate Order 推进，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
 严格遵循 AGENTS.md 的约束。
 ```
 
@@ -500,25 +318,25 @@ For Claude Code, use `/deepreview` with the same arguments.
 
 Expected output is a durable review artifact with evidence-based findings, status tracking, and residual risk notes.
 
-### Init Agents
+### Tmux Agents
 
-Use `init-agents` when work should be sent to already-running CLI agents through tmux panes. It only defines communication:
+Use `tmux-agents` when work should be sent to already-running CLI agents through tmux panes. It only defines communication:
 CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send safety.
 It does not assign roles.
 
 Codex:
 
 ```text
-Use $init-agents to initialize multi-agent communication conventions.
+Use $tmux-agents to initialize multi-agent communication conventions.
 ```
 
 Claude Code:
 
 ```text
-Use /init-agents to initialize multi-agent communication conventions.
+Use /tmux-agents to initialize multi-agent communication conventions.
 ```
 
-`init-agents` works through:
+`tmux-agents` works through:
 
 ```bash
 tmux-cli status
@@ -528,6 +346,34 @@ tmux-cli capture --pane=<full-pane-id>
 ```
 
 It uses `tmux-cli send` + `wait_idle` + `capture` for agent-to-agent chat. `tmux-cli execute` is only for shell commands where an exit code is needed.
+
+### Sub Agents
+
+Use `sub-agents` when the controller should launch external Claude Code or Codex child processes through the installed
+runners. The skill defines workspace isolation, bounded prompts, parallel execution, output validation, retry limits,
+session continuation, and controller adjudication.
+
+Codex:
+
+```text
+Use $sub-agents to dispatch and adjudicate the current subtasks through runner subprocesses.
+```
+
+Claude Code:
+
+```text
+Use /sub-agents to dispatch and adjudicate the current subtasks through runner subprocesses.
+```
+
+The underlying commands are:
+
+```bash
+claude-agent-run --provider <provider> --cwd <absolute-workspace> ...
+codex-agent-run --provider <provider> --cwd <absolute-workspace> ...
+```
+
+Independent tasks may run concurrently when their write ownership does not overlap. The controller must check exit codes,
+stderr, and structured output before accepting any result.
 
 ## Repository Layout
 
@@ -545,10 +391,17 @@ skills/
   deepreview/
     SKILL.md
     agents/openai.yaml
-  init-agents/
+  tmux-agents/
+    SKILL.md
+    agents/openai.yaml
+  sub-agents/
     SKILL.md
     agents/openai.yaml
 scripts/
+  agent-tools.zsh
+  claude-agent-run
+  codex-agent-run
+  sync-agent-tools.sh
   validate-skills.sh
   sync-skills.sh
 ```
@@ -560,6 +413,9 @@ Edit only the source files in this repository:
 ```text
 skills/<skill-name>/SKILL.md
 skills/<skill-name>/agents/openai.yaml
+scripts/agent-tools.zsh
+scripts/claude-agent-run
+scripts/codex-agent-run
 ```
 
 Validate all skills:
@@ -574,11 +430,20 @@ Sync to local Codex / Claude homes:
 ./scripts/sync-skills.sh
 ```
 
-The sync script validates first, then copies every skill directory to existing local targets. It does not push, publish, create PRs, or modify remote repositories.
+Sync the agent launcher and child-agent runners:
+
+```bash
+./scripts/sync-agent-tools.sh
+```
+
+The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
+the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
+Neither script pushes, publishes, creates PRs, or modifies remote repositories.
 
 ## Notes
 
 - `gateflow` defines the gates for one work unit.
 - `phaseflow` is the project step controller; concrete plan / implementation / review / fix work is delegated to Agents.
 - `planreview` and `deepreview` are review skills. They should produce durable artifacts, not just chat-only conclusions.
-- `init-agents` is only needed when you route work to multiple CLI agents through tmux.
+- `tmux-agents` is only needed when you route work to multiple CLI agents through tmux.
+- `sub-agents` is used when the controller launches external child agents through the runner subprocesses.
