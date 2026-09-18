@@ -65,6 +65,7 @@ $phaseflow docs/host/design.md docs/host/implementation-control.md
 - 它属于 feature、issue、bug fix 还是其它可交付单元；
 - 当前 gate / next entry point；
 - Gateflow `Gate Order` 中下一步对应的 gate；
+- 将使用的 Agent 派发协议；
 - 将派发给哪个 Agent 做下一步具体任务；
 - 将如何使用 `design_doc` 和 `control_doc` 裁决结果；
 - blocking open questions（如有）。
@@ -111,9 +112,19 @@ git status --short
 - completion report format；
 - 禁止 commit、push、PR、merge、进入其它 gate，除非当前任务明确要求。
 
-如果用户指定 Agent，就按用户指定。若用户要求使用 `$init-agents` / `/init-agents`，按其通信规则确认 pane、clear、send、wait、capture。
+Agent/provider 选择与派发协议是两个独立决策。如果用户指定 Agent/provider，就按用户指定；未指定时由 phaseflow 按当前
+gate 选择合适 Agent。
 
-总控派发 Agent 后，若有证据表明 Agent 在工作、或 Agent 所在的 pane 的显示在变化，不得擅自停止该 gate。
+派发协议按以下优先级确定：
+
+1. 用户显式要求 `$tmux-agents` / `/tmux-agents` 时，读取并遵循其协议，通过已有 pane 派发；
+2. 用户显式要求 `$sub-agents` / `/sub-agents` 时，读取并遵循其协议，通过 runner 子进程派发；
+3. 用户未指定派发协议时，默认读取并遵循 `sub-agents`，通过 runner 子进程派发。
+
+协议确定后，当前 phase/work unit 内不得混用或自行切换。默认 runner 不可用或 `sub-agents` 无法执行时，停止并报告
+blocker；不得静默回退到 tmux。
+
+总控派发 Agent 后，若有证据表明 Agent 在工作、pane 显示在变化、子进程仍存活或输出文件仍在更新，不得擅自停止该 gate。
 
 并行派发前必须确认 file ownership 不重叠。
 
@@ -131,8 +142,8 @@ Agent 的证据。
 - Agent 进程或 pane 已结束，且 capture / exit evidence 表明任务不再运行；
 - 用户明确要求停止、接管、clear、重派或改变 gate。
 
-在 Agent 仍为 `in-flight` 时，phaseflow 不得 clear pane、发送新任务覆盖原任务、重派同一 gate、接管具体任务、修改
-current gate / next entry point、或进入下一个 gate。
+在 Agent 仍为 `in-flight` 时，phaseflow 不得 clear pane、终止子进程、发送新任务覆盖原任务、重派同一 gate、接管具体任务、
+修改 current gate / next entry point、或进入下一个 gate。
 
 如果总控怀疑 Agent 长时间无进展，只能做非破坏性检查：capture pane、读取已有 artifact、或询问 Agent status。status probe
 不得改变 Agent 当前任务，不得包含新任务，不得要求 Agent 停止；除非 Agent 返回明确 blocked / failed / completion，否则继续等待。

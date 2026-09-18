@@ -1,0 +1,357 @@
+#!/bin/zsh
+
+# Orchestrator contract: always pass --cwd explicitly so every child agent has
+# a deterministic workspace instead of inheriting the controller's directory.
+
+emulate -LR zsh
+setopt no_unset pipe_fail
+
+readonly PROGRAM_NAME="${0:t}"
+readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  codex-agent-run --provider <ds|mimo|qwen|kimi|glm|local|gpt|business> [options] --prompt <text>
+  codex-agent-run --provider <provider> [options] --prompt-file <path>
+  printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
+
+Required:
+  --provider <name>          Codex profile: ds, mimo, qwen, kimi, glm, local, gpt, or business.
+
+Prompt input (choose one):
+  --prompt <text>            Prompt text.
+  --prompt-file <path>       Read the prompt from a UTF-8 text file; use - for stdin.
+  <positional text>          Remaining positional arguments are joined with spaces.
+  stdin                      Used when no other prompt input is supplied.
+
+Run options:
+  --cwd <directory>          Working directory. Defaults to the current directory.
+  --output-format <format>   text, json, or jsonl. Defaults to json (JSONL event stream).
+  --output <path>            Write stdout to a file instead of the terminal.
+  --stderr <path>            Write stderr to a file instead of the terminal.
+  --last-message <path>      Also write the final agent message to this file.
+  --sandbox <mode>           read-only, workspace-write, or danger-full-access.
+  --thread-source <source>   Pass a Codex thread source classification.
+  --skip-git-repo-check      Permit execution outside a Git repository.
+  --persist                  Save a new session.
+  --resume <id>              Resume a saved session; implies --persist.
+  --resume-last              Resume the most recent saved session; implies --persist.
+  --no-persist               Run ephemerally (default for new runs).
+  --list-providers           Print supported providers and exit.
+  -h, --help                 Show this help.
+  -- <codex exec args...>    Pass additional arguments directly to codex exec.
+
+Environment:
+  AGENT_TOOLS_FILE           Override the launcher file used by this script.
+
+Orchestrator note:
+  Always pass --cwd explicitly. Do not rely on the controller's current
+  directory when launching a child agent.
+
+Examples:
+  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task.md \
+    --output runs/ds-01.jsonl
+
+  codex-agent-run --provider gpt --persist --prompt 'Review the implementation plan'
+
+  codex-agent-run --provider business --resume <session-id> \
+    --prompt 'Continue the review'
+
+  codex-agent-run --provider qwen --cwd ~/workspace/project \
+    --prompt-file task.md -- --strict-config
+
+  codex-agent-run --provider local --cwd ~/workspace/project \
+    --prompt 'Review this repository with the local model'
+
+Parallel runs:
+  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task-a.md --output ds-01.jsonl &
+  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task-b.md --output ds-02.jsonl &
+  wait
+EOF
+}
+
+die() {
+  print -u2 -- "$PROGRAM_NAME: $*"
+  exit 2
+}
+
+require_value() {
+  local option_name="$1"
+  local argument_count="$2"
+  (( argument_count >= 2 )) || die "$option_name requires a value"
+}
+
+prepare_output_path() {
+  local output_path="$1"
+  local parent_directory="${output_path:h}"
+
+  [[ -n "$output_path" && "$output_path" != "/" ]] || die "invalid output path: $output_path"
+  [[ -d "$parent_directory" ]] || mkdir -p -- "$parent_directory" || die "cannot create directory: $parent_directory"
+}
+
+provider=""
+workdir="$PWD"
+output_format="json"
+output_file=""
+stderr_file=""
+last_message_file=""
+sandbox_mode=""
+thread_source=""
+prompt_text=""
+prompt_file=""
+resume_id=""
+resume_last=false
+persist=false
+skip_git_repo_check=false
+explicit_prompt=false
+typeset -a positional_prompt=()
+typeset -a extra_args=()
+
+while (( $# > 0 )); do
+  case "$1" in
+    --provider)
+      require_value "$1" "$#"
+      provider="$2"
+      shift 2
+      ;;
+    --cwd)
+      require_value "$1" "$#"
+      workdir="$2"
+      shift 2
+      ;;
+    --output-format)
+      require_value "$1" "$#"
+      output_format="$2"
+      shift 2
+      ;;
+    --output)
+      require_value "$1" "$#"
+      output_file="$2"
+      shift 2
+      ;;
+    --stderr)
+      require_value "$1" "$#"
+      stderr_file="$2"
+      shift 2
+      ;;
+    --last-message)
+      require_value "$1" "$#"
+      last_message_file="$2"
+      shift 2
+      ;;
+    --sandbox)
+      require_value "$1" "$#"
+      sandbox_mode="$2"
+      shift 2
+      ;;
+    --thread-source)
+      require_value "$1" "$#"
+      thread_source="$2"
+      shift 2
+      ;;
+    --prompt)
+      require_value "$1" "$#"
+      [[ "$explicit_prompt" == false ]] || die "choose only one prompt input"
+      prompt_text="$2"
+      explicit_prompt=true
+      shift 2
+      ;;
+    --prompt-file)
+      require_value "$1" "$#"
+      [[ "$explicit_prompt" == false ]] || die "choose only one prompt input"
+      prompt_file="$2"
+      explicit_prompt=true
+      shift 2
+      ;;
+    --resume)
+      require_value "$1" "$#"
+      [[ "$resume_last" == false ]] || die "--resume and --resume-last cannot be used together"
+      resume_id="$2"
+      persist=true
+      shift 2
+      ;;
+    --resume-last)
+      [[ -z "$resume_id" ]] || die "--resume and --resume-last cannot be used together"
+      resume_last=true
+      persist=true
+      shift
+      ;;
+    --persist)
+      persist=true
+      shift
+      ;;
+    --no-persist)
+      persist=false
+      shift
+      ;;
+    --skip-git-repo-check)
+      skip_git_repo_check=true
+      shift
+      ;;
+    --list-providers)
+      printf '%s\n' ds mimo qwen kimi glm local gpt business
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      extra_args=("$@")
+      break
+      ;;
+    -*)
+      die "unknown option: $1 (put codex exec options after --)"
+      ;;
+    *)
+      positional_prompt+=("$1")
+      shift
+      ;;
+  esac
+done
+
+[[ -n "$provider" ]] || die "--provider is required"
+
+case "$provider" in
+  ds|deepseek)
+    provider="ds"
+    runner="ds_codex"
+    ;;
+  mimo|xiaomi)
+    provider="mimo"
+    runner="mimo_codex"
+    ;;
+  qwen)
+    runner="qwen_codex"
+    ;;
+  kimi)
+    runner="kimi_codex"
+    ;;
+  glm)
+    runner="glm_codex"
+    ;;
+  local)
+    runner="local_codex"
+    ;;
+  gpt|openai|pro)
+    provider="gpt"
+    runner="gpt_codex"
+    ;;
+  business|biz)
+    provider="business"
+    runner="business_codex"
+    ;;
+  *)
+    die "unsupported provider: $provider"
+    ;;
+esac
+
+case "$output_format" in
+  text|json|jsonl) ;;
+  *) die "unsupported output format: $output_format" ;;
+esac
+
+case "$sandbox_mode" in
+  ""|read-only|workspace-write|danger-full-access) ;;
+  *) die "unsupported sandbox mode: $sandbox_mode" ;;
+esac
+
+[[ -d "$workdir" ]] || die "working directory does not exist: $workdir"
+workdir="${workdir:A}"
+
+if (( ${#positional_prompt[@]} > 0 )); then
+  [[ "$explicit_prompt" == false ]] || die "positional prompt cannot be combined with --prompt or --prompt-file"
+  prompt_text="${(j: :)positional_prompt}"
+  explicit_prompt=true
+fi
+
+if [[ -n "$prompt_file" ]]; then
+  if [[ "$prompt_file" == "-" ]]; then
+    prompt_text="$(<&0)"
+  else
+    [[ -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
+    prompt_text="$(<"$prompt_file")"
+  fi
+elif [[ "$explicit_prompt" == false ]]; then
+  [[ ! -t 0 ]] || die "provide --prompt, --prompt-file, positional text, or stdin"
+  prompt_text="$(<&0)"
+fi
+
+[[ -n "$prompt_text" ]] || die "prompt is empty"
+
+if [[ -n "$resume_id" || "$resume_last" == true ]]; then
+  [[ -z "$sandbox_mode" ]] || die "--sandbox is not supported by codex exec resume"
+fi
+
+readonly agent_tools_file="${AGENT_TOOLS_FILE:-$DEFAULT_AGENT_TOOLS_FILE}"
+[[ -r "$agent_tools_file" ]] || die "cannot read launcher file: $agent_tools_file"
+
+source "$agent_tools_file" || die "failed to load launcher file: $agent_tools_file"
+
+(( $+functions[$runner] )) || die "launcher function not found: $runner"
+command -v codex >/dev/null 2>&1 || die "codex command not found"
+
+cd -- "$workdir" || die "cannot enter working directory: $workdir"
+
+if [[ "$output_file" == "-" ]]; then
+  output_file=""
+elif [[ -n "$output_file" ]]; then
+  prepare_output_path "$output_file"
+fi
+
+if [[ "$stderr_file" == "-" ]]; then
+  stderr_file=""
+elif [[ -n "$stderr_file" ]]; then
+  prepare_output_path "$stderr_file"
+fi
+
+if [[ "$last_message_file" == "-" ]]; then
+  last_message_file=""
+elif [[ -n "$last_message_file" ]]; then
+  prepare_output_path "$last_message_file"
+fi
+
+[[ -z "$output_file" || -z "$stderr_file" || "$output_file" != "$stderr_file" ]] || \
+  die "--output and --stderr must use different files"
+[[ -z "$output_file" || -z "$last_message_file" || "$output_file" != "$last_message_file" ]] || \
+  die "--output and --last-message must use different files"
+[[ -z "$stderr_file" || -z "$last_message_file" || "$stderr_file" != "$last_message_file" ]] || \
+  die "--stderr and --last-message must use different files"
+
+typeset -a codex_args=(exec)
+
+if [[ -n "$resume_id" || "$resume_last" == true ]]; then
+  codex_args+=(resume)
+fi
+
+[[ "$persist" == true ]] || codex_args+=(--ephemeral)
+[[ "$output_format" == text ]] || codex_args+=(--json)
+[[ -n "$sandbox_mode" ]] && codex_args+=(--sandbox "$sandbox_mode")
+[[ -n "$thread_source" ]] && codex_args+=(--thread-source "$thread_source")
+[[ "$skip_git_repo_check" == true ]] && codex_args+=(--skip-git-repo-check)
+[[ -n "$last_message_file" ]] && codex_args+=(--output-last-message "$last_message_file")
+codex_args+=("${extra_args[@]}")
+
+if [[ -n "$resume_id" ]]; then
+  codex_args+=("$resume_id")
+elif [[ "$resume_last" == true ]]; then
+  codex_args+=(--last)
+fi
+
+codex_args+=(-)
+
+run_codex() {
+  print -rn -- "$prompt_text" | "$runner" "${codex_args[@]}"
+}
+
+if [[ -n "$output_file" && -n "$stderr_file" ]]; then
+  run_codex >"$output_file" 2>"$stderr_file"
+elif [[ -n "$output_file" ]]; then
+  run_codex >"$output_file"
+elif [[ -n "$stderr_file" ]]; then
+  run_codex 2>"$stderr_file"
+else
+  run_codex
+fi
