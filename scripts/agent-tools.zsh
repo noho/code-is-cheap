@@ -37,7 +37,7 @@ _claude_agent_base_url() {
     ds)    print -r -- "https://api.deepseek.com/anthropic" ;;
     mimo)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
-    kimi)  print -r -- "https://api.moonshot.cn/anthropic" ;;
+    kimi)  print -r -- "https://api.kimi.com/coding/" ;;
     glm)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
     local) print -r -- "http://127.0.0.1:8080" ;;
     *)     return 1 ;;
