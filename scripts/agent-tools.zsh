@@ -64,6 +64,14 @@ _claude_agent_compact_window() {
   esac
 }
 
+_claude_agent_max_context() {
+  case "$1" in
+    glm)   print -r -- "1000000" ;;
+    local) print -r -- "262144" ;;
+    *)     print -r -- "" ;;
+  esac
+}
+
 _local_agent_require_service() {
   command -v curl >/dev/null 2>&1 || {
     echo "curl 未安装" >&2
@@ -71,7 +79,7 @@ _local_agent_require_service() {
   }
   curl -fsS --max-time 2 "http://127.0.0.1:8080/health" >/dev/null 2>&1 || {
     echo "Qwen3.8 本地服务未启动或不可访问（http://127.0.0.1:8080）" >&2
-    echo "请启动本地模型服务后重试。" >&2
+    echo "启动命令：\"/Users/leo/Library/Application Support/Qwen38-27B/qwen38ctl\" start" >&2
     return 1
   }
 }
@@ -99,7 +107,7 @@ _claude_agent_launch() {
   local model="$(_claude_agent_model "$agent_id")" || return 1
   local compact_window="$(_claude_agent_compact_window "$agent_id")" || return 1
   local auth_token="local"
-  local max_context=""
+  local max_context="$(_claude_agent_max_context "$agent_id")" || return 1
   local api_timeout=""
   local set_title=false
   local settings_json
@@ -112,7 +120,6 @@ _claude_agent_launch() {
   }
 
   [[ -n "$key_name" ]] && auth_token="${(P)key_name}"
-  [[ "$agent_id" == qwen ]] && max_context="1000000"
   [[ "$agent_id" == local ]] && api_timeout="3600000"
 
   while (( $# > 0 )); do
