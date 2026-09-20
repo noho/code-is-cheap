@@ -67,15 +67,30 @@ workspace="$(pwd -P)"
   --prompt "<bounded task>"
 ```
 
-相互独立的子任务应后台并发启动，分别记录 PID，完成后逐个 `wait "$pid"` 并保存各自退出码。存在数据依赖、
+相互独立的子任务应并发启动，分别记录 PID，完成后逐个 `wait "$pid"` 并保存各自退出码；启动与收集必须在同一次
+Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Management 处理。存在数据依赖、
 写入顺序依赖或 file ownership 重叠时必须串行。不得让多个子 Agent 并发修改同一文件，除非已划分互不重叠的写入范围。
 
-不要仅因运行时间长而 kill、重派或切换 provider。进程仍存活且有输出或文件变化时，默认仍为 in-flight。只有明确失败、
-阻塞、用户停止或进程退出证据才能结束该次派发。
+不要仅因运行时间长而 kill、重派或切换 provider。`kill -0 "$pid"` 仍成功或输出文件仍有变化时，默认仍为 in-flight；
+判活不得依赖 ps/pgrep。只有明确失败、阻塞、用户停止或进程退出证据才能结束该次派发。
+
+### Sandbox Process Management
+
+沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具
+（沙箱下不稳定：即使通过 `sandbox.excludedCommands` 放行，也只对独立简单命令生效）。
+
+- **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
+  的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
+- **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
+- **进度判据**：run_dir 内输出文件（或后台任务的 harness 输出文件）的大小 / mtime 变化，不要用进程列表；
+- **退出码**：前台取 `wait "$pid"` 的返回值；后台取完成通知（其输出文件末尾留有 `[exited with code N]` 标记）；
+- **输出流**：后台模式会把 stdout/stderr 合并进同一文件，因此结构化输出与日志必须继续通过 `--output` /
+  `--stderr` 落到 run_dir。
 
 ## Result Validation
 
-每个进程结束后必须检查 exit code、stderr 和输出文件，不得只读取最终自然语言。
+每个进程结束后必须检查 exit code、stderr 和输出文件，不得只读取最终自然语言。退出码来源：前台 `wait "$pid"`
+的返回值，或后台任务完成通知（输出文件末尾同样留有 `[exited with code N]` 标记）。
 
 Claude JSON：
 
