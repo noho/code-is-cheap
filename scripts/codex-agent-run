@@ -4,7 +4,8 @@
 # a deterministic workspace instead of inheriting the controller's directory.
 
 emulate -LR zsh
-setopt no_unset pipe_fail
+setopt no_unset pipe_fail noclobber
+umask 077
 
 readonly PROGRAM_NAME="${0:t}"
 readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
@@ -28,9 +29,9 @@ Prompt input (choose one):
 Run options:
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or jsonl. Defaults to json (JSONL event stream).
-  --output <path>            Write stdout to a file instead of the terminal.
-  --stderr <path>            Write stderr to a file instead of the terminal.
-  --last-message <path>      Also write the final agent message to this file.
+  --output <path>            Write stdout to a NEW private file; existing paths are rejected.
+  --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
+  --last-message <path>      Save final message to a NEW file after the run completes.
   --sandbox <mode>           read-only, workspace-write, or danger-full-access.
   --thread-source <source>   Pass a Codex thread source classification.
   --skip-git-repo-check      Permit execution outside a Git repository.
@@ -82,12 +83,38 @@ require_value() {
   (( argument_count >= 2 )) || die "$option_name requires a value"
 }
 
+# Resolve parent-directory aliases, but never follow an output-file symlink.
+# This is best-effort protection for user-controlled directories, not a defense
+# against another process concurrently replacing parent directories.
 prepare_output_path() {
   local output_path="$1"
   local parent_directory="${output_path:h}"
+  local leaf_name="${output_path:t}"
 
-  [[ -n "$output_path" && "$output_path" != "/" ]] || die "invalid output path: $output_path"
-  [[ -d "$parent_directory" ]] || mkdir -p -- "$parent_directory" || die "cannot create directory: $parent_directory"
+  [[ -n "$output_path" && "$output_path" != */ && "$leaf_name" != . && "$leaf_name" != .. ]] || \
+    die "invalid output path: $output_path"
+  [[ ! -L "$output_path" ]] || die "output must not be a symbolic link: $output_path"
+  [[ -d "$parent_directory" ]] || mkdir -p -- "$parent_directory" || \
+    die "cannot create directory: $parent_directory"
+  REPLY="${parent_directory:A}/$leaf_name"
+}
+
+require_new_output() {
+  local output_path="$1"
+  [[ ! -L "$output_path" ]] || die "output must not be a symbolic link: $output_path"
+  [[ ! -e "$output_path" ]] || die "output already exists (use a new filename): $output_path"
+}
+
+require_distinct_outputs() {
+  [[ -z "$1" || -z "$2" ]] && return 0
+  [[ "$1" != "$2" && ! "$1" -ef "$2" ]] || die "output paths refer to the same file: $1 and $2"
+}
+
+# Open both streams before starting the Agent. noclobber protects normal-file
+# creation; the Agent inherits descriptors rather than reopening these paths.
+open_output_streams() {
+  [[ -z "$output_file" ]] || exec {stdout_fd}>"$output_file" || die "cannot create output: $output_file"
+  [[ -z "$stderr_file" ]] || exec {stderr_fd}>"$stderr_file" || die "cannot create stderr: $stderr_file"
 }
 
 provider=""
@@ -290,6 +317,9 @@ readonly agent_tools_file="${AGENT_TOOLS_FILE:-$DEFAULT_AGENT_TOOLS_FILE}"
 
 source "$agent_tools_file" || die "failed to load launcher file: $agent_tools_file"
 
+setopt noclobber
+umask 077
+
 (( $+functions[$runner] )) || die "launcher function not found: $runner"
 command -v codex >/dev/null 2>&1 || die "codex command not found"
 
@@ -299,26 +329,52 @@ if [[ "$output_file" == "-" ]]; then
   output_file=""
 elif [[ -n "$output_file" ]]; then
   prepare_output_path "$output_file"
+  output_file="$REPLY"
 fi
 
 if [[ "$stderr_file" == "-" ]]; then
   stderr_file=""
 elif [[ -n "$stderr_file" ]]; then
   prepare_output_path "$stderr_file"
+  stderr_file="$REPLY"
 fi
 
 if [[ "$last_message_file" == "-" ]]; then
   last_message_file=""
 elif [[ -n "$last_message_file" ]]; then
   prepare_output_path "$last_message_file"
+  last_message_file="$REPLY"
 fi
 
-[[ -z "$output_file" || -z "$stderr_file" || "$output_file" != "$stderr_file" ]] || \
-  die "--output and --stderr must use different files"
-[[ -z "$output_file" || -z "$last_message_file" || "$output_file" != "$last_message_file" ]] || \
-  die "--output and --last-message must use different files"
-[[ -z "$stderr_file" || -z "$last_message_file" || "$stderr_file" != "$last_message_file" ]] || \
-  die "--stderr and --last-message must use different files"
+require_distinct_outputs "$output_file" "$stderr_file"
+require_distinct_outputs "$output_file" "$last_message_file"
+require_distinct_outputs "$stderr_file" "$last_message_file"
+[[ -z "$output_file" ]] || require_new_output "$output_file"
+[[ -z "$stderr_file" ]] || require_new_output "$stderr_file"
+[[ -z "$last_message_file" ]] || require_new_output "$last_message_file"
+
+typeset -i stdout_fd=1 stderr_fd=2
+last_message_dir=""
+last_message_tmp=""
+
+# Keep an unsaved final message on error or interruption and report its location.
+TRAPEXIT() {
+  if [[ -n "$last_message_dir" && -d "$last_message_dir" ]]; then
+    if [[ -e "$last_message_tmp" || -L "$last_message_tmp" ]]; then
+      print -u2 -- "$PROGRAM_NAME: final message retained at: $last_message_tmp"
+    else
+      rmdir -- "$last_message_dir" 2>/dev/null || true
+    fi
+  fi
+}
+TRAPINT() { exit 130; }
+TRAPTERM() { exit 143; }
+TRAPHUP() { exit 129; }
+
+if [[ -n "$last_message_file" ]]; then
+  last_message_dir="$(mktemp -d "${TMPDIR:-/tmp}/codex-agent-run.XXXXXXXX")" || die "cannot create private final-message directory"
+  last_message_tmp="$last_message_dir/last-message"
+fi
 
 typeset -a codex_args=(exec)
 
@@ -331,7 +387,7 @@ fi
 [[ -n "$sandbox_mode" ]] && codex_args+=(--sandbox "$sandbox_mode")
 [[ -n "$thread_source" ]] && codex_args+=(--thread-source "$thread_source")
 [[ "$skip_git_repo_check" == true ]] && codex_args+=(--skip-git-repo-check)
-[[ -n "$last_message_file" ]] && codex_args+=(--output-last-message "$last_message_file")
+[[ -n "$last_message_file" ]] && codex_args+=(--output-last-message "$last_message_tmp")
 codex_args+=("${extra_args[@]}")
 
 if [[ -n "$resume_id" ]]; then
@@ -346,12 +402,26 @@ run_codex() {
   print -rn -- "$prompt_text" | "$runner" "${codex_args[@]}"
 }
 
-if [[ -n "$output_file" && -n "$stderr_file" ]]; then
-  run_codex >"$output_file" 2>"$stderr_file"
-elif [[ -n "$output_file" ]]; then
-  run_codex >"$output_file"
-elif [[ -n "$stderr_file" ]]; then
-  run_codex 2>"$stderr_file"
-else
-  run_codex
+open_output_streams
+run_codex >&$stdout_fd 2>&$stderr_fd
+run_exit=$?
+
+if [[ -n "$last_message_file" ]]; then
+  if [[ -f "$last_message_tmp" && ! -L "$last_message_tmp" ]]; then
+    # Repeat the check after the run: another process may have created the path.
+    if [[ -e "$last_message_file" || -L "$last_message_file" ]]; then
+      print -u2 -- "$PROGRAM_NAME: final-message destination now exists: $last_message_file"
+      (( run_exit != 0 )) || run_exit=1
+    elif cat -- "$last_message_tmp" >"$last_message_file"; then
+      rm -- "$last_message_tmp"
+      rmdir -- "$last_message_dir" 2>/dev/null || true
+    else
+      print -u2 -- "$PROGRAM_NAME: cannot save final message to: $last_message_file"
+      (( run_exit != 0 )) || run_exit=1
+    fi
+  else
+    print -u2 -- "$PROGRAM_NAME: Agent did not produce a regular final-message file"
+    (( run_exit != 0 )) || run_exit=1
+  fi
 fi
+exit "$run_exit"

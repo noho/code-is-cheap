@@ -4,7 +4,8 @@
 # a deterministic workspace instead of inheriting the controller's directory.
 
 emulate -LR zsh
-setopt no_unset pipe_fail
+setopt no_unset pipe_fail noclobber
+umask 077
 
 readonly PROGRAM_NAME="${0:t}"
 readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
@@ -29,8 +30,8 @@ Run options:
   --instance <name>          Unique display name. Defaults to <provider>-<uuid-prefix>.
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or stream-json. Defaults to json.
-  --output <path>            Write stdout to a file instead of the terminal.
-  --stderr <path>            Write stderr to a file instead of the terminal.
+  --output <path>            Write stdout to a NEW private file; existing paths are rejected.
+  --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
   --permission-mode <mode>   Pass a Claude Code permission mode unchanged.
   --persist                  Save the session; generates a UUID when needed.
   --session-id <uuid>        Save a new session with this UUID.
@@ -93,12 +94,38 @@ new_uuid() {
   die "uuidgen or python3 is required to generate a session ID"
 }
 
+# Resolve parent-directory aliases, but never follow an output-file symlink.
+# This is best-effort protection for user-controlled directories, not a defense
+# against another process concurrently replacing parent directories.
 prepare_output_path() {
   local output_path="$1"
-  local parent="${output_path:h}"
+  local parent_directory="${output_path:h}"
+  local leaf_name="${output_path:t}"
 
-  [[ -n "$output_path" && "$output_path" != "/" ]] || die "invalid output path: $output_path"
-  [[ -d "$parent" ]] || mkdir -p -- "$parent" || die "cannot create directory: $parent"
+  [[ -n "$output_path" && "$output_path" != */ && "$leaf_name" != . && "$leaf_name" != .. ]] || \
+    die "invalid output path: $output_path"
+  [[ ! -L "$output_path" ]] || die "output must not be a symbolic link: $output_path"
+  [[ -d "$parent_directory" ]] || mkdir -p -- "$parent_directory" || \
+    die "cannot create directory: $parent_directory"
+  REPLY="${parent_directory:A}/$leaf_name"
+}
+
+require_new_output() {
+  local output_path="$1"
+  [[ ! -L "$output_path" ]] || die "output must not be a symbolic link: $output_path"
+  [[ ! -e "$output_path" ]] || die "output already exists (use a new filename): $output_path"
+}
+
+require_distinct_outputs() {
+  [[ -z "$1" || -z "$2" ]] && return 0
+  [[ "$1" != "$2" && ! "$1" -ef "$2" ]] || die "output paths refer to the same file: $1 and $2"
+}
+
+# Open both streams before starting the Agent. noclobber protects normal-file
+# creation; the Agent inherits descriptors rather than reopening these paths.
+open_output_streams() {
+  [[ -z "$output_file" ]] || exec {stdout_fd}>"$output_file" || die "cannot create output: $output_file"
+  [[ -z "$stderr_file" ]] || exec {stderr_fd}>"$stderr_file" || die "cannot create stderr: $stderr_file"
 }
 
 provider=""
@@ -283,6 +310,9 @@ readonly agent_tools_file="${AGENT_TOOLS_FILE:-$DEFAULT_AGENT_TOOLS_FILE}"
 
 source "$agent_tools_file" || die "failed to load launcher file: $agent_tools_file"
 
+setopt noclobber
+umask 077
+
 (( $+functions[$runner] )) || die "launcher function not found: $runner"
 command -v claude >/dev/null 2>&1 || die "claude command not found"
 command -v jq >/dev/null 2>&1 || die "jq command not found"
@@ -293,17 +323,21 @@ if [[ "$output_file" == "-" ]]; then
   output_file=""
 elif [[ -n "$output_file" ]]; then
   prepare_output_path "$output_file"
+  output_file="$REPLY"
 fi
 
 if [[ "$stderr_file" == "-" ]]; then
   stderr_file=""
 elif [[ -n "$stderr_file" ]]; then
   prepare_output_path "$stderr_file"
+  stderr_file="$REPLY"
 fi
 
-if [[ -n "$output_file" && -n "$stderr_file" && "$output_file" == "$stderr_file" ]]; then
-  die "--output and --stderr must use different files"
-fi
+require_distinct_outputs "$output_file" "$stderr_file"
+[[ -z "$output_file" ]] || require_new_output "$output_file"
+[[ -z "$stderr_file" ]] || require_new_output "$stderr_file"
+
+typeset -i stdout_fd=1 stderr_fd=2
 
 typeset -a claude_args=(
   --print
@@ -325,12 +359,6 @@ fi
 claude_args+=("${extra_args[@]}")
 claude_args+=("$prompt_text")
 
-if [[ -n "$output_file" && -n "$stderr_file" ]]; then
-  "$runner" "${claude_args[@]}" >"$output_file" 2>"$stderr_file"
-elif [[ -n "$output_file" ]]; then
-  "$runner" "${claude_args[@]}" >"$output_file"
-elif [[ -n "$stderr_file" ]]; then
-  "$runner" "${claude_args[@]}" 2>"$stderr_file"
-else
-  "$runner" "${claude_args[@]}"
-fi
+open_output_streams
+"$runner" "${claude_args[@]}" >&$stdout_fd 2>&$stderr_fd
+exit $?
