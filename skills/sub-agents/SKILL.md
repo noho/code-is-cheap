@@ -76,18 +76,16 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 
 ### Sandbox Process Management
 
-沙箱（`sandbox.enabled`）下进程管理必须使用沙箱可用的原语。`ps`、`pgrep`、`tmux` 默认被拦，只有显式放行
-（`sandbox.excludedCommands`、`sandbox.network.allowUnixSockets`）后才可用，不得假设它们总是可用。
+沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具
+（沙箱下不稳定：即使通过 `sandbox.excludedCommands` 放行，也只对独立简单命令生效）。
 
-- **同调用内**：`cmd & pid=$!` 启动，`kill -0 "$pid"` 判活，`wait "$pid"` 收集退出码；
-- **跨调用**：使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
-  的通知；不要依赖 shell `&` 启动的进程在调用结束后仍存活——沙箱下它们会被回收；
-- **进度判据**：用 run_dir 内输出文件的大小 / mtime 变化，不要用进程列表；
+- **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
+  的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
+- **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
+- **进度判据**：run_dir 内输出文件（或后台任务的 harness 输出文件）的大小 / mtime 变化，不要用进程列表；
+- **退出码**：前台取 `wait "$pid"` 的返回值；后台取完成通知（其输出文件末尾留有 `[exited with code N]` 标记）；
 - **输出流**：后台模式会把 stdout/stderr 合并进同一文件，因此结构化输出与日志必须继续通过 `--output` /
   `--stderr` 落到 run_dir。
-- **放行后的 ps / pgrep**：仅在作为独立简单命令时生效；一旦放进管道、重定向或复合命令（`ps aux | grep x`、
-  `ps aux > f`、`echo; ps`）就会重新落入沙箱并被判拒（2.1.278 实测，与文档"复合命令任一部分匹配即整体豁免"
-  的表述不符）。需要过滤时用工具自身参数（`pgrep -f` / `pgrep -l` / `ps -o`），不要用管道拼装。
 
 ## Result Validation
 
