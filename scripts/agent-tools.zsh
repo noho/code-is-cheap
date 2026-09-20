@@ -204,16 +204,14 @@ _claude_agent_launch() (
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
         DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
         CLAUDE_CODE_EFFORT_LEVEL: "max",
-        CLAUDE_CODE_AUTO_COMPACT_WINDOW: $compact_window,
-        CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1"
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW: $compact_window
       }
     }
     | if $max_context != "" then .env.CLAUDE_CODE_MAX_CONTEXT_TOKENS = $max_context else . end
     | if $api_timeout != "" then .env.API_TIMEOUT_MS = $api_timeout else . end')" || return 1
 
-  # Keep the token out of jq/claude argv and settings JSON. Claude scrubs it
-  # from Bash, hook and stdio MCP subprocess environments (v2.1.278).
-  ANTHROPIC_AUTH_TOKEN="$auth_token" CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1 \
+  # Keep the token out of jq/claude argv and settings JSON.
+  ANTHROPIC_AUTH_TOKEN="$auth_token" \
     command claude --settings "$settings_json" "${claude_args[@]}"
 )
 
