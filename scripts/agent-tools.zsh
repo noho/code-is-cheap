@@ -2,11 +2,43 @@
 # Source this file from ~/.zshrc. Keep credentials in the environment or in
 # ~/.config/zsh/agent-tools.local.zsh; never add credentials to this file.
 
-_agent_tools_local_file="${AGENT_TOOLS_LOCAL_FILE:-$HOME/.config/zsh/agent-tools.local.zsh}"
-if [[ -r "$_agent_tools_local_file" ]]; then
-  source "$_agent_tools_local_file"
-fi
-unset _agent_tools_local_file
+# Loading this file only defines launchers; it never loads credentials into the
+# interactive shell. Call this helper only from the subshell launchers below.
+_agent_tools_prepare_credentials() {
+  local selected_key="$1"
+  local credentials_file="${AGENT_TOOLS_LOCAL_FILE:-$HOME/.config/zsh/agent-tools.local.zsh}"
+  local selected_value=""
+  local variable_name
+
+  # Preserve the existing file-over-environment precedence. Profiles using
+  # account login or the local service do not need to read the credential file.
+  if [[ -n "$selected_key" && -r "$credentials_file" ]]; then
+    source "$credentials_file" || {
+      print -u2 -- "Failed to load agent credentials"
+      return 1
+    }
+  fi
+  [[ -n "$selected_key" ]] && selected_value="${(P)selected_key:-}"
+
+  # Also scrub credentials inherited from terminals started before this change.
+  # Fail closed if an exported readonly parameter cannot be removed.
+  for variable_name in ${(k)parameters}; do
+    [[ ${parameters[$variable_name]} == *export* ]] || continue
+    case "${(U)variable_name}" in
+      *KEY*|*TOKEN*|*SECRET*|*PASSWORD*|*CREDENTIAL*|*AUTHORIZATION*|ANTHROPIC_CUSTOM_HEADERS|SSH_AUTH_SOCK)
+        unset "$variable_name" || return 1
+        ;;
+    esac
+  done
+
+  if [[ -n "$selected_key" ]]; then
+    [[ -n "$selected_value" ]] || {
+      print -u2 -- "$selected_key 未设置"
+      return 1
+    }
+    export "$selected_key=$selected_value"
+  fi
+}
 
 _claude_agent_title() {
   case "$1" in
@@ -97,7 +129,9 @@ _claude_agent_require_provider() {
   fi
 }
 
-_claude_agent_launch() {
+_claude_agent_launch() (
+  emulate -L zsh
+  unsetopt xtrace verbose
   local agent_id="$1"
   shift
 
@@ -113,6 +147,7 @@ _claude_agent_launch() {
   local settings_json
   local -a claude_args=()
 
+  _agent_tools_prepare_credentials "$key_name" || return 1
   _claude_agent_require_provider "$agent_id" || return 1
   command -v jq >/dev/null 2>&1 || {
     echo "jq 未安装" >&2
@@ -120,6 +155,8 @@ _claude_agent_launch() {
   }
 
   [[ -n "$key_name" ]] && auth_token="${(P)key_name}"
+  # Claude only needs the canonical auth variable, not the provider alias.
+  [[ -n "$key_name" ]] && unset "$key_name"
   [[ "$agent_id" == local ]] && api_timeout="3600000"
 
   while (( $# > 0 )); do
@@ -145,7 +182,6 @@ _claude_agent_launch() {
 
   settings_json="$(jq -nc \
     --arg base_url "$base_url" \
-    --arg auth_token "$auth_token" \
     --arg model "$model" \
     --arg compact_window "$compact_window" \
     --arg max_context "$max_context" \
@@ -153,7 +189,6 @@ _claude_agent_launch() {
     '{
       env: {
         ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_AUTH_TOKEN: $auth_token,
         ANTHROPIC_MODEL: $model,
         ANTHROPIC_SMALL_FAST_MODEL: $model,
         ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
@@ -169,14 +204,18 @@ _claude_agent_launch() {
         CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
         DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
         CLAUDE_CODE_EFFORT_LEVEL: "max",
-        CLAUDE_CODE_AUTO_COMPACT_WINDOW: $compact_window
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW: $compact_window,
+        CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1"
       }
     }
     | if $max_context != "" then .env.CLAUDE_CODE_MAX_CONTEXT_TOKENS = $max_context else . end
     | if $api_timeout != "" then .env.API_TIMEOUT_MS = $api_timeout else . end')" || return 1
 
-  command claude --settings "$settings_json" "${claude_args[@]}"
-}
+  # Keep the token out of jq/claude argv and settings JSON. Claude scrubs it
+  # from Bash, hook and stdio MCP subprocess environments (v2.1.278).
+  ANTHROPIC_AUTH_TOKEN="$auth_token" CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1 \
+    command claude --settings "$settings_json" "${claude_args[@]}"
+)
 
 ds_claude()    { _claude_agent_launch ds "$@"; }
 mimo_claude()  { _claude_agent_launch mimo "$@"; }
@@ -237,7 +276,9 @@ _codex_agent_require_home() {
   fi
 }
 
-_codex_agent_app() {
+_codex_agent_app() (
+  emulate -L zsh
+  unsetopt xtrace verbose
   local agent_id="$1"
   shift
 
@@ -246,6 +287,8 @@ _codex_agent_app() {
     return 2
   }
 
+  local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
+  _agent_tools_prepare_credentials "$key_name" || return 1
   _codex_agent_require_home "$agent_id" || return 1
   command -v jq >/dev/null 2>&1 || {
     echo "jq 未安装" >&2
@@ -259,7 +302,6 @@ _codex_agent_app() {
   local codex_home="$(_codex_agent_home "$agent_id")"
   local user_data="$HOME/.codex-agent/app-data/$agent_id"
   local workspace="${1:-$PWD}"
-  local key_name="$(_codex_agent_key_name "$agent_id")"
   local workspace_url
   local -a open_args
 
@@ -287,9 +329,11 @@ _codex_agent_app() {
   )
 
   /usr/bin/open "${open_args[@]}"
-}
+)
 
-_codex_agent_launch() {
+_codex_agent_launch() (
+  emulate -L zsh
+  unsetopt xtrace verbose
   local agent_id="$1"
   shift
 
@@ -324,13 +368,15 @@ _codex_agent_launch() {
     esac
   done
 
+  local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
+  _agent_tools_prepare_credentials "$key_name" || return 1
   _codex_agent_require_home "$agent_id" || return 1
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
   fi
 
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
-}
+)
 
 ds_codex()       { _codex_agent_launch ds "$@"; }
 mimo_codex()     { _codex_agent_launch mimo "$@"; }
