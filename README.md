@@ -187,6 +187,54 @@ ephemeral or persistent sessions, and provider-specific passthrough arguments. R
 complete interface. Orchestrators must always pass `--cwd` explicitly so child agents do not accidentally inherit the
 controller's workspace.
 
+## Codex Agent Profiles
+
+Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The six
+third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) are versioned in this repository under
+`codex-agent/profiles/`; the OpenAI-backed ones (`gpt`, `business`, `codex`) are not managed here.
+
+| Profile | Model | Gateway | Shim port | Gateway fix |
+| --- | --- | --- | --- | --- |
+| `ds` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite only |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
+| `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
+| `mimo` | `mimo-v2.5-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
+| `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
+
+Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`,
+`QWEN_API_KEY`); `local` needs none.
+
+Set up or update the profiles:
+
+```bash
+# install profiles, shim scripts, routes, and regenerate the model catalogs
+./scripts/sync-codex-agent.sh
+
+# optional but recommended: keep the shim running as a launchd service
+~/.codex-agent/bin/codex-auto-review-shim-service install
+```
+
+The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
+install (Codex accepts only absolute paths in these fields).
+
+`model-catalog.json` (kimi / mimo / qwen) is a **generated artifact and is not tracked**. The sync script
+regenerates it from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex changes
+the catalog shape, the generator warns and exits non-zero, and the existing catalog is left untouched.
+
+### Switching sandbox mode
+
+Each profile picks its sandbox in one line. Edit `sandbox_mode` in `codex-agent/profiles/<agent-id>/config.toml`
+and re-run `./scripts/sync-codex-agent.sh`:
+
+| Value | Effect | Used by |
+| --- | --- | --- |
+| `"workspace-write"` | Writes confined to the workspace; `[sandbox_workspace_write] network_access = true` keeps the network open. Requires the shim to be running. | the five third-party sub-agent profiles |
+| `"danger-full-access"` | No sandbox. | `local` — used from a terminal, not dispatched as a sub-agent |
+
+`local` also points straight at llama.cpp (`http://127.0.0.1:8080/v1`); the commented `base_url` above it is the
+disabled shim route, kept for reference.
+
 ## Usage
 
 ### Gateflow
@@ -392,11 +440,25 @@ skills/
   sub-agents/
     SKILL.md
     agents/openai.yaml
+codex-agent/
+  profiles/
+    ds/config.toml
+    glm/config.toml
+    kimi/config.toml
+    mimo/config.toml
+    qwen/config.toml
+    local/config.toml
+  bin/
+    codex-auto-review-shim
+    codex-auto-review-shim-service
+  shim-routes.json
 scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  patch-codex-model-catalog.py
   sync-agent-tools.sh
+  sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 ```
@@ -411,6 +473,10 @@ skills/<skill-name>/agents/openai.yaml
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
+codex-agent/profiles/<agent-id>/config.toml
+codex-agent/bin/
+codex-agent/shim-routes.json
+scripts/patch-codex-model-catalog.py
 ```
 
 Validate all skills:
@@ -431,9 +497,17 @@ Sync the agent launcher and child-agent runners:
 ./scripts/sync-agent-tools.sh
 ```
 
+Sync the Codex agent profiles, shim scripts and routes:
+
+```bash
+./scripts/sync-codex-agent.sh
+```
+
 The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
 the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
-Neither script pushes, publishes, creates PRs, or modifies remote repositories.
+The codex-agent sync backs up each `config.toml` before overwriting it, installs the shim scripts and routes, and
+regenerates the untracked `model-catalog.json` files. None of these scripts push, publish, create PRs, or modify remote
+repositories.
 
 ## Notes
 

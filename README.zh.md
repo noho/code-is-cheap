@@ -173,6 +173,52 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 以及 provider-specific passthrough arguments。完整接口使用 `--help` 查看。总控必须显式传入 `--cwd`，避免子 Agent
 意外继承总控的 workspace。
 
+## Codex Agent 配置（xx_codex）
+
+每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。六个第三方 profile（`ds`、`glm`、`kimi`、
+`mimo`、`qwen`、`local`）已在仓库 `codex-agent/profiles/` 下维护；OpenAI 后端的三个（`gpt`、`business`、
+`codex`）不在管理范围内。
+
+| Profile | 模型 | 网关 | shim 端口 | 网关修复 |
+| --- | --- | --- | --- | --- |
+| `ds` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
+| `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
+| `mimo` | `mimo-v2.5-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
+| `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
+
+凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`）；
+`local` 不需要 key。
+
+安装或更新：
+
+```bash
+# 安装 profiles、shim 脚本、路由表，并重新生成 model catalog
+./scripts/sync-codex-agent.sh
+
+# 可选但推荐：把 shim 交给 launchd 常驻
+~/.codex-agent/bin/codex-auto-review-shim-service install
+```
+
+仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
+
+`model-catalog.json`（kimi / mimo / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
+（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
+非零退出，已有的 catalog 保持不动。
+
+### 切换 sandbox 模式
+
+每个 profile 只用一行决定沙箱。改 `codex-agent/profiles/<agent-id>/config.toml` 里的 `sandbox_mode`，重跑
+`./scripts/sync-codex-agent.sh` 即可：
+
+| 取值 | 效果 | 谁在用 |
+| --- | --- | --- |
+| `"workspace-write"` | 写入限制在 workspace；`[sandbox_workspace_write] network_access = true` 保持网络放开。需要 shim 处于运行状态 | 五个第三方子 Agent profile |
+| `"danger-full-access"` | 无沙箱 | `local`——只在终端交互使用，不作为子 Agent 派发 |
+
+`local` 的 `base_url` 直连 llama.cpp（`http://127.0.0.1:8080/v1`），上方被注释的那行是已停用的 shim 路由，留作参考。
+
 ## 使用方式
 
 ### Gateflow
@@ -373,11 +419,25 @@ skills/
   sub-agents/
     SKILL.md
     agents/openai.yaml
+codex-agent/
+  profiles/
+    ds/config.toml
+    glm/config.toml
+    kimi/config.toml
+    mimo/config.toml
+    qwen/config.toml
+    local/config.toml
+  bin/
+    codex-auto-review-shim
+    codex-auto-review-shim-service
+  shim-routes.json
 scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  patch-codex-model-catalog.py
   sync-agent-tools.sh
+  sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 ```
@@ -392,6 +452,10 @@ skills/<skill-name>/agents/openai.yaml
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
+codex-agent/profiles/<agent-id>/config.toml
+codex-agent/bin/
+codex-agent/shim-routes.json
+scripts/patch-codex-model-catalog.py
 ```
 
 校验全部 skills：
@@ -412,9 +476,16 @@ scripts/codex-agent-run
 ./scripts/sync-agent-tools.sh
 ```
 
+同步 Codex Agent profiles、shim 脚本与路由表：
+
+```bash
+./scripts/sync-codex-agent.sh
+```
+
 skill 同步脚本会先 validate，再把每个 skill 复制到已存在的本地目标目录。agent-tools 同步脚本以 `600` 权限把
-启动函数安装到 `~/.config/zsh/agent-tools.zsh`，并以 `755` 权限把 runner 安装到 `~/.local/bin`。两个脚本都不会
-push、publish、create PR，也不会修改远程仓库。
+启动函数安装到 `~/.config/zsh/agent-tools.zsh`，并以 `755` 权限把 runner 安装到 `~/.local/bin`。codex-agent
+同步脚本覆盖 `config.toml` 前先写时间戳备份，安装 shim 脚本与路由表，并重新生成不入仓库的
+`model-catalog.json`。这些脚本都不会 push、publish、create PR，也不会修改远程仓库。
 
 ## 说明
 

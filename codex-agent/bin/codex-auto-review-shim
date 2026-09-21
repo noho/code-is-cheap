@@ -1,0 +1,411 @@
+#!/usr/bin/env python3
+"""Rewrite the Codex auto-review model slug on its way to a provider.
+
+Codex's guardian (approvals_reviewer = "auto_review") always asks for the
+catalog model id `codex-auto-review`, but inherits the session's provider.
+Third-party endpoints do not serve that id, so every escalation fails closed.
+
+This shim sits in front of a provider, rewrites only that one model id in the
+request body, and passes everything else through -- including compressed
+request bodies and streaming responses.
+
+Multi-route mode (one process, one listener per provider):
+
+  SHIM_ROUTES   path to a routes file (default ~/.codex-agent/shim-routes.json)
+
+    {
+      "from": "codex-auto-review",
+      "bind": "127.0.0.1",
+      "routes": [
+        {"port": 8788, "upstream": "https://api.deepseek.com", "to": "deepseek-flash"},
+        {"port": 8789, "upstream": "https://open.bigmodel.cn", "to": "glm-5.3"}
+      ]
+    }
+
+  Each route's `upstream` is the provider ORIGIN; the request path arrives
+  verbatim (Codex posts to `<base_url>/responses`, so a base_url carrying
+  `/api/v1` yields a path of `/api/v1/responses`). A trailing `/v1` on the
+  upstream is de-duplicated, so either form works.
+
+Single-route mode (no routes file) -- configured entirely by environment:
+
+  SHIM_LISTEN     host:port to bind          (default 127.0.0.1:8788)
+  SHIM_UPSTREAM   provider origin            (default https://api.deepseek.com)
+  SHIM_FROM       model id to replace        (default codex-auto-review)
+  SHIM_TO         replacement model id       (default deepseek-flash)
+
+Other flags:
+
+  --routes           print the resolved routes and exit
+  --check '<json>'   print the rewritten body for a sample request and exit
+"""
+
+import gzip
+import http.client
+import json
+import os
+import re
+import sys
+import threading
+import time
+import urllib.error
+import urllib.request
+import zlib
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+DEFAULT_ROUTES = os.path.expanduser("~/.codex-agent/shim-routes.json")
+# Non-2xx responses get their request body dumped here, for diagnosis.
+FAILED_DIR = os.path.expanduser("~/.codex-agent/shim-failed")
+
+# Framing headers we must not copy: the body may change length, and the
+# response is re-framed by connection close.
+HOP_BY_HOP = {
+    "connection", "keep-alive", "proxy-authenticate", "proxy-authorization",
+    "te", "trailers", "transfer-encoding", "upgrade", "host", "content-length",
+}
+
+DECODERS = {"gzip": gzip.decompress, "deflate": zlib.decompress}
+ENCODERS = {"gzip": gzip.compress, "deflate": zlib.compress}
+
+
+def upstream_url(upstream: str, path: str) -> str:
+    """Join an origin with the incoming path without duplicating a /v1 prefix."""
+    if upstream.endswith("/v1") and path.startswith("/v1/"):
+        return upstream[: -len("/v1")] + path
+    return upstream + path
+
+
+def _swap(body: bytes, src: str, dst: str) -> tuple[bytes, str]:
+    """Replace the model id in an uncompressed body. `how` is none/bytes/json."""
+    exact = b'"model":"%s"' % src.encode()
+    if body.count(exact) == 1:
+        return body.replace(exact, b'"model":"%s"' % dst.encode()), "bytes"
+    try:
+        doc = json.loads(body)
+    except Exception:
+        return body, "none"
+    if isinstance(doc, dict) and doc.get("model") == src:
+        doc["model"] = dst
+        return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), "json"
+    return body, "none"
+
+
+def fix_message_ids(body: bytes) -> tuple[bytes, int]:
+    """Rewrite `at_`-prefixed input-item ids to `msg_`.
+
+    Some providers (dashscope among them) validate that every message id starts
+    with `msg_`, but Codex labels its `additional_tools` developer item `at_<uuid>`.
+    Only the prefix is rewritten, so the ids stay unique.
+    """
+    out, n = re.subn(rb'"id":"at_', b'"id":"msg_', body)
+    return out, n
+
+
+def json_object_format(body: bytes) -> tuple[bytes, int]:
+    """Downgrade a `json_schema` text format to `json_object`.
+
+    Some providers reject schema-constrained output outright ("text.format type
+    'json_schema' is not supported"). The required shape is still described in
+    the prompt, so the model is not left without guidance -- it just loses the
+    hard constraint.
+    """
+    try:
+        doc = json.loads(body)
+    except Exception:
+        return body, 0
+    text = doc.get("text") if isinstance(doc, dict) else None
+    fmt = text.get("format") if isinstance(text, dict) else None
+    if not isinstance(fmt, dict) or fmt.get("type") != "json_schema":
+        return body, 0
+    text["format"] = {"type": "json_object"}
+    return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), 1
+
+
+def drop_tools_item(body: bytes) -> tuple[bytes, int]:
+    """Remove `additional_tools` input items.
+
+    Codex delivers the guardian's tool set as an input item whose `type` is
+    `additional_tools`. Servers that validate item types reject it outright
+    ("Cannot determine type of 'item'"). Dropping it leaves the guardian with
+    no tools -- it is a judging task, so that is acceptable -- and the custom
+    `exec` tool disappears along with the item, so no catalog change is needed.
+    """
+    try:
+        doc = json.loads(body)
+    except Exception:
+        return body, 0
+    inp = doc.get("input") if isinstance(doc, dict) else None
+    if not isinstance(inp, list):
+        return body, 0
+    kept = [
+        it for it in inp
+        if not (isinstance(it, dict) and it.get("type") == "additional_tools")
+    ]
+    if len(kept) == len(inp):
+        return body, 0
+    doc["input"] = kept
+    return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), len(inp) - len(kept)
+
+
+def rewrite(body: bytes, encoding: str, src: str, dst: str) -> tuple[bytes, str]:
+    """Return (body, how). Decompresses, rewrites, and restores the encoding.
+
+    Unrewritable cases return the body unchanged -- callers must surface the
+    returned `how` so a silent pass-through is visible in the log.
+    """
+    enc = (encoding or "").strip().lower()
+    if not body:
+        return body, "none"
+    if enc not in ("", "identity"):
+        decode = DECODERS.get(enc)
+        if decode is None:
+            return body, f"passthrough:{enc}"  # unknown codec: cannot rewrite
+        try:
+            plain = decode(body)
+        except Exception:
+            return body, f"undecodable:{enc}"
+        out, how = _swap(plain, src, dst)
+        if how == "none":
+            return body, "none"
+        return ENCODERS[enc](out), how
+
+    return _swap(body, src, dst)
+
+
+def load_routes() -> list[dict]:
+    """Return the resolved route list, or [] for single-route env mode."""
+    path = os.environ.get("SHIM_ROUTES") or (
+        DEFAULT_ROUTES if os.path.exists(DEFAULT_ROUTES) else ""
+    )
+    if not path:
+        return []
+    with open(path, encoding="utf-8") as fh:
+        doc = json.load(fh)
+    default_from = doc.get("from", "codex-auto-review")
+    bind = doc.get("bind", "127.0.0.1")
+    routes = []
+    for i, r in enumerate(doc.get("routes") or []):
+        for key in ("port", "upstream", "to"):
+            if key not in r:
+                raise SystemExit(f"routes[{i}] missing {key!r}")
+        routes.append({
+            "listen": f"{r.get('bind', bind)}:{int(r['port'])}",
+            "upstream": str(r["upstream"]).rstrip("/"),
+            "from": r.get("from", default_from),
+            "to": str(r["to"]),
+            "id_fix": bool(r.get("id_fix", doc.get("id_fix", False))),
+            "json_fmt_fix": bool(r.get("json_fmt_fix", doc.get("json_fmt_fix", False))),
+            "drop_tools_item": bool(r.get("drop_tools_item", doc.get("drop_tools_item", False))),
+        })
+    if not routes:
+        raise SystemExit(f"no routes defined in {path}")
+    return routes
+
+
+class Handler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+    server_version = "codex-auto-review-shim"
+
+    def log_message(self, fmt, *args):  # keep the default noise out
+        pass
+
+    @property
+    def route(self) -> dict:
+        return self.server.route
+
+    def _log(self, msg):
+        print(f"[shim:{self.route['port']}] {msg}", file=sys.stderr, flush=True)
+
+    def _dump(self, body: bytes, tag: str, kind: str = "req") -> None:
+        """Persist a request or response body that produced a bad outcome."""
+        try:
+            os.makedirs(FAILED_DIR, exist_ok=True)
+            path = os.path.join(
+                FAILED_DIR,
+                f"{self.route['port']}-{int(time.time())}-{kind}-{tag}.json",
+            )
+            with open(path, "wb") as fh:
+                fh.write(body)
+            self._log(f"  ^ {kind} 已存：{path}")
+        except Exception as e:
+            self._log(f"  ^ {kind} 保存失败：{e}")
+
+    @staticmethod
+    def _summary(body: bytes, encoding: str) -> tuple[str, str]:
+        """Return (model, tool-names) for the request body, for the log line."""
+        try:
+            raw = body
+            if encoding:
+                dec = DECODERS.get(encoding.strip().lower())
+                if dec:
+                    raw = dec(raw)
+            doc = json.loads(raw)
+        except Exception:
+            return "?", "-"
+        if not isinstance(doc, dict):
+            return "?", "-"
+        names = []
+        for t in doc.get("tools") or []:
+            if not isinstance(t, dict):
+                names.append("?"); continue
+            fn = t.get("function") if isinstance(t.get("function"), dict) else {}
+            names.append(str(t.get("name") or fn.get("name") or t.get("type") or "?"))
+        if not names:
+            return str(doc.get("model")), "none"
+        extra = f",+{len(names) - 12}" if len(names) > 12 else ""
+        return str(doc.get("model")), "[" + ",".join(names[:12]) + extra + "]"
+
+    def _handle(self):
+        route = self.route
+        length = int(self.headers.get("Content-Length") or 0)
+        body = self.rfile.read(length) if length else b""
+        encoding = self.headers.get("Content-Encoding") or ""
+        how = "none"
+        if body:
+            body, how = rewrite(body, encoding, route["from"], route["to"])
+            if route.get("id_fix"):
+                body, n = fix_message_ids(body)
+                if n:
+                    how = f"{how}+idfix{n}"
+            if route.get("json_fmt_fix"):
+                body, n = json_object_format(body)
+                if n:
+                    how = f"{how}+jsonfmt{n}"
+            if route.get("drop_tools_item"):
+                body, n = drop_tools_item(body)
+                if n:
+                    how = f"{how}+droptools{n}"
+
+        url = upstream_url(route["upstream"], self.path)
+        headers = {k: v for k, v in self.headers.items() if k.lower() not in HOP_BY_HOP}
+        req = urllib.request.Request(url, data=body or None, headers=headers, method=self.command)
+
+        try:
+            resp = urllib.request.urlopen(req)
+        except urllib.error.HTTPError as e:
+            resp = e
+        except Exception as e:
+            self._log(f"{self.command} {self.path} UPSTREAM ERROR: {e}")
+            self.send_response(502)
+            self.send_header("Connection", "close")
+            self.end_headers()
+            self.close_connection = True
+            return
+
+        if not (200 <= resp.status < 300) and body:
+            self._dump(body, str(resp.status))
+
+        warn = "" if how.split("+")[0] in ("bytes", "json", "none") else f"  <<< 未能改写（{how}）"
+        model, tools = self._summary(body, encoding)
+        self._log(
+            f"{self.command} {self.path} -> {resp.status} "
+            f"model={model} enc={encoding or '-'} rewrite={how} tools={tools}{warn}"
+        )
+
+        self.send_response(resp.status)
+        for k, v in resp.headers.items():
+            if k.lower() not in HOP_BY_HOP:
+                self.send_header(k, v)
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
+        # read1() hands back data as soon as any is available. read(n) blocks
+        # until n bytes accumulate, which buffers SSE and lets the client's
+        # stall protection fire ("stream closed before response.completed").
+        read = getattr(resp, "read1", None) or resp.read
+        relayed, note, head, done, prev = 0, "ok", bytearray(), False, b""
+        try:
+            while True:
+                chunk = read(65536)
+                if not chunk:
+                    break
+                relayed += len(chunk)
+                # Scan the whole stream, not just the head: the terminal event
+                # arrives at the END of a long SSE response.
+                if not done and b"response.completed" in prev + chunk:
+                    done = True
+                prev = chunk[-32:]          # tolerate a marker split across chunks
+                if len(head) < 8192:
+                    head.extend(chunk[: 8192 - len(head)])
+                self.wfile.write(chunk)
+                self.wfile.flush()
+        except http.client.IncompleteRead as e:
+            relayed += len(e.partial or b"")
+            note = "TRUNCATED"          # upstream cut the stream mid-body
+        except (BrokenPipeError, ConnectionResetError):
+            note = "client-gone"
+        except Exception as e:
+            note = f"error:{type(e).__name__}"
+
+        # A 2xx status only says the headers arrived. The body can still be cut
+        # short (TRUNCATED), or be a complete-but-not-a-stream error payload --
+        # in which case the client reports "stream closed before response.completed".
+        self._log(
+            f"  ^ status={resp.status} stream={note} relayed={relayed}B "
+            f"completed={done}"
+        )
+        if body and (note == "TRUNCATED" or (how == "bytes" and not done)):
+            self._dump(body, note if note != "ok" else "nostream")
+            self._dump(bytes(head), note if note != "ok" else "nostream", kind="resp")
+        elif not (200 <= resp.status < 300) and head:
+            # The error message lives in the response body -- always keep it.
+            self._dump(bytes(head), str(resp.status), kind="resp")
+
+    do_GET = do_POST = do_PUT = do_DELETE = do_PATCH = _handle
+
+
+def _make_server(route: dict):
+    host, _, port = route["listen"].rpartition(":")
+    srv = ThreadingHTTPServer((host or "127.0.0.1", int(port)), Handler)
+    srv.route = {**route, "port": int(port)}
+    return srv
+
+
+def main():
+    argv = sys.argv[1:]
+
+    if argv[:1] == ["--check"]:
+        if len(argv) != 2:
+            raise SystemExit("usage: --check '<json>'")
+        out, how = rewrite(argv[1].encode(), "", "codex-auto-review", "deepseek-flash")
+        print(f"how={how}")
+        print(out.decode())
+        return 0
+
+    routes = load_routes()
+    if not routes:
+        routes = [{
+            "listen": os.environ.get("SHIM_LISTEN", "127.0.0.1:8788"),
+            "upstream": os.environ.get("SHIM_UPSTREAM", "https://api.deepseek.com").rstrip("/"),
+            "from": os.environ.get("SHIM_FROM", "codex-auto-review"),
+            "to": os.environ.get("SHIM_TO", "deepseek-flash"),
+        }]
+
+    if argv[:1] == ["--routes"]:
+        for r in routes:
+            print(f"{r['listen']:>16}  {r['upstream']}   ({r['from']} -> {r['to']})")
+        return 0
+
+    servers = []
+    for r in routes:
+        try:
+            servers.append(_make_server(r))
+        except OSError as e:
+            print(f"[shim] cannot bind {r['listen']}: {e}", file=sys.stderr, flush=True)
+            return 1
+        print(
+            f"[shim] {r['listen']} -> {r['upstream']}  ({r['from']} -> {r['to']})",
+            file=sys.stderr, flush=True,
+        )
+
+    for srv in servers[1:]:
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        servers[0].serve_forever()
+    except KeyboardInterrupt:
+        pass
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
