@@ -11,11 +11,12 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 
 | Runtime | Command | Providers | Default structured output |
 | --- | --- | --- | --- |
-| Claude Code | `$HOME/.local/bin/claude-agent-run` | `ds mimo qwen kimi glm local` | one JSON result |
-| Codex | `$HOME/.local/bin/codex-agent-run` | `ds mimo qwen kimi glm local gpt business` | JSONL event stream |
+| Claude Code | `claude-agent-run` | `ds mimo qwen kimi glm local` | one JSON result |
+| Codex | `codex-agent-run` | `ds mimo qwen kimi glm local gpt business` | JSONL event stream |
 
-调用前确认 runner 可执行，并用 `pwd -P` 得到当前任务 workspace 的绝对路径。每次调用必须显式传入
-`--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
+两个 runner 安装在 `$HOME/.local/bin`（已在 PATH），直接以命令名调用；沙箱下必须保持无引号、无 `$HOME`
+前缀的裸形式（见 Sandbox Process Management）。调用前确认 runner 可执行，并用 `pwd -P` 得到当前任务
+workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
 
 ## Dispatch Contract
 
@@ -46,7 +47,7 @@ workspace="$(pwd -P)"
 默认调用：
 
 ```bash
-"$HOME/.local/bin/claude-agent-run" \
+claude-agent-run \
   --provider ds \
   --cwd "$workspace" \
   --instance "review-ds-01" \
@@ -56,7 +57,7 @@ workspace="$(pwd -P)"
   --stderr "$run_dir/review-ds-01.stderr" \
   --prompt "<bounded task>"
 
-"$HOME/.local/bin/codex-agent-run" \
+codex-agent-run \
   --provider gpt \
   --cwd "$workspace" \
   --no-persist \
@@ -79,6 +80,12 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具
 （沙箱下不稳定：即使通过 `sandbox.excludedCommands` 放行，也只对独立简单命令生效）。
 
+- **codex 派发形式**：`codex-agent-run`（codex CLI ≥0.147）在 Claude 沙箱内无法初始化
+  （`failed to initialize in-process app-server client: Operation not permitted`，上游未修复），必须从沙箱外运行：
+  以**独立简单命令**调用裸命令 `codex-agent-run ...`，并确保 settings 的 `sandbox.excludedCommands` 含
+  `codex-agent-run *`；引号包裹、`$HOME` 等变量前缀、管道、重定向或 `&&` 复合命令都会使豁免静默失效
+  （2.1.278 实测）。没有豁免时退化为 escape hatch（沙箱失败后在沙箱外重试）。claude-agent-run 无此限制，
+  可在沙箱内直接运行。
 - **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
   的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
 - **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
