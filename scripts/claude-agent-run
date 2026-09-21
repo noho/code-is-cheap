@@ -40,6 +40,8 @@ Run options:
   --list-providers           Print supported providers and exit.
   -h, --help                 Show this help.
   -- <claude arguments...>   Pass additional arguments directly to Claude Code.
+                             Variadic options (e.g. --allowedTools) must use = binding
+                             (--allowedTools=Read,Grep): the prompt is appended last.
 
 Environment:
   AGENT_TOOLS_FILE           Override the launcher file used by this script.
@@ -57,7 +59,7 @@ Examples:
 
   claude-agent-run --provider qwen --resume <session-id> --prompt 'Continue the review'
 
-  claude-agent-run --provider glm --prompt-file task.md -- --allowedTools Read,Grep,Glob
+  claude-agent-run --provider glm --prompt-file task.md -- --verbose
 
   claude-agent-run --provider local --cwd ~/workspace/project \
     --prompt 'Review this repository with the local model'
