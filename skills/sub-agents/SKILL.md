@@ -26,13 +26,15 @@ workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-wor
 - 是否允许调用工具和允许的副作用；
 - 相关代码、文档和约束的路径；
 - 预期输出格式、artifact 路径和 validation；
+- 报告开头必须声明自身的 runtime、provider 和 model；自报与 event stream 不符时以 event stream 为准；
 - 禁止 commit、push、PR、merge 或进入其它 gate，除非任务明确授权。
 
 一次性任务默认使用 `--no-persist`。Claude 调用必须使用唯一 `--instance`。Codex runner 没有
 `--instance` 参数，应使用唯一 task label、输出文件名，并把该 label 写入 prompt。
 
-写任务需要显式选择适当权限：Claude 使用 `--permission-mode`，Codex 使用 `--sandbox`。不得通过宽权限扩张
-用户授权或任务 scope。
+子 Agent 权限默认继承 auto 模式，无需显式传 `--permission-mode`；需要收紧时显式指定。不得传
+`bypassPermissions`（父会话 auto 分类器会拒绝该派发）。Codex 用 `--sandbox` 选择沙箱级别。
+不得通过宽权限扩张用户授权或任务 scope。
 
 ## Execution And Isolation
 
@@ -67,6 +69,11 @@ codex-agent-run \
   --prompt "<bounded task>"
 ```
 
+派发必须是独立的一次 Bash 调用：裸命令、无引号、无 `$HOME` 前缀、不管道、不复合，run_dir 等准备工作在
+之前的调用完成——这样 runner 才在沙箱外运行。沙箱内派发的后果：codex 初始化直接失败
+（`failed to initialize in-process app-server client`）；claude 能启动但子 Agent 的 Bash 全部不可用
+（`EPERM ... srt-mux`）。照此调用仍出现这些报错，说明环境未配置豁免，在沙箱外重试。
+
 相互独立的子任务应并发启动，分别记录 PID，完成后逐个 `wait "$pid"` 并保存各自退出码；启动与收集必须在同一次
 Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Management 处理。存在数据依赖、
 写入顺序依赖或 file ownership 重叠时必须串行。不得让多个子 Agent 并发修改同一文件，除非已划分互不重叠的写入范围。
@@ -78,10 +85,6 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 
 沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具。
 
-- **codex 派发形式**：codex CLI 在 Claude 沙箱内无法初始化（典型报错
-  `failed to initialize in-process app-server client`），必须以无引号的裸命令 `codex-agent-run ...` 独立调用
-  （不加路径前缀、不管道、不复合），使命令在沙箱外运行；若仍出现该报错，在沙箱外重试。
-  claude-agent-run 无此限制，可直接运行。
 - **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
   的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
 - **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
@@ -94,6 +97,20 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 
 每个进程结束后必须检查 exit code、stderr 和输出文件，不得只读取最终自然语言。退出码来源：前台 `wait "$pid"`
 的返回值，或后台任务完成通知（输出文件末尾同样留有 `[exited with code N]` 标记）。
+
+任务要求工具调用时，"完成"不算成功，必须有工具执行成功的证据：
+
+- Codex：event stream 存在 `item.completed` 且 `item.type == "command_execution"`、`exit_code == 0`；
+- Claude：`num_turns >= 2` 只证明调用过工具，不证明调用成功（实测：Bash 报错的运行该值仍为 2）——以 canary 为准。
+
+验证类派发（探针、验收、产出会被下游信任）必须使用 canary：
+
+1. `TOKEN="<prefix>-$(openssl rand -hex 4)"`，写入 run_dir 内文件；
+2. prompt 只给文件路径，不得包含 TOKEN 本身；
+3. 最终消息中的 token 与文件内容逐字比对，不等即判失败——即使其它检查全部通过。
+
+伪造型静默失败是硬失败，不重试，记录并上报：最终消息含字面工具调用语法（`<tool_call>`、`<tool_result>`、
+裸 JSON 工具对象）而 event stream 无对应执行事件——provider 级缺陷特征。
 
 Claude JSON：
 
@@ -116,6 +133,9 @@ Codex JSONL：
 失败后先根据 stderr 和结构化输出区分配置错误、超时、模型错误或任务错误。只允许一次有明确理由的同 provider 重试；
 再次失败后可切换 provider，并记录两次失败和切换原因。不得无上限重试。
 
+区分派发错误与测量数据：基础设施失败（起不来、超时、配置错）可按上一条重试；测量 provider/环境行为的派发，
+失败必须计数，禁止重试到成功，且必须固定并发度——否则测到的是并发与 provider 的混合效应。
+
 需要多轮延续时，第一次使用 `--persist`：
 
 - Claude 后续使用返回的 session ID 配合 `--resume`；
@@ -135,3 +155,6 @@ Codex JSONL：
 - stdout、stderr、last-message 或 artifact 路径；
 - 总控采纳、部分采纳或驳回的结论及理由；
 - retry、provider switch 和未解决风险。
+
+首次让某 provider 承担工具密集任务前，先用 canary 探针实测通过率；显著低于 1 时不得用于工具任务并告知用户
+（k 次工具调用的任务成功率约 p^k）。
