@@ -14,8 +14,7 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 | Claude Code | `claude-agent-run` | `ds mimo qwen kimi glm local` | one JSON result |
 | Codex | `codex-agent-run` | `ds mimo qwen kimi glm local gpt business` | JSONL event stream |
 
-两个 runner 安装在 `$HOME/.local/bin`（已在 PATH），直接以命令名调用；沙箱下必须保持无引号、无 `$HOME`
-前缀的裸形式（见 Sandbox Process Management）。调用前确认 runner 可执行，并用 `pwd -P` 得到当前任务
+两个 runner 已在 PATH，直接以命令名调用。调用前确认 runner 可执行，并用 `pwd -P` 得到当前任务
 workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
 
 ## Dispatch Contract
@@ -77,8 +76,7 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 
 ### Sandbox Process Management
 
-沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具
-（沙箱下不稳定：即使通过 `sandbox.excludedCommands` 放行，也只对独立简单命令生效）。
+沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具。
 
 - **codex 派发形式**：codex CLI 在 Claude 沙箱内无法初始化（典型报错
   `failed to initialize in-process app-server client`），必须以无引号的裸命令 `codex-agent-run ...` 独立调用

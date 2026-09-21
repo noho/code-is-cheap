@@ -20,6 +20,8 @@ Tmux Agents 只定义与已运行 CLI Agent 的通信协议。目标 Agent 必�
 
 ## Pane Discovery
 
+tmux 命令报 `error connecting to ... (Operation not permitted)` 说明 socket 被沙箱拦，在沙箱外重试。
+
 每次发送前都重新确认目标 full pane id：
 
 ```bash
