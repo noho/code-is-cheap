@@ -17,6 +17,10 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 两个 runner 已在 PATH，直接以命令名调用。调用前先跑 `<runner> --help` 确认可用与接口，并用 `pwd -P` 得到当前任务
 workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
 
+codex 的 `--cwd` 不在 git 仓库内时（临时目录、非仓库工作区等），必须显式加 `--skip-git-repo-check`，否则 codex
+在启动阶段即拒绝执行：stderr 为 `Not inside a trusted directory and --skip-git-repo-check was not specified.`，
+event stream 为空、退出码非零。claude-agent-run 无此限制。
+
 ## Dispatch Contract
 
 每个子 Agent 的 prompt 必须明确：
