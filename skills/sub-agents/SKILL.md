@@ -69,25 +69,36 @@ codex-agent-run \
   --prompt "<bounded task>"
 ```
 
-派发必须是独立的一次 Bash 调用：裸命令、无引号、无 `$HOME` 前缀、不管道、不复合，run_dir 等准备工作在
-之前的调用完成——这样 runner 才在沙箱外运行。沙箱内派发的后果：codex 初始化直接失败
-（`failed to initialize in-process app-server client`）；claude 能启动但子 Agent 的 Bash 全部不可用
-（`EPERM ... srt-mux`）。照此调用仍出现这些报错，说明环境未配置豁免，在沙箱外重试。
+派发必须在沙箱外运行，方式取决于总控环境：
 
-相互独立的子任务应并发启动，分别记录 PID，完成后逐个 `wait "$pid"` 并保存各自退出码；启动与收集必须在同一次
-Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Management 处理。存在数据依赖、
+- Claude 总控：以独立的一次 Bash 调用发出——裸命令、无引号、无 `$HOME` 前缀、不管道、不复合，run_dir 等准备
+  工作在之前的调用完成，使命令命中 `excludedCommands`；
+- Codex 总控：每个子 Agent 使用一次独立的 `exec_command` 调用，显式设置 `sandbox_permissions:
+  "require_escalated"`（附 justification）；若返回 session_id，通过对应的 `write_stdin` 收集；
+  本协议不依赖 Codex 环境提供命令豁免。
+
+沙箱内派发的典型症状：codex 子 Agent 初始化失败（`failed to initialize in-process app-server client`）；
+claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。出现这些症状时优先检查派发是否仍在沙箱内；
+若派发已显式提权，则检查子进程自身的沙箱配置——该报错不唯一指向父级派发未出沙箱。
+
+并发派发 = 多次**独立**调用（Claude 总控：多次 `run_in_background: true`；Codex 总控：每个子 Agent 一次独立的
+`exec_command`，若返回 session_id 则用对应的 `write_stdin` 收集），统一使用独立调用便于权限判定与结果追踪；
+Claude 环境中复合命令（`&`、`&&`、管道）还可能无法命中 `excludedCommands`，导致子 Agent 的 Bash 失效。
+收集时逐个核对各自退出码与 artifact。存在数据依赖、
 写入顺序依赖或 file ownership 重叠时必须串行。不得让多个子 Agent 并发修改同一文件，除非已划分互不重叠的写入范围。
 
-不要仅因运行时间长而 kill、重派或切换 provider。`kill -0 "$pid"` 仍成功或输出文件仍有变化时，默认仍为 in-flight；
-判活不得依赖 ps/pgrep。只有明确失败、阻塞、用户停止或进程退出证据才能结束该次派发。
+不要仅因运行时间长而 kill、重派或切换 provider。后台任务仍在运行、或输出文件仍有变化时，默认仍为 in-flight；
+判活不得依赖 ps / pgrep / kill -0 等进程查询。只有明确失败、阻塞、用户停止或进程退出证据才能结束该次派发。
 
 ### Sandbox Process Management
 
 沙箱（`sandbox.enabled`）下进程管理一律使用下列配套方法，不要在协议里使用 `ps` / `pgrep` 或其它进程列表工具。
 
-- **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
-  的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
-- **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
+- **派发与收集（Claude 总控）**：用 Bash 工具的 `run_in_background: true` 独立发出；harness 托管的后台任务跨调用
+  存活，通过后台任务句柄收集完成状态与退出码，输出由 harness 落盘。不要用 shell `&`——其子进程在沙箱下会随
+  Bash 调用结束被回收；
+- **派发与收集（Codex 总控）**：每个子 Agent 一次独立的 `exec_command`；可能直接返回退出码，也可能返回 session_id，
+  后者用 `write_stdin` 持续收集，直到取得退出码；
 - **进度判据**：run_dir 内输出文件（或后台任务的 harness 输出文件）的大小 / mtime 变化，不要用进程列表；
 - **退出码**：前台取 `wait "$pid"` 的返回值；后台取完成通知（其输出文件末尾留有 `[exited with code N]` 标记）；
 - **输出流**：后台模式会把 stdout/stderr 合并进同一文件，因此结构化输出与日志必须继续通过 `--output` /
@@ -112,6 +123,11 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 伪造型静默失败是硬失败，不重试，记录并上报：最终消息含字面工具调用语法（`<tool_call>`、`<tool_result>`、
 裸 JSON 工具对象）而 event stream 无对应执行事件——provider 级缺陷特征。
 
+已确认的非致命诊断不构成失败，但必须记录：`Model metadata for … not found`、`unrecognized_model`——即使被封装
+为 event stream 中的 `item.type == "error"` 也按此例外处理。仅豁免与上述完整诊断模式逐字匹配的事件，其他
+error / failed 事件仍按失败处理；仅在退出码、turn completion、工具执行证据与 canary 均满足、且无其它失败证据时
+判为通过，并附警告。
+
 Claude JSON：
 
 - 文件必须是有效 JSON；
@@ -122,8 +138,8 @@ Claude JSON：
 Codex JSONL：
 
 - 每个非空行都必须是有效 JSON event；
-- 检查 error / failed events，并要求存在明确的 turn completion；
-- 非零退出码、失败 event 或缺少 completion evidence 均不得判定成功；
+- 检查 error / failed events，并要求存在明确的 turn completion；上段列出的已确认非致命诊断不按失败计；
+- 非零退出码、失败 event 或缺少 completion evidence 均不得判定成功（已确认非致命诊断除外）；
 - 优先使用 `--last-message` 保存最终消息，但仍必须同时审查完整 event stream 和 stderr。
 
 空 stderr 不证明成功，非空 stderr 也不自动证明失败；结合退出码和结构化状态裁决。
@@ -135,6 +151,9 @@ Codex JSONL：
 
 区分派发错误与测量数据：基础设施失败（起不来、超时、配置错）可按上一条重试；测量 provider/环境行为的派发，
 失败必须计数，禁止重试到成功，且必须固定并发度——否则测到的是并发与 provider 的混合效应。
+
+修复性重试必须使用新的 task label，并同步用于 prompt、输出文件名和 Claude `--instance`，同时记录与原尝试的关联
+标识；修复性重试不得并入原测量批次的通过率，如需重新测量，另建固定并发度、预定样本数的新批次。
 
 需要多轮延续时，第一次使用 `--persist`：
 
