@@ -252,6 +252,37 @@ _codex_agent_key_name() {
   esac
 }
 
+_codex_agent_shim_port() {
+  case "$1" in
+    ds)   print -r -- "8788" ;;
+    glm)  print -r -- "8789" ;;
+    kimi) print -r -- "8790" ;;
+    mimo) print -r -- "8791" ;;
+    qwen) print -r -- "8792" ;;
+    *)    print -r -- "" ;;
+  esac
+}
+
+# 走反代的 profile 在启动前确认 shim 端口有监听；否则所有模型请求都会连接失败。
+_codex_agent_require_shim() {
+  local agent_id="$1"
+  local port="$(_codex_agent_shim_port "$agent_id")" || return 1
+  [[ -n "$port" ]] || return 0
+
+  zmodload zsh/net/tcp 2>/dev/null || {
+    echo "无法加载 zsh/net/tcp，跳过 shim 端口检查" >&2
+    return 0
+  }
+  local fd
+  if ! ztcp 127.0.0.1 "$port" 2>/dev/null; then
+    echo "Codex 反代 shim 未运行（127.0.0.1:$port 无监听）" >&2
+    echo "启动：\"$HOME/.codex-agent/bin/codex-auto-review-shim-service\" install  # 已安装过则用 restart" >&2
+    return 1
+  fi
+  fd=$REPLY
+  ztcp -c "$fd" 2>/dev/null
+}
+
 _codex_agent_require_home() {
   local agent_id="$1"
   local codex_home="$(_codex_agent_home "$agent_id")" || return 1
@@ -272,6 +303,7 @@ _codex_agent_require_home() {
   if [[ "$agent_id" == local ]]; then
     _local_agent_require_service || return 1
   fi
+  _codex_agent_require_shim "$agent_id" || return 1
 }
 
 _codex_agent_app() (

@@ -1,0 +1,46 @@
+{
+  "from": "codex-auto-review",
+  "bind": "127.0.0.1",
+  "routes": [
+    {
+      "port": 8788,
+      "upstream": "https://api.deepseek.com",
+      "to": "deepseek-flash",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
+    },
+    {
+      "port": 8789,
+      "upstream": "https://open.bigmodel.cn",
+      "to": "glm-5.3",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
+    },
+    {
+      "port": 8790,
+      "upstream": "https://api.kimi.com",
+      "to": "kimi-k3",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
+    },
+    {
+      "port": 8791,
+      "upstream": "https://token-plan-cn.xiaomimimo.com",
+      "to": "mimo-v2.5-pro",
+      "id_fix": false,
+      "json_fmt_fix": true,
+      "drop_tools_item": false
+    },
+    {
+      "port": 8792,
+      "upstream": "https://dashscope.aliyuncs.com",
+      "to": "qwen3.8-max",
+      "id_fix": true,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
+    }
+  ]
+}

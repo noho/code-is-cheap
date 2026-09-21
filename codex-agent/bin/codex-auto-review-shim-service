@@ -1,0 +1,113 @@
+#!/bin/zsh
+# Install / uninstall the codex-auto-review shim as a launchd user agent.
+#
+#   codex-auto-review-shim-service install     写 plist + 加载 + 启动
+#   codex-auto-review-shim-service uninstall   卸载 + 删除 plist
+#   codex-auto-review-shim-service restart     重启
+#   codex-auto-review-shim-service status      当前状态
+#   codex-auto-review-shim-service print-plist 只打印 plist，不写盘
+#
+# 只管理 launchd agent，不碰任何 Codex 配置。
+#
+# 注意：install 之前请先停掉手工跑的那个前台 shim（占用同样端口会 bind 失败）。
+
+emulate -L zsh
+setopt no_unset pipe_fail
+
+readonly LABEL="com.leo.codex-auto-review-shim"
+readonly SHIM="$HOME/.codex-agent/bin/codex-auto-review-shim"
+readonly PYTHON="/opt/homebrew/bin/python3"
+readonly ROUTES="$HOME/.codex-agent/shim-routes.json"
+readonly LOG="$HOME/.codex-agent/shim.log"
+readonly PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
+readonly DOMAIN="gui/$(id -u)"
+
+die() { print -u2 -- "$0: $*"; exit 1 }
+
+plist_body() {
+  cat <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>$LABEL</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>$PYTHON</string>
+    <string>$SHIM</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>SHIM_ROUTES</key><string>$ROUTES</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>$LOG</string>
+  <key>StandardErrorPath</key><string>$LOG</string>
+</dict>
+</plist>
+PLIST
+}
+
+cmd_install() {
+  [[ -x "$SHIM"   ]] || die "找不到或不可执行：$SHIM"
+  [[ -x "$PYTHON" ]] || die "找不到 python3：$PYTHON"
+  [[ -f "$ROUTES" ]] || die "找不到路由文件：$ROUTES"
+
+  if lsof -nP -iTCP:8788-8793 -sTCP:LISTEN >/dev/null 2>&1; then
+    print -u2 -- "警告：8788-8793 已有进程在监听，多半是手工跑的 shim。"
+    print -u2 -- "      请先 Ctrl-C 停掉它，否则 launchd 起的实例会 bind 失败。"
+    print -u2 -- "      当前监听："
+    lsof -nP -iTCP:8788-8793 -sTCP:LISTEN 2>/dev/null | tail -n +2 | sed 's/^/        /' >&2
+    return 1
+  fi
+
+  mkdir -p "$(dirname "$PLIST")" || die "无法创建 LaunchAgents 目录"
+  plist_body > "$PLIST" || die "写入 plist 失败"
+  print -- "已写入 $PLIST"
+
+  launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
+  launchctl bootstrap "$DOMAIN" "$PLIST" || die "launchctl bootstrap 失败"
+  print -- "已加载 $LABEL"
+  sleep 1
+  cmd_status
+}
+
+cmd_uninstall() {
+  launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
+  if [[ -f "$PLIST" ]]; then
+    rm -f "$PLIST" && print -- "已删除 $PLIST"
+  fi
+  print -- "已卸载 $LABEL（shim 脚本与路由文件保留）"
+}
+
+cmd_restart() {
+  launchctl kickstart -k "$DOMAIN/$LABEL" 2>/dev/null || die "kickstart 失败（未安装？）"
+  sleep 1
+  cmd_status
+}
+
+cmd_status() {
+  print -- "--- launchctl ---"
+  if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1; then
+    launchctl print "$DOMAIN/$LABEL" 2>/dev/null \
+      | grep -E '^\s*(state|pid|program|last exit code) ' | sed 's/^/  /'
+  else
+    print -- "  未加载"
+  fi
+  print -- "--- 端口监听 ---"
+  local out
+  out=$(lsof -nP -iTCP:8788-8793 -sTCP:LISTEN 2>/dev/null | grep LISTEN | awk '{print "  "$1, "PID="$2, $9}')
+  print -- "${out:-  （无）}"
+  print -- "--- 日志尾部 ---"
+  [[ -f "$LOG" ]] && tail -3 "$LOG" | sed 's/^/  /' || print -- "  （无日志）"
+}
+
+case "${1:-}" in
+  install)     cmd_install ;;
+  uninstall)   cmd_uninstall ;;
+  restart)     cmd_restart ;;
+  status)      cmd_status ;;
+  print-plist) plist_body ;;
+  *) print -u2 -- "用法: $0 {install|uninstall|restart|status|print-plist}"; exit 2 ;;
+esac
