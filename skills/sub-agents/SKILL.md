@@ -81,11 +81,9 @@ Bash 调用内完成，需要跨调用派发时按下方 Sandbox Process Managem
 （沙箱下不稳定：即使通过 `sandbox.excludedCommands` 放行，也只对独立简单命令生效）。
 
 - **codex 派发形式**：codex CLI 在 Claude 沙箱内无法初始化（典型报错
-  `failed to initialize in-process app-server client`），`codex-agent-run` 必须从沙箱外运行：
-  以**独立简单命令**调用裸命令 `codex-agent-run ...`，并确保 settings 的 `sandbox.excludedCommands` 含
-  `codex-agent-run *`；引号包裹、`$HOME` 等变量前缀、管道、重定向或 `&&` 复合命令都会使豁免静默失效
-  （实测）。没有豁免时退化为 escape hatch（沙箱失败后在沙箱外重试）。claude-agent-run 无此限制，
-  可在沙箱内直接运行。
+  `failed to initialize in-process app-server client`），必须以无引号的裸命令 `codex-agent-run ...` 独立调用
+  （不加路径前缀、不管道、不复合），使命令在沙箱外运行；若仍出现该报错，在沙箱外重试。
+  claude-agent-run 无此限制，可直接运行。
 - **派发**：优先使用 Bash 工具的 `run_in_background: true`。harness 托管的后台任务跨调用存活，完成时收到携带退出码
   的通知，输出由 harness 落盘；这是跨调用派发的唯一可靠方式——shell `&` 启动的进程在沙箱下会随 Bash 调用结束被回收；
 - **同调用内**：必须在一次调用内并发并收集时，用 `cmd & pid=$!` 启动、`wait "$pid"` 收码；判活用 `kill -0 "$pid"`；
