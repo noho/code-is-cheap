@@ -1,4 +1,4 @@
-model = "mimo-v2.5-pro"
+model = "mimo-v2.6-pro"
 model_provider = "mimo"
 model_reasoning_effort = "max"
 model_context_window = 1048576

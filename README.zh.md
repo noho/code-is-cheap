@@ -184,7 +184,7 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 | `ds` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
-| `mimo` | `mimo-v2.5-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
+| `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
 

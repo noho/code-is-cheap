@@ -13,7 +13,7 @@ closed and unattended dispatch breaks.
 The fix is a one-field patch: copy Codex's built-in catalog and flip
 `codex-auto-review.tool_mode` from `code_mode_only` to `direct`. The resulting
 catalog deliberately contains **no session-model entries** — the profiles'
-models (deepseek-flash, kimi-k3, mimo-v2.5-pro, qwen3.8-max, ...) keep using
+models (deepseek-flash, kimi-k3, mimo-v2.6-pro, qwen3.8-max, ...) keep using
 fallback metadata. Do not "fix" that by adding catalog entries for them: giving
 a session model real catalog metadata changes which tools Codex exposes and was
 observed to break tool calling entirely.

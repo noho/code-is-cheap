@@ -79,7 +79,7 @@ _claude_agent_base_url() {
 _claude_agent_model() {
   case "$1" in
     ds)    print -r -- "deepseek-flash[1m]" ;;
-    mimo)  print -r -- "mimo-v2.5-pro[1m]" ;;
+    mimo)  print -r -- "mimo-v2.6-pro[1m]" ;;
     qwen)  print -r -- "qwen3.8-max[1m]" ;;
     kimi)  print -r -- "kimi-k3[1m]" ;;
     glm)   print -r -- "glm-5.3" ;;
