@@ -14,14 +14,10 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 | Claude Code | `claude-agent-run` | `ds mimo qwen kimi glm local` | one JSON result |
 | Codex | `codex-agent-run` | `ds mimo qwen kimi glm local gpt gpt-5.6 business` | JSONL event stream |
 
-`gpt` 是昂贵的低频模型（gpt-6-astra），`gpt-5.6` 是便宜的高频模型（gpt-5.6-sol，medium effort）：工具密集、
-量大的派发优先用 `gpt-5.6`。
-
 两个 runner 已在 PATH，直接以命令名调用。调用前先跑 `<runner> --help` 确认可用与接口，并用 `pwd -P` 得到当前任务
 workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
 
-codex 的 runner 会检查 `--cwd` 是否在 git 仓库内：不在仓库时**自动追加** `--skip-git-repo-check`，并在 runner 自身
-的 stderr 打印提示（显式传过时保持原样、不重复追加）；claude-agent-run 无此参数。
+codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非 git 仓库时），无需手工传；claude-agent-run 无此参数。
 
 ## Preflight Checklist
 
@@ -39,7 +35,7 @@ setup 错误派发。手工派发时必须自行完成同样八项：
 - [ ] Git 条件已判定（`git -C "$workspace" rev-parse --is-inside-work-tree`）；codex 的非仓库情形由 runner 自动处理；
 - [ ] runner 在 PATH，且 `<provider>` 出现在 `<runner> --list-providers`；
 - [ ] launcher 函数与 profile 已部署（codex：`~/.codex-agent/<provider>/config.toml` 可读）；
-- [ ] prompt 非空可读，且**不含 canary token**（子 Agent 必须自己读文件）；
+- [ ] prompt 非空可读，且**不含 canary token**；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
 - [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。
@@ -102,16 +98,15 @@ codex-agent-run \
 - Claude 总控：以独立的一次 Bash 调用发出——裸命令、无引号、无 `$HOME` 前缀、不管道、不复合，run_dir 等准备
   工作在之前的调用完成，使命令命中 `excludedCommands`；
 - Codex 总控：每个子 Agent 使用一次独立的 `exec_command` 调用，显式设置 `sandbox_permissions:
-  "require_escalated"`（附 justification）；若返回 session_id，通过对应的 `write_stdin` 收集；
-  本协议不依赖 Codex 环境提供命令豁免。
+  "require_escalated"`（附 justification）；若返回 session_id，通过对应的 `write_stdin` 收集。
 
 沙箱内派发的典型症状：codex 子 Agent 初始化失败（`failed to initialize in-process app-server client`）；
 claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。出现这些症状时优先检查派发是否仍在沙箱内；
 若派发已显式提权，则检查子进程自身的沙箱配置——该报错不唯一指向父级派发未出沙箱。
 
 并发派发 = 多次**独立**调用（Claude 总控：多次 `run_in_background: true`；Codex 总控：每个子 Agent 一次独立的
-`exec_command`，若返回 session_id 则用对应的 `write_stdin` 收集），统一使用独立调用便于权限判定与结果追踪；
-Claude 环境中复合命令（`&`、`&&`、管道）还可能无法命中 `excludedCommands`，导致子 Agent 的 Bash 失效。
+`exec_command`，若返回 session_id 则用对应的 `write_stdin` 收集）。Claude 环境中复合命令（`&`、`&&`、管道）
+可能无法命中 `excludedCommands`，导致子 Agent 的 Bash 失效。
 收集时逐个核对各自退出码与 artifact。存在数据依赖、
 写入顺序依赖或 file ownership 重叠时必须串行。不得让多个子 Agent 并发修改同一文件，除非已划分互不重叠的写入范围。
 
@@ -140,7 +135,7 @@ Claude 环境中复合命令（`&`、`&&`、管道）还可能无法命中 `excl
 任务要求工具调用时，"完成"不算成功，必须有工具执行成功的证据：
 
 - Codex：event stream 存在 `item.completed` 且 `item.type == "command_execution"`、`exit_code == 0`；
-- Claude：`num_turns >= 2` 只证明调用过工具，不证明调用成功（实测：Bash 报错的运行该值仍为 2）——以 canary 为准。
+- Claude：`num_turns >= 2` 只证明调用过工具，不证明调用成功——以 canary 为准。
 
 验证类派发（探针、验收、产出会被下游信任）必须使用 canary：
 
@@ -193,7 +188,7 @@ Codex JSONL：
 再次失败后可切换 provider，并记录两次失败和切换原因。不得无上限重试。
 
 区分派发错误与测量数据：基础设施失败（起不来、超时、配置错）可按上一条重试；测量 provider/环境行为的派发，
-失败必须计数，禁止重试到成功，且必须固定并发度——否则测到的是并发与 provider 的混合效应。
+失败必须计数，禁止重试到成功，且必须固定并发度。
 
 修复性重试必须使用新的 task label，并同步用于 prompt、输出文件名和 Claude `--instance`，同时记录与原尝试的关联
 标识；修复性重试不得并入原测量批次的通过率，如需重新测量，另建固定并发度、预定样本数的新批次。
@@ -228,6 +223,3 @@ retry_class: none | setup | provider
 - stdout、stderr、last-message 或 artifact 路径；
 - 总控采纳、部分采纳或驳回的结论及理由；
 - retry、provider switch 和未解决风险。
-
-首次让某 provider 承担工具密集任务前，先用 canary 探针实测通过率；显著低于 1 时不得用于工具任务并告知用户
-（k 次工具调用的任务成功率约 p^k）。

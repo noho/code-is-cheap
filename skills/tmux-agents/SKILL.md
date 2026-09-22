@@ -5,7 +5,7 @@ description: "通过 tmux pane 与已运行的 CLI Agent 通信。用于 pane di
 
 # Tmux Agents
 
-Tmux Agents 只定义与已运行 CLI Agent 的通信协议。目标 Agent 必须已经在 pane 中运行；本 skill 不分配角色。
+目标 Agent 必须已经在 pane 中运行；本 skill 不分配角色。
 
 ## Preflight Checklist
 
