@@ -21,11 +21,11 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 
 ## Preflight Checklist
 
-每次派发前逐项过，优先用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / prompt 骨架，
-并打印可直接执行的完整命令：
+每次派发前逐项过，优先用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / 完整 prompt
+（任务正文 + 固定报告协议），并打印可直接执行的完整命令：
 
 ```bash
-sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd "<absolute-workspace>" --label "<unique-label>"
+sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd "<absolute-workspace>" --label "<unique-label>" --task-file <path>
 ```
 
 `setup_status=ok` 才可派发；任何 `failure=` 都是 **controller setup error**（见失败分类），修好后重跑，不得带着
@@ -35,7 +35,8 @@ setup 错误派发。手工派发时必须自行完成同样八项：
 - [ ] Git 条件已判定（`git -C "$workspace" rev-parse --is-inside-work-tree`）；codex 的非仓库情形由 runner 自动处理；
 - [ ] runner 在 PATH，且 `<provider>` 出现在 `<runner> --list-providers`；
 - [ ] launcher 函数与 profile 已部署（codex：`~/.codex-agent/<provider>/config.toml` 可读）；
-- [ ] prompt 非空可读，且**不含 canary token**；
+- [ ] prompt 已是完整任务正文（`--task` / `--task-file`，报告协议由预检拼入；或 `--prompt-file` 给完整 prompt），
+      且**不含 canary token**；不存在"占位 prompt 通过预检"的状态；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
 - [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。

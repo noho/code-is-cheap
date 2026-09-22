@@ -4,7 +4,8 @@ set -euo pipefail
 # 派发前的机器化预检。sub-agents SKILL 里的约束（显式 --cwd、非 git workspace 的
 # --skip-git-repo-check、唯一 label、全新输出路径、canary 探针、prompt 不得泄露 token）
 # 靠"记得"执行会漏；本脚本把它们变成一次命令即可完成的步骤，并生成 run_dir、canary、
-# prompt 骨架与可直接执行的完整调用。
+# 完整 prompt（任务正文 + 固定报告协议）与可直接执行的完整调用。
+# 没有任务正文就没有完整 prompt，此时预检失败且不输出命令——不存在占位 prompt 的中间状态。
 #
 # stdout 是 key=value 报告（含 setup_status 与 command），stderr 是人读说明。
 # 退出码 0 = setup_status=ok；1 = 预检失败（逐条 failure=… 列出）；2 = 用法错误。
@@ -23,14 +24,17 @@ Required:
   --cwd <dir>                Child workspace; must exist. Always resolved to an absolute path.
   --label <label>            Unique task label; used for instance name and artifact names.
 
-Prompt:
-  --prompt-file <path>       Reuse this prompt file. Without it, a skeleton prompt is written
-                             into the run directory and the printed command points at it.
+Prompt (give exactly one):
+  --task <text>              Task body. The script composes the full prompt from it plus the
+  --task-file <path>         fixed report protocol (runtime/provider/model line, canary read,
+                             stop condition), so the prompt is complete before a command is
+                             printed. There is no placeholder state.
+  --prompt-file <path>       Use this complete prompt verbatim; it is only validated.
 
 On success prints (stdout, key=value):
   setup_status, runtime, provider, runner, launcher, workspace, git_repo,
   skip_git_repo_check, profile_home, run_dir, canary_file, canary_expected,
-  prompt_file, output, stderr, last_message, command
+  prompt_file, prompt_source, output, stderr, last_message, command
 
 The canary token itself is never printed and never embedded in the prompt: the child reads it
 from canary_file, and the controller compares against canary_expected (both whitespace-free,
@@ -46,6 +50,8 @@ provider=""
 cwd=""
 label=""
 prompt_file=""
+task_text=""
+task_file=""
 
 while (( $# > 0 )); do
   case "$1" in
@@ -54,6 +60,8 @@ while (( $# > 0 )); do
     --cwd)         [[ $# -ge 2 ]] || die_usage "--cwd needs a value";         cwd="$2"; shift 2 ;;
     --label)       [[ $# -ge 2 ]] || die_usage "--label needs a value";       label="$2"; shift 2 ;;
     --prompt-file) [[ $# -ge 2 ]] || die_usage "--prompt-file needs a value"; prompt_file="$2"; shift 2 ;;
+    --task)        [[ $# -ge 2 ]] || die_usage "--task needs a value";        task_text="$2"; shift 2 ;;
+    --task-file)   [[ $# -ge 2 ]] || die_usage "--task-file needs a value";   task_file="$2"; shift 2 ;;
     -h|--help)     usage; exit 0 ;;
     *)             die_usage "unknown option: $1" ;;
   esac
@@ -136,23 +144,42 @@ canary_expected="$run_dir/canary.expected"
 printf '%s' "$token" > "$canary_file"
 printf '%s' "$token" > "$canary_expected"
 
+prompt_used=""
+prompt_source=""
 if [[ -n "$prompt_file" ]]; then
+  [[ -z "$task_text" && -z "$task_file" ]] || failures+=("--prompt-file 与 --task / --task-file 只能给一个")
   if [[ -r "$prompt_file" && -s "$prompt_file" ]]; then
-    if grep -qF -- "$token" "$prompt_file"; then
-      failures+=("prompt 文件包含 canary token（必须让子 Agent 自己读文件）: $prompt_file")
-    fi
+    grep -qF -- "$token" "$prompt_file" \
+      && failures+=("prompt 文件包含 canary token（必须让子 Agent 自己读文件）: $prompt_file")
   else
     failures+=("--prompt-file 不可读或为空: $prompt_file")
   fi
   prompt_used="$prompt_file"
+  prompt_source="provided"
 else
-  prompt_used="$run_dir/prompt.txt"
-  {
-    printf '任务：（写清目标 / 非目标 / 允许与禁止的操作 / 停止条件 / 预期产物）\n\n'
-    printf '报告格式（必须遵守）：\n'
-    printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
-    printf -- '- 用工具读取 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写）\n' "$canary_file"
-  } > "$prompt_used"
+  if [[ -n "$task_file" ]]; then
+    if [[ -r "$task_file" && -s "$task_file" ]]; then
+      task_text="$(cat -- "$task_file")"
+    else
+      failures+=("--task-file 不可读或为空: $task_file")
+    fi
+  fi
+  if [[ -n "$task_text" ]]; then
+    # 由脚本拼出完整 prompt：任务正文 + 固定报告协议（含 canary 读取）。不存在占位状态。
+    prompt_used="$run_dir/prompt.txt"
+    {
+      printf '%s\n\n' "$task_text"
+      printf '报告要求（必须遵守）：\n'
+      printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
+      printf -- '- 用工具读取 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写）\n' "$canary_file"
+      printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
+    } > "$prompt_used"
+    grep -qF -- "$token" "$prompt_used" \
+      && failures+=("--task 正文包含 canary token（必须让子 Agent 自己读文件）")
+    prompt_source="composed"
+  else
+    failures+=("必须提供 --task、--task-file 或 --prompt-file（空壳 prompt 不可派发）")
+  fi
 fi
 
 # --- 输出路径（全部全新）----------------------------------------------------
@@ -165,7 +192,9 @@ if [[ "$runtime" == codex ]]; then
 fi
 
 # --- 可直接执行的完整命令（单行、无管道、无复合，token 不出现）--------------
-if [[ "$runtime" == codex ]]; then
+if [[ -z "$prompt_source" ]]; then
+  command_line=""   # 没有完整 prompt 就不给可执行命令
+elif [[ "$runtime" == codex ]]; then
   command_line="$runner --provider $provider --cwd \"$workspace\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --last-message \"$last_message_file\" --prompt-file \"$prompt_used\""
 else
   command_line="$runner --provider $provider --cwd \"$workspace\" --instance \"$label\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --prompt-file \"$prompt_used\""
@@ -186,7 +215,8 @@ printf 'profile_home=%s\n' "${profile_home:-n/a}"
 printf 'run_dir=%s\n' "$run_dir"
 printf 'canary_file=%s\n' "$canary_file"
 printf 'canary_expected=%s\n' "$canary_expected"
-printf 'prompt_file=%s\n' "$prompt_used"
+printf 'prompt_file=%s\n' "${prompt_used:-}"
+printf 'prompt_source=%s\n' "${prompt_source:-none}"
 printf 'output=%s\n' "$out_file"
 printf 'stderr=%s\n' "$stderr_file"
 printf 'last_message=%s\n' "${last_message_file:-n/a}"

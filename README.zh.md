@@ -174,14 +174,15 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 意外继承总控的 workspace。
 
 派发前用 `sub-agent-preflight` 执行 `$sub-agents` 的预检（workspace、git 条件、provider 与 launcher 部署状态、
-输出路径是否全新），并生成 run dir、canary 文件与 prompt 骨架：
+输出路径是否全新），并生成 run dir、canary 文件与**完整 prompt**（任务正文 + 固定报告协议）：
 
 ```bash
-sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01
+sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01 --task-file task.md
 ```
 
-它输出 `key=value` 报告和可直接执行的完整命令（`setup_status=ok` 才可派发）。canary token 不会打印、也不会进入
-prompt —— 子 Agent 自己从生成的文件读取。
+它输出 `key=value` 报告和可直接执行的完整命令（`setup_status=ok` 才可派发）。派发必须有真实任务：给 `--task` /
+`--task-file` 由脚本拼出 prompt，或给 `--prompt-file` 提供完整 prompt；两者都没有时预检失败且不输出命令。
+canary token 不会打印、也不会进入 prompt —— 子 Agent 自己从生成的文件读取。
 
 ## Codex Agent 配置（xx_codex）
 

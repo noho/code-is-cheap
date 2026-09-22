@@ -188,14 +188,17 @@ complete interface. Orchestrators must always pass `--cwd` explicitly so child a
 controller's workspace.
 
 Before dispatching, `sub-agent-preflight` runs the `$sub-agents` preflight checks (workspace, git condition, provider and
-launcher deployment, fresh output paths) and creates the run directory, canary files, and prompt skeleton:
+launcher deployment, fresh output paths) and creates the run directory, canary files, and the full prompt — the task body
+plus the fixed report protocol:
 
 ```bash
-sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01
+sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01 --task-file task.md
 ```
 
-It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). The
-canary token is never printed and never placed in the prompt — the child reads it from the generated file.
+It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). A
+dispatch needs a real task: pass `--task` / `--task-file` and the script composes the prompt, or `--prompt-file` with a
+complete prompt; without one the preflight fails and prints no command. The canary token is never printed and never
+placed in the prompt — the child reads it from the generated file.
 
 ## Codex Agent Profiles
 
