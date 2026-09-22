@@ -149,13 +149,14 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 伪造型静默失败是硬失败，不重试，记录并上报：最终消息含字面工具调用语法（`<tool_call>`、`<tool_result>`、
 裸 JSON 工具对象）而 event stream 无对应执行事件——provider 级缺陷特征。
 
-已确认的非致命诊断不构成失败，但必须逐条记录为 warning。豁免只适用于与下表逐字匹配的模式：
+已确认的非致命诊断不构成失败，但必须逐条记录为 warning。豁免只适用于按下表 predicate 命中的诊断，不做近似
+匹配；检查位置按下表，不看其它流：
 
-| 诊断模式 | 检查位置 | 处理 |
+| predicate（精确判据） | 检查位置 | 处理 |
 | --- | --- | --- |
-| `[claude-code:unrecognized_model] {...}`（行首前缀） | Claude 侧 stderr | 记录 warning，不判失败 |
-| `Model metadata for <model> not found` | Codex event stream 中 `item.type == "error"` 的 message（必要时也在 stderr） | 记录 warning，不判失败 |
-| message 内含 `unrecognized_model` | 同上 | 记录 warning，不判失败 |
+| stderr 某行以 `[claude-code:unrecognized_model]` 开头（其后 JSON payload 不参与匹配） | Claude 侧 stderr | 记录 warning，不判失败 |
+| `item.type == "error"` 且其 message 匹配 `^Model metadata for \S+ not found` | Codex event stream（stderr 不作为豁免依据） | 记录 warning，不判失败 |
+| `item.type == "error"` 且其 message 含子串 `unrecognized_model` | Codex event stream（stderr 不作为豁免依据） | 记录 warning，不判失败 |
 
 其它 error / failed 事件一律按失败处理；只有在退出码、turn completion、工具执行证据与 canary 全部满足、且无其它
 失败证据时才判为通过，并附上 warning。
