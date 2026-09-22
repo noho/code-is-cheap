@@ -22,7 +22,9 @@ Required:
   --runtime <claude|codex>   Which runtime will run the child agent.
   --provider <name>          Provider accepted by that runner (see --list-providers).
   --cwd <dir>                Child workspace; must exist. Always resolved to an absolute path.
-  --label <label>            Unique task label; used for instance name and artifact names.
+  --label <label>            Unique task label; used for instance name and artifact names. Must not
+                             have been used for an earlier dispatch on this machine (best-effort
+                             check of recent run directories).
 
 Prompt (give exactly one):
   --task <text>              Task body. The script composes the full prompt from it plus the
@@ -133,6 +135,13 @@ fi
 if [[ "$runtime" == codex ]]; then
   profile_home="$HOME/.codex-agent/$provider"
   [[ -r "$profile_home/config.toml" ]] || failures+=("codex profile 未部署: $profile_home/config.toml")
+fi
+
+# --- label 唯一性（best-effort）---------------------------------------------
+# 只查本机同一 TMPDIR 下历史 run_dir 里的同名 artifact；已清理的 run_dir 与其它机器查不到，
+# 所以这是护栏而非全局保证。修复性重试本来就必须用新 label。
+if compgen -G "${TMPDIR:-/tmp}/sub-agents.*/${label}.*" >/dev/null 2>&1; then
+  failures+=("label '$label' 已在本机历史 run_dir 用过（修复性重试必须用新 label）")
 fi
 
 # --- prompt 来源 + token 泄露自检 -------------------------------------------
