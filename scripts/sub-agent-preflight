@@ -192,16 +192,18 @@ if [[ "$runtime" == codex ]]; then
 fi
 
 # --- 可直接执行的完整命令（单行、无管道、无复合，token 不出现）--------------
-if [[ -z "$prompt_source" ]]; then
-  command_line=""   # 没有完整 prompt 就不给可执行命令
-elif [[ "$runtime" == codex ]]; then
-  command_line="$runner --provider $provider --cwd \"$workspace\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --last-message \"$last_message_file\" --prompt-file \"$prompt_used\""
-else
-  command_line="$runner --provider $provider --cwd \"$workspace\" --instance \"$label\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --prompt-file \"$prompt_used\""
-fi
-
+# 只有预检全过才给出命令：带着失败项的命令（例如空 workspace）看着可执行，实际最危险。
 status=ok
 (( ${#failures[@]} == 0 )) || status=fail
+
+command_line=""
+if [[ "$status" == ok ]]; then
+  if [[ "$runtime" == codex ]]; then
+    command_line="$runner --provider $provider --cwd \"$workspace\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --last-message \"$last_message_file\" --prompt-file \"$prompt_used\""
+  else
+    command_line="$runner --provider $provider --cwd \"$workspace\" --instance \"$label\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --prompt-file \"$prompt_used\""
+  fi
+fi
 
 printf 'setup_status=%s\n' "$status"
 printf 'runtime=%s\n' "$runtime"
