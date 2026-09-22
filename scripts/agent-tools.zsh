@@ -235,6 +235,7 @@ _codex_agent_title() {
     glm)      print -r -- "CodexAgent-GLM" ;;
     local)    print -r -- "CodexAgent-Local" ;;
     gpt)      print -r -- "CodexAgent-GPT" ;;
+    gpt-5.6)  print -r -- "CodexAgent-GPT-5.6" ;;
     business) print -r -- "CodexAgent-Business" ;;
     *)        return 1 ;;
   esac
@@ -247,7 +248,7 @@ _codex_agent_key_name() {
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
     glm)  print -r -- "GLM_API_KEY" ;;
-    local|gpt|business) print -r -- "" ;;
+    local|gpt|gpt-5.6|business) print -r -- "" ;;
     *) return 1 ;;
   esac
 }
@@ -415,6 +416,7 @@ kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
 gpt_codex()      { _codex_agent_launch gpt "$@"; }
+gpt-5.6_codex()  { _codex_agent_launch gpt-5.6 "$@"; }
 business_codex() { _codex_agent_launch business "$@"; }
 
 ds_codex_app()       { _codex_agent_app ds "$@"; }
@@ -424,4 +426,5 @@ kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
 local_codex_app()    { _codex_agent_app local "$@"; }
 gpt_codex_app()      { _codex_agent_app gpt "$@"; }
+gpt-5.6_codex_app()  { _codex_agent_app gpt-5.6 "$@"; }
 business_codex_app() { _codex_agent_app business "$@"; }

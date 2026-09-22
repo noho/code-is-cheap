@@ -5,7 +5,20 @@ description: "通过 tmux pane 与已运行的 CLI Agent 通信。用于 pane di
 
 # Tmux Agents
 
-Tmux Agents 只定义与已运行 CLI Agent 的通信协议。目标 Agent 必须已经在 pane 中运行；本 skill 不分配角色。
+目标 Agent 必须已经在 pane 中运行；本 skill 不分配角色。
+
+## Preflight Checklist
+
+每次发送前逐项过；任何一项不满足就先报告，不得盲发：
+
+- [ ] socket 可用：`tmux-cli status` 能返回；报 `Operation not permitted` 说明 socket 被沙箱拦，改在沙箱外重试；
+- [ ] 目标 pane 每次重新 discovery，发送只用跨 window 的 full pane id（如 `ai-2:1.3`），不靠记忆或上次的 id；
+- [ ] CLI 类型来自 pane title + `pane_current_command`（`ClaudeAgent-*` / `CodexAgent-*`），不得凭任务角色猜；
+- [ ] 目标状态已确认：空闲可输入，或仍在完成同一任务（此时只发补充指令，不 clear）；
+- [ ] 仅新任务 / 新 gate / 新 slice 才先发 `/clear`，并等它完成 clear 回到可输入状态；
+- [ ] 发送文本不含裸 `#数字`（改用 `PR 45` / `PR-45` / 完整 URL）；
+- [ ] 发送后执行 `wait_idle` → `capture`；单次 wait_idle、暂时无输出、主观耗时都不构成完成证据；
+- [ ] 完成判定按 Completion Check 的证据规则；并发发送仅限相互独立且写入范围不重叠的任务。
 
 ## Agent CLI Types
 
