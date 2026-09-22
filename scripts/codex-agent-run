@@ -13,12 +13,12 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  codex-agent-run --provider <ds|mimo|qwen|kimi|glm|local|gpt|business> [options] --prompt <text>
+  codex-agent-run --provider <ds|mimo|qwen|kimi|glm|local|gpt|gpt-5.6|business> [options] --prompt <text>
   codex-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Codex profile: ds, mimo, qwen, kimi, glm, local, gpt, or business.
+  --provider <name>          Codex profile: ds, mimo, qwen, kimi, glm, local, gpt, gpt-5.6, or business.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -217,7 +217,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds mimo qwen kimi glm local gpt business
+      printf '%s\n' ds mimo qwen kimi glm local gpt gpt-5.6 business
       exit 0
       ;;
     -h|--help)
@@ -265,6 +265,10 @@ case "$provider" in
   gpt|openai|pro)
     provider="gpt"
     runner="gpt_codex"
+    ;;
+  gpt-5.6|gpt56|sol)
+    provider="gpt-5.6"
+    runner="gpt-5.6_codex"
     ;;
   business|biz)
     provider="business"

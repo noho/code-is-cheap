@@ -148,7 +148,7 @@ source ~/.zshrc
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
 | Claude Code | `ds`、`mimo`、`qwen`、`kimi`、`glm`、`local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`、`mimo`、`qwen`、`kimi`、`glm`、`local`、`gpt`、`business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds`、`mimo`、`qwen`、`kimi`、`glm`、`local`、`gpt`、`gpt-5.6`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS`、`CodexAgent-GPT` 这类稳定的 tmux pane title。
@@ -176,8 +176,11 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 ## Codex Agent 配置（xx_codex）
 
 每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。六个第三方 profile（`ds`、`glm`、`kimi`、
-`mimo`、`qwen`、`local`）已在仓库 `codex-agent/profiles/` 下维护；OpenAI 后端的三个（`gpt`、`business`、
-`codex`）不在管理范围内。
+`mimo`、`qwen`、`local`）与两个订阅制 OpenAI profile（`gpt`、`gpt-5.6`）已在仓库 `codex-agent/profiles/`
+下维护；`business`、`codex` 不在管理范围内。
+
+`gpt` 跑 `gpt-6-astra`，留给重要、低频的任务；`gpt-5.6` 跑 `gpt-5.6-sol`、medium reasoning effort，用于
+日常消耗量大的任务。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
@@ -187,9 +190,12 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
+| `gpt` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
+| `gpt-5.6` | `gpt-5.6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
 凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`）；
-`local` 不需要 key。
+`local` 不需要 key；两个 OpenAI profile 用 ChatGPT 账号登录，各自的 profile home 里保存自己的 `auth.json`，
+不入仓库。
 
 安装或更新：
 
@@ -202,6 +208,12 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 ```
 
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
+
+模板只承载仓库拥有的设置（model、reasoning effort、沙箱、审批、`web_search`、`service_tier`、env 策略）。
+Codex 本体和 ChatGPT 桌面端还会往同一个文件写本机状态——`[projects.*]` trust、`[hooks.state]`、
+`[mcp_servers.*]`、`[plugins.*]`、`[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 这类根键。同步脚本
+会把这些内容从 live 文件合并进来（`scripts/codex-config-merge.py`）而不是丢掉；合并失败时脚本中止，
+live 文件保持原样。
 
 `model-catalog.json`（kimi / mimo / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
 （`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
@@ -427,6 +439,8 @@ codex-agent/
     mimo/config.toml
     qwen/config.toml
     local/config.toml
+    gpt/config.toml
+    gpt-5.6/config.toml
   bin/
     codex-auto-review-shim
     codex-auto-review-shim-service
@@ -435,6 +449,7 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  codex-config-merge.py
   patch-codex-model-catalog.py
   sync-agent-tools.sh
   sync-codex-agent.sh

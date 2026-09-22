@@ -12,7 +12,10 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 | Runtime | Command | Providers | Default structured output |
 | --- | --- | --- | --- |
 | Claude Code | `claude-agent-run` | `ds mimo qwen kimi glm local` | one JSON result |
-| Codex | `codex-agent-run` | `ds mimo qwen kimi glm local gpt business` | JSONL event stream |
+| Codex | `codex-agent-run` | `ds mimo qwen kimi glm local gpt gpt-5.6 business` | JSONL event stream |
+
+`gpt` 是昂贵的低频模型（gpt-6-astra），`gpt-5.6` 是便宜的高频模型（gpt-5.6-sol，medium effort）：工具密集、
+量大的派发优先用 `gpt-5.6`。
 
 两个 runner 已在 PATH，直接以命令名调用。调用前先跑 `<runner> --help` 确认可用与接口，并用 `pwd -P` 得到当前任务
 workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。

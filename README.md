@@ -160,7 +160,7 @@ Available launchers:
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
 | Claude Code | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local`, `gpt`, `business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local`, `gpt`, `gpt-5.6`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT`.
@@ -190,8 +190,12 @@ controller's workspace.
 ## Codex Agent Profiles
 
 Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The six
-third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) are versioned in this repository under
-`codex-agent/profiles/`; the OpenAI-backed ones (`gpt`, `business`, `codex`) are not managed here.
+third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) and the two subscription-backed OpenAI
+profiles (`gpt`, `gpt-5.6`) are versioned in this repository under `codex-agent/profiles/`; `business` and
+`codex` are not managed here.
+
+`gpt` runs `gpt-6-astra` and is kept for important, low-volume work; `gpt-5.6` runs `gpt-5.6-sol` at medium
+reasoning effort for the high-volume daily tasks.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
@@ -201,9 +205,12 @@ third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) are versione
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
+| `gpt` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-5.6` | `gpt-5.6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`,
-`QWEN_API_KEY`); `local` needs none.
+`QWEN_API_KEY`); `local` needs none, and the two OpenAI profiles sign in with a ChatGPT account — each profile
+home keeps its own `auth.json`, which is not tracked here.
 
 Set up or update the profiles:
 
@@ -217,6 +224,13 @@ Set up or update the profiles:
 
 The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
 install (Codex accepts only absolute paths in these fields).
+
+Templates carry only the settings this repository owns (model, reasoning effort, sandbox, approvals,
+`web_search`, `service_tier`, shell environment policy). Codex itself and the ChatGPT desktop app write
+per-machine state into the same files — `[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`,
+`[plugins.*]`, `[marketplaces.*]`, `[tui.*]`, `[desktop]`, and root-level keys such as `notify`. The sync
+script merges those forward from the live file (`scripts/codex-config-merge.py`) rather than dropping them; if
+the merge fails it aborts and leaves the live file untouched.
 
 `model-catalog.json` (kimi / mimo / qwen) is a **generated artifact and is not tracked**. The sync script
 regenerates it from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex changes
@@ -448,6 +462,8 @@ codex-agent/
     mimo/config.toml
     qwen/config.toml
     local/config.toml
+    gpt/config.toml
+    gpt-5.6/config.toml
   bin/
     codex-auto-review-shim
     codex-auto-review-shim-service
@@ -456,6 +472,7 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  codex-config-merge.py
   patch-codex-model-catalog.py
   sync-agent-tools.sh
   sync-codex-agent.sh

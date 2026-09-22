@@ -3,14 +3,17 @@ set -euo pipefail
 
 # Sync the tracked codex-agent configuration to ~/.codex-agent:
 #
-#   codex-agent/profiles/<profile>/config.toml   六个第三方 profile 的配置
+#   codex-agent/profiles/<profile>/config.toml   profile 配置（仓库只存核心设置）
 #   codex-agent/bin/codex-auto-review-shim       自动审批反代（guardian 模型名改写）
 #   codex-agent/bin/codex-auto-review-shim-service   launchd 管理脚本
 #   codex-agent/shim-routes.json                 反代路由表
 #   model-catalog.json（kimi/mimo/qwen）          由 scripts/patch-codex-model-catalog.py 现场生成
 #
-# 覆盖 config.toml 前会写时间戳备份（.bak-YYYYmmddHHMMSS）。注意：Codex 自己写入的
-# [projects.*] trust 条目不在仓库模板里，覆盖后会丢；Codex 会在再次进入相应目录时重建。
+# config.toml 写入的是"仓库模板 + live 独有内容"的合并结果，合并逻辑在
+# scripts/codex-config-merge.py：模板拥有它定义的设置（model、reasoning effort、沙箱、
+# 审批、env 策略等），live 拥有模板没有的内容（[projects.*] trust、[hooks.state]、app
+# 写入的 [mcp_servers.*]/[plugins.*]/[marketplaces.*]/[tui.*]/[desktop] 及 notify 等根键）。
+# 合并失败时脚本中止，live 文件保持原样。覆盖前会写时间戳备份（.bak-YYYYmmddHHMMSS）。
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target_root="${CODEX_AGENT_TARGET:-$HOME/.codex-agent}"
@@ -31,29 +34,32 @@ for src in "$repo_root"/codex-agent/profiles/*/config.toml; do
     cp -p "$dest" "$backup"
     echo "backup: $backup"
   fi
-  install -m 600 "$src" "$dest"
+  # 先合并再装入：合并失败就中止，live 文件保持原样。
+  merged_file="$dest_dir/.merged.$$"
+  merge_args=(--template "$src")
+  if [[ -f "$backup" ]]; then
+    merge_args+=(--live "$backup")
+  fi
+  if ! python3 "$repo_root/scripts/codex-config-merge.py" "${merge_args[@]}" > "$merged_file"; then
+    rm -f "$merged_file"
+    echo "ERROR: $profile 配置合并失败，$dest 未改动" >&2
+    exit 1
+  fi
+  chmod 600 "$merged_file"
   # 模板用 @HOME@ 占位（Codex 只接受绝对路径，~ / $HOME 都不展开），安装时注入本机 home
-  tmp_inject="$dest.tmp.$$"
-  sed "s|@HOME@|$HOME|g" "$dest" > "$tmp_inject"
+  tmp_inject="$merged_file.inject.$$"
+  sed "s|@HOME@|$HOME|g" "$merged_file" > "$tmp_inject"
   chmod 600 "$tmp_inject"
   mv "$tmp_inject" "$dest"
+  rm -f "$merged_file"
   if grep -q '@HOME@' "$dest"; then
     echo "WARNING: $dest 仍含未替换的 @HOME@ 占位符" >&2
   fi
-  if [[ -f "${backup:-}" ]]; then
-    # [projects.*] trust 与 [hooks.state] 是 Codex 自己写入的尾部运行时状态，
-    # 仓库模板不含它们；从备份逐字节回填（含尾随空行，避免无谓 diff），
-    # 否则每次同步都要重新信任目录。
-    preserved_file="$dest_dir/.preserved.$$"
-    awk '/^\[(projects\.|hooks\.state)/{keep=1} keep' "$backup" > "$preserved_file"
-    if [[ -s "$preserved_file" ]]; then
-      printf '\n' >> "$dest"
-      cat "$preserved_file" >> "$dest"
-      echo "preserved runtime sections: $(basename "$backup")"
-    fi
-    rm -f "$preserved_file"
+  if [[ -f "$backup" ]]; then
+    echo "synced profile: $profile (template + live runtime state, backup $(basename "$backup"))"
+  else
+    echo "synced profile: $profile (template only)"
   fi
-  echo "synced profile: $profile"
 done
 
 # --- shim + launcher scripts ------------------------------------------------

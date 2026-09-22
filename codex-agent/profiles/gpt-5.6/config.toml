@@ -1,0 +1,55 @@
+# This template carries only the settings this repository owns. Everything Codex
+# or the ChatGPT desktop app writes into the live file — [projects.*] trust
+# entries, [hooks.state], [mcp_servers.*], [plugins.*], [marketplaces.*],
+# [tui.*], [desktop], and root-level keys such as `notify` — is machine-local
+# runtime state; scripts/sync-codex-agent.sh preserves it in place.
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+
+web_search = "disabled"
+service_tier = "default"
+
+# Allow only the environment needed by development tools. Model credentials
+# remain in the Codex parent process and are not inherited by tool shells.
+# Prevent login profiles from reintroducing credentials into tool shells.
+allow_login_shell = false
+
+[sandbox_workspace_write]
+network_access = true
+
+[shell_environment_policy]
+inherit = "all"
+ignore_default_excludes = false
+
+[shell_environment_policy.filters]
+"PATH" = "include"
+"HOME" = "include"
+"USER" = "include"
+"LOGNAME" = "include"
+"SHELL" = "include"
+"TMPDIR" = "include"
+"TMP" = "include"
+"TEMP" = "include"
+"LANG" = "include"
+"LC_*" = "include"
+"TERM" = "include"
+"COLORTERM" = "include"
+"TERM_PROGRAM" = "include"
+"TZ" = "include"
+"NO_COLOR" = "include"
+"CLICOLOR" = "include"
+"CI" = "include"
+"VIRTUAL_ENV" = "include"
+"CONDA_PREFIX" = "include"
+"PYENV_ROOT" = "include"
+"NVM_DIR" = "include"
+"*KEY*" = "exclude"
+"*TOKEN*" = "exclude"
+"*SECRET*" = "exclude"
+"*PASSWORD*" = "exclude"
+"*CREDENTIAL*" = "exclude"
+"*AUTHORIZATION*" = "exclude"
+"SSH_AUTH_SOCK" = "include"
