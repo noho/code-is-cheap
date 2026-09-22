@@ -21,7 +21,7 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 
 ## Preflight Checklist
 
-每次派发前逐项过，优先用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / 完整 prompt
+每次派发前逐项过，用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / 完整 prompt
 （任务正文 + 固定报告协议），并打印可直接执行的完整命令：
 
 ```bash
@@ -29,7 +29,10 @@ sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd "<absolute-
 ```
 
 `setup_status=ok` 才可派发；任何 `failure=` 都是 **controller setup error**（见失败分类），修好后重跑，不得带着
-setup 错误派发。手工派发时必须自行完成同样八项：
+setup 错误派发。
+
+只有 `sub-agent-preflight` 不可用（未安装或执行失败）时才允许手工预检：必须逐项完成同样八项，把每项结果写进
+报告（`setup_status` + 逐条 `failure`），不得跳过检查直接派发：
 
 - [ ] workspace 用 `pwd -P` 解析为绝对路径，`--cwd` 显式传入，不依赖总控当前目录；
 - [ ] Git 条件已判定（`git -C "$workspace" rev-parse --is-inside-work-tree`）；codex 的非仓库情形由 runner 自动处理；
@@ -210,14 +213,15 @@ Codex JSONL：
 
 ```yaml
 setup_status: ok | fail          # sub-agent-preflight 或手工预检的结果
-agent_status: completed | blocked | failed
+agent_status: completed | blocked | failed | not_started
 tool_evidence: yes | no          # Codex: item.completed + command_execution + exit_code=0；Claude: 以 canary 为准
 canary_status: match | mismatch | not_run
 warnings: []                     # 非致命诊断逐条列出
 retry_class: none | setup | provider
 ```
 
-其后接人读叙述，逐个列出：
+`setup_status=fail` 时子 Agent 未启动：`agent_status` 必须写 `not_started`、`canary_status` 必须写 `not_run`、
+`retry_class` 写 `setup`。其后接人读叙述，逐个列出：
 
 - runtime、provider 和唯一 task label；
 - 子任务；
