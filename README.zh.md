@@ -181,8 +181,10 @@ sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace 
 ```
 
 它输出 `key=value` 报告和可直接执行的完整命令（`setup_status=ok` 才可派发）。派发必须有真实任务：给 `--task` /
-`--task-file` 由脚本拼出 prompt，或给 `--prompt-file` 提供完整 prompt；两者都没有时预检失败且不输出命令。
-canary token 不会打印、也不会进入 prompt —— 子 Agent 自己从生成的文件读取。
+`--task-file` 由脚本拼出 prompt，或给 `--prompt-file` 提供完整 prompt；三者必须且只能给一个，否则预检失败且不输出
+命令。prompt 还必须带 Dispatch Contract 的三节 —— `目标` / `非目标` / `停止条件`（每节单独一行、行首写节名，
+英文 `Goal` / `Non-goals` / `Stop condition` 等价），预检会校验。canary token 不会打印、也不会进入 prompt ——
+子 Agent 自己从生成的文件读取。
 
 ## Codex Agent 配置（xx_codex）
 

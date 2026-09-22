@@ -197,8 +197,10 @@ sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace 
 
 It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). A
 dispatch needs a real task: pass `--task` / `--task-file` and the script composes the prompt, or `--prompt-file` with a
-complete prompt; without one the preflight fails and prints no command. The canary token is never printed and never
-placed in the prompt — the child reads it from the generated file.
+complete prompt; without exactly one of them the preflight fails and prints no command. The prompt must also carry the
+dispatch-contract sections — `Goal` / `Non-goals` / `Stop condition`, one per line with the section name first (the
+Chinese equivalents are accepted) — and the preflight checks those. The canary token is never printed and never placed
+in the prompt — the child reads it from the generated file.
 
 ## Codex Agent Profiles
 

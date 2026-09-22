@@ -39,7 +39,8 @@ setup 错误派发。
 - [ ] runner 在 PATH，且 `<provider>` 出现在 `<runner> --list-providers`；
 - [ ] launcher 函数与 profile 已部署（codex：`~/.codex-agent/<provider>/config.toml` 可读）；
 - [ ] prompt 是完整任务正文（`--task` / `--task-file`，报告协议由预检拼入；或 `--prompt-file` 给完整 prompt），
-      且**不含 canary token**；
+      含 `目标` / `非目标` / `停止条件` 三节（每节单独一行、行首写节名，英文 `Goal` / `Non-goals` / `Stop condition`
+      等价；预检会校验），且**不含 canary token**；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
 - [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。

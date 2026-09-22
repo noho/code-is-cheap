@@ -29,9 +29,11 @@ Required:
 Prompt (give exactly one):
   --task <text>              Task body. The script composes the full prompt from it plus the
   --task-file <path>         fixed report protocol (runtime/provider/model line, canary read,
-                             stop condition), so the prompt is complete before a command is
-                             printed. There is no placeholder state.
-  --prompt-file <path>       Use this complete prompt verbatim; it is only validated.
+                             stop condition). The body must carry the Dispatch Contract
+                             sections, one per line, starting with the section name:
+                             `目标` / `非目标` / `停止条件` (or `Goal` / `Non-goals` /
+                             `Stop condition`).
+  --prompt-file <path>       Use this complete prompt verbatim; the same section check applies.
 
 On success prints (stdout, key=value):
   setup_status, runtime, provider, runner, launcher, workspace, git_repo,
@@ -155,39 +157,55 @@ printf '%s' "$token" > "$canary_expected"
 
 prompt_used=""
 prompt_source=""
+
+prompt_arg_count=0
+[[ -z "$prompt_file" ]] || prompt_arg_count=$((prompt_arg_count + 1))
+[[ -z "$task_text" ]] || prompt_arg_count=$((prompt_arg_count + 1))
+[[ -z "$task_file" ]] || prompt_arg_count=$((prompt_arg_count + 1))
+[[ "$prompt_arg_count" -eq 1 ]] \
+  || failures+=("--prompt-file / --task / --task-file 必须且只能给一个（当前给了 $prompt_arg_count 个）")
+
 if [[ -n "$prompt_file" ]]; then
-  [[ -z "$task_text" && -z "$task_file" ]] || failures+=("--prompt-file 与 --task / --task-file 只能给一个")
   if [[ -r "$prompt_file" && -s "$prompt_file" ]]; then
-    grep -qF -- "$token" "$prompt_file" \
-      && failures+=("prompt 文件包含 canary token（必须让子 Agent 自己读文件）: $prompt_file")
+    prompt_used="$prompt_file"
+    prompt_source="provided"
   else
     failures+=("--prompt-file 不可读或为空: $prompt_file")
   fi
-  prompt_used="$prompt_file"
-  prompt_source="provided"
-else
-  if [[ -n "$task_file" ]]; then
-    if [[ -r "$task_file" && -s "$task_file" ]]; then
-      task_text="$(cat -- "$task_file")"
-    else
-      failures+=("--task-file 不可读或为空: $task_file")
-    fi
-  fi
-  if [[ -n "$task_text" ]]; then
-    # 由脚本拼出完整 prompt：任务正文 + 固定报告协议（含 canary 读取）。不存在占位状态。
-    prompt_used="$run_dir/prompt.txt"
-    {
-      printf '%s\n\n' "$task_text"
-      printf '报告要求（必须遵守）：\n'
-      printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
-      printf -- '- 用工具读取 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写）\n' "$canary_file"
-      printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
-    } > "$prompt_used"
-    grep -qF -- "$token" "$prompt_used" \
-      && failures+=("--task 正文包含 canary token（必须让子 Agent 自己读文件）")
-    prompt_source="composed"
+elif [[ -n "$task_file" && -z "$task_text" ]]; then
+  if [[ -r "$task_file" && -s "$task_file" ]]; then
+    task_text="$(cat -- "$task_file")"
   else
-    failures+=("必须提供 --task、--task-file 或 --prompt-file（空壳 prompt 不可派发）")
+    failures+=("--task-file 不可读或为空: $task_file")
+  fi
+elif [[ -z "$task_text" ]]; then
+  failures+=("必须提供 --task、--task-file 或 --prompt-file（空壳 prompt 不可派发）")
+fi
+
+if [[ -z "$prompt_used" && -n "$task_text" ]]; then
+  # 由脚本拼出完整 prompt：任务正文 + 固定报告协议（含 canary 读取）。不存在占位状态。
+  prompt_used="$run_dir/prompt.txt"
+  {
+    printf '%s\n\n' "$task_text"
+    printf '报告要求（必须遵守）：\n'
+    printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
+    printf -- '- 用工具读取 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写）\n' "$canary_file"
+    printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
+  } > "$prompt_used"
+  prompt_source="composed"
+fi
+
+if [[ -n "$prompt_used" ]]; then
+  grep -qF -- "$token" "$prompt_used" \
+    && failures+=("prompt 包含 canary token（必须让子 Agent 自己读文件）")
+  # Dispatch Contract 要求 prompt 说明目标、非目标与停止条件；按下表逐节校验结构，
+  # 每节单独一行、行首写节名（中英皆可）。内容质量仍由总控负责。
+  missing_sections=()
+  for section in '目标|goal' '非目标|non-goal' '停止条件|stop[[:space:]]*condition'; do
+    grep -qiE "^[[:space:]]*(${section})" "$prompt_used" || missing_sections+=("${section%%|*}")
+  done
+  if (( ${#missing_sections[@]} > 0 )); then
+    failures+=("prompt 缺少小节（每节单独一行、行首写节名）：${missing_sections[*]}；见 Dispatch Contract")
   fi
 fi
 
