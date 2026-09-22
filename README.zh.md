@@ -173,6 +173,16 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 以及 provider-specific passthrough arguments。完整接口使用 `--help` 查看。总控必须显式传入 `--cwd`，避免子 Agent
 意外继承总控的 workspace。
 
+派发前用 `sub-agent-preflight` 执行 `$sub-agents` 的预检（workspace、git 条件、provider 与 launcher 部署状态、
+输出路径是否全新），并生成 run dir、canary 文件与 prompt 骨架：
+
+```bash
+sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01
+```
+
+它输出 `key=value` 报告和可直接执行的完整命令（`setup_status=ok` 才可派发）。canary token 不会打印、也不会进入
+prompt —— 子 Agent 自己从生成的文件读取。
+
 ## Codex Agent 配置（xx_codex）
 
 每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。六个第三方 profile（`ds`、`glm`、`kimi`、
@@ -450,6 +460,7 @@ scripts/
   claude-agent-run
   codex-agent-run
   codex-config-merge.py
+  sub-agent-preflight
   patch-codex-model-catalog.py
   sync-agent-tools.sh
   sync-codex-agent.sh

@@ -187,6 +187,16 @@ ephemeral or persistent sessions, and provider-specific passthrough arguments. R
 complete interface. Orchestrators must always pass `--cwd` explicitly so child agents do not accidentally inherit the
 controller's workspace.
 
+Before dispatching, `sub-agent-preflight` runs the `$sub-agents` preflight checks (workspace, git condition, provider and
+launcher deployment, fresh output paths) and creates the run directory, canary files, and prompt skeleton:
+
+```bash
+sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01
+```
+
+It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). The
+canary token is never printed and never placed in the prompt — the child reads it from the generated file.
+
 ## Codex Agent Profiles
 
 Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The six
@@ -473,6 +483,7 @@ scripts/
   claude-agent-run
   codex-agent-run
   codex-config-merge.py
+  sub-agent-preflight
   patch-codex-model-catalog.py
   sync-agent-tools.sh
   sync-codex-agent.sh

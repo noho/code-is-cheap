@@ -292,6 +292,18 @@ esac
 [[ -d "$workdir" ]] || die "working directory does not exist: $workdir"
 workdir="${workdir:A}"
 
+# codex 拒绝在 git 仓库外运行，除非显式传入 --skip-git-repo-check。按 cwd 自动判定并追加，
+# 避免总控漏传（实测发生过的失败）。显式传入时保持原样，不重复追加。
+if [[ "$skip_git_repo_check" != true ]]; then
+  if ! command -v git >/dev/null 2>&1; then
+    skip_git_repo_check=true
+    print -u2 -- "$PROGRAM_NAME: git 不可用，无法判定仓库状态，已自动追加 --skip-git-repo-check"
+  elif ! git -C "$workdir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    skip_git_repo_check=true
+    print -u2 -- "$PROGRAM_NAME: $workdir 不在 git 仓库内，已自动追加 --skip-git-repo-check"
+  fi
+fi
+
 if (( ${#positional_prompt[@]} > 0 )); then
   [[ "$explicit_prompt" == false ]] || die "positional prompt cannot be combined with --prompt or --prompt-file"
   prompt_text="${(j: :)positional_prompt}"
