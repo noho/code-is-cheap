@@ -41,6 +41,14 @@
       "id_fix": true,
       "json_fmt_fix": false,
       "drop_tools_item": false
+    },
+    {
+      "port": 8793,
+      "upstream": "https://token-plan-cn.xiaomimimo.com",
+      "to": "mimo-v2.6-flash",
+      "id_fix": false,
+      "json_fmt_fix": true,
+      "drop_tools_item": false
     }
   ]
 }
