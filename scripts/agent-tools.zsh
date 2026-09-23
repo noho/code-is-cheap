@@ -234,9 +234,10 @@ _codex_agent_title() {
     kimi)     print -r -- "CodexAgent-Kimi" ;;
     glm)      print -r -- "CodexAgent-GLM" ;;
     local)    print -r -- "CodexAgent-Local" ;;
-    gpt)      print -r -- "CodexAgent-GPT" ;;
-    gpt-5.6)  print -r -- "CodexAgent-GPT-5.6" ;;
-    business) print -r -- "CodexAgent-Business" ;;
+    gpt-6-astra) print -r -- "CodexAgent-GPT-6-Astra" ;;
+    gpt-6-sol)   print -r -- "CodexAgent-GPT-6-Sol" ;;
+    gpt-6-luna)  print -r -- "CodexAgent-GPT-6-Luna" ;;
+    business)    print -r -- "CodexAgent-Business" ;;
     *)        return 1 ;;
   esac
 }
@@ -248,7 +249,7 @@ _codex_agent_key_name() {
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
     glm)  print -r -- "GLM_API_KEY" ;;
-    local|gpt|gpt-5.6|business) print -r -- "" ;;
+    local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) print -r -- "" ;;
     *) return 1 ;;
   esac
 }
@@ -415,8 +416,9 @@ qwen_codex()     { _codex_agent_launch qwen "$@"; }
 kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
-gpt_codex()      { _codex_agent_launch gpt "$@"; }
-gpt-5.6_codex()  { _codex_agent_launch gpt-5.6 "$@"; }
+gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
+gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
+gpt-6-luna_codex()  { _codex_agent_launch gpt-6-luna "$@"; }
 business_codex() { _codex_agent_launch business "$@"; }
 
 ds_codex_app()       { _codex_agent_app ds "$@"; }
@@ -425,6 +427,7 @@ qwen_codex_app()     { _codex_agent_app qwen "$@"; }
 kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
 local_codex_app()    { _codex_agent_app local "$@"; }
-gpt_codex_app()      { _codex_agent_app gpt "$@"; }
-gpt-5.6_codex_app()  { _codex_agent_app gpt-5.6 "$@"; }
+gpt-6-astra_codex_app() { _codex_agent_app gpt-6-astra "$@"; }
+gpt-6-sol_codex_app()   { _codex_agent_app gpt-6-sol "$@"; }
+gpt-6-luna_codex_app()  { _codex_agent_app gpt-6-luna "$@"; }
 business_codex_app() { _codex_agent_app business "$@"; }

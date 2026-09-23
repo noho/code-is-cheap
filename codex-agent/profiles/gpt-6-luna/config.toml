@@ -3,7 +3,7 @@
 # entries, [hooks.state], [mcp_servers.*], [plugins.*], [marketplaces.*],
 # [tui.*], [desktop], and root-level keys such as `notify` — is machine-local
 # runtime state; scripts/sync-codex-agent.sh preserves it in place.
-model = "gpt-5.6-sol"
+model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"

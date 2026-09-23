@@ -160,15 +160,15 @@ Available launchers:
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
 | Claude Code | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local`, `gpt`, `gpt-5.6`, `business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds`, `mimo`, `qwen`, `kimi`, `glm`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
-Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT`.
+Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT-6-Astra`.
 The app launchers open a new Codex app instance with the selected profile and optional workspace.
 
 ```bash
 mimo_claude --title
-gpt_codex --title
+gpt-6-astra_codex --title
 business_codex_app /path/to/workspace
 ```
 
@@ -179,7 +179,7 @@ For non-interactive child-agent calls, use the installed runner commands:
 
 ```bash
 claude-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
-codex-agent-run --provider gpt --cwd /path/to/workspace --prompt-file task.md
+codex-agent-run --provider gpt-6-astra --cwd /path/to/workspace --prompt-file task.md
 ```
 
 The runners accept prompts through `--prompt`, `--prompt-file`, positional text, or stdin, and support output files,
@@ -192,7 +192,7 @@ launcher deployment, fresh output paths) and creates the run directory, canary f
 plus the fixed report protocol:
 
 ```bash
-sub-agent-preflight --runtime codex --provider gpt-5.6 --cwd /path/to/workspace --label review-gpt56-01 --task-file task.md
+sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspace --label review-sol-01 --task-file task.md
 ```
 
 It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). A
@@ -205,12 +205,12 @@ in the prompt — the child reads it from the generated file.
 ## Codex Agent Profiles
 
 Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The six
-third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) and the two subscription-backed OpenAI
-profiles (`gpt`, `gpt-5.6`) are versioned in this repository under `codex-agent/profiles/`; `business` and
-`codex` are not managed here.
+third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `qwen`, `local`) and the three subscription-backed OpenAI
+profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
+`business` and `codex` are not managed here.
 
-`gpt` runs `gpt-6-astra` and is kept for important, low-volume work; `gpt-5.6` runs `gpt-5.6-sol` at medium
-reasoning effort for the high-volume daily tasks.
+`gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
+`gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
@@ -220,11 +220,12 @@ reasoning effort for the high-volume daily tasks.
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
-| `gpt` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
-| `gpt-5.6` | `gpt-5.6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-sol` | `gpt-6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`,
-`QWEN_API_KEY`); `local` needs none, and the two OpenAI profiles sign in with a ChatGPT account — each profile
+`QWEN_API_KEY`); `local` needs none, and the three OpenAI profiles sign in with a ChatGPT account — each profile
 home keeps its own `auth.json`, which is not tracked here.
 
 Set up or update the profiles:
@@ -285,7 +286,7 @@ Gateflow with `tmux-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$tmux-agents routes Agents: CodexAgent-GPT handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review / re-review passes.
+$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review / re-review passes.
 Re-discover panes before every send, clear the session for new tasks, and avoid bare #numbers.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -294,7 +295,7 @@ Gateflow with `sub-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$sub-agents dispatches through runner subprocesses: Codex gpt handles plan / implement / fix, while Claude mimo / ds run the two review / re-review passes.
+$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Claude mimo / ds run the two review / re-review passes.
 Pass the workspace absolute path explicitly in every call and use separate output / stderr files; the controller checks the structured results and adjudicates itself.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -324,7 +325,7 @@ Phaseflow with `tmux-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review passes, while CodexAgent-GPT handles plan / implement / fix.
+$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
 The controller Agent completes preflight and goal confirmation first; after confirmation, dispatch gate by gate following Gateflow's Gate Order.
 After each Agent returns, the controller reads the artifact, adjudicates findings, updates control_doc, collects residual risks, and closes resolved risks.
 After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
@@ -335,7 +336,7 @@ Phaseflow with `sub-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$sub-agents dispatches through runner subprocesses: Claude mimo / ds run the two review passes, while Codex gpt handles plan / implement / fix.
+$sub-agents dispatches through runner subprocesses: Claude mimo / ds run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
 The controller advances through Gateflow's Gate Order, checks each subprocess's exit status and structured output, and updates control_doc.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -477,8 +478,9 @@ codex-agent/
     mimo/config.toml
     qwen/config.toml
     local/config.toml
-    gpt/config.toml
-    gpt-5.6/config.toml
+    gpt-6-astra/config.toml
+    gpt-6-sol/config.toml
+    gpt-6-luna/config.toml
   bin/
     codex-auto-review-shim
     codex-auto-review-shim-service
