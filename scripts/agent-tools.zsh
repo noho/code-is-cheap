@@ -57,7 +57,8 @@ _claude_agent_title() {
 _claude_agent_key_name() {
   case "$1" in
     ds)    print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo|mimo-fast|mimo-flash)  print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo|mimo-flash)  print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo-fast)  print -r -- "MIMO_API_KEY" ;;
     qwen)  print -r -- "QWEN_API_KEY" ;;
     kimi)  print -r -- "KIMI_API_KEY" ;;
     glm)   print -r -- "GLM_API_KEY" ;;
@@ -253,7 +254,8 @@ _codex_agent_title() {
 _codex_agent_key_name() {
   case "$1" in
     ds)   print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo|mimo-fast|mimo-flash) print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo|mimo-flash) print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo-fast) print -r -- "MIMO_API_KEY" ;;
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
     glm)  print -r -- "GLM_API_KEY" ;;

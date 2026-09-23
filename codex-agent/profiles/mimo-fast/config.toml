@@ -59,7 +59,7 @@ ignore_default_excludes = false
 name = "MiMo"
 base_url = "http://127.0.0.1:8794/v1"
 # base_url = "https://token-plan-cn.xiaomimimo.com/v1"  # 直连原值；停用 shim 时改回本行
-env_key = "MIMO_PLAN_API_KEY"
+env_key = "MIMO_API_KEY"
 wire_api = "responses"
 requires_openai_auth = false
 
