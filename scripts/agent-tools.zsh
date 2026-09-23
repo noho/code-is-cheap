@@ -44,6 +44,7 @@ _claude_agent_title() {
   case "$1" in
     ds)    print -r -- "ClaudeAgent-DS" ;;
     mimo)  print -r -- "ClaudeAgent-MiMo" ;;
+    mimo-flash) print -r -- "ClaudeAgent-MiMo-Flash" ;;
     qwen)  print -r -- "ClaudeAgent-Qwen" ;;
     kimi)  print -r -- "ClaudeAgent-Kimi" ;;
     glm)   print -r -- "ClaudeAgent-GLM" ;;
@@ -55,7 +56,7 @@ _claude_agent_title() {
 _claude_agent_key_name() {
   case "$1" in
     ds)    print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo)  print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo|mimo-flash)  print -r -- "MIMO_PLAN_API_KEY" ;;
     qwen)  print -r -- "QWEN_API_KEY" ;;
     kimi)  print -r -- "KIMI_API_KEY" ;;
     glm)   print -r -- "GLM_API_KEY" ;;
@@ -67,7 +68,7 @@ _claude_agent_key_name() {
 _claude_agent_base_url() {
   case "$1" in
     ds)    print -r -- "https://api.deepseek.com/anthropic" ;;
-    mimo)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
+    mimo|mimo-flash)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
     kimi)  print -r -- "https://api.kimi.com/coding/" ;;
     glm)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
@@ -80,6 +81,7 @@ _claude_agent_model() {
   case "$1" in
     ds)    print -r -- "deepseek-flash[1m]" ;;
     mimo)  print -r -- "mimo-v2.6-pro[1m]" ;;
+    mimo-flash) print -r -- "mimo-v2.6-flash[1m]" ;;
     qwen)  print -r -- "qwen3.8-max[1m]" ;;
     kimi)  print -r -- "kimi-k3[1m]" ;;
     glm)   print -r -- "glm-5.3" ;;
@@ -90,7 +92,7 @@ _claude_agent_model() {
 
 _claude_agent_compact_window() {
   case "$1" in
-    ds|mimo|qwen|kimi|glm) print -r -- "786432" ;;
+    ds|mimo|mimo-flash|qwen|kimi|glm) print -r -- "786432" ;;
     local)                 print -r -- "229376" ;;
     *)                     return 1 ;;
   esac
@@ -217,6 +219,7 @@ _claude_agent_launch() (
 
 ds_claude()    { _claude_agent_launch ds "$@"; }
 mimo_claude()  { _claude_agent_launch mimo "$@"; }
+mimo-flash_claude() { _claude_agent_launch mimo-flash "$@"; }
 qwen_claude()  { _claude_agent_launch qwen "$@"; }
 kimi_claude()  { _claude_agent_launch kimi "$@"; }
 glm_claude()   { _claude_agent_launch glm "$@"; }
@@ -230,6 +233,7 @@ _codex_agent_title() {
   case "$1" in
     ds)       print -r -- "CodexAgent-DS" ;;
     mimo)     print -r -- "CodexAgent-MiMo" ;;
+    mimo-flash) print -r -- "CodexAgent-MiMo-Flash" ;;
     qwen)     print -r -- "CodexAgent-Qwen" ;;
     kimi)     print -r -- "CodexAgent-Kimi" ;;
     glm)      print -r -- "CodexAgent-GLM" ;;
@@ -245,7 +249,7 @@ _codex_agent_title() {
 _codex_agent_key_name() {
   case "$1" in
     ds)   print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo) print -r -- "MIMO_PLAN_API_KEY" ;;
+    mimo|mimo-flash) print -r -- "MIMO_PLAN_API_KEY" ;;
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
     glm)  print -r -- "GLM_API_KEY" ;;
@@ -260,6 +264,7 @@ _codex_agent_shim_port() {
     glm)  print -r -- "8789" ;;
     kimi) print -r -- "8790" ;;
     mimo) print -r -- "8791" ;;
+    mimo-flash) print -r -- "8793" ;;
     qwen) print -r -- "8792" ;;
     *)    print -r -- "" ;;
   esac
@@ -412,6 +417,7 @@ _codex_agent_launch() (
 
 ds_codex()       { _codex_agent_launch ds "$@"; }
 mimo_codex()     { _codex_agent_launch mimo "$@"; }
+mimo-flash_codex() { _codex_agent_launch mimo-flash "$@"; }
 qwen_codex()     { _codex_agent_launch qwen "$@"; }
 kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
@@ -423,6 +429,7 @@ business_codex() { _codex_agent_launch business "$@"; }
 
 ds_codex_app()       { _codex_agent_app ds "$@"; }
 mimo_codex_app()     { _codex_agent_app mimo "$@"; }
+mimo-flash_codex_app() { _codex_agent_app mimo-flash "$@"; }
 qwen_codex_app()     { _codex_agent_app qwen "$@"; }
 kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
