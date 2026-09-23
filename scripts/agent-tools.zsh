@@ -70,7 +70,8 @@ _claude_agent_key_name() {
 _claude_agent_base_url() {
   case "$1" in
     ds)    print -r -- "https://api.deepseek.com/anthropic" ;;
-    mimo|mimo-fast|mimo-flash)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
+    mimo|mimo-flash)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
+    mimo-fast)  print -r -- "https://api.xiaomimimo.com/anthropic" ;;
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
     kimi)  print -r -- "https://api.kimi.com/coding/" ;;
     glm)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;

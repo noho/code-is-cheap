@@ -218,7 +218,7 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
-| `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | token-plan-cn.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
+| `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |

@@ -52,7 +52,7 @@
     },
     {
       "port": 8794,
-      "upstream": "https://token-plan-cn.xiaomimimo.com",
+      "upstream": "https://api.xiaomimimo.com",
       "to": "mimo-v2.6-pro-ultraspeed",
       "id_fix": false,
       "json_fmt_fix": true,
