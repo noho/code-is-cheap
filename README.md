@@ -159,8 +159,8 @@ Available launchers:
 
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
-| Claude Code | `ds`, `mimo`, `mimo-flash`, `qwen`, `kimi`, `glm`, `local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`, `mimo`, `mimo-flash`, `qwen`, `kimi`, `glm`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT-6-Astra`.
@@ -204,8 +204,8 @@ in the prompt — the child reads it from the generated file.
 
 ## Codex Agent Profiles
 
-Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The seven
-third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
+Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The eight
+third-party profiles (`ds`, `glm`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` and `codex` are not managed here.
 
@@ -218,6 +218,7 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
+| `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | token-plan-cn.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
@@ -477,6 +478,7 @@ codex-agent/
     glm/config.toml
     kimi/config.toml
     mimo/config.toml
+    mimo-fast/config.toml
     mimo-flash/config.toml
     qwen/config.toml
     local/config.toml

@@ -13,13 +13,13 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  codex-agent-run --provider <ds|mimo|mimo-flash|qwen|kimi|glm|local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
+  codex-agent-run --provider <ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
   codex-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Codex profile: ds, mimo, mimo-flash, qwen, kimi, glm, local,
-                             gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
+  --provider <name>          Codex profile: ds, mimo, mimo-fast, mimo-flash, qwen, kimi, glm,
+                             local, gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -218,7 +218,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds mimo mimo-flash qwen kimi glm local gpt-6-astra gpt-6-sol gpt-6-luna business
+      printf '%s\n' ds mimo mimo-fast mimo-flash qwen kimi glm local gpt-6-astra gpt-6-sol gpt-6-luna business
       exit 0
       ;;
     -h|--help)
@@ -250,6 +250,10 @@ case "$provider" in
   mimo|xiaomi)
     provider="mimo"
     runner="mimo_codex"
+    ;;
+  mimo-fast|mfast)
+    provider="mimo-fast"
+    runner="mimo-fast_codex"
     ;;
   mimo-flash|mflash)
     provider="mimo-flash"

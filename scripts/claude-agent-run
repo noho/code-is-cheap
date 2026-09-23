@@ -13,12 +13,12 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  claude-agent-run --provider <ds|mimo|mimo-flash|qwen|kimi|glm|local> [options] --prompt <text>
+  claude-agent-run --provider <ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|local> [options] --prompt <text>
   claude-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | claude-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Model provider: ds, mimo, mimo-flash, qwen, kimi, glm, or local.
+  --provider <name>          Model provider: ds, mimo, mimo-fast, mimo-flash, qwen, kimi, glm, or local.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -219,7 +219,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds mimo mimo-flash qwen kimi glm local
+      printf '%s\n' ds mimo mimo-fast mimo-flash qwen kimi glm local
       exit 0
       ;;
     -h|--help)
@@ -251,6 +251,10 @@ case "$provider" in
   mimo|xiaomi)
     provider="mimo"
     runner="mimo_claude"
+    ;;
+  mimo-fast|mfast)
+    provider="mimo-fast"
+    runner="mimo-fast_claude"
     ;;
   mimo-flash|mflash)
     provider="mimo-flash"
