@@ -118,7 +118,7 @@ cd code-is-cheap
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 启动对应 Agent 前已导出 provider 凭据：
   `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
-- 每个 Codex profile 都有可读的 `~/.codex-agent/<agent-id>/config.toml`。
+- 每个 Codex profile 的模型卡已部署为可读的 `~/.codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
 - `local` 启动函数需要 `http://127.0.0.1:8080` 上存在健康的 OpenAI-compatible 服务。
 
 凭据应保存在环境变量或不受版本控制的本机文件
@@ -154,7 +154,10 @@ source ~/.zshrc
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
 `hy`（tokenhub.tencentmaas.com 上的 hy4-preview，`HY_API_KEY`）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
 上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
-app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。
+app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
+全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
+`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；跨模型续同一段会话请用 CLI（共享 home 的
+`codex resume`）。
 
 ```bash
 mimo_claude --title
@@ -190,9 +193,13 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
+所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
+机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex/<agent-id>.config.toml`，launcher 用
+`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享（换模型续同一段对话只需换个 launcher 再
+`codex resume`）。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
-`codex-agent/profiles/` 下维护；`business`、`codex` 不在管理范围内。
+`codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号），
+`codex` 的 base 文件不在管理范围内。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 三个都是 medium reasoning effort。
@@ -213,8 +220,8 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
 凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`、`HY_API_KEY`）；
-`local` 不需要 key；三个 OpenAI profile 用 ChatGPT 账号登录，各自的 profile home 里保存自己的 `auth.json`，
-不入仓库。
+`local` 不需要 key；三个 OpenAI profile 共享 ChatGPT 账号登录（共享 home 的 `auth.json`，不入仓库）；
+`business` 用自己的 `auth.json`（`~/.codex-agent/business/`）。
 
 安装或更新：
 
@@ -228,25 +235,23 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
-模板只承载仓库拥有的设置（model、reasoning effort、沙箱、审批、`web_search`、`service_tier`、env 策略）。
-Codex 本体和 ChatGPT 桌面端还会往同一个文件写本机状态——`[projects.*]` trust、`[hooks.state]`、
-`[mcp_servers.*]`、`[plugins.*]`、`[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 这类根键。同步脚本
-会把这些内容从 live 文件合并进来（`scripts/codex-config-merge.py`）而不是丢掉；合并失败时脚本中止，
-live 文件保持原样。
+模型卡只承载模型差量（model、`model_provider`、reasoning effort、上下文/compact 窗口、`web_search`、
+`model_catalog_json`、`[model_providers.*]`）；政策（沙箱、审批、env 策略、`service_tier` 等）与 Codex 本体和
+ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.state]`、`[mcp_servers.*]`、`[plugins.*]`、
+`[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 等根键）都留在共享 home 的 base `config.toml` 里，
+同步脚本从不写它。模型卡是纯产物，同步时整文件覆盖。要给单个模型改设置，改仓库里那张卡再同步即可
+（layering 让卡上的键压过 base）。
 
-`model-catalog.json`（kimi / mimo / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
+`model-catalogs/<id>.json`（kimi / mimo 系 / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
 （`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
 非零退出，已有的 catalog 保持不动。
 
 ### 切换 sandbox 模式
 
-每个 profile 只用一行决定沙箱。改 `codex-agent/profiles/<agent-id>/config.toml` 里的 `sandbox_mode`，重跑
-`./scripts/sync-codex-agent.sh` 即可：
-
-| 取值 | 效果 | 谁在用 |
-| --- | --- | --- |
-| `"workspace-write"` | 写入限制在 workspace；`[sandbox_workspace_write] network_access = true` 保持网络放开。需要 shim 处于运行状态 | 五个第三方子 Agent profile |
-| `"danger-full-access"` | 无沙箱 | `local`——只在终端交互使用，不作为子 Agent 派发 |
+共享 home 的 base `config.toml` 定义默认沙箱：`"workspace-write"`——写入限制在 workspace，
+`[sandbox_workspace_write] network_access = true` 保持网络放开（需要 shim 处于运行状态）。单个模型要例外，
+在它的模型卡里写 `sandbox_mode` 覆盖 base——`local` 就是这样拿到 `"danger-full-access"`（无沙箱，
+只在终端交互使用，不作为子 Agent 派发）。改卡后重跑 `./scripts/sync-codex-agent.sh`。
 
 `local` 的 `base_url` 直连 llama.cpp（`http://127.0.0.1:8080/v1`），上方被注释的那行是已停用的 shim 路由，留作参考。
 
@@ -472,7 +477,6 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
-  codex-config-merge.py
   sub-agent-preflight
   patch-codex-model-catalog.py
   sync-agent-tools.sh
@@ -523,8 +527,9 @@ scripts/patch-codex-model-catalog.py
 
 skill 同步脚本会先 validate，再把每个 skill 复制到已存在的本地目标目录。agent-tools 同步脚本以 `600` 权限把
 启动函数安装到 `~/.config/zsh/agent-tools.zsh`，并以 `755` 权限把 runner 安装到 `~/.local/bin`。codex-agent
-同步脚本覆盖 `config.toml` 前先写时间戳备份，安装 shim 脚本与路由表，并重新生成不入仓库的
-`model-catalog.json`。这些脚本都不会 push、publish、create PR，也不会修改远程仓库。
+同步脚本把模型卡整文件写入共享 home（`~/.codex/<agent-id>.config.toml`），安装 shim 脚本与路由表，
+并重新生成不入仓库的 `model-catalogs/`；共享 home 的 base `config.toml` 永不触碰。这些脚本都不会 push、
+publish、create PR，也不会修改远程仓库。
 
 ## 说明
 

@@ -31,10 +31,9 @@ Usage
 -----
   patch-codex-model-catalog.py [--dry-run] [--source FILE] [--profiles a,b,c]
 
-Writes ~/.codex-agent/<profile>/model-catalog.json for each profile that sets
-`model_catalog_json` in its config.toml (default: the three known profiles).
-Exits 0 on success, 1 if anything was skipped or looked wrong — warnings are
-printed to stderr either way.
+Writes ~/.codex/model-catalogs/<profile>.json for each profile card
+(`codex -p <profile>`) that sets `model_catalog_json`. Exits 0 on success, 1 if
+anything was skipped or looked wrong — warnings are printed to stderr either way.
 """
 
 from __future__ import annotations
@@ -51,6 +50,8 @@ from pathlib import Path
 
 HOME = Path.home()
 AGENT_DIR = HOME / ".codex-agent"
+SHARED_HOME = HOME / ".codex"
+CATALOG_DIR = SHARED_HOME / "model-catalogs"
 DEFAULT_PROFILES = ["kimi", "mimo", "mimo-fast", "mimo-flash", "qwen"]
 TARGET_ENTRY = "codex-auto-review"
 WANT_TOOL_MODE = "direct"
@@ -99,10 +100,10 @@ def entry_key(model: dict) -> str:
 
 
 def session_models() -> dict[str, str]:
-    """model id per profile, read from each profile's config.toml."""
+    """model id per profile, read from each profile's model card."""
     found = {}
     for profile in SESSION_MODEL_PROFILES:
-        cfg = AGENT_DIR / profile / "config.toml"
+        cfg = SHARED_HOME / f"{profile}.config.toml"
         if not cfg.is_file():
             continue
         m = re.search(r'^model\s*=\s*"([^"]+)"', cfg.read_text(), re.MULTILINE)
@@ -153,10 +154,10 @@ def patch(catalog: dict) -> tuple[dict, bool]:
 def write_targets(catalog: dict, profiles: list[str], dry_run: bool) -> int:
     written = 0
     for profile in profiles:
-        target = AGENT_DIR / profile / "model-catalog.json"
-        cfg = AGENT_DIR / profile / "config.toml"
+        target = CATALOG_DIR / f"{profile}.json"
+        cfg = SHARED_HOME / f"{profile}.config.toml"
         if cfg.is_file() and "model_catalog_json" not in cfg.read_text():
-            warn(f"{profile}: config.toml has no `model_catalog_json` — skipped")
+            warn(f"{profile}: model card has no `model_catalog_json` — skipped")
             continue
         if dry_run:
             print(f"dry-run: would write {target}")
@@ -200,7 +201,7 @@ def main() -> int:
     count = write_targets(patched, profiles, args.dry_run)
     if not args.dry_run:
         for profile in profiles:
-            target = AGENT_DIR / profile / "model-catalog.json"
+            target = CATALOG_DIR / f"{profile}.json"
             if target.is_file():
                 verify(target)
 

@@ -135,8 +135,13 @@ else
 fi
 
 if [[ "$runtime" == codex ]]; then
-  profile_home="$HOME/.codex-agent/$provider"
-  [[ -r "$profile_home/config.toml" ]] || failures+=("codex profile 未部署: $profile_home/config.toml")
+  if [[ "$provider" == business ]]; then
+    profile_home="$HOME/.codex-agent/business"
+    [[ -r "$profile_home/config.toml" ]] || failures+=("codex profile 未部署: $profile_home/config.toml")
+  else
+    profile_home="$HOME/.codex"
+    [[ -r "$profile_home/$provider.config.toml" ]] || failures+=("codex 模型卡未部署: $profile_home/$provider.config.toml（跑 scripts/sync-codex-agent.sh）")
+  fi
 fi
 
 # --- label 唯一性（best-effort）---------------------------------------------

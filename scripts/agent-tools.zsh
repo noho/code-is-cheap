@@ -238,8 +238,16 @@ glm-flash_claude() { _claude_agent_launch glm-flash "$@"; }
 local_claude() { _claude_agent_launch local "$@"; }
 hy_claude()    { _claude_agent_launch hy "$@"; }
 
+# Shared home for every managed profile (`codex -p <id>` model cards): the real
+# directory ~/.codex (must not be a symlink — the desktop app's sandbox rejects
+# symlink components in its writable paths). business keeps its own CODEX_HOME
+# (separate ChatGPT login) and is the sole exception.
 _codex_agent_home() {
-  print -r -- "$HOME/.codex-agent/$1"
+  if [[ "$1" == business ]]; then
+    print -r -- "$HOME/.codex-agent/business"
+  else
+    print -r -- "$HOME/.codex"
+  fi
 }
 
 _codex_agent_title() {
@@ -317,10 +325,17 @@ _codex_agent_require_home() {
     echo "$agent_id Codex home 不存在：$codex_home" >&2
     return 1
   }
-  [[ -r "$codex_home/config.toml" ]] || {
-    echo "$agent_id Codex 配置不存在：$codex_home/config.toml" >&2
-    return 1
-  }
+  if [[ "$agent_id" == business ]]; then
+    [[ -r "$codex_home/config.toml" ]] || {
+      echo "$agent_id Codex 配置不存在：$codex_home/config.toml" >&2
+      return 1
+    }
+  else
+    [[ -r "$codex_home/$agent_id.config.toml" ]] || {
+      echo "$agent_id 模型卡未部署：$codex_home/$agent_id.config.toml（跑 scripts/sync-codex-agent.sh）" >&2
+      return 1
+    }
+  fi
   if [[ -n "$key_name" && -z "${(P)key_name}" ]]; then
     echo "$key_name 未设置" >&2
     return 1
@@ -368,6 +383,24 @@ _codex_agent_app() (
   workspace_url="$(jq -rn --arg path "$workspace" '"codex://threads/new?path=\($path | @uri)"')" || return 1
 
   mkdir -p "$user_data" || return 1
+
+  # The desktop app reads $CODEX_HOME/config.toml in full and has no -p card
+  # layering (we launch it via `open`, not `codex app`), so each managed app
+  # instance gets its own real composed home under its user-data dir: shared
+  # base + this agent's model card overlaid. Compose is idempotent and reruns
+  # on every launch. business keeps its own full CODEX_HOME (no composition).
+  if [[ "$agent_id" != business ]]; then
+    command -v compose-codex-app-config.py >/dev/null 2>&1 || {
+      echo "compose-codex-app-config.py 不在 PATH（是否忘了跑 sync-agent-tools.sh？）" >&2
+      return 1
+    }
+    local app_home="$user_data/home"
+    mkdir -p "$app_home" || return 1
+    compose-codex-app-config.py --base "$HOME/.codex/config.toml" \
+      --card "$HOME/.codex/$agent_id.config.toml" --out "$app_home/config.toml" || return 1
+    [[ -f "$app_home/auth.json" ]] || cp -p "$HOME/.codex/auth.json" "$app_home/auth.json" 2>/dev/null || true
+    codex_home="$app_home"
+  fi
   open_args=(
     -n
     --env "CODEX_HOME=$codex_home"
@@ -428,6 +461,23 @@ _codex_agent_launch() (
   _codex_agent_require_home "$agent_id" || return 1
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
+  fi
+
+  # Managed profiles select their model card with `codex -p <id>` on the shared
+  # home. `exec resume` has no -p of its own, so the flag goes right after
+  # `exec`; for the other subcommands (interactive, `resume`, `review`) it goes
+  # right after the subcommand name. business keeps the per-home switch.
+  if [[ "$agent_id" != business ]] && (( ${#codex_args[@]} > 0 )); then
+    case "${codex_args[1]}" in
+      exec|resume|review)
+        codex_args=("${codex_args[1]}" -p "$agent_id" "${(@)codex_args[2,-1]}")
+        ;;
+      *)
+        codex_args=(-p "$agent_id" "${codex_args[@]}")
+        ;;
+    esac
+  elif [[ "$agent_id" != business ]]; then
+    codex_args=(-p "$agent_id")
   fi
 
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"

@@ -1,59 +1,16 @@
+# `codex -p mimo-fast` model card. Layered over the shared-home base config
+# (~/.codex/config.toml), which owns policy and machine-local
+# runtime state. Only model deltas live here.
+
 model = "mimo-v2.6-pro-ultraspeed"
 model_provider = "mimo"
 model_reasoning_effort = "max"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
-model_catalog_json = "@HOME@/.codex-agent/mimo-fast/model-catalog.json"
-sandbox_mode = "workspace-write"
-approval_policy = "on-request"
-approvals_reviewer = "auto_review"
+model_catalog_json = "@HOME@/.codex/model-catalogs/mimo-fast.json"
 
-# mimo gateway rejects the tool: "tool type 'web_search' is not supported by
-# this gateway phase". Keep it disabled for this profile.
+# Non-GPT gateways: keep the search tool off (mimo gateway hard-rejects it).
 web_search = "disabled"
-service_tier = "default"
-
-# Allow only the environment needed by development tools. Model credentials
-# remain in the Codex parent process and are not inherited by tool shells.
-# Prevent login profiles from reintroducing credentials into tool shells.
-allow_login_shell = false
-
-[sandbox_workspace_write]
-network_access = true
-
-[shell_environment_policy]
-inherit = "all"
-ignore_default_excludes = false
-
-[shell_environment_policy.filters]
-"PATH" = "include"
-"HOME" = "include"
-"USER" = "include"
-"LOGNAME" = "include"
-"SHELL" = "include"
-"TMPDIR" = "include"
-"TMP" = "include"
-"TEMP" = "include"
-"LANG" = "include"
-"LC_*" = "include"
-"TERM" = "include"
-"COLORTERM" = "include"
-"TERM_PROGRAM" = "include"
-"TZ" = "include"
-"NO_COLOR" = "include"
-"CLICOLOR" = "include"
-"CI" = "include"
-"VIRTUAL_ENV" = "include"
-"CONDA_PREFIX" = "include"
-"PYENV_ROOT" = "include"
-"NVM_DIR" = "include"
-"*KEY*" = "exclude"
-"*TOKEN*" = "exclude"
-"*SECRET*" = "exclude"
-"*PASSWORD*" = "exclude"
-"*CREDENTIAL*" = "exclude"
-"*AUTHORIZATION*" = "exclude"
-"SSH_AUTH_SOCK" = "include"
 
 [model_providers.mimo]
 name = "MiMo"
@@ -62,7 +19,3 @@ base_url = "http://127.0.0.1:8794/v1"
 env_key = "MIMO_API_KEY"
 wire_api = "responses"
 requires_openai_auth = false
-
-[marketplaces.openai-codex]
-source_type = "local"
-source = "@HOME@/.codex-agent/local-marketplaces/openai-codex"
