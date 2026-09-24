@@ -13,12 +13,12 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  claude-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local> [options] --prompt <text>
+  claude-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|hy> [options] --prompt <text>
   claude-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | claude-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Model provider: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi, glm, glm-flash, or local.
+  --provider <name>          Model provider: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi, glm, glm-flash, local, or hy.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -219,7 +219,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local
+      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy
       exit 0
       ;;
     -h|--help)
@@ -275,6 +275,10 @@ case "$provider" in
     ;;
   local)
     runner="local_claude"
+    ;;
+  hy|hunyuan)
+    provider="hy"
+    runner="hy_claude"
     ;;
   *)
     die "unsupported provider: $provider"

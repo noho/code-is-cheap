@@ -57,7 +57,7 @@ WANT_TOOL_MODE = "direct"
 EXPECTED_BEFORE = "code_mode_only"
 
 # Every third-party session model that must NOT appear in the catalog.
-SESSION_MODEL_PROFILES = ["ds-flash", "glm", "glm-flash", "kimi", "mimo", "mimo-fast", "mimo-flash", "qwen", "local"]
+SESSION_MODEL_PROFILES = ["ds-flash", "glm", "glm-flash", "hy", "kimi", "mimo", "mimo-fast", "mimo-flash", "qwen", "local"]
 
 warnings: list[str] = []
 

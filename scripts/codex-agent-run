@@ -13,13 +13,13 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  codex-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
+  codex-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|hy|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
   codex-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
 
 Required:
   --provider <name>          Codex profile: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi,
-                             glm, glm-flash, local, gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
+                             glm, glm-flash, local, hy, gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -218,7 +218,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business
+      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy gpt-6-astra gpt-6-sol gpt-6-luna business
       exit 0
       ;;
     -h|--help)
@@ -274,6 +274,10 @@ case "$provider" in
     ;;
   local)
     runner="local_codex"
+    ;;
+  hy|hunyuan)
+    provider="hy"
+    runner="hy_codex"
     ;;
   gpt-6-astra|astra)
     provider="gpt-6-astra"

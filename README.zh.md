@@ -147,8 +147,8 @@ source ~/.zshrc
 
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
-| Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`hy` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`hy`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
@@ -188,7 +188,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
+每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。十个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`hy`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business`、`codex` 不在管理范围内。
 
@@ -206,11 +206,12 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
+| `hy` | `hy4-preview` | tokenhub.tencentmaas.com | 无 | 不走 shim，直连端点 |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
-凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`）；
+凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`、`HY_API_KEY`）；
 `local` 不需要 key；三个 OpenAI profile 用 ChatGPT 账号登录，各自的 profile home 里保存自己的 `auth.json`，
 不入仓库。
 
@@ -459,6 +460,7 @@ codex-agent/
     mimo-flash/config.toml
     qwen/config.toml
     local/config.toml
+    hy/config.toml
     gpt-6-astra/config.toml
     gpt-6-sol/config.toml
     gpt-6-luna/config.toml
