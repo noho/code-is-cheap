@@ -51,6 +51,7 @@ _claude_agent_title() {
     glm)   print -r -- "ClaudeAgent-GLM" ;;
     glm-flash) print -r -- "ClaudeAgent-GLM-Flash" ;;
     local) print -r -- "ClaudeAgent-Local" ;;
+    hy)    print -r -- "ClaudeAgent-HY" ;;
     *)     return 1 ;;
   esac
 }
@@ -63,6 +64,7 @@ _claude_agent_key_name() {
     qwen)  print -r -- "QWEN_API_KEY" ;;
     kimi)  print -r -- "KIMI_API_KEY" ;;
     glm|glm-flash)   print -r -- "GLM_API_KEY" ;;
+    hy)    print -r -- "HY_API_KEY" ;;
     local) print -r -- "" ;;
     *)     return 1 ;;
   esac
@@ -76,6 +78,7 @@ _claude_agent_base_url() {
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
     kimi)  print -r -- "https://api.kimi.com/coding/" ;;
     glm|glm-flash)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
+    hy)    print -r -- "https://tokenhub.tencentmaas.com" ;;
     local) print -r -- "http://127.0.0.1:8080" ;;
     *)     return 1 ;;
   esac
@@ -91,6 +94,7 @@ _claude_agent_model() {
     kimi)  print -r -- "kimi-k3[1m]" ;;
     glm)   print -r -- "glm-5.3" ;;
     glm-flash) print -r -- "glm-5.3-flash" ;;
+    hy)    print -r -- "hy4-preview" ;;
     local) print -r -- "qwen3.8-27b-local" ;;
     *)     return 1 ;;
   esac
@@ -98,7 +102,7 @@ _claude_agent_model() {
 
 _claude_agent_compact_window() {
   case "$1" in
-    ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash) print -r -- "786432" ;;
+    ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|hy) print -r -- "786432" ;;
     local)                 print -r -- "229376" ;;
     *)                     return 1 ;;
   esac
@@ -232,6 +236,7 @@ kimi_claude()  { _claude_agent_launch kimi "$@"; }
 glm_claude()   { _claude_agent_launch glm "$@"; }
 glm-flash_claude() { _claude_agent_launch glm-flash "$@"; }
 local_claude() { _claude_agent_launch local "$@"; }
+hy_claude()    { _claude_agent_launch hy "$@"; }
 
 _codex_agent_home() {
   print -r -- "$HOME/.codex-agent/$1"

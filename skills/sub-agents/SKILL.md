@@ -11,7 +11,7 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 
 | Runtime | Command | Providers | Default structured output |
 | --- | --- | --- | --- |
-| Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local` | one JSON result |
+| Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy` | one JSON result |
 | Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business` | JSONL event stream |
 
 两个 runner 已在 PATH，直接以命令名调用。调用前先跑 `<runner> --help` 确认可用与接口，并用 `pwd -P` 得到当前任务

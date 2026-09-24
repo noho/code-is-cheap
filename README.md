@@ -159,11 +159,13 @@ Available launchers:
 
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
-| Claude Code | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local` | `<agent-id>_claude [args...]` |
+| Claude Code | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `hy` | `<agent-id>_claude [args...]` |
 | Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
+`hy` (hy4-preview on tokenhub.tencentmaas.com, `HY_API_KEY`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
+upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
 The app launchers open a new Codex app instance with the selected profile and optional workspace.
 
 ```bash
@@ -228,7 +230,7 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`, `MIMO_API_KEY`,
-`QWEN_API_KEY`); `local` needs none, and the three OpenAI profiles sign in with a ChatGPT account — each profile
+`QWEN_API_KEY`, `HY_API_KEY`); `local` needs none, and the three OpenAI profiles sign in with a ChatGPT account — each profile
 home keeps its own `auth.json`, which is not tracked here.
 
 Set up or update the profiles:

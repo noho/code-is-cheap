@@ -280,12 +280,42 @@ class Handler(BaseHTTPRequestHandler):
         headers = {k: v for k, v in self.headers.items() if k.lower() not in HOP_BY_HOP}
         req = urllib.request.Request(url, data=body or None, headers=headers, method=self.command)
 
-        try:
-            resp = urllib.request.urlopen(req)
-        except urllib.error.HTTPError as e:
-            resp = e
-        except Exception as e:
-            self._log(f"{self.command} {self.path} UPSTREAM ERROR: {e}")
+        # Guardian requests (model id replaced) get buffered-and-retried: a
+        # half-delivered stream cannot be unsent, and the verdict call is small
+        # enough that buffering costs nothing. Upstreams have been observed to
+        # cut SSE mid-reasoning ("read SSE stream: unexpected EOF") in transient
+        # windows, which fails the escalation closed for no reason.
+        guardian = body and how.split("+")[0] in ("bytes", "json")
+
+        resp = None
+        data = b""
+        note = "ok"
+        done = False
+        attempts = (1, 2, 3) if guardian else (1,)
+        for attempt in attempts:
+            try:
+                resp = urllib.request.urlopen(req, timeout=180)
+            except urllib.error.HTTPError as e:
+                resp = e
+            except Exception as e:
+                self._log(f"{self.command} {self.path} UPSTREAM ERROR(attempt {attempt}): {e}")
+                resp, note = None, f"error:{type(e).__name__}"
+                continue
+            if not (200 <= resp.status < 300):
+                data = resp.read()
+                note = f"http{resp.status}"
+                break
+            data = resp.read() if guardian else b""
+            if guardian:
+                done = b"response.completed" in data
+                if done:
+                    break
+                note = "nostream"
+                self._log(f"  ^ attempt {attempt}: incomplete stream ({len(data)}B), retrying")
+                continue
+            break  # non-guardian: stream below, no retry
+
+        if resp is None:
             self.send_response(502)
             self.send_header("Connection", "close")
             self.end_headers()
@@ -309,33 +339,46 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Connection", "close")
         self.end_headers()
         self.close_connection = True
-        # read1() hands back data as soon as any is available. read(n) blocks
-        # until n bytes accumulate, which buffers SSE and lets the client's
-        # stall protection fire ("stream closed before response.completed").
-        read = getattr(resp, "read1", None) or resp.read
-        relayed, note, head, done, prev = 0, "ok", bytearray(), False, b""
-        try:
-            while True:
-                chunk = read(65536)
-                if not chunk:
-                    break
-                relayed += len(chunk)
-                # Scan the whole stream, not just the head: the terminal event
-                # arrives at the END of a long SSE response.
-                if not done and b"response.completed" in prev + chunk:
-                    done = True
-                prev = chunk[-32:]          # tolerate a marker split across chunks
-                if len(head) < 8192:
-                    head.extend(chunk[: 8192 - len(head)])
-                self.wfile.write(chunk)
+
+        head = bytearray()
+        if guardian:
+            # Already buffered in full above; forward in one piece.
+            relayed = len(data)
+            head.extend(data[:8192])
+            try:
+                self.wfile.write(data)
                 self.wfile.flush()
-        except http.client.IncompleteRead as e:
-            relayed += len(e.partial or b"")
-            note = "TRUNCATED"          # upstream cut the stream mid-body
-        except (BrokenPipeError, ConnectionResetError):
-            note = "client-gone"
-        except Exception as e:
-            note = f"error:{type(e).__name__}"
+            except (BrokenPipeError, ConnectionResetError):
+                note = "client-gone"
+        else:
+            # read1() hands back data as soon as any is available. read(n)
+            # blocks until n bytes accumulate, which buffers SSE and lets the
+            # client's stall protection fire ("stream closed before
+            # response.completed").
+            read = getattr(resp, "read1", None) or resp.read
+            relayed, prev = 0, b""
+            try:
+                while True:
+                    chunk = read(65536)
+                    if not chunk:
+                        break
+                    relayed += len(chunk)
+                    # Scan the whole stream, not just the head: the terminal
+                    # event arrives at the END of a long SSE response.
+                    if not done and b"response.completed" in prev + chunk:
+                        done = True
+                    prev = chunk[-32:]      # tolerate a marker split across chunks
+                    if len(head) < 8192:
+                        head.extend(chunk[: 8192 - len(head)])
+                    self.wfile.write(chunk)
+                    self.wfile.flush()
+            except http.client.IncompleteRead as e:
+                relayed += len(e.partial or b"")
+                note = "TRUNCATED"      # upstream cut the stream mid-body
+            except (BrokenPipeError, ConnectionResetError):
+                note = "client-gone"
+            except Exception as e:
+                note = f"error:{type(e).__name__}"
 
         # A 2xx status only says the headers arrived. The body can still be cut
         # short (TRUNCATED), or be a complete-but-not-a-stream error payload --

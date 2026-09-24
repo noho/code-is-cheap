@@ -147,11 +147,13 @@ source ~/.zshrc
 
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
-| Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local` | `<agent-id>_claude [args...]` |
+| Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`hy` | `<agent-id>_claude [args...]` |
 | Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
+`hy`（tokenhub.tencentmaas.com 上的 hy4-preview，`HY_API_KEY`）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
+上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。
 
 ```bash
@@ -210,7 +212,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
-凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`）；
+凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`、`HY_API_KEY`）；
 `local` 不需要 key；三个 OpenAI profile 用 ChatGPT 账号登录，各自的 profile home 里保存自己的 `auth.json`，
 不入仓库。
 
