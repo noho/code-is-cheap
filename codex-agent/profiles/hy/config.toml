@@ -1,5 +1,7 @@
 model = "hy4-preview"
 model_provider = "hy"
+# HY Response API 的 reasoning_effort 词表是 none/low/medium/high（官方文档口径；
+# 网关报错文案写作 no_think/low/high，以文档为准），high = 最高档。
 model_reasoning_effort = "high"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
