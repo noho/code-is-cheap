@@ -130,7 +130,7 @@ Prerequisites:
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - Provider credentials are exported before launching the matching agent:
   `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
-- Each Codex profile has a readable `~/.codex-agent/<agent-id>/config.toml`.
+- Each Codex profile has its model card deployed at `~/.codex-agent/codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
 - The `local` launchers require a healthy OpenAI-compatible service at `http://127.0.0.1:8080`.
 
 Keep credentials in the environment or in the untracked local file
@@ -206,10 +206,15 @@ in the prompt — the child reads it from the generated file.
 
 ## Codex Agent Profiles
 
-Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The nine
+All managed profiles share one Codex home (`~/.codex-agent/codex`, symlinked from `~/.codex`): the base
+`config.toml` carries policy and machine-local runtime state, and each profile is a model card at
+`~/.codex-agent/codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
+is model switching, and the session pool is shared (switch launchers and `codex resume` to continue one
+conversation on another model). The nine
 third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
-`business` and `codex` are not managed here.
+`business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account), and the `codex` base file is
+not managed here.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
@@ -230,8 +235,8 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`, `MIMO_API_KEY`,
-`QWEN_API_KEY`, `HY_API_KEY`); `local` needs none, and the three OpenAI profiles sign in with a ChatGPT account — each profile
-home keeps its own `auth.json`, which is not tracked here.
+`QWEN_API_KEY`, `HY_API_KEY`); `local` needs none, and the three OpenAI profiles share one ChatGPT account login (the
+shared home's `auth.json`, not tracked here); `business` keeps its own `auth.json` under `~/.codex-agent/business/`.
 
 Set up or update the profiles:
 
@@ -246,26 +251,25 @@ Set up or update the profiles:
 The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
 install (Codex accepts only absolute paths in these fields).
 
-Templates carry only the settings this repository owns (model, reasoning effort, sandbox, approvals,
-`web_search`, `service_tier`, shell environment policy). Codex itself and the ChatGPT desktop app write
-per-machine state into the same files — `[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`,
-`[plugins.*]`, `[marketplaces.*]`, `[tui.*]`, `[desktop]`, and root-level keys such as `notify`. The sync
-script merges those forward from the live file (`scripts/codex-config-merge.py`) rather than dropping them; if
-the merge fails it aborts and leaves the live file untouched.
+Model cards carry only model deltas (model, `model_provider`, reasoning effort, context/compact windows,
+`web_search`, `model_catalog_json`, `[model_providers.*]`). Policy (sandbox, approvals, shell environment
+policy, `service_tier`, …) and the per-machine state Codex itself and the ChatGPT desktop app write —
+`[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`, `[plugins.*]`, `[marketplaces.*]`,
+`[tui.*]`, `[desktop]`, and root-level keys such as `notify` — stay in the shared home's base `config.toml`,
+which the sync script never writes. Cards are pure artifacts and are overwritten wholesale on sync. To change
+one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
-`model-catalog.json` (kimi / mimo / qwen) is a **generated artifact and is not tracked**. The sync script
-regenerates it from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex changes
-the catalog shape, the generator warns and exits non-zero, and the existing catalog is left untouched.
+`model-catalogs/<id>.json` (kimi / mimo family / qwen) are **generated artifacts and are not tracked**. The sync
+script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex
+changes the catalog shape, the generator warns and exits non-zero, and the existing catalogs are left untouched.
 
 ### Switching sandbox mode
 
-Each profile picks its sandbox in one line. Edit `sandbox_mode` in `codex-agent/profiles/<agent-id>/config.toml`
-and re-run `./scripts/sync-codex-agent.sh`:
-
-| Value | Effect | Used by |
-| --- | --- | --- |
-| `"workspace-write"` | Writes confined to the workspace; `[sandbox_workspace_write] network_access = true` keeps the network open. Requires the shim to be running. | the five third-party sub-agent profiles |
-| `"danger-full-access"` | No sandbox. | `local` — used from a terminal, not dispatched as a sub-agent |
+The shared home's base `config.toml` defines the default sandbox: `"workspace-write"` — writes confined to the
+workspace, `[sandbox_workspace_write] network_access = true` keeps the network open (requires the shim to be
+running). For a per-model exception, set `sandbox_mode` in that model's card to override base — this is how
+`local` gets `"danger-full-access"` (no sandbox; used from a terminal, not dispatched as a sub-agent). Re-run
+`./scripts/sync-codex-agent.sh` after editing a card.
 
 `local` also points straight at llama.cpp (`http://127.0.0.1:8080/v1`); the commented `base_url` above it is the
 disabled shim route, kept for reference.
@@ -497,7 +501,6 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
-  codex-config-merge.py
   sub-agent-preflight
   patch-codex-model-catalog.py
   sync-agent-tools.sh
@@ -548,8 +551,9 @@ Sync the Codex agent profiles, shim scripts and routes:
 
 The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
 the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
-The codex-agent sync backs up each `config.toml` before overwriting it, installs the shim scripts and routes, and
-regenerates the untracked `model-catalog.json` files. None of these scripts push, publish, create PRs, or modify remote
+The codex-agent sync writes each model card wholesale into the shared home (`~/.codex-agent/codex/<agent-id>.config.toml`),
+installs the shim scripts and routes, and regenerates the untracked `model-catalogs/`; the shared home's base
+`config.toml` is never touched. None of these scripts push, publish, create PRs, or modify remote
 repositories.
 
 ## Notes

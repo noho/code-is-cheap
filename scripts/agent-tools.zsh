@@ -238,8 +238,14 @@ glm-flash_claude() { _claude_agent_launch glm-flash "$@"; }
 local_claude() { _claude_agent_launch local "$@"; }
 hy_claude()    { _claude_agent_launch hy "$@"; }
 
+# Shared home for every managed profile (`codex -p <id>` model cards). business
+# keeps its own CODEX_HOME (separate ChatGPT login) and is the sole exception.
 _codex_agent_home() {
-  print -r -- "$HOME/.codex-agent/$1"
+  if [[ "$1" == business ]]; then
+    print -r -- "$HOME/.codex-agent/business"
+  else
+    print -r -- "$HOME/.codex-agent/codex"
+  fi
 }
 
 _codex_agent_title() {
@@ -317,10 +323,17 @@ _codex_agent_require_home() {
     echo "$agent_id Codex home 不存在：$codex_home" >&2
     return 1
   }
-  [[ -r "$codex_home/config.toml" ]] || {
-    echo "$agent_id Codex 配置不存在：$codex_home/config.toml" >&2
-    return 1
-  }
+  if [[ "$agent_id" == business ]]; then
+    [[ -r "$codex_home/config.toml" ]] || {
+      echo "$agent_id Codex 配置不存在：$codex_home/config.toml" >&2
+      return 1
+    }
+  else
+    [[ -r "$codex_home/$agent_id.config.toml" ]] || {
+      echo "$agent_id 模型卡未部署：$codex_home/$agent_id.config.toml（跑 scripts/sync-codex-agent.sh）" >&2
+      return 1
+    }
+  fi
   if [[ -n "$key_name" && -z "${(P)key_name}" ]]; then
     echo "$key_name 未设置" >&2
     return 1
@@ -355,6 +368,9 @@ _codex_agent_app() (
   }
 
   local codex_home="$(_codex_agent_home "$agent_id")"
+  # The desktop app reads CODEX_HOME's base config only (no -p card layering):
+  # managed profiles share ~/.codex-agent/codex, so third-party model routing in
+  # the app additionally needs the [model_providers.*] tables in the base config.
   local user_data="$HOME/.codex-agent/app-data/$agent_id"
   local workspace="${1:-$PWD}"
   local workspace_url
@@ -428,6 +444,23 @@ _codex_agent_launch() (
   _codex_agent_require_home "$agent_id" || return 1
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
+  fi
+
+  # Managed profiles select their model card with `codex -p <id>` on the shared
+  # home. `exec resume` has no -p of its own, so the flag goes right after
+  # `exec`; for the other subcommands (interactive, `resume`, `review`) it goes
+  # right after the subcommand name. business keeps the per-home switch.
+  if [[ "$agent_id" != business ]] && (( ${#codex_args[@]} > 0 )); then
+    case "${codex_args[1]}" in
+      exec|resume|review)
+        codex_args=("${codex_args[1]}" -p "$agent_id" "${(@)codex_args[2,-1]}")
+        ;;
+      *)
+        codex_args=(-p "$agent_id" "${codex_args[@]}")
+        ;;
+    esac
+  elif [[ "$agent_id" != business ]]; then
+    codex_args=(-p "$agent_id")
   fi
 
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
