@@ -281,6 +281,7 @@ _codex_agent_shim_port() {
     ds-flash)   print -r -- "8788" ;;
     glm)  print -r -- "8789" ;;
     glm-flash) print -r -- "8795" ;;
+    hy)   print -r -- "8796" ;;
     kimi) print -r -- "8790" ;;
     mimo) print -r -- "8791" ;;
     mimo-fast) print -r -- "8794" ;;

@@ -206,7 +206,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
-| `hy` | `hy4-preview` | tokenhub.tencentmaas.com | 无 | 不走 shim，直连端点 |
+| `hy` | `hy4-preview` | tokenhub.tencentmaas.com | 8796 | 仅改模型名 |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |

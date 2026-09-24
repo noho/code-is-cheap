@@ -65,6 +65,14 @@
       "id_fix": false,
       "json_fmt_fix": false,
       "drop_tools_item": false
+    },
+    {
+      "port": 8796,
+      "upstream": "https://tokenhub.tencentmaas.com",
+      "to": "hy4-preview",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
     }
   ]
 }
