@@ -253,7 +253,6 @@ _codex_agent_title() {
     glm)      print -r -- "CodexAgent-GLM" ;;
     glm-flash) print -r -- "CodexAgent-GLM-Flash" ;;
     local)    print -r -- "CodexAgent-Local" ;;
-    hy)       print -r -- "CodexAgent-HY" ;;
     gpt-6-astra) print -r -- "CodexAgent-GPT-6-Astra" ;;
     gpt-6-sol)   print -r -- "CodexAgent-GPT-6-Sol" ;;
     gpt-6-luna)  print -r -- "CodexAgent-GPT-6-Luna" ;;
@@ -270,7 +269,6 @@ _codex_agent_key_name() {
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
     glm|glm-flash)  print -r -- "GLM_API_KEY" ;;
-    hy) print -r -- "HY_API_KEY" ;;
     local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) print -r -- "" ;;
     *) return 1 ;;
   esac
@@ -281,7 +279,6 @@ _codex_agent_shim_port() {
     ds-flash)   print -r -- "8788" ;;
     glm)  print -r -- "8789" ;;
     glm-flash) print -r -- "8795" ;;
-    hy)   print -r -- "8796" ;;
     kimi) print -r -- "8790" ;;
     mimo) print -r -- "8791" ;;
     mimo-fast) print -r -- "8794" ;;
@@ -445,7 +442,6 @@ kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
 glm-flash_codex() { _codex_agent_launch glm-flash "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
-hy_codex()    { _codex_agent_launch hy "$@"; }
 gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
 gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
 gpt-6-luna_codex()  { _codex_agent_launch gpt-6-luna "$@"; }
@@ -460,7 +456,6 @@ kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
 glm-flash_codex_app() { _codex_agent_app glm-flash "$@"; }
 local_codex_app()    { _codex_agent_app local "$@"; }
-hy_codex_app()    { _codex_agent_app hy "$@"; }
 gpt-6-astra_codex_app() { _codex_agent_app gpt-6-astra "$@"; }
 gpt-6-sol_codex_app()   { _codex_agent_app gpt-6-sol "$@"; }
 gpt-6-luna_codex_app()  { _codex_agent_app gpt-6-luna "$@"; }
