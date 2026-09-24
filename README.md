@@ -166,7 +166,7 @@ Available launchers:
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
 `hy` (hy4-preview on tokenhub.tencentmaas.com, `HY_API_KEY`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
 upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
-The app launchers open a new Codex app instance with the selected profile and optional workspace.
+The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. For continuing one conversation across models use the CLI (`codex resume` on the shared home).
 
 ```bash
 mimo_claude --title

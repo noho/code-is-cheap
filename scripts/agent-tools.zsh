@@ -370,9 +370,6 @@ _codex_agent_app() (
   }
 
   local codex_home="$(_codex_agent_home "$agent_id")"
-  # The desktop app reads CODEX_HOME's base config only (no -p card layering):
-  # managed profiles share ~/.codex, so third-party model routing in the app
-  # additionally needs the [model_providers.*] tables in the base config.
   local user_data="$HOME/.codex-agent/app-data/$agent_id"
   local workspace="${1:-$PWD}"
   local workspace_url
@@ -386,6 +383,24 @@ _codex_agent_app() (
   workspace_url="$(jq -rn --arg path "$workspace" '"codex://threads/new?path=\($path | @uri)"')" || return 1
 
   mkdir -p "$user_data" || return 1
+
+  # The desktop app reads $CODEX_HOME/config.toml in full and has no -p card
+  # layering (we launch it via `open`, not `codex app`), so each managed app
+  # instance gets its own real composed home under its user-data dir: shared
+  # base + this agent's model card overlaid. Compose is idempotent and reruns
+  # on every launch. business keeps its own full CODEX_HOME (no composition).
+  if [[ "$agent_id" != business ]]; then
+    command -v compose-codex-app-config.py >/dev/null 2>&1 || {
+      echo "compose-codex-app-config.py 不在 PATH（是否忘了跑 sync-agent-tools.sh？）" >&2
+      return 1
+    }
+    local app_home="$user_data/home"
+    mkdir -p "$app_home" || return 1
+    compose-codex-app-config.py --base "$HOME/.codex/config.toml" \
+      --card "$HOME/.codex/$agent_id.config.toml" --out "$app_home/config.toml" || return 1
+    [[ -f "$app_home/auth.json" ]] || cp -p "$HOME/.codex/auth.json" "$app_home/auth.json" 2>/dev/null || true
+    codex_home="$app_home"
+  fi
   open_args=(
     -n
     --env "CODEX_HOME=$codex_home"

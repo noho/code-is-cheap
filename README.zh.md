@@ -154,7 +154,10 @@ source ~/.zshrc
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
 `hy`（tokenhub.tencentmaas.com 上的 hy4-preview，`HY_API_KEY`）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
 上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
-app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。
+app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
+全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
+`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；跨模型续同一段会话请用 CLI（共享 home 的
+`codex resume`）。
 
 ```bash
 mimo_claude --title
