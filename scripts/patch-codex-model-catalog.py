@@ -13,7 +13,7 @@ closed and unattended dispatch breaks.
 The fix is a one-field patch: copy Codex's built-in catalog and flip
 `codex-auto-review.tool_mode` from `code_mode_only` to `direct`. The resulting
 catalog deliberately contains **no session-model entries** — the profiles'
-models (deepseek-flash, kimi-k3, mimo-v2.6-pro, mimo-v2.6-flash, qwen3.8-max, ...) keep using
+models (deepseek-flash, kimi-k3, mimo-v2.6-pro, mimo-v2.6-flash, mimo-v2.6-pro-ultraspeed, qwen3.8-max, ...) keep using
 fallback metadata. Do not "fix" that by adding catalog entries for them: giving
 a session model real catalog metadata changes which tools Codex exposes and was
 observed to break tool calling entirely.
@@ -51,13 +51,13 @@ from pathlib import Path
 
 HOME = Path.home()
 AGENT_DIR = HOME / ".codex-agent"
-DEFAULT_PROFILES = ["kimi", "mimo", "mimo-flash", "qwen"]
+DEFAULT_PROFILES = ["kimi", "mimo", "mimo-fast", "mimo-flash", "qwen"]
 TARGET_ENTRY = "codex-auto-review"
 WANT_TOOL_MODE = "direct"
 EXPECTED_BEFORE = "code_mode_only"
 
 # Every third-party session model that must NOT appear in the catalog.
-SESSION_MODEL_PROFILES = ["ds", "glm", "kimi", "mimo", "mimo-flash", "qwen", "local"]
+SESSION_MODEL_PROFILES = ["ds", "glm", "kimi", "mimo", "mimo-fast", "mimo-flash", "qwen", "local"]
 
 warnings: list[str] = []
 

@@ -147,8 +147,8 @@ source ~/.zshrc
 
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
-| Claude Code | `ds`、`mimo`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`、`mimo`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
@@ -188,8 +188,8 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。七个第三方 profile（`ds`、`glm`、`kimi`、
-`mimo`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
+每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。八个第三方 profile（`ds`、`glm`、`kimi`、
+`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business`、`codex` 不在管理范围内。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
@@ -201,6 +201,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
+| `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
@@ -208,7 +209,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
-凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`）；
+凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`）；
 `local` 不需要 key；三个 OpenAI profile 用 ChatGPT 账号登录，各自的 profile home 里保存自己的 `auth.json`，
 不入仓库。
 
@@ -452,6 +453,7 @@ codex-agent/
     glm/config.toml
     kimi/config.toml
     mimo/config.toml
+    mimo-fast/config.toml
     mimo-flash/config.toml
     qwen/config.toml
     local/config.toml

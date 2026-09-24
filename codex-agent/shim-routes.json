@@ -49,6 +49,14 @@
       "id_fix": false,
       "json_fmt_fix": true,
       "drop_tools_item": false
+    },
+    {
+      "port": 8794,
+      "upstream": "https://api.xiaomimimo.com",
+      "to": "mimo-v2.6-pro-ultraspeed",
+      "id_fix": false,
+      "json_fmt_fix": true,
+      "drop_tools_item": false
     }
   ]
 }
