@@ -1,6 +1,6 @@
 model = "hy4-preview"
 model_provider = "hy"
-model_reasoning_effort = "max"
+model_reasoning_effort = "high"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
 sandbox_mode = "workspace-write"
