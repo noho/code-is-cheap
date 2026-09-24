@@ -57,6 +57,14 @@
       "id_fix": false,
       "json_fmt_fix": true,
       "drop_tools_item": false
+    },
+    {
+      "port": 8795,
+      "upstream": "https://open.bigmodel.cn",
+      "to": "glm-5.3-flash",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false
     }
   ]
 }

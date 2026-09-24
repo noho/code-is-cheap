@@ -147,8 +147,8 @@ source ~/.zshrc
 
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
-| Claude Code | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
@@ -188,7 +188,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。八个第三方 profile（`ds`、`glm`、`kimi`、
+每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。九个第三方 profile（`ds`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business`、`codex` 不在管理范围内。
 
@@ -199,6 +199,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 | --- | --- | --- | --- | --- |
 | `ds` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
+| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 仅改模型名 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
@@ -451,6 +452,7 @@ codex-agent/
   profiles/
     ds/config.toml
     glm/config.toml
+    glm-flash/config.toml
     kimi/config.toml
     mimo/config.toml
     mimo-fast/config.toml
