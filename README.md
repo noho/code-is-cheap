@@ -159,11 +159,11 @@ Available launchers:
 
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
-| Claude Code | `ds`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
-Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS` or `CodexAgent-GPT-6-Astra`.
+Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
 The app launchers open a new Codex app instance with the selected profile and optional workspace.
 
 ```bash
@@ -205,7 +205,7 @@ in the prompt — the child reads it from the generated file.
 ## Codex Agent Profiles
 
 Each `xx_codex` launcher reads a per-profile Codex home at `~/.codex-agent/<agent-id>/config.toml`. The nine
-third-party profiles (`ds`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
+third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` and `codex` are not managed here.
 
@@ -214,7 +214,7 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
-| `ds` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite only |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite only |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite only |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
@@ -289,7 +289,7 @@ Gateflow with `tmux-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review / re-review passes.
+$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review / re-review passes.
 Re-discover panes before every send, clear the session for new tasks, and avoid bare #numbers.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -298,7 +298,7 @@ Gateflow with `sub-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Claude mimo / ds run the two review / re-review passes.
+$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Claude mimo / ds-flash run the two review / re-review passes.
 Pass the workspace absolute path explicitly in every call and use separate output / stderr files; the controller checks the structured results and adjudicates itself.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -328,7 +328,7 @@ Phaseflow with `tmux-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
+$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
 The controller Agent completes preflight and goal confirmation first; after confirmation, dispatch gate by gate following Gateflow's Gate Order.
 After each Agent returns, the controller reads the artifact, adjudicates findings, updates control_doc, collects residual risks, and closes resolved risks.
 After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
@@ -339,7 +339,7 @@ Phaseflow with `sub-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$sub-agents dispatches through runner subprocesses: Claude mimo / ds run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
+$sub-agents dispatches through runner subprocesses: Claude mimo / ds-flash run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
 The controller advances through Gateflow's Gate Order, checks each subprocess's exit status and structured output, and updates control_doc.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -475,7 +475,7 @@ skills/
     agents/openai.yaml
 codex-agent/
   profiles/
-    ds/config.toml
+    ds-flash/config.toml
     glm/config.toml
     glm-flash/config.toml
     kimi/config.toml

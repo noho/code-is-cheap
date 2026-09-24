@@ -147,11 +147,11 @@ source ~/.zshrc
 
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
-| Claude Code | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local` | `<agent-id>_claude [args...]` |
+| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
-CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
+CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。
 
 ```bash
@@ -188,7 +188,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。九个第三方 profile（`ds`、`glm`、`glm-flash`、`kimi`、
+每个 `xx_codex` launcher 读取 `~/.codex-agent/<agent-id>/config.toml`。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business`、`codex` 不在管理范围内。
 
@@ -197,7 +197,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
-| `ds` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 仅改模型名 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
@@ -269,7 +269,7 @@ Gateflow + `tmux-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review / re-review。
+$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，ClaudeAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review / re-review。
 每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -278,7 +278,7 @@ Gateflow + `sub-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Claude mimo / ds 负责两路 review / re-review。
+$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Claude mimo / ds-flash 负责两路 review / re-review。
 所有调用显式传入 workspace 绝对路径，并使用独立 output / stderr 文件；总控检查结构化结果后自行裁决。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -306,7 +306,7 @@ Phaseflow + `tmux-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$tmux-agents 路由 Agents，ClaudeAgent-MiMo / ClaudeAgent-DS 负责两路同时 review，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
+$tmux-agents 路由 Agents，ClaudeAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
 总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
 final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
@@ -317,7 +317,7 @@ Phaseflow + `sub-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$sub-agents 通过 runner 子进程派发，Claude mimo / ds 负责两路 review，Codex gpt-6-astra 负责 plan / implement / fix。
+$sub-agents 通过 runner 子进程派发，Claude mimo / ds-flash 负责两路 review，Codex gpt-6-astra 负责 plan / implement / fix。
 总控按 Gateflow 的 Gate Order 推进，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -450,7 +450,7 @@ skills/
     agents/openai.yaml
 codex-agent/
   profiles/
-    ds/config.toml
+    ds-flash/config.toml
     glm/config.toml
     glm-flash/config.toml
     kimi/config.toml
