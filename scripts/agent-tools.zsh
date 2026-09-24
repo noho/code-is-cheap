@@ -49,6 +49,7 @@ _claude_agent_title() {
     qwen)  print -r -- "ClaudeAgent-Qwen" ;;
     kimi)  print -r -- "ClaudeAgent-Kimi" ;;
     glm)   print -r -- "ClaudeAgent-GLM" ;;
+    glm-flash) print -r -- "ClaudeAgent-GLM-Flash" ;;
     local) print -r -- "ClaudeAgent-Local" ;;
     *)     return 1 ;;
   esac
@@ -61,7 +62,7 @@ _claude_agent_key_name() {
     mimo-fast)  print -r -- "MIMO_API_KEY" ;;
     qwen)  print -r -- "QWEN_API_KEY" ;;
     kimi)  print -r -- "KIMI_API_KEY" ;;
-    glm)   print -r -- "GLM_API_KEY" ;;
+    glm|glm-flash)   print -r -- "GLM_API_KEY" ;;
     local) print -r -- "" ;;
     *)     return 1 ;;
   esac
@@ -74,7 +75,7 @@ _claude_agent_base_url() {
     mimo-fast)  print -r -- "https://api.xiaomimimo.com/anthropic" ;;
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
     kimi)  print -r -- "https://api.kimi.com/coding/" ;;
-    glm)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
+    glm|glm-flash)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
     local) print -r -- "http://127.0.0.1:8080" ;;
     *)     return 1 ;;
   esac
@@ -89,6 +90,7 @@ _claude_agent_model() {
     qwen)  print -r -- "qwen3.8-max[1m]" ;;
     kimi)  print -r -- "kimi-k3[1m]" ;;
     glm)   print -r -- "glm-5.3" ;;
+    glm-flash) print -r -- "glm-5.3-flash" ;;
     local) print -r -- "qwen3.8-27b-local" ;;
     *)     return 1 ;;
   esac
@@ -96,7 +98,7 @@ _claude_agent_model() {
 
 _claude_agent_compact_window() {
   case "$1" in
-    ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm) print -r -- "786432" ;;
+    ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash) print -r -- "786432" ;;
     local)                 print -r -- "229376" ;;
     *)                     return 1 ;;
   esac
@@ -104,7 +106,7 @@ _claude_agent_compact_window() {
 
 _claude_agent_max_context() {
   case "$1" in
-    glm)   print -r -- "1000000" ;;
+    glm|glm-flash)   print -r -- "1000000" ;;
     local) print -r -- "262144" ;;
     *)     print -r -- "" ;;
   esac
@@ -228,6 +230,7 @@ mimo-flash_claude() { _claude_agent_launch mimo-flash "$@"; }
 qwen_claude()  { _claude_agent_launch qwen "$@"; }
 kimi_claude()  { _claude_agent_launch kimi "$@"; }
 glm_claude()   { _claude_agent_launch glm "$@"; }
+glm-flash_claude() { _claude_agent_launch glm-flash "$@"; }
 local_claude() { _claude_agent_launch local "$@"; }
 
 _codex_agent_home() {
@@ -243,6 +246,7 @@ _codex_agent_title() {
     qwen)     print -r -- "CodexAgent-Qwen" ;;
     kimi)     print -r -- "CodexAgent-Kimi" ;;
     glm)      print -r -- "CodexAgent-GLM" ;;
+    glm-flash) print -r -- "CodexAgent-GLM-Flash" ;;
     local)    print -r -- "CodexAgent-Local" ;;
     gpt-6-astra) print -r -- "CodexAgent-GPT-6-Astra" ;;
     gpt-6-sol)   print -r -- "CodexAgent-GPT-6-Sol" ;;
@@ -259,7 +263,7 @@ _codex_agent_key_name() {
     mimo-fast) print -r -- "MIMO_API_KEY" ;;
     qwen) print -r -- "QWEN_API_KEY" ;;
     kimi) print -r -- "KIMI_API_KEY" ;;
-    glm)  print -r -- "GLM_API_KEY" ;;
+    glm|glm-flash)  print -r -- "GLM_API_KEY" ;;
     local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) print -r -- "" ;;
     *) return 1 ;;
   esac
@@ -269,6 +273,7 @@ _codex_agent_shim_port() {
   case "$1" in
     ds)   print -r -- "8788" ;;
     glm)  print -r -- "8789" ;;
+    glm-flash) print -r -- "8795" ;;
     kimi) print -r -- "8790" ;;
     mimo) print -r -- "8791" ;;
     mimo-fast) print -r -- "8794" ;;
@@ -430,6 +435,7 @@ mimo-flash_codex() { _codex_agent_launch mimo-flash "$@"; }
 qwen_codex()     { _codex_agent_launch qwen "$@"; }
 kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
+glm-flash_codex() { _codex_agent_launch glm-flash "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
 gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
 gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
@@ -443,6 +449,7 @@ mimo-flash_codex_app() { _codex_agent_app mimo-flash "$@"; }
 qwen_codex_app()     { _codex_agent_app qwen "$@"; }
 kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
+glm-flash_codex_app() { _codex_agent_app glm-flash "$@"; }
 local_codex_app()    { _codex_agent_app local "$@"; }
 gpt-6-astra_codex_app() { _codex_agent_app gpt-6-astra "$@"; }
 gpt-6-sol_codex_app()   { _codex_agent_app gpt-6-sol "$@"; }
