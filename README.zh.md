@@ -118,7 +118,7 @@ cd code-is-cheap
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 启动对应 Agent 前已导出 provider 凭据：
   `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
-- 每个 Codex profile 的模型卡已部署为可读的 `~/.codex-agent/codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
+- 每个 Codex profile 的模型卡已部署为可读的 `~/.codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
 - `local` 启动函数需要 `http://127.0.0.1:8080` 上存在健康的 OpenAI-compatible 服务。
 
 凭据应保存在环境变量或不受版本控制的本机文件
@@ -190,8 +190,8 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 ## Codex Agent 配置（xx_codex）
 
-所有受管 profile 共享一个 Codex home（`~/.codex-agent/codex`，`~/.codex` 软链指向它）：base `config.toml` 承载政策与
-机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex-agent/codex/<agent-id>.config.toml`，launcher 用
+所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
+机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex/<agent-id>.config.toml`，launcher 用
 `codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享（换模型续同一段对话只需换个 launcher 再
 `codex resume`）。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
@@ -524,7 +524,7 @@ scripts/patch-codex-model-catalog.py
 
 skill 同步脚本会先 validate，再把每个 skill 复制到已存在的本地目标目录。agent-tools 同步脚本以 `600` 权限把
 启动函数安装到 `~/.config/zsh/agent-tools.zsh`，并以 `755` 权限把 runner 安装到 `~/.local/bin`。codex-agent
-同步脚本把模型卡整文件写入共享 home（`~/.codex-agent/codex/<agent-id>.config.toml`），安装 shim 脚本与路由表，
+同步脚本把模型卡整文件写入共享 home（`~/.codex/<agent-id>.config.toml`），安装 shim 脚本与路由表，
 并重新生成不入仓库的 `model-catalogs/`；共享 home 的 base `config.toml` 永不触碰。这些脚本都不会 push、
 publish、create PR，也不会修改远程仓库。
 

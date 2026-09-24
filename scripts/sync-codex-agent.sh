@@ -4,15 +4,14 @@ set -euo pipefail
 # Sync the tracked codex-agent configuration to ~/.codex-agent:
 #
 #   codex-agent/profiles/<id>/config.toml   model cards for `codex -p <id>`,
-#                                           installed as
-#                                           ~/.codex-agent/codex/<id>.config.toml
+#                                           installed as ~/.codex/<id>.config.toml
 #   codex-agent/bin/codex-auto-review-shim       自动审批反代（guardian 模型名改写）
 #   codex-agent/bin/codex-auto-review-shim-service   launchd 管理脚本
 #   codex-agent/shim-routes.json                 反代路由表
 #   model-catalogs/<id>.json                     由 scripts/patch-codex-model-catalog.py 现场生成
 #
-# 共享 home ~/.codex-agent/codex（~/.codex 软链指向它）的 base config.toml 是
-# 机器本地运行时状态（政策、[projects.*] trust、[hooks.state]、app 写入的
+# 共享 home ~/.codex（真目录——桌面 app 沙箱拒绝路径中的 symlink 成分）的 base
+# config.toml 是机器本地运行时状态（政策、[projects.*] trust、[hooks.state]、app 写入的
 # [mcp_servers.*]/[plugins.*]/[marketplaces.*]/[tui.*]/[desktop] 及 notify 等根键），
 # 本脚本从不写它。模型卡只含模型差量、整文件覆盖即可，无需合并。
 #
@@ -20,7 +19,7 @@ set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target_root="${CODEX_AGENT_TARGET:-$HOME/.codex-agent}"
-shared_home="$target_root/codex"
+shared_home="${CODEX_SHARED_HOME:-$HOME/.codex}"
 shim_label="com.leo.codex-auto-review-shim"
 
 mkdir -p "$target_root"

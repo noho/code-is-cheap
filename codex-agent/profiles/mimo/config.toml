@@ -1,5 +1,5 @@
 # `codex -p mimo` model card. Layered over the shared-home base config
-# (~/.codex-agent/codex/config.toml), which owns policy and machine-local
+# (~/.codex/config.toml), which owns policy and machine-local
 # runtime state. Only model deltas live here.
 
 model = "mimo-v2.6-pro"
@@ -7,7 +7,7 @@ model_provider = "mimo"
 model_reasoning_effort = "max"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
-model_catalog_json = "@HOME@/.codex-agent/codex/model-catalogs/mimo.json"
+model_catalog_json = "@HOME@/.codex/model-catalogs/mimo.json"
 
 # mimo gateway rejects the tool: "tool type 'web_search' is not supported by
 # this gateway phase". Keep it disabled for this profile.

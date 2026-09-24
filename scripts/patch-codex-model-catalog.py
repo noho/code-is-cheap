@@ -31,7 +31,7 @@ Usage
 -----
   patch-codex-model-catalog.py [--dry-run] [--source FILE] [--profiles a,b,c]
 
-Writes ~/.codex-agent/codex/model-catalogs/<profile>.json for each profile card
+Writes ~/.codex/model-catalogs/<profile>.json for each profile card
 (`codex -p <profile>`) that sets `model_catalog_json`. Exits 0 on success, 1 if
 anything was skipped or looked wrong — warnings are printed to stderr either way.
 """
@@ -50,7 +50,7 @@ from pathlib import Path
 
 HOME = Path.home()
 AGENT_DIR = HOME / ".codex-agent"
-SHARED_HOME = AGENT_DIR / "codex"
+SHARED_HOME = HOME / ".codex"
 CATALOG_DIR = SHARED_HOME / "model-catalogs"
 DEFAULT_PROFILES = ["kimi", "mimo", "mimo-fast", "mimo-flash", "qwen"]
 TARGET_ENTRY = "codex-auto-review"

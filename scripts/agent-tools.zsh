@@ -238,13 +238,15 @@ glm-flash_claude() { _claude_agent_launch glm-flash "$@"; }
 local_claude() { _claude_agent_launch local "$@"; }
 hy_claude()    { _claude_agent_launch hy "$@"; }
 
-# Shared home for every managed profile (`codex -p <id>` model cards). business
-# keeps its own CODEX_HOME (separate ChatGPT login) and is the sole exception.
+# Shared home for every managed profile (`codex -p <id>` model cards): the real
+# directory ~/.codex (must not be a symlink — the desktop app's sandbox rejects
+# symlink components in its writable paths). business keeps its own CODEX_HOME
+# (separate ChatGPT login) and is the sole exception.
 _codex_agent_home() {
   if [[ "$1" == business ]]; then
     print -r -- "$HOME/.codex-agent/business"
   else
-    print -r -- "$HOME/.codex-agent/codex"
+    print -r -- "$HOME/.codex"
   fi
 }
 
@@ -369,8 +371,8 @@ _codex_agent_app() (
 
   local codex_home="$(_codex_agent_home "$agent_id")"
   # The desktop app reads CODEX_HOME's base config only (no -p card layering):
-  # managed profiles share ~/.codex-agent/codex, so third-party model routing in
-  # the app additionally needs the [model_providers.*] tables in the base config.
+  # managed profiles share ~/.codex, so third-party model routing in the app
+  # additionally needs the [model_providers.*] tables in the base config.
   local user_data="$HOME/.codex-agent/app-data/$agent_id"
   local workspace="${1:-$PWD}"
   local workspace_url

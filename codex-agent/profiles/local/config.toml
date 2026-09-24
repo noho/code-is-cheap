@@ -1,5 +1,5 @@
 # `codex -p local` model card. Layered over the shared-home base config
-# (~/.codex-agent/codex/config.toml), which owns policy and machine-local
+# (~/.codex/config.toml), which owns policy and machine-local
 # runtime state. Only model deltas live here.
 
 model = "qwen3.8-27b-local"

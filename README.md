@@ -130,7 +130,7 @@ Prerequisites:
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - Provider credentials are exported before launching the matching agent:
   `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
-- Each Codex profile has its model card deployed at `~/.codex-agent/codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
+- Each Codex profile has its model card deployed at `~/.codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
 - The `local` launchers require a healthy OpenAI-compatible service at `http://127.0.0.1:8080`.
 
 Keep credentials in the environment or in the untracked local file
@@ -206,9 +206,9 @@ in the prompt — the child reads it from the generated file.
 
 ## Codex Agent Profiles
 
-All managed profiles share one Codex home (`~/.codex-agent/codex`, symlinked from `~/.codex`): the base
+All managed profiles share one Codex home (`~/.codex`, Codex's default home — it must be a real directory; the desktop app's sandbox rejects symlink components in its writable paths): the base
 `config.toml` carries policy and machine-local runtime state, and each profile is a model card at
-`~/.codex-agent/codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
+`~/.codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
 is model switching, and the session pool is shared (switch launchers and `codex resume` to continue one
 conversation on another model). The nine
 third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
@@ -551,7 +551,7 @@ Sync the Codex agent profiles, shim scripts and routes:
 
 The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
 the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
-The codex-agent sync writes each model card wholesale into the shared home (`~/.codex-agent/codex/<agent-id>.config.toml`),
+The codex-agent sync writes each model card wholesale into the shared home (`~/.codex/<agent-id>.config.toml`),
 installs the shim scripts and routes, and regenerates the untracked `model-catalogs/`; the shared home's base
 `config.toml` is never touched. None of these scripts push, publish, create PRs, or modify remote
 repositories.

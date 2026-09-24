@@ -1,5 +1,5 @@
 # `codex -p qwen` model card. Layered over the shared-home base config
-# (~/.codex-agent/codex/config.toml), which owns policy and machine-local
+# (~/.codex/config.toml), which owns policy and machine-local
 # runtime state. Only model deltas live here.
 
 model = "qwen3.8-max"
@@ -7,7 +7,7 @@ model_provider = "qwen"
 model_reasoning_effort = "max"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
-model_catalog_json = "@HOME@/.codex-agent/codex/model-catalogs/qwen.json"
+model_catalog_json = "@HOME@/.codex/model-catalogs/qwen.json"
 
 # Non-GPT gateways: keep the search tool off.
 web_search = "disabled"
