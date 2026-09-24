@@ -42,7 +42,7 @@ _agent_tools_prepare_credentials() {
 
 _claude_agent_title() {
   case "$1" in
-    ds)    print -r -- "ClaudeAgent-DS" ;;
+    ds-flash)    print -r -- "ClaudeAgent-DS-Flash" ;;
     mimo)  print -r -- "ClaudeAgent-MiMo" ;;
     mimo-fast) print -r -- "ClaudeAgent-MiMo-Fast" ;;
     mimo-flash) print -r -- "ClaudeAgent-MiMo-Flash" ;;
@@ -57,7 +57,7 @@ _claude_agent_title() {
 
 _claude_agent_key_name() {
   case "$1" in
-    ds)    print -r -- "DEEPSEEK_API_KEY" ;;
+    ds-flash)    print -r -- "DEEPSEEK_API_KEY" ;;
     mimo|mimo-flash)  print -r -- "MIMO_PLAN_API_KEY" ;;
     mimo-fast)  print -r -- "MIMO_API_KEY" ;;
     qwen)  print -r -- "QWEN_API_KEY" ;;
@@ -70,7 +70,7 @@ _claude_agent_key_name() {
 
 _claude_agent_base_url() {
   case "$1" in
-    ds)    print -r -- "https://api.deepseek.com/anthropic" ;;
+    ds-flash)    print -r -- "https://api.deepseek.com/anthropic" ;;
     mimo|mimo-flash)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
     mimo-fast)  print -r -- "https://api.xiaomimimo.com/anthropic" ;;
     qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
@@ -83,7 +83,7 @@ _claude_agent_base_url() {
 
 _claude_agent_model() {
   case "$1" in
-    ds)    print -r -- "deepseek-flash[1m]" ;;
+    ds-flash)    print -r -- "deepseek-flash[1m]" ;;
     mimo)  print -r -- "mimo-v2.6-pro[1m]" ;;
     mimo-fast) print -r -- "mimo-v2.6-pro-ultraspeed[1m]" ;;
     mimo-flash) print -r -- "mimo-v2.6-flash[1m]" ;;
@@ -98,7 +98,7 @@ _claude_agent_model() {
 
 _claude_agent_compact_window() {
   case "$1" in
-    ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash) print -r -- "786432" ;;
+    ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash) print -r -- "786432" ;;
     local)                 print -r -- "229376" ;;
     *)                     return 1 ;;
   esac
@@ -223,7 +223,7 @@ _claude_agent_launch() (
     command claude --settings "$settings_json" "${claude_args[@]}"
 )
 
-ds_claude()    { _claude_agent_launch ds "$@"; }
+ds-flash_claude() { _claude_agent_launch ds-flash "$@"; }
 mimo_claude()  { _claude_agent_launch mimo "$@"; }
 mimo-fast_claude() { _claude_agent_launch mimo-fast "$@"; }
 mimo-flash_claude() { _claude_agent_launch mimo-flash "$@"; }
@@ -239,7 +239,7 @@ _codex_agent_home() {
 
 _codex_agent_title() {
   case "$1" in
-    ds)       print -r -- "CodexAgent-DS" ;;
+    ds-flash)       print -r -- "CodexAgent-DS-Flash" ;;
     mimo)     print -r -- "CodexAgent-MiMo" ;;
     mimo-fast) print -r -- "CodexAgent-MiMo-Fast" ;;
     mimo-flash) print -r -- "CodexAgent-MiMo-Flash" ;;
@@ -258,7 +258,7 @@ _codex_agent_title() {
 
 _codex_agent_key_name() {
   case "$1" in
-    ds)   print -r -- "DEEPSEEK_API_KEY" ;;
+    ds-flash)   print -r -- "DEEPSEEK_API_KEY" ;;
     mimo|mimo-flash) print -r -- "MIMO_PLAN_API_KEY" ;;
     mimo-fast) print -r -- "MIMO_API_KEY" ;;
     qwen) print -r -- "QWEN_API_KEY" ;;
@@ -271,7 +271,7 @@ _codex_agent_key_name() {
 
 _codex_agent_shim_port() {
   case "$1" in
-    ds)   print -r -- "8788" ;;
+    ds-flash)   print -r -- "8788" ;;
     glm)  print -r -- "8789" ;;
     glm-flash) print -r -- "8795" ;;
     kimi) print -r -- "8790" ;;
@@ -428,7 +428,7 @@ _codex_agent_launch() (
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
 )
 
-ds_codex()       { _codex_agent_launch ds "$@"; }
+ds-flash_codex() { _codex_agent_launch ds-flash "$@"; }
 mimo_codex()     { _codex_agent_launch mimo "$@"; }
 mimo-fast_codex() { _codex_agent_launch mimo-fast "$@"; }
 mimo-flash_codex() { _codex_agent_launch mimo-flash "$@"; }
@@ -442,7 +442,7 @@ gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
 gpt-6-luna_codex()  { _codex_agent_launch gpt-6-luna "$@"; }
 business_codex() { _codex_agent_launch business "$@"; }
 
-ds_codex_app()       { _codex_agent_app ds "$@"; }
+ds-flash_codex_app() { _codex_agent_app ds-flash "$@"; }
 mimo_codex_app()     { _codex_agent_app mimo "$@"; }
 mimo-fast_codex_app() { _codex_agent_app mimo-fast "$@"; }
 mimo-flash_codex_app() { _codex_agent_app mimo-flash "$@"; }

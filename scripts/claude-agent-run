@@ -13,12 +13,12 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  claude-agent-run --provider <ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local> [options] --prompt <text>
+  claude-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local> [options] --prompt <text>
   claude-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | claude-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Model provider: ds, mimo, mimo-fast, mimo-flash, qwen, kimi, glm, glm-flash, or local.
+  --provider <name>          Model provider: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi, glm, glm-flash, or local.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -51,7 +51,7 @@ Orchestrator note:
   directory when launching a child agent.
 
 Examples:
-  claude-agent-run --provider ds --cwd ~/workspace/project \
+  claude-agent-run --provider ds-flash --cwd ~/workspace/project \
     --instance collector-01 --prompt-file task.md \
     --output runs/collector-01.json
 
@@ -65,8 +65,8 @@ Examples:
     --prompt 'Review this repository with the local model'
 
 Parallel runs:
-  claude-agent-run --provider ds --cwd ~/workspace/project --instance ds-01 --prompt-file task-a.md --output ds-01.json &
-  claude-agent-run --provider ds --cwd ~/workspace/project --instance ds-02 --prompt-file task-b.md --output ds-02.json &
+  claude-agent-run --provider ds-flash --cwd ~/workspace/project --instance dsflash-01 --prompt-file task-a.md --output dsflash-01.json &
+  claude-agent-run --provider ds-flash --cwd ~/workspace/project --instance dsflash-02 --prompt-file task-b.md --output dsflash-02.json &
   wait
 EOF
 }
@@ -219,7 +219,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds mimo mimo-fast mimo-flash qwen kimi glm glm-flash local
+      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local
       exit 0
       ;;
     -h|--help)
@@ -244,9 +244,9 @@ done
 [[ -n "$provider" ]] || die "--provider is required"
 
 case "$provider" in
-  ds|deepseek)
-    provider="ds"
-    runner="ds_claude"
+  ds-flash|ds|deepseek|dflash)
+    provider="ds-flash"
+    runner="ds-flash_claude"
     ;;
   mimo|xiaomi)
     provider="mimo"

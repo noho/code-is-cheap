@@ -13,13 +13,13 @@ readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 usage() {
   cat <<'EOF'
 Usage:
-  codex-agent-run --provider <ds|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
+  codex-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
   codex-agent-run --provider <provider> [options] --prompt-file <path>
   printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
 
 Required:
-  --provider <name>          Codex profile: ds, mimo, mimo-fast, mimo-flash, qwen, kimi, glm,
-                             glm-flash, local, gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
+  --provider <name>          Codex profile: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi,
+                             glm, glm-flash, local, gpt-6-astra, gpt-6-sol, gpt-6-luna, or business.
 
 Prompt input (choose one):
   --prompt <text>            Prompt text.
@@ -52,8 +52,8 @@ Orchestrator note:
   directory when launching a child agent.
 
 Examples:
-  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task.md \
-    --output runs/ds-01.jsonl
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task.md \
+    --output runs/dsflash-01.jsonl
 
   codex-agent-run --provider gpt-6-astra --persist --prompt 'Review the implementation plan'
 
@@ -67,8 +67,8 @@ Examples:
     --prompt 'Review this repository with the local model'
 
 Parallel runs:
-  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task-a.md --output ds-01.jsonl &
-  codex-agent-run --provider ds --cwd ~/workspace/project --prompt-file task-b.md --output ds-02.jsonl &
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task-a.md --output dsflash-01.jsonl &
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task-b.md --output dsflash-02.jsonl &
   wait
 EOF
 }
@@ -218,7 +218,7 @@ while (( $# > 0 )); do
       shift
       ;;
     --list-providers)
-      printf '%s\n' ds mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business
+      printf '%s\n' ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business
       exit 0
       ;;
     -h|--help)
@@ -243,9 +243,9 @@ done
 [[ -n "$provider" ]] || die "--provider is required"
 
 case "$provider" in
-  ds|deepseek)
-    provider="ds"
-    runner="ds_codex"
+  ds-flash|ds|deepseek|dflash)
+    provider="ds-flash"
+    runner="ds-flash_codex"
     ;;
   mimo|xiaomi)
     provider="mimo"
