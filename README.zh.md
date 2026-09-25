@@ -254,6 +254,31 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 （`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
 非零退出，已有的 catalog 保持不动。
 
+### 修复跨 provider 恢复时的 reasoning 历史
+
+第三方 Responses 网关可能在 reasoning 记录的 `content` 数组里保存 `reasoning_text`。切换到 OpenAI 官方端点
+恢复会话时，可能收到 `Invalid 'input[n].content': array too long`（见 [Codex 上游问题 #36551](https://github.com/openai/codex/issues/36551)）。
+先退出所有正在使用该会话的 Codex 窗口，在 `~/.codex/sessions/` 中找到对应的 rollout 文件，再执行：
+
+```bash
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
+# 若随后出现 invalid_encrypted_content 或 reasoning item ID 不存在：
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+```
+
+第一条命令只统计命中数。`--apply` 只将非空且全为 `reasoning_text` 的 reasoning `content` 改为 `null`，
+替换前在原目录保存带时间戳的私有备份。第三方加密推理内容仍可能校验失败，其 item ID 也可能在 OpenAI
+端点不存在。此时按来源模型使用 `--drop-reasoning-model`：只删除这些模型的 reasoning 记录，保留对话和工具历史。
+被删记录中的内部推理及推理摘要不再出现在修复后的会话中，但仍保留在带时间戳的备份里。
+参数要使用 `turn_context` 记录的模型名，而非 profile 别名；没有匹配项时工具会警告。
+修复后的 rollout 和备份均收紧为仅所有者可访问（原文件允许所有者写入时为 `0600`）。
+再次运行相同修复命令应显示零条命中，然后用目标模型的 profile 恢复会话。
+若工具报告不支持的 reasoning 内容或 JSONL 损坏，会保持原文件不变；需单独检查报错行。需要回滚时，
+先再次退出会话，再把命令输出的 `rollout-*.jsonl.backup-<timestamp>` 文件复制覆盖原 rollout。
+确认恢复后的对话可用前保留备份。
+
 ### 切换 sandbox 模式
 
 共享 home 的 base `config.toml` 定义默认沙箱：`"workspace-write"`——写入限制在 workspace，
@@ -490,12 +515,14 @@ scripts/
   sub-agent-preflight
   sync-codex-providers.py
   patch-codex-model-catalog.py
+  repair-codex-reasoning-history.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 tests/
   test_provider_registry.py
+  test_repair_codex_reasoning_history.py
 ```
 
 ## 维护流程
@@ -514,7 +541,10 @@ codex-agent/profiles/<agent-id>/config.toml
 codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
+scripts/repair-codex-reasoning-history.py
 scripts/sync-codex-providers.py
+tests/test_provider_registry.py
+tests/test_repair_codex_reasoning_history.py
 ```
 
 校验全部 skills：

@@ -273,6 +273,31 @@ one model's setting, edit its card in the repo and re-sync (layering makes card 
 script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex
 changes the catalog shape, the generator warns and exits non-zero, and the existing catalogs are left untouched.
 
+### Repairing reasoning history for cross-provider resume
+
+A third-party Responses provider can save `reasoning_text` in a reasoning item's `content` array. The official OpenAI
+endpoint rejects that history on resume with `Invalid 'input[n].content': array too long` (see [upstream issue #36551](https://github.com/openai/codex/issues/36551)). Close every Codex client using the session, then locate its rollout file under `~/.codex/sessions/` and run:
+
+```bash
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
+# If cross-provider resume then reports invalid_encrypted_content or a missing reasoning item ID:
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+```
+
+The first command only counts affected items. `--apply` changes only reasoning items whose nonempty `content` consists
+entirely of `reasoning_text`, setting that field to `null`; it saves a private timestamped backup beside the rollout
+before replacing the file. Third-party encrypted reasoning may still fail validation, or its item ID may not exist on
+OpenAI's endpoint. In that case, use `--drop-reasoning-model` for each source model: it removes only reasoning records
+from those models' turns, keeping messages and tool history. Their private reasoning and any reasoning summaries in those
+records are lost from the repaired rollout, but remain in the timestamped backup. The second run of each repair reports zero affected items.
+Use the exact model name recorded in `turn_context`, rather than its profile alias; a zero-match model produces a warning.
+Both the repaired rollout and its backup have owner-only permissions (`0600` when the original is writable by its owner).
+Reopen the session with the target model's profile after repair. If the tool reports unsupported reasoning content or malformed JSONL, it leaves the rollout
+unchanged; inspect that line separately. To roll back, close the session again and copy the reported
+`rollout-*.jsonl.backup-<timestamp>` file over the rollout. Keep the backup until the resumed conversation works.
+
 ### Switching sandbox mode
 
 The shared home's base `config.toml` defines the default sandbox: `"workspace-write"` — writes confined to the
@@ -515,12 +540,14 @@ scripts/
   sub-agent-preflight
   sync-codex-providers.py
   patch-codex-model-catalog.py
+  repair-codex-reasoning-history.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 tests/
   test_provider_registry.py
+  test_repair_codex_reasoning_history.py
 ```
 
 ## Maintenance
@@ -539,7 +566,10 @@ codex-agent/profiles/<agent-id>/config.toml
 codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
+scripts/repair-codex-reasoning-history.py
 scripts/sync-codex-providers.py
+tests/test_provider_registry.py
+tests/test_repair_codex_reasoning_history.py
 ```
 
 Validate all skills:
