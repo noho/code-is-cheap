@@ -248,6 +248,10 @@ Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话�
 ~/.codex-agent/bin/codex-auto-review-shim-service install
 ```
 
+把 Agent 环境恢复到另一台 Mac 后，再运行一次 `install`。它会查找目标机器上的 Python 3.11+，重写
+launchd plist，并重新加载已有服务。`restart` 只重启现有 plist，不会更新 Python 路径。
+如果归档里还是旧版服务脚本，先从更新后的仓库执行 `./scripts/sync-codex-agent.sh`。
+
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
 模型卡只承载模型差量（model、`model_provider`、reasoning effort、上下文/compact 窗口、`web_search`、
