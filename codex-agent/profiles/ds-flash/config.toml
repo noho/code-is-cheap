@@ -10,11 +10,3 @@ model_auto_compact_token_limit = 786432
 
 # Non-GPT gateways: keep the search tool off.
 web_search = "disabled"
-
-[model_providers.deepseek]
-name = "DeepSeek"
-base_url = "http://127.0.0.1:8788/v1"
-# base_url = "https://api.deepseek.com/v1"  # 直连原值；停用 shim 时改回本行
-env_key = "DEEPSEEK_API_KEY"
-wire_api = "responses"
-requires_openai_auth = false

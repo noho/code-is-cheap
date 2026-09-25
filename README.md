@@ -16,7 +16,8 @@ This repository contains local skills and supporting scripts for Codex / Claude 
 gated feature development, plan review, deep code review, and multi-agent handoff.
 
 This repository is the source of truth for the skills under `skills/`, the agent launcher under
-`scripts/agent-tools.zsh`, and the child-agent runners under `scripts/*-agent-run`. Local runtime files are installation
+`scripts/agent-tools.zsh`, the child-agent runners under `scripts/*-agent-run`, and the provider registry under
+`codex-agent/model-providers.toml`. Local runtime files are installation
 targets only. Edit and validate sources here, then sync them out.
 
 ## Included Skills
@@ -213,8 +214,8 @@ is model switching, and the session pool is shared (switch launchers and `codex 
 conversation on another model). The nine
 third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
-`business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account), and the `codex` base file is
-not managed here.
+`business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
+machine-owned except for the marked provider registry managed by this repository.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
@@ -252,11 +253,17 @@ The tracked templates write machine paths as `@HOME@`; the sync script substitut
 install (Codex accepts only absolute paths in these fields).
 
 Model cards carry only model deltas (model, `model_provider`, reasoning effort, context/compact windows,
-`web_search`, `model_catalog_json`, `[model_providers.*]`). Policy (sandbox, approvals, shell environment
+`web_search`, `model_catalog_json`). The nine third-party gateway definitions live in
+`codex-agent/model-providers.toml`; sync installs them as a marked block in the shared base config so resume can
+resolve a provider used earlier in the same conversation. `glm-flash`, `mimo-fast`, and `mimo-flash` now have distinct
+provider IDs because they use distinct gateway ports. Legacy sessions recorded with the shared `glm` or `mimo` IDs
+cannot identify which variant created them; those IDs retain the normal `glm` and `mimo` routes.
+Policy (sandbox, approvals, shell environment
 policy, `service_tier`, …) and the per-machine state Codex itself and the ChatGPT desktop app write —
 `[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`, `[plugins.*]`, `[marketplaces.*]`,
-`[tui.*]`, `[desktop]`, and root-level keys such as `notify` — stay in the shared home's base `config.toml`,
-which the sync script never writes. Cards are pure artifacts and are overwritten wholesale on sync. To change
+`[tui.*]`, `[desktop]`, and root-level keys such as `notify` — stay in the shared home's base `config.toml`.
+The sync script changes only its marked provider block and refuses to overwrite a matching provider ID outside it.
+Cards are pure artifacts and are overwritten wholesale on sync. To change
 one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
 `model-catalogs/<id>.json` (kimi / mimo family / qwen) are **generated artifacts and are not tracked**. The sync
@@ -271,8 +278,7 @@ running). For a per-model exception, set `sandbox_mode` in that model's card to 
 `local` gets `"danger-full-access"` (no sandbox; used from a terminal, not dispatched as a sub-agent). Re-run
 `./scripts/sync-codex-agent.sh` after editing a card.
 
-`local` also points straight at llama.cpp (`http://127.0.0.1:8080/v1`); the commented `base_url` above it is the
-disabled shim route, kept for reference.
+`local` points straight at llama.cpp (`http://127.0.0.1:8080/v1`); its route is in the shared provider registry.
 
 ## Usage
 
@@ -480,6 +486,7 @@ skills/
     SKILL.md
     agents/openai.yaml
 codex-agent/
+  model-providers.toml
   profiles/
     ds-flash/config.toml
     glm/config.toml
@@ -501,7 +508,9 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  compose-codex-app-config.py
   sub-agent-preflight
+  sync-codex-providers.py
   patch-codex-model-catalog.py
   sync-agent-tools.sh
   sync-codex-agent.sh
@@ -519,16 +528,25 @@ skills/<skill-name>/agents/openai.yaml
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
+scripts/compose-codex-app-config.py
+codex-agent/model-providers.toml
 codex-agent/profiles/<agent-id>/config.toml
 codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
+scripts/sync-codex-providers.py
 ```
 
 Validate all skills:
 
 ```bash
 ./scripts/validate-skills.sh
+```
+
+Check the provider registry sync and desktop migration paths:
+
+```bash
+python3 -m unittest discover -s tests
 ```
 
 Sync to local Codex / Claude homes:
@@ -551,9 +569,9 @@ Sync the Codex agent profiles, shim scripts and routes:
 
 The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
 the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
-The codex-agent sync writes each model card wholesale into the shared home (`~/.codex/<agent-id>.config.toml`),
-installs the shim scripts and routes, and regenerates the untracked `model-catalogs/`; the shared home's base
-`config.toml` is never touched. None of these scripts push, publish, create PRs, or modify remote
+The codex-agent sync updates only the marked provider block in the shared base `config.toml`, writes each model card
+wholesale into the shared home (`~/.codex/<agent-id>.config.toml`), installs the shim scripts and routes, and regenerates
+the untracked `model-catalogs/`. None of these scripts push, publish, create PRs, or modify remote
 repositories.
 
 ## Notes

@@ -13,7 +13,9 @@ set -euo pipefail
 # 共享 home ~/.codex（真目录——桌面 app 沙箱拒绝路径中的 symlink 成分）的 base
 # config.toml 是机器本地运行时状态（政策、[projects.*] trust、[hooks.state]、app 写入的
 # [mcp_servers.*]/[plugins.*]/[marketplaces.*]/[tui.*]/[desktop] 及 notify 等根键），
-# 本脚本从不写它。模型卡只含模型差量、整文件覆盖即可，无需合并。
+# 模型卡只含模型差量、整文件覆盖即可，无需合并。
+# 本脚本只通过 sync-codex-providers.py 更新 base config 中有明确标记的
+# [model_providers.*] 注册表；其它本机设置保持原样。
 #
 # `business` 使用独立的 CODEX_HOME（~/.codex-agent/business，另一账号），不在本脚本管理范围。
 
@@ -24,6 +26,12 @@ shim_label="com.leo.codex-auto-review-shim"
 
 mkdir -p "$target_root"
 mkdir -p "$shared_home/model-catalogs"
+
+# Every provider used by a saved thread must be resolvable before resume can
+# apply a different model card. Sync this registry before deploying cards.
+python3 "$repo_root/scripts/sync-codex-providers.py" \
+  --base "$shared_home/config.toml" \
+  --registry "$repo_root/codex-agent/model-providers.toml"
 
 # --- profile cards ----------------------------------------------------------
 for src in "$repo_root"/codex-agent/profiles/*/config.toml; do

@@ -11,11 +11,3 @@ model_catalog_json = "@HOME@/.codex/model-catalogs/qwen.json"
 
 # Non-GPT gateways: keep the search tool off.
 web_search = "disabled"
-
-[model_providers.qwen]
-name = "Qwen"
-base_url = "http://127.0.0.1:8792/compatible-mode/v1"
-# base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"  # 直连原值；停用 shim 时改回本行
-env_key = "QWEN_API_KEY"
-wire_api = "responses"
-requires_openai_auth = false

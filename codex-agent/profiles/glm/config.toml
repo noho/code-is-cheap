@@ -10,11 +10,3 @@ model_auto_compact_token_limit = 786432
 
 # Non-GPT gateways: keep the search tool off.
 web_search = "disabled"
-
-[model_providers.glm]
-name = "GLM"
-base_url = "http://127.0.0.1:8789/api/v1"
-# base_url = "https://open.bigmodel.cn/api/v1"  # 直连原值；停用 shim 时改回本行
-env_key = "GLM_API_KEY"
-wire_api = "responses"
-requires_openai_auth = false
