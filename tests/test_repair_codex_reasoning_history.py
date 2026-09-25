@@ -72,7 +72,7 @@ class RepairReasoningHistoryTests(unittest.TestCase):
             stub.chmod(0o755)
             env = os.environ | {"HOME": str(home), "PATH": f"{bin_dir}:{os.environ['PATH']}", "CAPTURE_FILE": str(capture)}
             launcher = SCRIPT.parent / "agent-tools.zsh"
-            cmd = ["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume "$2"', "_", str(launcher), session_id]
+            cmd = ["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume "$2"', "_", str(launcher), session_id]
             done = subprocess.run(cmd, env=env, capture_output=True, text=True)
             self.assertEqual(done.returncode, 0, done.stderr)
             self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
@@ -84,10 +84,18 @@ class RepairReasoningHistoryTests(unittest.TestCase):
             self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id, "next step"])
             self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
             capture.unlink()
-            plain = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume "$2"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
-            self.assertEqual(plain.returncode, 0, plain.stderr)
+            flagged = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume "$2"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
+            self.assertEqual(flagged.returncode, 0, flagged.stderr)
             self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
             self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
+            capture.unlink()
+            bare = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume', "_", str(launcher)], env=env, capture_output=True, text=True)
+            self.assertEqual(bare.returncode, 0, bare.stderr)
+            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol"])
+            capture.unlink()
+            native_option = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume --help', "_", str(launcher)], env=env, capture_output=True, text=True)
+            self.assertEqual(native_option.returncode, 0, native_option.stderr)
+            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", "--help"])
             capture.unlink()
             invalid = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume bad-id', "_", str(launcher)], env=env, capture_output=True, text=True)
             self.assertNotEqual(invalid.returncode, 0)

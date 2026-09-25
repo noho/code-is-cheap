@@ -222,12 +222,14 @@ profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this reposi
 machine-owned except for the marked provider registry managed by this repository.
 
 To repair and resume a cross-model session in one step, close other Codex clients using it and run
-`gpt-6-sol_codex --resume <session-id> [prompt]` (replace the launcher with the intended target model; `--resume=<session-id>` also works).
-This launcher-only option finds the session under its Codex home, saves a private backup, removes reasoning records
+`gpt-6-sol_codex resume <session-id> [prompt]` or `gpt-6-sol_codex --resume <session-id> [prompt]`
+(replace the launcher with the intended target model; `--resume=<session-id>` also works).
+Both launcher forms find the session under its Codex home, save a private backup when needed, and remove reasoning records
 from turns whose model differs from the target card, then runs `codex resume` with that card. Messages and tool history
 remain; reasoning and summaries from other models are unavailable in the repaired session but remain in the backup.
 If there is nothing to remove, the session is left untouched and no backup is created.
-Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Ordinary `resume` does not repair.
+Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Bare `resume` and Codex resume options
+such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.

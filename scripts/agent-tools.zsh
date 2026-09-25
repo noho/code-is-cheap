@@ -462,12 +462,17 @@ _codex_agent_launch() (
   local repair_requested=false
   local repair_session_id=""
   local -a resume_tail=()
+  # `resume <id>` uses the same repair path as the launcher-only `--resume`.
+  # Bare `resume` and Codex's own options (for example --help/--last) stay native.
+  if (( ${#codex_args[@]} >= 2 )) && [[ "${codex_args[1]}" == resume && "${codex_args[2]}" != -* ]]; then
+    codex_args[1]=--resume
+  fi
   if (( ${#codex_args[@]} > 0 )); then
     case "${codex_args[1]}" in
       --resume)
         repair_requested=true
         (( ${#codex_args[@]} >= 2 && ${#codex_args[@]} <= 3 )) || {
-          echo "用法：${agent_id}_codex --resume <session-id> [prompt]" >&2
+          echo "用法：${agent_id}_codex {resume|--resume} <session-id> [prompt]" >&2
           return 2
         }
         repair_session_id="${codex_args[2]}"

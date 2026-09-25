@@ -207,11 +207,13 @@ launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profil
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
 
 要一条命令修复并恢复跨模型会话，先退出其他正在使用它的 Codex 窗口，再运行
-`gpt-6-sol_codex --resume <session-id> [prompt]`（将 launcher 换成目标模型；也支持 `--resume=<session-id>`）。这个只属于 launcher 的参数会在
-其 Codex home 中定位会话、保存私有备份、删除来源模型与目标模型不同的 reasoning 记录，然后以目标模型执行
+`gpt-6-sol_codex resume <session-id> [prompt]` 或 `gpt-6-sol_codex --resume <session-id> [prompt]`
+（将 launcher 换成目标模型；也支持 `--resume=<session-id>`）。两种写法都会在其 Codex home 中定位会话，
+需要修复时保存私有备份、删除来源模型与目标模型不同的 reasoning 记录，然后以目标模型执行
 `codex resume`。对话和工具历史保留；其他模型的推理及摘要在修复后的会话中不可用，但仍在备份里。
 若没有待删记录，原会话保持不变，也不会生成备份。
-使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。普通 `resume` 不会自动修复。
+使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。不带 ID 的 `resume`，以及 `--help`、`--last` 等
+Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 三个都是 medium reasoning effort。
