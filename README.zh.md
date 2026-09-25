@@ -156,8 +156,9 @@ CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgen
 上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
 全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
-`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；跨模型续同一段会话请用 CLI（共享 home 的
-`codex resume`）。
+`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；各 app home 的会话记录彼此隔离。
+CLI 会话若要跨模型续接，请在共享 home 中显式指定目标 profile（
+`gpt-6-sol_codex resume <session-id>` 或 `codex resume -p gpt-6-sol <session-id>`）。
 
 ```bash
 mimo_claude --title
@@ -195,8 +196,10 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
 机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex/<agent-id>.config.toml`，launcher 用
-`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享（换模型续同一段对话只需换个 launcher 再
-`codex resume`）。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
+`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享。换模型续同一段对话时，用目标模型的
+launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profile（如
+`codex resume -p gpt-6-sol <session-id>`）。单独执行 `codex resume <session-id>` 可能恢复会话上次选中的模型，
+不能保证使用 base config 的默认模型。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
@@ -239,7 +242,8 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 `model_catalog_json`）。九个第三方网关定义集中在 `codex-agent/model-providers.toml`，同步时作为带标记的块
 写入共享 base，使恢复会话时可以解析历史 provider。`glm-flash`、`mimo-fast`、`mimo-flash` 因网关端口不同，
 现在各有独立 provider ID。旧会话使用的共用 `glm` 或 `mimo` ID 无法识别其创建时的具体变体；
-这两个旧 ID 保留普通 `glm` 和 `mimo` 路由。政策（沙箱、审批、env 策略、`service_tier` 等）与 Codex 本体和
+这两个旧 ID 保留普通 `glm` 和 `mimo` 路由。退役的 provider ID 也要在注册表中保留最后可用的路由；
+删除 ID 会让记录该 ID 的历史会话无法恢复。政策（沙箱、审批、env 策略、`service_tier` 等）与 Codex 本体和
 ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.state]`、`[mcp_servers.*]`、`[plugins.*]`、
 `[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 等根键）都留在共享 home 的 base `config.toml` 里。
 同步脚本只更新带标记的 provider 块；若相同 ID 已在块外定义，则报错而不覆盖。模型卡是纯产物，
@@ -490,6 +494,8 @@ scripts/
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
+tests/
+  test_provider_registry.py
 ```
 
 ## 维护流程

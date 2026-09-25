@@ -167,7 +167,7 @@ Available launchers:
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
 `hy` (hy4-preview on tokenhub.tencentmaas.com, `HY_API_KEY`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
 upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
-The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. For continuing one conversation across models use the CLI (`codex resume` on the shared home).
+The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To continue a CLI conversation on another model, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`.
 
 ```bash
 mimo_claude --title
@@ -210,8 +210,10 @@ in the prompt — the child reads it from the generated file.
 All managed profiles share one Codex home (`~/.codex`, Codex's default home — it must be a real directory; the desktop app's sandbox rejects symlink components in its writable paths): the base
 `config.toml` carries policy and machine-local runtime state, and each profile is a model card at
 `~/.codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
-is model switching, and the session pool is shared (switch launchers and `codex resume` to continue one
-conversation on another model). The nine
+is model switching, and the session pool is shared. Resume through the target model's launcher
+(`gpt-6-sol_codex resume <session-id>`) or pass `-p` explicitly
+(`codex resume -p gpt-6-sol <session-id>`). Plain `codex resume <session-id>` can restore the
+session's last selected model instead of the base config's default. The nine
 third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
@@ -258,6 +260,7 @@ Model cards carry only model deltas (model, `model_provider`, reasoning effort, 
 resolve a provider used earlier in the same conversation. `glm-flash`, `mimo-fast`, and `mimo-flash` now have distinct
 provider IDs because they use distinct gateway ports. Legacy sessions recorded with the shared `glm` or `mimo` IDs
 cannot identify which variant created them; those IDs retain the normal `glm` and `mimo` routes.
+Keep retired provider IDs in the registry with their last usable routes; deleting an ID breaks resume for sessions that recorded it.
 Policy (sandbox, approvals, shell environment
 policy, `service_tier`, …) and the per-machine state Codex itself and the ChatGPT desktop app write —
 `[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`, `[plugins.*]`, `[marketplaces.*]`,
@@ -516,6 +519,8 @@ scripts/
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
+tests/
+  test_provider_registry.py
 ```
 
 ## Maintenance

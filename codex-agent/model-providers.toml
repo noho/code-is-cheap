@@ -1,6 +1,8 @@
 # Shared provider registry for every managed Codex profile. Keep each gateway
 # under a distinct ID: a resumed thread may need to resolve any earlier provider
 # before the newly selected model card takes effect.
+# Keep retired IDs with their last usable routes: removing an ID breaks resume
+# for sessions that recorded it, even when a new profile selects another model.
 
 [model_providers.deepseek]
 name = "DeepSeek"
