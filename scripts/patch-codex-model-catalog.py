@@ -10,13 +10,12 @@ carries `tool_mode = "code_mode_only"`, which makes Codex attach a code-mode
 third-party gateways (kimi, mimo) reject that item, so every escalation fails
 closed and unattended dispatch breaks.
 
-The fix is a one-field patch: copy Codex's built-in catalog and flip
-`codex-auto-review.tool_mode` from `code_mode_only` to `direct`. The resulting
-catalog deliberately contains **no session-model entries** — the profiles'
-models (deepseek-flash, kimi-k3, mimo-v2.6-pro, mimo-v2.6-flash, mimo-v2.6-pro-ultraspeed, qwen3.8-max, ...) keep using
-fallback metadata. Do not "fix" that by adding catalog entries for them: giving
-a session model real catalog metadata changes which tools Codex exposes and was
-observed to break tool calling entirely.
+Copy Codex's current catalog, set `codex-auto-review.tool_mode` to `direct`,
+and add the selected profile's session model with its configured context
+window. Unknown models otherwise inherit Codex's 272K fallback maximum, which
+clamps even an explicit `model_context_window` override. The new entry uses a
+current bundled direct-tool model as its schema template, then removes GPT-only
+capabilities and forces direct tools. Never check in a generated catalog.
 
 Source of truth
 ---------------
@@ -30,35 +29,34 @@ upgrades.
 Usage
 -----
   patch-codex-model-catalog.py [--dry-run] [--source FILE] [--profiles a,b,c]
+                               [--cards-dir DIR] [--output-dir DIR]
 
-Writes ~/.codex/model-catalogs/<profile>.json for each profile card
-(`codex -p <profile>`) that sets `model_catalog_json`. Exits 0 on success, 1 if
-anything was skipped or looked wrong — warnings are printed to stderr either way.
+Writes ~/.codex/model-catalogs/<profile>.json for each selected profile card.
+Standalone mode writes one profile at a time; sync-codex-agent.sh stages all
+outputs before installation. Exits 0 on success, 1 if anything was skipped or
+looked wrong.
 """
 
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
-import re
-import shutil
 import subprocess
 import sys
 import tempfile
+import tomllib
 from pathlib import Path
 
 HOME = Path.home()
-AGENT_DIR = HOME / ".codex-agent"
-SHARED_HOME = HOME / ".codex"
+SHARED_HOME = Path(os.environ.get("CODEX_SHARED_HOME", HOME / ".codex"))
 CATALOG_DIR = SHARED_HOME / "model-catalogs"
-DEFAULT_PROFILES = ["kimi", "mimo", "mimo-fast", "mimo-flash", "qwen"]
+DEFAULT_PROFILES = ["ds-flash", "glm", "glm-flash", "kimi", "local", "mimo", "mimo-fast", "mimo-flash", "qwen"]
 TARGET_ENTRY = "codex-auto-review"
 WANT_TOOL_MODE = "direct"
 EXPECTED_BEFORE = "code_mode_only"
-
-# Every third-party session model that must NOT appear in the catalog.
-SESSION_MODEL_PROFILES = ["ds-flash", "glm", "glm-flash", "kimi", "mimo", "mimo-fast", "mimo-flash", "qwen", "local"]
+SESSION_TEMPLATE = "gpt-5.4"
 
 warnings: list[str] = []
 
@@ -99,19 +97,6 @@ def entry_key(model: dict) -> str:
     return model.get("slug") or model.get("id") or ""
 
 
-def session_models() -> dict[str, str]:
-    """model id per profile, read from each profile's model card."""
-    found = {}
-    for profile in SESSION_MODEL_PROFILES:
-        cfg = SHARED_HOME / f"{profile}.config.toml"
-        if not cfg.is_file():
-            continue
-        m = re.search(r'^model\s*=\s*"([^"]+)"', cfg.read_text(), re.MULTILINE)
-        if m:
-            found[profile] = m.group(1)
-    return found
-
-
 def patch(catalog: dict) -> tuple[dict, bool]:
     models = catalog.get("models")
     if not isinstance(models, list) or not models:
@@ -137,42 +122,106 @@ def patch(catalog: dict) -> tuple[dict, bool]:
         return catalog, False
     target["tool_mode"] = WANT_TOOL_MODE
 
-    # Safety property: no session model may gain catalog metadata here.
-    keys = {entry_key(m) for m in models}
-    leaked = {p: m for p, m in session_models().items() if m in keys}
-    if leaked:
-        warn(
-            "session model(s) present in the catalog: "
-            + ", ".join(f"{p}={m}" for p, m in leaked.items())
-            + " — writing it would change session tool exposure; nothing written"
-        )
-        return catalog, False
-
     return catalog, True
 
 
-def write_targets(catalog: dict, profiles: list[str], dry_run: bool) -> int:
+def profile_model(profile: str, cards_dir: Path) -> tuple[str, int] | None:
+    cfg = cards_dir / f"{profile}.config.toml"
+    if not cfg.is_file():
+        warn(f"{profile}: model card is missing: {cfg}")
+        return None
+    try:
+        card = tomllib.loads(cfg.read_text())
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        warn(f"{profile}: cannot read model card: {exc}")
+        return None
+    model = card.get("model")
+    window = card.get("model_context_window")
+    expected_catalog = CATALOG_DIR / f"{profile}.json"
+    if (not isinstance(model, str) or not model or type(window) is not int
+            or window <= 0 or card.get("model_catalog_json") != str(expected_catalog)):
+        warn(f"{profile}: card needs a model, positive context window and catalog path {expected_catalog}")
+        return None
+    return model, window
+
+
+def session_entry(catalog: dict, model: str, window: int) -> dict | None:
+    models = catalog["models"]
+    if any(entry_key(entry) == model for entry in models):
+        warn(f"{model}: already present in Codex's catalog; refusing to replace built-in metadata")
+        return None
+    template = next((entry for entry in models if entry_key(entry) == SESSION_TEMPLATE), None)
+    if (template is None or not isinstance(template.get("base_instructions"), str)
+            or template.get("tool_mode") not in (None, "direct")
+            or template.get("shell_type") != "unified_exec"
+            or template.get("use_responses_lite") is not False
+            or template.get("experimental_supported_tools") != []):
+        warn(f"{SESSION_TEMPLATE}: direct-tool template shape changed; inspect Codex's new catalog")
+        return None
+    # Catalog entries require base instructions. Reusing the installed Codex
+    # template keeps the generated file in sync with this binary, while the
+    # explicit fields below restore the third-party fallback's tool behavior.
+    entry = copy.deepcopy(template)
+    entry.update(
+        slug=model,
+        display_name=model,
+        description="Third-party model profile",
+        visibility="none",
+        priority=99,
+        context_window=window,
+        max_context_window=window,
+        tool_mode="direct",
+        model_messages=None,
+        default_reasoning_level=None,
+        supported_reasoning_levels=[],
+        default_reasoning_summary="auto",
+        support_verbosity=False,
+        default_verbosity=None,
+        apply_patch_tool_type=None,
+        web_search_tool_type="text",
+        truncation_policy={"mode": "bytes", "limit": 10_000},
+        supports_search_tool=False,
+        supports_image_detail_original=False,
+        include_skills_usage_instructions=False,
+        include_plugin_usage_instructions=False,
+        include_apps_usage_instructions=False,
+        additional_speed_tiers=[],
+        service_tiers=[],
+        default_service_tier=None,
+        upgrade=None,
+        comp_hash=None,
+        input_modalities=["text", "image"],
+    )
+    return entry
+
+
+def write_targets(catalog: dict, profiles: list[str], dry_run: bool, cards_dir: Path, output_dir: Path) -> int:
     written = 0
     for profile in profiles:
-        target = CATALOG_DIR / f"{profile}.json"
-        cfg = SHARED_HOME / f"{profile}.config.toml"
-        if cfg.is_file() and "model_catalog_json" not in cfg.read_text():
-            warn(f"{profile}: model card has no `model_catalog_json` — skipped")
+        model_config = profile_model(profile, cards_dir)
+        if model_config is None:
             continue
+        model, window = model_config
+        entry = session_entry(catalog, model, window)
+        if entry is None:
+            continue
+        generated = copy.deepcopy(catalog)
+        generated["models"].append(entry)
+        target = output_dir / f"{profile}.json"
         if dry_run:
-            print(f"dry-run: would write {target}")
+            print(f"dry-run: would write {target} ({model}, {window} tokens)")
             written += 1
             continue
         target.parent.mkdir(parents=True, exist_ok=True)
         tmp = target.with_suffix(".json.tmp")
-        tmp.write_text(json.dumps(catalog, indent=2) + "\n")
-        shutil.move(tmp, target)
+        tmp.write_text(json.dumps(generated, indent=2) + "\n")
+        os.replace(tmp, target)
         print(f"wrote {target} ({target.stat().st_size} bytes)")
         written += 1
     return written
 
 
-def verify(path: Path) -> None:
+def verify(path: Path, profile: str, cards_dir: Path) -> None:
     """Read back a written catalog and confirm the patched field."""
     try:
         models = json.loads(path.read_text())["models"]
@@ -182,6 +231,13 @@ def verify(path: Path) -> None:
     entry = next((m for m in models if entry_key(m) == TARGET_ENTRY), None)
     if entry is None or entry.get("tool_mode") != WANT_TOOL_MODE:
         warn(f"{path}: verification failed — `{TARGET_ENTRY}.tool_mode` is not {WANT_TOOL_MODE!r}")
+    model_config = profile_model(profile, cards_dir)
+    if model_config is None:
+        return
+    model, window = model_config
+    session = [m for m in models if entry_key(m) == model]
+    if len(session) != 1 or session[0].get("max_context_window") != window or session[0].get("tool_mode") != "direct":
+        warn(f"{path}: session model {model} is missing or has incorrect window/tool metadata")
 
 
 def main() -> int:
@@ -189,6 +245,8 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="report actions without writing")
     ap.add_argument("--source", metavar="FILE", help="use a pre-rendered catalog instead of running codex")
     ap.add_argument("--profiles", default=",".join(DEFAULT_PROFILES), help="comma-separated profile names")
+    ap.add_argument("--cards-dir", type=Path, default=SHARED_HOME, help="read installed profile cards here")
+    ap.add_argument("--output-dir", type=Path, default=CATALOG_DIR, help="write generated catalogs here")
     args = ap.parse_args()
 
     profiles = [p.strip() for p in args.profiles.split(",") if p.strip()]
@@ -198,12 +256,12 @@ def main() -> int:
         print("nothing written", file=sys.stderr)
         return 1
 
-    count = write_targets(patched, profiles, args.dry_run)
+    count = write_targets(patched, profiles, args.dry_run, args.cards_dir, args.output_dir)
     if not args.dry_run:
         for profile in profiles:
-            target = CATALOG_DIR / f"{profile}.json"
+            target = args.output_dir / f"{profile}.json"
             if target.is_file():
-                verify(target)
+                verify(target, profile, args.cards_dir)
 
     if warnings:
         print(f"\n{len(warnings)} warning(s) — catalog may be stale; see above", file=sys.stderr)

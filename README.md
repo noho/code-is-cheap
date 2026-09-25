@@ -233,18 +233,19 @@ such as `--help` or `--last` still go directly to Codex because no session ID ha
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
+`gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite only |
-| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
-| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite only |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + patched catalog |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite + patched catalog |
+| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite + patched catalog |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
@@ -281,9 +282,11 @@ The sync script changes only its marked provider block and refuses to overwrite 
 Cards are pure artifacts and are overwritten wholesale on sync. To change
 one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
-`model-catalogs/<id>.json` (kimi / mimo family / qwen) are **generated artifacts and are not tracked**. The sync
-script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex
-changes the catalog shape, the generator warns and exits non-zero, and the existing catalogs are left untouched.
+`model-catalogs/<id>.json` for all nine third-party profiles are **generated artifacts and are not tracked**. The sync
+script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`), patches the
+guardian tool mode, and adds each profile's model with its card's context window and direct tool mode. Without that
+entry, Codex clamps unknown models to its 272K fallback maximum. If Codex changes the required catalog shape, the
+generator exits non-zero; sync stages all cards and catalogs first, so installed cards and catalogs stay intact.
 
 ### Repairing reasoning history for cross-provider resume
 

@@ -214,21 +214,22 @@ launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profil
 若没有待删记录，原会话保持不变，也不会生成备份。
 使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。不带 ID 的 `resume`，以及 `--help`、`--last` 等
 Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话。
+`gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 三个都是 medium reasoning effort。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
-| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
-| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 仅改模型名 |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 改模型名 + 目录补丁 |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 改模型名 + 目录补丁 |
+| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 改模型名 + 目录补丁 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
@@ -261,9 +262,11 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 同步时整文件覆盖。要给单个模型改设置，改仓库里那张卡再同步即可
 （layering 让卡上的键压过 base）。
 
-`model-catalogs/<id>.json`（kimi / mimo 系 / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
-（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
-非零退出，已有的 catalog 保持不动。
+`model-catalogs/<id>.json`（全部九个第三方 profile）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
+（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成：修正 guardian 的工具模式，并给各模型补入
+模型卡配置的窗口和 direct 工具模式。否则 Codex 会将未知模型限制在 272K 的后备上限。
+若 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
+失败不会替换已安装的模型卡或 catalog。
 
 ### 修复跨 provider 恢复时的 reasoning 历史
 

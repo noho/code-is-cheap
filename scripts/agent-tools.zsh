@@ -542,6 +542,7 @@ glm-flash_codex() { _codex_agent_launch glm-flash "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
 gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
 gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
+gpt_codex()         { _codex_agent_launch gpt-6-sol "$@"; }
 gpt-6-luna_codex()  { _codex_agent_launch gpt-6-luna "$@"; }
 business_codex() { _codex_agent_launch business "$@"; }
 
