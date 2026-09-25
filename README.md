@@ -264,6 +264,10 @@ Set up or update the profiles:
 ~/.codex-agent/bin/codex-auto-review-shim-service install
 ```
 
+After restoring the agent environment on another Mac, run `install` again. It discovers that machine's Python 3.11+
+interpreter, rewrites the launchd plist, and reloads an existing service. `restart` only restarts the current plist.
+If the archive contains an older service script, run `./scripts/sync-codex-agent.sh` from an updated checkout first.
+
 The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
 install (Codex accepts only absolute paths in these fields).
 

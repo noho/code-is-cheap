@@ -16,7 +16,6 @@ setopt no_unset pipe_fail
 
 readonly LABEL="com.leo.codex-auto-review-shim"
 readonly SHIM="$HOME/.codex-agent/bin/codex-auto-review-shim"
-readonly PYTHON="/opt/homebrew/bin/python3"
 readonly ROUTES="$HOME/.codex-agent/shim-routes.json"
 readonly LOG="$HOME/.codex-agent/shim.log"
 readonly PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
@@ -24,52 +23,189 @@ readonly DOMAIN="gui/$(id -u)"
 
 die() { print -u2 -- "$0: $*"; exit 1 }
 
+resolve_python() {
+  local candidate executable
+  local -a candidates
+  candidates=("$(command -v python3 2>/dev/null)" /opt/homebrew/bin/python3 /usr/local/bin/python3 /usr/bin/python3)
+  for candidate in "${candidates[@]}"; do
+    [[ -n "$candidate" && -x "$candidate" ]] || continue
+    executable="$("$candidate" -I -S -c '
+import os
+import sys
+if sys.version_info < (3, 11):
+    sys.exit(1)
+print(os.path.abspath(sys.executable))
+' 2>/dev/null)" || continue
+    [[ -n "$executable" && -x "$executable" ]] || continue
+    print -r -- "$executable"
+    return 0
+  done
+  return 1
+}
+
 plist_body() {
-  cat <<PLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key><string>$LABEL</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>$PYTHON</string>
-    <string>$SHIM</string>
-  </array>
-  <key>EnvironmentVariables</key>
-  <dict>
-    <key>SHIM_ROUTES</key><string>$ROUTES</string>
-  </dict>
-  <key>RunAtLoad</key><true/>
-  <key>KeepAlive</key><true/>
-  <key>StandardOutPath</key><string>$LOG</string>
-  <key>StandardErrorPath</key><string>$LOG</string>
-</dict>
-</plist>
-PLIST
+  local python="$1"
+  "$python" -I -S - "$LABEL" "$python" "$SHIM" "$ROUTES" "$LOG" <<'PY'
+import plistlib
+import sys
+
+_, label, python, shim, routes, log = sys.argv
+plistlib.dump({
+    "Label": label,
+    "ProgramArguments": [python, shim],
+    "EnvironmentVariables": {"SHIM_ROUTES": routes},
+    "RunAtLoad": True,
+    "KeepAlive": True,
+    "StandardOutPath": log,
+    "StandardErrorPath": log,
+}, sys.stdout.buffer, sort_keys=False)
+PY
+}
+
+route_ports() {
+  local python="$1"
+  "$python" -I -S - "$ROUTES" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as stream:
+    routes = json.load(stream).get("routes") or []
+if not routes:
+    sys.exit("no routes configured")
+ports = []
+for route in routes:
+    port = int(route["port"])
+    if not 1 <= port <= 65535 or port in ports:
+        sys.exit("invalid or duplicate route port")
+    ports.append(port)
+for port in ports:
+    print(port)
+PY
+}
+
+ports_are_free() {
+  local port
+  for port in "$@"; do
+    lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 && return 1
+  done
+  return 0
+}
+
+ports_are_listening() {
+  local port
+  for port in "$@"; do
+    lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 || return 1
+  done
+  return 0
+}
+
+wait_for_free_ports() {
+  local attempt
+  for attempt in {1..20}; do
+    ports_are_free "$@" && return 0
+    sleep 0.1
+  done
+  return 1
+}
+
+wait_for_service() {
+  local attempt
+  for attempt in {1..30}; do
+    if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1 && ports_are_listening "$@"; then
+      return 0
+    fi
+    sleep 0.2
+  done
+  return 1
+}
+
+show_port_conflicts() {
+  local port
+  print -u2 -- "端口被占用，无法安装 $LABEL："
+  for port in "$@"; do
+    if lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+      print -u2 -- "  端口 $port"
+      lsof -nP -iTCP:"$port" -sTCP:LISTEN 2>/dev/null >&2 || true
+    fi
+  done
+}
+
+rollback_install() {
+  local previous_plist="$1"
+  local was_loaded="$2"
+  launchctl bootout "$DOMAIN/$LABEL" >/dev/null 2>&1 || true
+  if [[ -n "$previous_plist" ]]; then
+    mv "$previous_plist" "$PLIST" || print -u2 -- "警告：无法恢复旧 plist：$previous_plist"
+  else
+    rm -f "$PLIST"
+  fi
+  if [[ "$was_loaded" == true ]]; then
+    launchctl bootstrap "$DOMAIN" "$PLIST" || print -u2 -- "警告：旧服务未能重新加载；请检查 $PLIST"
+  fi
 }
 
 cmd_install() {
+  local python port_lines candidate previous_plist="" was_loaded=false
+  local -a ports
   [[ -x "$SHIM"   ]] || die "找不到或不可执行：$SHIM"
-  [[ -x "$PYTHON" ]] || die "找不到 python3：$PYTHON"
   [[ -f "$ROUTES" ]] || die "找不到路由文件：$ROUTES"
+  python="$(resolve_python)" || die "找不到可用的 Python 3.11+（请先安装并确保 python3 在 PATH 中）"
+  port_lines="$(route_ports "$python")" || die "路由文件中的端口无效：$ROUTES"
+  ports=("${(@f)port_lines}")
+  command -v lsof >/dev/null 2>&1 || die "找不到 lsof"
+  command -v plutil >/dev/null 2>&1 || die "找不到 plutil"
 
-  if lsof -nP -iTCP:8788-8793 -sTCP:LISTEN >/dev/null 2>&1; then
-    print -u2 -- "警告：8788-8793 已有进程在监听，多半是手工跑的 shim。"
-    print -u2 -- "      请先 Ctrl-C 停掉它，否则 launchd 起的实例会 bind 失败。"
-    print -u2 -- "      当前监听："
-    lsof -nP -iTCP:8788-8793 -sTCP:LISTEN 2>/dev/null | tail -n +2 | sed 's/^/        /' >&2
+  mkdir -p "$(dirname "$PLIST")" || die "无法创建 LaunchAgents 目录"
+  candidate="$(mktemp "$PLIST.new.XXXXXX")" || die "无法创建临时 plist"
+  if ! plist_body "$python" > "$candidate" || ! plutil -lint "$candidate" >/dev/null 2>&1; then
+    rm -f "$candidate"
+    die "无法生成有效的 launchd plist"
+  fi
+  if [[ -f "$PLIST" ]]; then
+    previous_plist="$(mktemp "$PLIST.old.XXXXXX")" || {
+      rm -f "$candidate"
+      die "无法备份旧 plist"
+    }
+    cp -p "$PLIST" "$previous_plist" || {
+      rm -f "$candidate" "$previous_plist"
+      die "无法备份旧 plist"
+    }
+  fi
+
+  if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1; then
+    was_loaded=true
+  elif ! ports_are_free "${ports[@]}"; then
+    show_port_conflicts "${ports[@]}"
+    rm -f "$candidate"
+    [[ -n "$previous_plist" ]] && rm -f "$previous_plist"
     return 1
   fi
 
-  mkdir -p "$(dirname "$PLIST")" || die "无法创建 LaunchAgents 目录"
-  plist_body > "$PLIST" || die "写入 plist 失败"
-  print -- "已写入 $PLIST"
+  if [[ "$was_loaded" == true ]] && ! launchctl bootout "$DOMAIN/$LABEL"; then
+    rm -f "$candidate"
+    [[ -n "$previous_plist" ]] && rm -f "$previous_plist"
+    die "无法卸载旧的 launchd 服务"
+  fi
+  if ! wait_for_free_ports "${ports[@]}"; then
+    show_port_conflicts "${ports[@]}"
+    rollback_install "$previous_plist" "$was_loaded"
+    rm -f "$candidate"
+    return 1
+  fi
 
-  launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
-  launchctl bootstrap "$DOMAIN" "$PLIST" || die "launchctl bootstrap 失败"
-  print -- "已加载 $LABEL"
-  sleep 1
+  if ! mv "$candidate" "$PLIST" || ! launchctl bootstrap "$DOMAIN" "$PLIST"; then
+    print -u2 -- "安装失败，正在恢复旧服务"
+    rollback_install "$previous_plist" "$was_loaded"
+    rm -f "$candidate"
+    return 1
+  fi
+  if ! wait_for_service "${ports[@]}"; then
+    print -u2 -- "服务未在所有路由端口启动，正在恢复旧服务"
+    rollback_install "$previous_plist" "$was_loaded"
+    return 1
+  fi
+  [[ -n "$previous_plist" ]] && rm -f "$previous_plist"
+  print -- "已写入 $PLIST；已加载 $LABEL"
   cmd_status
 }
 
@@ -96,11 +232,23 @@ cmd_status() {
     print -- "  未加载"
   fi
   print -- "--- 端口监听 ---"
-  local out
-  out=$(lsof -nP -iTCP:8788-8793 -sTCP:LISTEN 2>/dev/null | grep LISTEN | awk '{print "  "$1, "PID="$2, $9}')
-  print -- "${out:-  （无）}"
+  local python port_lines port out
+  if python="$(resolve_python)" && port_lines="$(route_ports "$python")"; then
+    for port in "${(@f)port_lines}"; do
+      out=$(lsof -nP -iTCP:"$port" -sTCP:LISTEN 2>/dev/null | awk 'NR > 1 {print "  "$1, "PID="$2, $9}')
+      print -- "${out:-  $port（无）}"
+    done
+  else
+    print -- "  无法读取路由端口"
+  fi
   print -- "--- 日志尾部 ---"
   [[ -f "$LOG" ]] && tail -3 "$LOG" | sed 's/^/  /' || print -- "  （无日志）"
+}
+
+cmd_print_plist() {
+  local python
+  python="$(resolve_python)" || die "找不到可用的 Python 3.11+（请先安装并确保 python3 在 PATH 中）"
+  plist_body "$python"
 }
 
 case "${1:-}" in
@@ -108,6 +256,6 @@ case "${1:-}" in
   uninstall)   cmd_uninstall ;;
   restart)     cmd_restart ;;
   status)      cmd_status ;;
-  print-plist) plist_body ;;
+  print-plist) cmd_print_plist ;;
   *) print -u2 -- "用法: $0 {install|uninstall|restart|status|print-plist}"; exit 2 ;;
 esac
