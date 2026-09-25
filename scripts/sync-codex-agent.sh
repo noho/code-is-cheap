@@ -13,7 +13,9 @@ set -euo pipefail
 # 共享 home ~/.codex（真目录——桌面 app 沙箱拒绝路径中的 symlink 成分）的 base
 # config.toml 是机器本地运行时状态（政策、[projects.*] trust、[hooks.state]、app 写入的
 # [mcp_servers.*]/[plugins.*]/[marketplaces.*]/[tui.*]/[desktop] 及 notify 等根键），
-# 本脚本从不写它。模型卡只含模型差量、整文件覆盖即可，无需合并。
+# 模型卡只含模型差量、整文件覆盖即可，无需合并。
+# 本脚本只通过 sync-codex-providers.py 更新 base config 中有明确标记的
+# [model_providers.*] 注册表；其它本机设置保持原样。
 #
 # `business` 使用独立的 CODEX_HOME（~/.codex-agent/business，另一账号），不在本脚本管理范围。
 
@@ -25,20 +27,50 @@ shim_label="com.leo.codex-auto-review-shim"
 mkdir -p "$target_root"
 mkdir -p "$shared_home/model-catalogs"
 
-# --- profile cards ----------------------------------------------------------
+# Every provider used by a saved thread must be resolvable before resume can
+# apply a different model card. Sync this registry before deploying cards.
+python3 "$repo_root/scripts/sync-codex-providers.py" \
+  --base "$shared_home/config.toml" \
+  --registry "$repo_root/codex-agent/model-providers.toml"
+
+# --- stage cards and catalogs before replacing installed cards -------------
+stage_dir="$(mktemp -d "$shared_home/.catalog-stage.XXXXXX")"
+trap 'rm -rf "$stage_dir"' EXIT
+mkdir -p "$stage_dir/cards" "$stage_dir/catalogs"
 for src in "$repo_root"/codex-agent/profiles/*/config.toml; do
   [[ -f "$src" ]] || continue
   profile="$(basename "$(dirname "$src")")"
-  dest="$shared_home/$profile.config.toml"
-  # 模板用 @HOME@ 占位（Codex 只接受绝对路径，~ / $HOME 都不展开），安装时注入本机 home
-  tmp="$shared_home/.$profile.config.toml.$$"
-  sed "s|@HOME@|$HOME|g" "$src" > "$tmp"
-  chmod 600 "$tmp"
-  mv "$tmp" "$dest"
+  # 模板用 @HOME@/.codex 占位；测试可通过 CODEX_SHARED_HOME 改写目标 home。
+  dest="$stage_dir/cards/$profile.config.toml"
+  sed "s|@HOME@/.codex|$shared_home|g" "$src" > "$dest"
+  chmod 600 "$dest"
   if grep -q '@HOME@' "$dest"; then
-    echo "WARNING: $dest 仍含未替换的 @HOME@ 占位符" >&2
+    echo "ERROR: $dest 仍含未替换的 @HOME@ 占位符" >&2
+    exit 1
   fi
-  echo "synced card: $profile -> $dest"
+done
+
+# The generator reads staged cards but validates their final installed paths.
+# A catalog failure leaves every installed card and catalog as it was.
+python3 "$repo_root/scripts/patch-codex-model-catalog.py" \
+  --cards-dir "$stage_dir/cards" \
+  --output-dir "$stage_dir/catalogs"
+
+for src in "$stage_dir"/catalogs/*.json; do
+  [[ -f "$src" ]] || continue
+  dest="$shared_home/model-catalogs/$(basename "$src")"
+  tmp="$dest.tmp.$$"
+  install -m 600 "$src" "$tmp"
+  mv "$tmp" "$dest"
+  echo "synced catalog: $(basename "$src") -> $dest"
+done
+for src in "$stage_dir"/cards/*.config.toml; do
+  [[ -f "$src" ]] || continue
+  dest="$shared_home/$(basename "$src")"
+  tmp="$dest.tmp.$$"
+  install -m 600 "$src" "$tmp"
+  mv "$tmp" "$dest"
+  echo "synced card: $(basename "$src" .config.toml) -> $dest"
 done
 
 # --- shim + launcher scripts ------------------------------------------------
@@ -52,13 +84,6 @@ done
 # --- shim routes ------------------------------------------------------------
 install -m 644 "$repo_root/codex-agent/shim-routes.json" "$target_root/shim-routes.json"
 echo "synced shim-routes.json"
-
-# --- model catalogs (generated, never tracked) ------------------------------
-# 从 codex debug models 现场生成；结构变化时脚本会 WARNING 并非零退出。
-if ! python3 "$repo_root/scripts/patch-codex-model-catalog.py"; then
-  echo "WARNING: model-catalog 生成报告了问题（见上）——kimi/mimo/qwen 的 guardian 可能失败。" >&2
-  echo "         仓库内不放 catalog（生成型产物）；请按上面的 WARNING 修好取源或结构后重跑本脚本。" >&2
-fi
 
 # --- 让运行中的 shim 用上新路由 ----------------------------------------------
 if launchctl print "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then

@@ -7,6 +7,7 @@ model_provider = "local_llama"
 model_reasoning_effort = "xhigh"
 model_context_window = 262144
 model_auto_compact_token_limit = 229376
+model_catalog_json = "@HOME@/.codex/model-catalogs/local.json"
 
 # Non-GPT gateways: keep the search tool off.
 web_search = "disabled"
@@ -15,10 +16,3 @@ web_search = "disabled"
 sandbox_mode = "danger-full-access"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
-
-[model_providers.local_llama]
-name = "Local llama.cpp"
-# base_url = "http://127.0.0.1:8793/v1"  # shim 路由（已停用：guardian 超时，local 不走 shim）
-base_url = "http://127.0.0.1:8080/v1"
-wire_api = "responses"
-requires_openai_auth = false

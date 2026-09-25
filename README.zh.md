@@ -111,10 +111,12 @@ cd code-is-cheap
 
 受版本控制的真源是 `scripts/agent-tools.zsh`、`scripts/claude-agent-run` 和 `scripts/codex-agent-run`，安装副本位于
 `~/.config/zsh` 和 `~/.local/bin`。应修改仓库真源并重新同步，不要直接编辑安装副本。
+`sync-agent-tools.sh` 还会把 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
 
 前置要求：
 
 - `zsh`、`claude`、`codex`、`jq` 和 `curl` 已在 `PATH` 中。
+- launcher 专用的 `--resume` 修复参数需要 `python3` 3.11 或更新版本。
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 启动对应 Agent 前已导出 provider 凭据：
   `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
@@ -156,8 +158,9 @@ CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgen
 上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
 全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
-`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；跨模型续同一段会话请用 CLI（共享 home 的
-`codex resume`）。
+`compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；各 app home 的会话记录彼此隔离。
+CLI 会话若要跨模型续接，请在共享 home 中显式指定目标 profile（
+`gpt-6-sol_codex resume <session-id>` 或 `codex resume -p gpt-6-sol <session-id>`）。
 
 ```bash
 mimo_claude --title
@@ -195,26 +198,38 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
 机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex/<agent-id>.config.toml`，launcher 用
-`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享（换模型续同一段对话只需换个 launcher 再
-`codex resume`）。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
+`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享。换模型续同一段对话时，用目标模型的
+launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profile（如
+`codex resume -p gpt-6-sol <session-id>`）。单独执行 `codex resume <session-id>` 可能恢复会话上次选中的模型，
+不能保证使用 base config 的默认模型。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
-`codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号），
-`codex` 的 base 文件不在管理范围内。
+`codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
+共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
+
+要一条命令修复并恢复跨模型会话，先退出其他正在使用它的 Codex 窗口，再运行
+`gpt-6-sol_codex resume <session-id> [prompt]` 或 `gpt-6-sol_codex --resume <session-id> [prompt]`
+（将 launcher 换成目标模型；也支持 `--resume=<session-id>`）。两种写法都会在其 Codex home 中定位会话，
+需要修复时保存私有备份、删除来源模型与目标模型不同的 reasoning 记录，然后以目标模型执行
+`codex resume`。对话和工具历史保留；其他模型的推理及摘要在修复后的会话中不可用，但仍在备份里。
+若没有待删记录，原会话保持不变，也不会生成备份。
+使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。不带 ID 的 `resume`，以及 `--help`、`--last` 等
+Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话。
+`gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 三个都是 medium reasoning effort。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 仅改模型名 |
-| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 仅改模型名 |
-| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 仅改模型名 |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 改模型名 + 目录补丁 |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 改模型名 + 目录补丁 |
+| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 改模型名 + 目录补丁 |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 不走沙箱、不走 shim |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
@@ -236,15 +251,47 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
 模型卡只承载模型差量（model、`model_provider`、reasoning effort、上下文/compact 窗口、`web_search`、
-`model_catalog_json`、`[model_providers.*]`）；政策（沙箱、审批、env 策略、`service_tier` 等）与 Codex 本体和
+`model_catalog_json`）。九个第三方网关定义集中在 `codex-agent/model-providers.toml`，同步时作为带标记的块
+写入共享 base，使恢复会话时可以解析历史 provider。`glm-flash`、`mimo-fast`、`mimo-flash` 因网关端口不同，
+现在各有独立 provider ID。旧会话使用的共用 `glm` 或 `mimo` ID 无法识别其创建时的具体变体；
+这两个旧 ID 保留普通 `glm` 和 `mimo` 路由。退役的 provider ID 也要在注册表中保留最后可用的路由；
+删除 ID 会让记录该 ID 的历史会话无法恢复。政策（沙箱、审批、env 策略、`service_tier` 等）与 Codex 本体和
 ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.state]`、`[mcp_servers.*]`、`[plugins.*]`、
-`[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 等根键）都留在共享 home 的 base `config.toml` 里，
-同步脚本从不写它。模型卡是纯产物，同步时整文件覆盖。要给单个模型改设置，改仓库里那张卡再同步即可
+`[marketplaces.*]`、`[tui.*]`、`[desktop]` 以及 `notify` 等根键）都留在共享 home 的 base `config.toml` 里。
+同步脚本只更新带标记的 provider 块；若相同 ID 已在块外定义，则报错而不覆盖。模型卡是纯产物，
+同步时整文件覆盖。要给单个模型改设置，改仓库里那张卡再同步即可
 （layering 让卡上的键压过 base）。
 
-`model-catalogs/<id>.json`（kimi / mimo 系 / qwen）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
-（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成；若 Codex 改了目录结构，生成脚本会 WARNING 且
-非零退出，已有的 catalog 保持不动。
+`model-catalogs/<id>.json`（全部九个第三方 profile）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
+（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成：修正 guardian 的工具模式，并给各模型补入
+模型卡配置的窗口和 direct 工具模式。否则 Codex 会将未知模型限制在 272K 的后备上限。
+若 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
+失败不会替换已安装的模型卡或 catalog。
+
+### 修复跨 provider 恢复时的 reasoning 历史
+
+第三方 Responses 网关可能在 reasoning 记录的 `content` 数组里保存 `reasoning_text`。切换到 OpenAI 官方端点
+恢复会话时，可能收到 `Invalid 'input[n].content': array too long`（见 [Codex 上游问题 #36551](https://github.com/openai/codex/issues/36551)）。
+先退出所有正在使用该会话的 Codex 窗口，在 `~/.codex/sessions/` 中找到对应的 rollout 文件，再执行：
+
+```bash
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
+# 若随后出现 invalid_encrypted_content 或 reasoning item ID 不存在：
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+```
+
+第一条命令只统计命中数。`--apply` 只将非空且全为 `reasoning_text` 的 reasoning `content` 改为 `null`，
+替换前在原目录保存带时间戳的私有备份。第三方加密推理内容仍可能校验失败，其 item ID 也可能在 OpenAI
+端点不存在。此时按来源模型使用 `--drop-reasoning-model`：只删除这些模型的 reasoning 记录，保留对话和工具历史。
+被删记录中的内部推理及推理摘要不再出现在修复后的会话中，但仍保留在带时间戳的备份里。
+参数要使用 `turn_context` 记录的模型名，而非 profile 别名；没有匹配项时工具会警告。
+修复后的 rollout 和备份均收紧为仅所有者可访问（原文件允许所有者写入时为 `0600`）。
+再次运行相同修复命令应显示零条命中，然后用目标模型的 profile 恢复会话。
+若工具报告不支持的 reasoning 内容或 JSONL 损坏，会保持原文件不变；需单独检查报错行。需要回滚时，
+先再次退出会话，再把命令输出的 `rollout-*.jsonl.backup-<timestamp>` 文件复制覆盖原 rollout。
+确认恢复后的对话可用前保留备份。
 
 ### 切换 sandbox 模式
 
@@ -253,7 +300,7 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 在它的模型卡里写 `sandbox_mode` 覆盖 base——`local` 就是这样拿到 `"danger-full-access"`（无沙箱，
 只在终端交互使用，不作为子 Agent 派发）。改卡后重跑 `./scripts/sync-codex-agent.sh`。
 
-`local` 的 `base_url` 直连 llama.cpp（`http://127.0.0.1:8080/v1`），上方被注释的那行是已停用的 shim 路由，留作参考。
+`local` 在共享 provider 注册表中直连 llama.cpp（`http://127.0.0.1:8080/v1`）。
 
 ## 使用方式
 
@@ -456,6 +503,7 @@ skills/
     SKILL.md
     agents/openai.yaml
 codex-agent/
+  model-providers.toml
   profiles/
     ds-flash/config.toml
     glm/config.toml
@@ -477,12 +525,18 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  compose-codex-app-config.py
   sub-agent-preflight
+  sync-codex-providers.py
   patch-codex-model-catalog.py
+  repair-codex-reasoning-history.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
+tests/
+  test_provider_registry.py
+  test_repair_codex_reasoning_history.py
 ```
 
 ## 维护流程
@@ -495,16 +549,28 @@ skills/<skill-name>/agents/openai.yaml
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
+scripts/compose-codex-app-config.py
+codex-agent/model-providers.toml
 codex-agent/profiles/<agent-id>/config.toml
 codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
+scripts/repair-codex-reasoning-history.py
+scripts/sync-codex-providers.py
+tests/test_provider_registry.py
+tests/test_repair_codex_reasoning_history.py
 ```
 
 校验全部 skills：
 
 ```bash
 ./scripts/validate-skills.sh
+```
+
+检查 provider 注册同步与桌面端迁移路径：
+
+```bash
+python3 -m unittest discover -s tests
 ```
 
 同步到本地 Codex / Claude homes：
@@ -527,8 +593,9 @@ scripts/patch-codex-model-catalog.py
 
 skill 同步脚本会先 validate，再把每个 skill 复制到已存在的本地目标目录。agent-tools 同步脚本以 `600` 权限把
 启动函数安装到 `~/.config/zsh/agent-tools.zsh`，并以 `755` 权限把 runner 安装到 `~/.local/bin`。codex-agent
-同步脚本把模型卡整文件写入共享 home（`~/.codex/<agent-id>.config.toml`），安装 shim 脚本与路由表，
-并重新生成不入仓库的 `model-catalogs/`；共享 home 的 base `config.toml` 永不触碰。这些脚本都不会 push、
+同步脚本只更新共享 base `config.toml` 中带标记的 provider 块，把模型卡整文件写入共享 home
+（`~/.codex/<agent-id>.config.toml`），安装 shim 脚本与路由表，并重新生成不入仓库的 `model-catalogs/`。
+这些脚本都不会 push、
 publish、create PR，也不会修改远程仓库。
 
 ## 说明

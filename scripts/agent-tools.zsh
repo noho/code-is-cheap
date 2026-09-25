@@ -459,6 +459,54 @@ _codex_agent_launch() (
   local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
   _agent_tools_prepare_credentials "$key_name" || return 1
   _codex_agent_require_home "$agent_id" || return 1
+  local repair_requested=false
+  local repair_session_id=""
+  local -a resume_tail=()
+  # `resume <id>` uses the same repair path as the launcher-only `--resume`.
+  # Bare `resume` and Codex's own options (for example --help/--last) stay native.
+  if (( ${#codex_args[@]} >= 2 )) && [[ "${codex_args[1]}" == resume && "${codex_args[2]}" != -* ]]; then
+    codex_args[1]=--resume
+  fi
+  if (( ${#codex_args[@]} > 0 )); then
+    case "${codex_args[1]}" in
+      --resume)
+        repair_requested=true
+        (( ${#codex_args[@]} >= 2 && ${#codex_args[@]} <= 3 )) || {
+          echo "用法：${agent_id}_codex {resume|--resume} <session-id> [prompt]" >&2
+          return 2
+        }
+        repair_session_id="${codex_args[2]}"
+        (( ${#codex_args[@]} == 3 )) && resume_tail=("${codex_args[3]}")
+        ;;
+      --resume=*)
+        repair_requested=true
+        (( ${#codex_args[@]} <= 2 )) || {
+          echo "用法：${agent_id}_codex --resume=<session-id> [prompt]" >&2
+          return 2
+        }
+        repair_session_id="${codex_args[1]#--resume=}"
+        (( ${#codex_args[@]} == 2 )) && resume_tail=("${codex_args[2]}")
+        ;;
+    esac
+  fi
+  if [[ "$repair_requested" == true ]]; then
+    [[ -n "$repair_session_id" ]] || {
+      echo "session-id 不能为空" >&2
+      return 2
+    }
+    command -v repair-codex-reasoning-history.py >/dev/null 2>&1 || {
+      echo "repair-codex-reasoning-history.py 不在 PATH（请先运行 scripts/sync-agent-tools.sh）" >&2
+      return 1
+    }
+    local target_config="$codex_home/$agent_id.config.toml"
+    [[ "$agent_id" == business ]] && target_config="$codex_home/config.toml"
+    repair-codex-reasoning-history.py \
+      --session-id "$repair_session_id" \
+      --sessions-root "$codex_home/sessions" \
+      --target-config "$target_config" \
+      --apply || return $?
+    codex_args=(resume "$repair_session_id" "${resume_tail[@]}")
+  fi
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
   fi
@@ -494,6 +542,7 @@ glm-flash_codex() { _codex_agent_launch glm-flash "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
 gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
 gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
+gpt_codex()         { _codex_agent_launch gpt-6-sol "$@"; }
 gpt-6-luna_codex()  { _codex_agent_launch gpt-6-luna "$@"; }
 business_codex() { _codex_agent_launch business "$@"; }
 

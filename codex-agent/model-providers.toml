@@ -1,0 +1,75 @@
+# Shared provider registry for every managed Codex profile. Keep each gateway
+# under a distinct ID: a resumed thread may need to resolve any earlier provider
+# before the newly selected model card takes effect.
+# Keep retired IDs with their last usable routes: removing an ID breaks resume
+# for sessions that recorded it, even when a new profile selects another model.
+
+[model_providers.deepseek]
+name = "DeepSeek"
+base_url = "http://127.0.0.1:8788/v1"
+# Direct fallback when disabling the shim: https://api.deepseek.com/v1
+env_key = "DEEPSEEK_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.glm]
+name = "GLM"
+base_url = "http://127.0.0.1:8789/api/v1"
+# Direct fallback when disabling the shim: https://open.bigmodel.cn/api/v1
+env_key = "GLM_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.glm_flash]
+name = "GLM Flash"
+base_url = "http://127.0.0.1:8795/api/v1"
+# Direct fallback when disabling the shim: https://open.bigmodel.cn/api/v1
+env_key = "GLM_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.kimi]
+name = "Kimi"
+base_url = "http://127.0.0.1:8790/coding/v1"
+# Direct fallback when disabling the shim: https://api.kimi.com/coding/v1
+env_key = "KIMI_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.local_llama]
+name = "Local llama.cpp"
+base_url = "http://127.0.0.1:8080/v1"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.mimo]
+name = "MiMo"
+base_url = "http://127.0.0.1:8791/v1"
+# Direct fallback when disabling the shim: https://token-plan-cn.xiaomimimo.com/v1
+env_key = "MIMO_PLAN_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.mimo_fast]
+name = "MiMo Fast"
+base_url = "http://127.0.0.1:8794/v1"
+# Direct fallback when disabling the shim: https://api.xiaomimimo.com/v1
+env_key = "MIMO_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.mimo_flash]
+name = "MiMo Flash"
+base_url = "http://127.0.0.1:8793/v1"
+# Direct fallback when disabling the shim: https://token-plan-cn.xiaomimimo.com/v1
+env_key = "MIMO_PLAN_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false
+
+[model_providers.qwen]
+name = "Qwen"
+base_url = "http://127.0.0.1:8792/compatible-mode/v1"
+# Direct fallback when disabling the shim: https://dashscope.aliyuncs.com/compatible-mode/v1
+env_key = "QWEN_API_KEY"
+wire_api = "responses"
+requires_openai_auth = false

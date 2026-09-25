@@ -16,7 +16,8 @@ This repository contains local skills and supporting scripts for Codex / Claude 
 gated feature development, plan review, deep code review, and multi-agent handoff.
 
 This repository is the source of truth for the skills under `skills/`, the agent launcher under
-`scripts/agent-tools.zsh`, and the child-agent runners under `scripts/*-agent-run`. Local runtime files are installation
+`scripts/agent-tools.zsh`, the child-agent runners under `scripts/*-agent-run`, and the provider registry under
+`codex-agent/model-providers.toml`. Local runtime files are installation
 targets only. Edit and validate sources here, then sync them out.
 
 ## Included Skills
@@ -123,10 +124,12 @@ After syncing, start a new Codex / Claude session so the runtime reloads the ski
 The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
 installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
 editing installed copies.
+`sync-agent-tools.sh` also installs `repair-codex-reasoning-history.py` to `~/.local/bin`.
 
 Prerequisites:
 
 - `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
+- `python3` 3.11 or newer is required for the launcher-only `--resume` repair option.
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - Provider credentials are exported before launching the matching agent:
   `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
@@ -166,7 +169,7 @@ Available launchers:
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
 `hy` (hy4-preview on tokenhub.tencentmaas.com, `HY_API_KEY`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
 upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
-The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. For continuing one conversation across models use the CLI (`codex resume` on the shared home).
+The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To continue a CLI conversation on another model, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`.
 
 ```bash
 mimo_claude --title
@@ -209,27 +212,40 @@ in the prompt — the child reads it from the generated file.
 All managed profiles share one Codex home (`~/.codex`, Codex's default home — it must be a real directory; the desktop app's sandbox rejects symlink components in its writable paths): the base
 `config.toml` carries policy and machine-local runtime state, and each profile is a model card at
 `~/.codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
-is model switching, and the session pool is shared (switch launchers and `codex resume` to continue one
-conversation on another model). The nine
+is model switching, and the session pool is shared. Resume through the target model's launcher
+(`gpt-6-sol_codex resume <session-id>`) or pass `-p` explicitly
+(`codex resume -p gpt-6-sol <session-id>`). Plain `codex resume <session-id>` can restore the
+session's last selected model instead of the base config's default. The nine
 third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the three subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
-`business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account), and the `codex` base file is
-not managed here.
+`business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
+machine-owned except for the marked provider registry managed by this repository.
+
+To repair and resume a cross-model session in one step, close other Codex clients using it and run
+`gpt-6-sol_codex resume <session-id> [prompt]` or `gpt-6-sol_codex --resume <session-id> [prompt]`
+(replace the launcher with the intended target model; `--resume=<session-id>` also works).
+Both launcher forms find the session under its Codex home, save a private backup when needed, and remove reasoning records
+from turns whose model differs from the target card, then runs `codex resume` with that card. Messages and tool history
+remain; reasoning and summaries from other models are unavailable in the repaired session but remain in the backup.
+If there is nothing to remove, the session is left untouched and no backup is created.
+Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Bare `resume` and Codex resume options
+such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
+`gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite only |
-| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite only |
-| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite only |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + patched catalog |
+| `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite + patched catalog |
+| `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite + patched catalog |
 | `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | runs unsandboxed, no shim |
+| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-sol` | `gpt-6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
@@ -252,16 +268,50 @@ The tracked templates write machine paths as `@HOME@`; the sync script substitut
 install (Codex accepts only absolute paths in these fields).
 
 Model cards carry only model deltas (model, `model_provider`, reasoning effort, context/compact windows,
-`web_search`, `model_catalog_json`, `[model_providers.*]`). Policy (sandbox, approvals, shell environment
+`web_search`, `model_catalog_json`). The nine third-party gateway definitions live in
+`codex-agent/model-providers.toml`; sync installs them as a marked block in the shared base config so resume can
+resolve a provider used earlier in the same conversation. `glm-flash`, `mimo-fast`, and `mimo-flash` now have distinct
+provider IDs because they use distinct gateway ports. Legacy sessions recorded with the shared `glm` or `mimo` IDs
+cannot identify which variant created them; those IDs retain the normal `glm` and `mimo` routes.
+Keep retired provider IDs in the registry with their last usable routes; deleting an ID breaks resume for sessions that recorded it.
+Policy (sandbox, approvals, shell environment
 policy, `service_tier`, …) and the per-machine state Codex itself and the ChatGPT desktop app write —
 `[projects.*]` trust entries, `[hooks.state]`, `[mcp_servers.*]`, `[plugins.*]`, `[marketplaces.*]`,
-`[tui.*]`, `[desktop]`, and root-level keys such as `notify` — stay in the shared home's base `config.toml`,
-which the sync script never writes. Cards are pure artifacts and are overwritten wholesale on sync. To change
+`[tui.*]`, `[desktop]`, and root-level keys such as `notify` — stay in the shared home's base `config.toml`.
+The sync script changes only its marked provider block and refuses to overwrite a matching provider ID outside it.
+Cards are pure artifacts and are overwritten wholesale on sync. To change
 one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
-`model-catalogs/<id>.json` (kimi / mimo family / qwen) are **generated artifacts and are not tracked**. The sync
-script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`). If Codex
-changes the catalog shape, the generator warns and exits non-zero, and the existing catalogs are left untouched.
+`model-catalogs/<id>.json` for all nine third-party profiles are **generated artifacts and are not tracked**. The sync
+script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`), patches the
+guardian tool mode, and adds each profile's model with its card's context window and direct tool mode. Without that
+entry, Codex clamps unknown models to its 272K fallback maximum. If Codex changes the required catalog shape, the
+generator exits non-zero; sync stages all cards and catalogs first, so installed cards and catalogs stay intact.
+
+### Repairing reasoning history for cross-provider resume
+
+A third-party Responses provider can save `reasoning_text` in a reasoning item's `content` array. The official OpenAI
+endpoint rejects that history on resume with `Invalid 'input[n].content': array too long` (see [upstream issue #36551](https://github.com/openai/codex/issues/36551)). Close every Codex client using the session, then locate its rollout file under `~/.codex/sessions/` and run:
+
+```bash
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
+# If cross-provider resume then reports invalid_encrypted_content or a missing reasoning item ID:
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+```
+
+The first command only counts affected items. `--apply` changes only reasoning items whose nonempty `content` consists
+entirely of `reasoning_text`, setting that field to `null`; it saves a private timestamped backup beside the rollout
+before replacing the file. Third-party encrypted reasoning may still fail validation, or its item ID may not exist on
+OpenAI's endpoint. In that case, use `--drop-reasoning-model` for each source model: it removes only reasoning records
+from those models' turns, keeping messages and tool history. Their private reasoning and any reasoning summaries in those
+records are lost from the repaired rollout, but remain in the timestamped backup. The second run of each repair reports zero affected items.
+Use the exact model name recorded in `turn_context`, rather than its profile alias; a zero-match model produces a warning.
+Both the repaired rollout and its backup have owner-only permissions (`0600` when the original is writable by its owner).
+Reopen the session with the target model's profile after repair. If the tool reports unsupported reasoning content or malformed JSONL, it leaves the rollout
+unchanged; inspect that line separately. To roll back, close the session again and copy the reported
+`rollout-*.jsonl.backup-<timestamp>` file over the rollout. Keep the backup until the resumed conversation works.
 
 ### Switching sandbox mode
 
@@ -271,8 +321,7 @@ running). For a per-model exception, set `sandbox_mode` in that model's card to 
 `local` gets `"danger-full-access"` (no sandbox; used from a terminal, not dispatched as a sub-agent). Re-run
 `./scripts/sync-codex-agent.sh` after editing a card.
 
-`local` also points straight at llama.cpp (`http://127.0.0.1:8080/v1`); the commented `base_url` above it is the
-disabled shim route, kept for reference.
+`local` points straight at llama.cpp (`http://127.0.0.1:8080/v1`); its route is in the shared provider registry.
 
 ## Usage
 
@@ -480,6 +529,7 @@ skills/
     SKILL.md
     agents/openai.yaml
 codex-agent/
+  model-providers.toml
   profiles/
     ds-flash/config.toml
     glm/config.toml
@@ -501,12 +551,18 @@ scripts/
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
+  compose-codex-app-config.py
   sub-agent-preflight
+  sync-codex-providers.py
   patch-codex-model-catalog.py
+  repair-codex-reasoning-history.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
+tests/
+  test_provider_registry.py
+  test_repair_codex_reasoning_history.py
 ```
 
 ## Maintenance
@@ -519,16 +575,28 @@ skills/<skill-name>/agents/openai.yaml
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
+scripts/compose-codex-app-config.py
+codex-agent/model-providers.toml
 codex-agent/profiles/<agent-id>/config.toml
 codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
+scripts/repair-codex-reasoning-history.py
+scripts/sync-codex-providers.py
+tests/test_provider_registry.py
+tests/test_repair_codex_reasoning_history.py
 ```
 
 Validate all skills:
 
 ```bash
 ./scripts/validate-skills.sh
+```
+
+Check the provider registry sync and desktop migration paths:
+
+```bash
+python3 -m unittest discover -s tests
 ```
 
 Sync to local Codex / Claude homes:
@@ -551,9 +619,9 @@ Sync the Codex agent profiles, shim scripts and routes:
 
 The skill sync validates first, then copies every skill directory to existing local targets. The agent-tools sync installs
 the launcher to `~/.config/zsh/agent-tools.zsh` with mode `600` and the runners to `~/.local/bin` with mode `755`.
-The codex-agent sync writes each model card wholesale into the shared home (`~/.codex/<agent-id>.config.toml`),
-installs the shim scripts and routes, and regenerates the untracked `model-catalogs/`; the shared home's base
-`config.toml` is never touched. None of these scripts push, publish, create PRs, or modify remote
+The codex-agent sync updates only the marked provider block in the shared base `config.toml`, writes each model card
+wholesale into the shared home (`~/.codex/<agent-id>.config.toml`), installs the shim scripts and routes, and regenerates
+the untracked `model-catalogs/`. None of these scripts push, publish, create PRs, or modify remote
 repositories.
 
 ## Notes

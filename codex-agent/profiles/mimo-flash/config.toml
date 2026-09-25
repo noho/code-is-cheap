@@ -3,7 +3,7 @@
 # runtime state. Only model deltas live here.
 
 model = "mimo-v2.6-flash"
-model_provider = "mimo"
+model_provider = "mimo_flash"
 model_reasoning_effort = "max"
 model_context_window = 1048576
 model_auto_compact_token_limit = 786432
@@ -11,11 +11,3 @@ model_catalog_json = "@HOME@/.codex/model-catalogs/mimo-flash.json"
 
 # Non-GPT gateways: keep the search tool off (mimo gateway hard-rejects it).
 web_search = "disabled"
-
-[model_providers.mimo]
-name = "MiMo"
-base_url = "http://127.0.0.1:8793/v1"
-# base_url = "https://token-plan-cn.xiaomimimo.com/v1"  # 直连原值；停用 shim 时改回本行
-env_key = "MIMO_PLAN_API_KEY"
-wire_api = "responses"
-requires_openai_auth = false
