@@ -124,10 +124,12 @@ After syncing, start a new Codex / Claude session so the runtime reloads the ski
 The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
 installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
 editing installed copies.
+`sync-agent-tools.sh` also installs `repair-codex-reasoning-history.py` to `~/.local/bin`.
 
 Prerequisites:
 
 - `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
+- `python3` 3.11 or newer is required for the launcher-only `--resume` repair option.
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - Provider credentials are exported before launching the matching agent:
   `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
@@ -218,6 +220,14 @@ third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast
 profiles (`gpt-6-astra`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
 machine-owned except for the marked provider registry managed by this repository.
+
+To repair and resume a cross-model session in one step, close other Codex clients using it and run
+`gpt-6-sol_codex --resume <session-id> [prompt]` (replace the launcher with the intended target model; `--resume=<session-id>` also works).
+This launcher-only option finds the session under its Codex home, saves a private backup, removes reasoning records
+from turns whose model differs from the target card, then runs `codex resume` with that card. Messages and tool history
+remain; reasoning and summaries from other models are unavailable in the repaired session but remain in the backup.
+If there is nothing to remove, the session is left untouched and no backup is created.
+Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Ordinary `resume` does not repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.

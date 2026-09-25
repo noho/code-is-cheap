@@ -111,10 +111,12 @@ cd code-is-cheap
 
 受版本控制的真源是 `scripts/agent-tools.zsh`、`scripts/claude-agent-run` 和 `scripts/codex-agent-run`，安装副本位于
 `~/.config/zsh` 和 `~/.local/bin`。应修改仓库真源并重新同步，不要直接编辑安装副本。
+`sync-agent-tools.sh` 还会把 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
 
 前置要求：
 
 - `zsh`、`claude`、`codex`、`jq` 和 `curl` 已在 `PATH` 中。
+- launcher 专用的 `--resume` 修复参数需要 `python3` 3.11 或更新版本。
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 启动对应 Agent 前已导出 provider 凭据：
   `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
@@ -203,6 +205,13 @@ launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profil
 `mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与三个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
+
+要一条命令修复并恢复跨模型会话，先退出其他正在使用它的 Codex 窗口，再运行
+`gpt-6-sol_codex --resume <session-id> [prompt]`（将 launcher 换成目标模型；也支持 `--resume=<session-id>`）。这个只属于 launcher 的参数会在
+其 Codex home 中定位会话、保存私有备份、删除来源模型与目标模型不同的 reasoning 记录，然后以目标模型执行
+`codex resume`。对话和工具历史保留；其他模型的推理及摘要在修复后的会话中不可用，但仍在备份里。
+若没有待删记录，原会话保持不变，也不会生成备份。
+使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。普通 `resume` 不会自动修复。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 三个都是 medium reasoning effort。

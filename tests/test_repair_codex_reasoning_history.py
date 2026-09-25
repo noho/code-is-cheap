@@ -7,6 +7,7 @@ import importlib.util
 import contextlib
 import io
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -27,6 +28,109 @@ def row(kind: str, payload: dict) -> str:
 
 
 class RepairReasoningHistoryTests(unittest.TestCase):
+    def test_target_model_keeps_own_reasoning_and_drops_foreign_reasoning(self) -> None:
+        original = (
+            row("turn_context", {"model": "gpt-6-sol"})
+            + row("response_item", {"type": "reasoning", "encrypted_content": "native"})
+            + row("turn_context", {"model": "kimi-k3"})
+            + row("response_item", {"type": "reasoning", "encrypted_content": "foreign"})
+            + row("response_item", {"type": "message", "role": "assistant", "content": [{"type": "output_text", "text": "answer"}]})
+        ).encode()
+        fixed, count = repair_reasoning.repair_lines(original, keep_reasoning_model="gpt-6-sol")
+        self.assertEqual(count, 1)
+        self.assertEqual(fixed.splitlines()[1], original.splitlines()[1])
+        self.assertEqual(fixed.splitlines()[-1], original.splitlines()[-1])
+        self.assertEqual(len(fixed.splitlines()), 4)
+
+    def test_launcher_resume_repairs_then_calls_codex(self) -> None:
+        if not shutil.which("zsh"):
+            self.skipTest("zsh unavailable")
+        session_id = "01a0d626-0a68-7913-8394-a73c79d0f977"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            home = root / "home"
+            codex_home = home / ".codex"
+            folder = codex_home / "sessions" / "2026" / "09" / "25"
+            folder.mkdir(parents=True)
+            (codex_home / "gpt-6-sol.config.toml").write_text('model = "gpt-6-sol"\n')
+            rollout = folder / f"rollout-2026-09-25T00-00-00-{session_id}.jsonl"
+            original = (
+                row("turn_context", {"model": "gpt-6-sol"})
+                + row("response_item", {"type": "reasoning", "encrypted_content": "native"})
+                + row("turn_context", {"model": "kimi-k3"})
+                + row("response_item", {"type": "reasoning", "encrypted_content": "foreign"})
+                + row("response_item", {"type": "message", "content": [{"type": "output_text", "text": "answer"}]})
+            )
+            rollout.write_text(original)
+            bin_dir = root / "bin"
+            bin_dir.mkdir()
+            shutil.copy2(SCRIPT, bin_dir / SCRIPT.name)
+            (bin_dir / SCRIPT.name).chmod(0o755)
+            capture = root / "codex-args"
+            stub = bin_dir / "codex"
+            stub.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$CAPTURE_FILE"\n')
+            stub.chmod(0o755)
+            env = os.environ | {"HOME": str(home), "PATH": f"{bin_dir}:{os.environ['PATH']}", "CAPTURE_FILE": str(capture)}
+            launcher = SCRIPT.parent / "agent-tools.zsh"
+            cmd = ["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume "$2"', "_", str(launcher), session_id]
+            done = subprocess.run(cmd, env=env, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
+            self.assertEqual(len(rollout.read_text().splitlines()), 4)
+            self.assertEqual(next(folder.glob("*.backup-*")).read_text(), original)
+            capture.unlink()
+            equal_form = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex "--resume=$2" "next step"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
+            self.assertEqual(equal_form.returncode, 0, equal_form.stderr)
+            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id, "next step"])
+            self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
+            capture.unlink()
+            plain = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume "$2"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
+            self.assertEqual(plain.returncode, 0, plain.stderr)
+            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
+            self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
+            capture.unlink()
+            invalid = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume bad-id', "_", str(launcher)], env=env, capture_output=True, text=True)
+            self.assertNotEqual(invalid.returncode, 0)
+            self.assertFalse(capture.exists())
+            missing = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume', "_", str(launcher)], env=env, capture_output=True, text=True)
+            self.assertEqual(missing.returncode, 2)
+            self.assertFalse(capture.exists())
+
+    def test_sync_installs_repair_tool(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            bin_dir = root / "bin"
+            env = os.environ | {"AGENT_TOOLS_TARGET": str(root / "agent-tools.zsh"), "AGENT_RUN_BIN_DIR": str(bin_dir)}
+            done = subprocess.run(["bash", str(SCRIPT.parent / "sync-agent-tools.sh")], env=env, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            installed = bin_dir / SCRIPT.name
+            self.assertEqual(installed.read_bytes(), SCRIPT.read_bytes())
+            self.assertEqual(installed.stat().st_mode & 0o777, 0o755)
+
+    def test_session_lookup_and_orphan_reasoning_fail_closed(self) -> None:
+        session_id = "01a0d626-0a68-7913-8394-a73c79d0f977"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sessions = root / "sessions"
+            sessions.mkdir()
+            card = root / "target.config.toml"
+            card.write_text('model = "gpt-6-sol"\n')
+            first = sessions / f"rollout-first-{session_id}.jsonl"
+            second = sessions / f"rollout-second-{session_id}.jsonl"
+            original = row("response_item", {"type": "reasoning", "encrypted_content": "opaque"})
+            first.write_text(original)
+            second.write_text(original)
+            cmd = [sys.executable, str(SCRIPT), "--session-id", session_id, "--sessions-root", str(sessions), "--target-config", str(card), "--apply"]
+            duplicate = subprocess.run(cmd, capture_output=True, text=True)
+            self.assertEqual(duplicate.returncode, 2)
+            self.assertIn("found 2", duplicate.stderr)
+            second.unlink()
+            orphan = subprocess.run(cmd, capture_output=True, text=True)
+            self.assertEqual(orphan.returncode, 2)
+            self.assertIn("no preceding turn_context", orphan.stderr)
+            self.assertEqual(first.read_text(), original)
+            self.assertEqual(list(sessions.glob("*.backup-*")), [])
+
     def test_drops_reasoning_only_for_selected_model(self) -> None:
         original = (
             row("turn_context", {"model": "gpt-6-sol"})

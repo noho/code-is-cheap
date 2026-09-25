@@ -15,12 +15,14 @@ import stat
 import sys
 import tempfile
 import time
+import uuid
 from datetime import datetime
 from pathlib import Path
 
 
 def repair_lines(data: bytes, drop_reasoning_models: frozenset[str] = frozenset(),
-                 drop_counts: dict[str, int] | None = None) -> tuple[bytes, int]:
+                 drop_counts: dict[str, int] | None = None,
+                 keep_reasoning_model: str | None = None) -> tuple[bytes, int]:
     changed = 0
     result: list[bytes] = []
     current_model: str | None = None
@@ -42,10 +44,15 @@ def repair_lines(data: bytes, drop_reasoning_models: frozenset[str] = frozenset(
         if item.get("type") != "response_item" or not isinstance(payload, dict) or payload.get("type") != "reasoning":
             result.append(line)
             continue
-        if current_model in drop_reasoning_models:
+        if keep_reasoning_model is not None and current_model is None:
+            raise ValueError(f"reasoning item has no preceding turn_context at line {number}; no files changed")
+        if current_model in drop_reasoning_models or (keep_reasoning_model is not None and current_model != keep_reasoning_model):
             changed += 1
-            if drop_counts is not None:
+            if drop_counts is not None and current_model in drop_counts:
                 drop_counts[current_model] += 1
+            continue
+        if keep_reasoning_model is not None:
+            result.append(line)
             continue
         content = payload.get("content")
         strip_content = isinstance(content, list) and bool(content)
@@ -91,20 +98,53 @@ def write_backup(path: Path, data: bytes, mode: int) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("rollout", type=Path, help="rollout-*.jsonl file to inspect")
+    parser.add_argument("rollout", type=Path, nargs="?", help="rollout-*.jsonl file to inspect")
+    parser.add_argument("--session-id", help="find a rollout by session UUID under --sessions-root")
+    parser.add_argument("--sessions-root", type=Path, help="session directory for --session-id")
+    parser.add_argument("--target-config", type=Path, help="model card/config whose model reasoning to retain")
     parser.add_argument("--apply", action="store_true", help="back up and atomically repair the rollout")
     parser.add_argument("--drop-reasoning-model", action="append", default=[], metavar="MODEL",
                         help="remove reasoning items from turns using MODEL; repeat as needed")
     args = parser.parse_args()
 
-    path = args.rollout
+    if args.session_id:
+        if args.rollout is not None or args.sessions_root is None or args.target_config is None:
+            parser.error("--session-id requires --sessions-root and --target-config, without a rollout path")
+        try:
+            if str(uuid.UUID(args.session_id)) != args.session_id:
+                raise ValueError("noncanonical UUID")
+        except ValueError:
+            parser.error("--session-id must be a canonical UUID")
+        if not args.sessions_root.is_dir():
+            parser.error("sessions root does not exist")
+        matches = list(args.sessions_root.rglob(f"rollout-*-{args.session_id}.jsonl"))
+        if len(matches) != 1:
+            parser.error(f"expected one rollout for session {args.session_id}, found {len(matches)}")
+        path = matches[0]
+        if args.target_config.is_symlink() or not args.target_config.is_file():
+            parser.error("target config must be an existing regular file, not a symlink")
+        try:
+            import tomllib
+        except ImportError:
+            parser.error("--session-id requires Python 3.11 or newer (tomllib)")
+        try:
+            target_model = tomllib.loads(args.target_config.read_text())["model"]
+        except (ValueError, KeyError, UnicodeDecodeError) as exc:
+            parser.error(f"invalid target config: {exc}")
+        if not isinstance(target_model, str) or not target_model:
+            parser.error("target config model must be a nonempty string")
+    else:
+        if args.rollout is None or args.sessions_root is not None or args.target_config is not None:
+            parser.error("provide a rollout path, or --session-id with --sessions-root and --target-config")
+        path = args.rollout
+        target_model = None
     if path.is_symlink() or not path.is_file():
         parser.error("rollout must be an existing regular file, not a symlink")
     before_stat = path.stat()
     before = path.read_bytes()
     drop_counts = dict.fromkeys(args.drop_reasoning_model, 0)
     try:
-        after, count = repair_lines(before, frozenset(args.drop_reasoning_model), drop_counts)
+        after, count = repair_lines(before, frozenset(args.drop_reasoning_model), drop_counts, target_model)
     except ValueError as exc:
         parser.error(str(exc))
     print(f"affected reasoning items: {count}")
