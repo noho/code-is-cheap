@@ -17,7 +17,8 @@ set -euo pipefail
 # 本脚本只通过 sync-codex-providers.py 更新 base config 中有明确标记的
 # [model_providers.*] 注册表；其它本机设置保持原样。
 #
-# `business` 使用独立的 CODEX_HOME（~/.codex-agent/business，另一账号），不在本脚本管理范围。
+# `business` 使用独立的 CODEX_HOME（~/.codex-agent/business，另一账号）。
+# 只同步其 model / model_reasoning_effort；其它本机设置与账号不在管理范围。
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target_root="${CODEX_AGENT_TARGET:-$HOME/.codex-agent}"
@@ -91,6 +92,17 @@ if launchctl print "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then
     && echo "restarted launchd service: $shim_label"
 else
   echo "note: launchd 服务未加载（若手工跑着 shim，需要重启它才能用上新路由）"
+fi
+
+# The business app cannot layer a -p card. Sync its independent defaults last
+# so a damaged business config cannot interrupt shared-home shim deployment.
+business_config="$target_root/business/config.toml"
+if [[ -e "$business_config" || -L "$business_config" ]]; then
+  python3 "$repo_root/scripts/sync-codex-model-defaults.py" \
+    --config "$business_config" \
+    --card "$repo_root/codex-agent/profiles/gpt-6-sol/config.toml"
+else
+  echo "note: business config not found; skipped model defaults: $business_config"
 fi
 
 echo "Synced codex-agent cards to $shared_home"

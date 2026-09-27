@@ -232,7 +232,10 @@ Run `./scripts/sync-agent-tools.sh` and open a new shell before using this optio
 such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
-`gpt-6-luna` the low-cost bulk work. All three run at medium reasoning effort.
+`gpt-6-luna` the low-cost bulk work. Astra defaults to medium reasoning effort,
+Sol to high, and Luna to xhigh. `business` uses GPT-6 Sol at high effort in its separate
+CODEX_HOME. `sync-codex-agent.sh` updates only those two business model defaults,
+leaving its account and other local settings intact.
 `gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
@@ -560,11 +563,13 @@ scripts/
   sync-codex-providers.py
   patch-codex-model-catalog.py
   repair-codex-reasoning-history.py
+  sync-codex-model-defaults.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 tests/
+  test_codex_model_defaults.py
   test_provider_registry.py
   test_repair_codex_reasoning_history.py
 ```
@@ -586,7 +591,9 @@ codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
 scripts/repair-codex-reasoning-history.py
+scripts/sync-codex-model-defaults.py
 scripts/sync-codex-providers.py
+tests/test_codex_model_defaults.py
 tests/test_provider_registry.py
 tests/test_repair_codex_reasoning_history.py
 ```
