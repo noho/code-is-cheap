@@ -232,8 +232,8 @@ Run `./scripts/sync-agent-tools.sh` and open a new shell before using this optio
 such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
-`gpt-6-luna` the low-cost bulk work. Astra and Sol default to high reasoning effort;
-Luna defaults to xhigh. `business` uses GPT-6 Sol at high effort in its separate
+`gpt-6-luna` the low-cost bulk work. Astra defaults to medium reasoning effort,
+Sol to high, and Luna to xhigh. `business` uses GPT-6 Sol at high effort in its separate
 CODEX_HOME. `sync-codex-agent.sh` updates only those two business model defaults,
 leaving its account and other local settings intact.
 `gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.

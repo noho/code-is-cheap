@@ -24,7 +24,7 @@ SPEC.loader.exec_module(module)
 
 class BusinessModelDefaultsTests(unittest.TestCase):
     def test_three_gpt_cards_have_requested_efforts(self) -> None:
-        for profile, expected in (("gpt-6-astra", "high"), ("gpt-6-sol", "high"), ("gpt-6-luna", "xhigh")):
+        for profile, expected in (("gpt-6-astra", "medium"), ("gpt-6-sol", "high"), ("gpt-6-luna", "xhigh")):
             with self.subTest(profile=profile):
                 card = tomllib.loads((ROOT / "codex-agent/profiles" / profile / "config.toml").read_text())
                 self.assertEqual(card["model"], profile)
