@@ -217,7 +217,9 @@ Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话�
 `gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
-三个都是 medium reasoning effort。
+Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（extra high）。
+独立 CODEX_HOME 的 `business` 使用 GPT-6 Sol / high；`sync-codex-agent.sh` 只更新它的
+模型和推理等级两个顶层键，保留账号及其他本机设置。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
@@ -534,11 +536,13 @@ scripts/
   sync-codex-providers.py
   patch-codex-model-catalog.py
   repair-codex-reasoning-history.py
+  sync-codex-model-defaults.py
   sync-agent-tools.sh
   sync-codex-agent.sh
   validate-skills.sh
   sync-skills.sh
 tests/
+  test_codex_model_defaults.py
   test_provider_registry.py
   test_repair_codex_reasoning_history.py
 ```
@@ -560,7 +564,9 @@ codex-agent/bin/
 codex-agent/shim-routes.json
 scripts/patch-codex-model-catalog.py
 scripts/repair-codex-reasoning-history.py
+scripts/sync-codex-model-defaults.py
 scripts/sync-codex-providers.py
+tests/test_codex_model_defaults.py
 tests/test_provider_registry.py
 tests/test_repair_codex_reasoning_history.py
 ```
