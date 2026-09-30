@@ -7,11 +7,15 @@ description: "通过 tmux pane 与已运行的 CLI Agent 通信。用于 pane di
 
 目标 Agent 必须已经在 pane 中运行；本 skill 不分配角色。
 
+本 skill 要求安装支持延迟创建托管 session 的 `tmux-cli`：在 tmux 外，`status`、列表和针对显式 full pane id 的
+`send` / `wait_idle` / `capture` 不创建 `remote-cli-session`；只有明确 `launch` 新托管 window 才按需创建。
+旧版不满足这一前提时先升级工具，不用环境变量伪装 tmux，也不在本 skill 中保留旧版兼容分支。
+
 ## Preflight Checklist
 
 每次发送前逐项过；任何一项不满足就先报告，不得盲发：
 
-- [ ] socket 可用：`tmux-cli status` 能返回；报 `Operation not permitted` 说明 socket 被沙箱拦，改在沙箱外重试；
+- [ ] 先用原生 `tmux list-panes -a` 只读确认 socket 和目标，再运行无隐式建 session 副作用的 `tmux-cli status`；报 `Operation not permitted` 说明 socket 被沙箱拦，改在沙箱外重试；
 - [ ] 目标 pane 每次重新 discovery，发送只用跨 window 的 full pane id（如 `ai-2:1.3`），不靠记忆或上次的 id；
 - [ ] CLI 类型来自 pane title + `pane_current_command`（`ClaudeAgent-*` / `CodexAgent-*`），不得凭任务角色猜；
 - [ ] 目标状态已确认：空闲可输入，或仍在完成同一任务（此时只发补充指令，不 clear）；
@@ -38,12 +42,12 @@ tmux 命令报 `error connecting to ... (Operation not permitted)` 说明 socket
 每次发送前都重新确认目标 full pane id：
 
 ```bash
-tmux-cli status
 tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
+tmux-cli status
 ```
 
 后续 `send`、`wait_idle`、`capture` 都使用跨 window 的 full pane id，例如 `ai-2:1.3`。目标 Agent
-不在线、pane id 不明确、名称冲突或命令不可用时，先报告，不得盲发。
+不在线、pane id 不明确、名称冲突、命令不可用或安装版本不满足上述延迟创建前提时，先报告，不得盲发。
 
 ## Session Clear
 
@@ -62,8 +66,8 @@ Agent 仍在工作时不得因耗时长而 clear、覆盖任务或擅自中断�
 新任务：
 
 ```bash
-tmux-cli status
 tmux list-panes -a -F '#{session_name}:#{window_index}.#{pane_index} #{window_name} #{pane_current_command} #{pane_title}'
+tmux-cli status
 tmux-cli send "/clear" --pane=<full-pane-id>
 tmux-cli wait_idle --pane=<full-pane-id> --idle-time=3 --timeout=60
 tmux-cli capture --pane=<full-pane-id>

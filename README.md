@@ -76,11 +76,13 @@ If you use the zsh agent launcher functions below, their `tmux select-pane -T` c
 set -gw allow-set-title off
 ```
 
-`tmux-cli` is part of the `claude-code-tools` package. Install it with:
+`tmux-cli` is part of the `claude-code-tools` package. Install or update it from the pinned upstream patch commit:
 
 ```bash
-uv tool install claude-code-tools
+uv tool install --force 'git+https://github.com/noho/claude-code-tools.git@2610c66d4e712b44510b67641a6938ce3571922d'
 ```
+
+This command updates the entire `claude-code-tools` package, not just `tmux-cli`. The patch commit is pushed upstream in public PR https://github.com/pchalasani/claude-code-tools/pull/212. Sync this project's skills separately with `./scripts/sync-skills.sh`.
 
 Official documentation:
 

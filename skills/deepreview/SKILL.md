@@ -281,7 +281,19 @@ review 前收集 PR facts：
 - author；
 - head branch；
 - base branch；
+- head commit OID、base commit OID；
 - URL。
+
+在读取 diff 前一次取得并记录 repository、head repository 与 head/base OID。diff 必须由这两个精确 OID 的
+`base...head` compare 产生，保存请求 URL、快照与 hash；不得用 `gh pr diff` 的可变 PR 引用替代。
+若 fork head 对 base repository 的 compare endpoint 不可达，或任一对象/响应不可取得，报告 blocker；不得退回
+branch 名、本地 HEAD 或其它版本。读取 diff 后重新查询 head/base OID：若版本已变，只能把快照作为原 OID 的历史审查
+输入，须重新取得同一版本的事实与 diff 才能审当前 PR。
+深挖 implementation、依赖和 tests 时，读取与记录的 head OID 对应的代码快照。若本地有该对象，可用
+`git show <head-oid>:<path>` 只读读取；fork 或本地对象不可达时，可通过 head repository 的 GitHub Git commit/tree/blob
+API 按 head OID 与 blob OID 读取。仅当本地 HEAD 等于该 OID、相关工作树文件未改动且无同名 untracked shadow，才可
+把 cwd 内容当作 PR 代码。无法取得同一 head OID 的深挖对象时报告 blocker，不把其它分支同名文件当作证据。
+收尾再次核对 PR head/base OID；若已移动，报告明确限定为原 OID 的审查，不能作为新版 PR 的结论。
 
 review scope：
 
@@ -290,16 +302,33 @@ review scope：
 - related tests；
 - CI/check information，若相关。
 
-推荐命令：
+只读快照命令（先设置 `PR_REPO=owner/name`、`PR_NUMBER`、`FACTS_FILE`、`DIFF_SNAPSHOT`；
+`PR_REPO` 必须是被审 PR 的 base repository，不能仅凭当前 cwd 猜测。失败或响应不完整即 blocker，不执行可变引用 fallback）：
 
-```text
-gh repo view --json nameWithOwner --jq '.nameWithOwner'
-gh pr view <pr_number> --json title,url,author,headRefName,baseRefName
-gh pr diff <pr_number>
-gh pr checks <pr_number>
+```bash
+repo=${PR_REPO:?set base repository owner/name}
+pr_number=${PR_NUMBER:?set PR number}
+facts_file=${FACTS_FILE:?set facts output path}
+diff_snapshot=${DIFF_SNAPSHOT:?set diff output path}
+gh pr view "$pr_number" --repo "$repo" --json title,url,author,headRefName,baseRefName,headRefOid,baseRefOid,headRepository > "$facts_file" || exit 1
+base_oid=$(jq -r '.baseRefOid' "$facts_file")
+head_oid=$(jq -r '.headRefOid' "$facts_file")
+head_repo=$(jq -r '.headRepository.nameWithOwner // empty' "$facts_file")
+[[ "$base_oid" =~ ^[0-9a-fA-F]{40}$ && "$head_oid" =~ ^[0-9a-fA-F]{40}$ ]] || exit 1
+compare_url="repos/$repo/compare/$base_oid...$head_oid"
+gh api -H 'Accept: application/vnd.github.v3.diff' "$compare_url" > "$diff_snapshot" || exit 1
+grep -q '^diff --git ' "$diff_snapshot" || exit 1
+shasum -a 256 "$diff_snapshot"
+gh pr view "$pr_number" --repo "$repo" --json headRefOid,baseRefOid \
+  | jq -e --arg b "$base_oid" --arg h "$head_oid" '.baseRefOid == $b and .headRefOid == $h' >/dev/null || exit 1
 ```
 
-如果无法读取 GitHub metadata，清楚说明 blocker，不要编造 PR facts。
+`head_repo` 用于 fork head 的只读 Git commit/tree/blob API；先按 `head_oid` 取得 commit 的 tree OID，再按 tree 中
+对应路径的 blob OID 读取内容。`head_repo` 不可得且本地也无精确 head 对象时为 blocker。compare 请求失败或
+对象不可读、响应截断或分页未覆盖完整 diff 时也为 blocker；不得只凭首尾两次 PR metadata 相同推定中途的可变 diff 身份。
+CI/check 信息可另用 `gh pr checks "$pr_number" --repo "$repo"` 读取，其失败状态须如实报告，不改变 diff 身份。
+PR review artifact 的 Scope 记录 repository、head repository、PR number、head/base OID、compare URL、diff 快照路径/hash、深挖代码的版本来源、
+收尾 OID 核对结果；head/base 变化时写明旧版本范围和新版未审，不将旧结论标作当前 PR pass。
 
 ## All Repository Mode
 

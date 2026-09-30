@@ -1,0 +1,13 @@
+# Agent-facing final review adjudication
+
+Date: 2026-09-30 15:48:06 Asia/Shanghai. Frozen project HEAD `d65a4ae741ef89d278f5bb6195b763d6bf75c6b5`; six-file diff SHA-256 `dbc0a53de701dfe2715eef940f522c5265c650f763942a3eb9fde6303156f0fd`; test SHA-256 `7b5bc5b50ae6272cd3f15b2257a7df7b18b5f4b410d2c2bc833e46674269b044`.
+
+Inputs: MiMo `code-review-20260930-152918.md`; Kimi `code-review-20260930-153909.md`. Both dispatches exited 0 with `turn.completed`, matching canary and stable input identities. Kimi's nonzero exploratory, expected-counterexample, and initial artifact-write events recovered; the resulting evidence and artifact are usable under the revised `$sub-agents` impact rule.
+
+| Finding | Decision | Required action |
+| --- | --- | --- |
+| Provider catalog enumeration may fail silently and skip the stale token check | Accept, medium, blocking. Both reviews independently reproduced `setup_status=ok` after the later catalog call failed. | Capture catalog output and exit status explicitly, reuse the selected runner result where possible, and fail setup if a needed catalog cannot be trusted. Keep canary-shaped detection independent of the optional catalog gate. Test success, nonzero, and partial-output cases. |
+| Nonstandard relative/absolute `canary.txt` or `canary.expected` path evades the path check | Accept, medium. | Detect path-like canary basenames regardless of the run-directory name, across all three input forms. Keep ordinary concept discussion valid. |
+| Arbitrary natural-language paraphrase of a prior report instruction evades fixed-protocol regex | Accept as a documentation/ownership mismatch, not a finite-regex bug. Natural-language semantic equivalence cannot be guaranteed by `grep`; adding phrases would mislead and overfit. | State precisely in preflight usage and the skill that mechanical checks reject recognizable literal values, paths and protocol markers; the controller must semantically reject conflicting old report instructions. Keep the appended current-run report protocol authoritative. Do not claim a full semantic guarantee from `setup_status=ok`. |
+
+The original seven other Astra items are closed at their agreed boundaries. The main `$sub-agents` result-validation text already implements the user's requested rule: an item-level failed tool call is evaluated by its effect and recovery, while unresolved critical evidence and outer-process failures still prevent acceptance. The README installation/sync method for repaired `tmux-cli` remains a separate deployment-document step after the upstream patch gets a fixed commit SHA; no per-Agent version probe or old-version compatibility branch is required.

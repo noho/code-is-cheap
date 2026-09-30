@@ -21,8 +21,11 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 
 ## Preflight Checklist
 
-每次派发前逐项过，用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / 完整 prompt
-（任务正文 + 固定报告协议），并打印可直接执行的完整命令：
+每次派发前逐项过。`sub-agent-preflight` 只完成可机械验证的 setup / 结构检查，生成 run_dir / canary /
+最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。它只能拒绝可识别的字面值、路径、
+provider 形式 token 和固定协议标记，不能靠正则证明任意自然语言同义旧报告指令不存在。总控仍须逐项核对
+下方 Dispatch Contract、prompt 的语义完整性、实际授权和并发写边界；尤其要按语义拒绝任何与本轮报告协议
+冲突的旧报告动作。`setup_status=ok` 不证明这些内容正确：
 
 ```bash
 sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd "<absolute-workspace>" --label "<unique-label>" --task-file <path>
@@ -36,25 +39,38 @@ setup 错误派发。
 
 - [ ] workspace 用 `pwd -P` 解析为绝对路径，`--cwd` 显式传入，不依赖总控当前目录；
 - [ ] Git 条件已判定（`git -C "$workspace" rev-parse --is-inside-work-tree`）；codex 的非仓库情形由 runner 自动处理；
-- [ ] runner 在 PATH，且 `<provider>` 出现在 `<runner> --list-providers`；
-- [ ] launcher 函数与 profile 已部署（codex：`~/.codex-agent/<provider>/config.toml` 可读）；
-- [ ] prompt 是完整任务正文（`--task` / `--task-file`，报告协议由预检拼入；或 `--prompt-file` 给完整 prompt），
+- [ ] 两个 runner 均在 PATH，且各自的 `--list-providers` 成功并包含完整基线；`<provider>` 出现在所选 runner 的
+      catalog（预检用另一 runtime 的 catalog 识别跨 runtime 旧 token）；
+- [ ] launcher 函数与 profile 已部署（codex `business`：`~/.codex-agent/business/config.toml`；其它 Codex
+      provider：`~/.codex/<provider>.config.toml`；与 `scripts/agent-tools.zsh` 的 home / `-p` 解析一致）；
+- [ ] prompt 是完整任务正文（`--task` / `--task-file`，或 `--prompt-file` 给完整正文；预检均生成本轮最终副本并追加报告协议），
       含 `目标` / `非目标` / `停止条件` 三节（每节单独一行、行首写节名，英文 `Goal` / `Non-goals` / `Stop condition`
-      等价；预检会校验），且**不含 canary token**；
+      等价；预检会校验）。三种来源均不得含旧 `CANARY=` / `CANARY:` 值、`canary.txt` / `canary.expected`
+      文件名（包括裸文件名或路径）、provider 形式的裸旧 token、或固定报告指令；普通讨论 CANARY 概念可以保留。
+      预检会在追加本轮协议前检查机械特征；总控还须语义检查其它旧报告动作，确保追加的本轮协议为准；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
 - [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。
 
 ## Dispatch Contract
 
+runner 收到的 `--prompt` / `--prompt-file` 在新的独立 Agent 上下文执行；它不继承总控对话、裁决或用户授权。
+相同 `--cwd` 只确定工作目录，同一文件系统或相同 provider 也不传递这些上下文。总控须在任务 prompt 中交接
+本任务必要的背景、已决事项及其依据、用户授权范围、冻结输入版本、依赖和验收信号；也可给出明确可定位的
+文件路径及版本供子 Agent 读取。只交接本任务必要信息，不转发无关的对话全历史或敏感信息。
+不得使用只有父上下文知道意义的“刚才”“照旧”“已确认”等引用。必要信息缺失、不可访问或版本不符时，
+子 Agent 应报告 `blocked` 和缺项，不得猜测。
+
 每个子 Agent 的 prompt 必须明确：
 
 - 目标、非目标和 stop condition；
+- 本任务所需的既有决定、授权边界、输入 artifact 与冻结身份（适用的 HEAD/base/hash/版本）以及关键依赖；
+  不适用项明确写 `N/A`，不得把 `--cwd` 或工具权限当作用户授权；
 - 探针 / 验证类任务的非目标必须包含"不得再派发子 Agent"（任务本身是编排时除外）；
 - 可读取、可修改以及禁止修改的文件；
 - 是否允许调用工具和允许的副作用；
 - 相关代码、文档和约束的路径；
-- 预期输出格式、artifact 路径和 validation；
+- 预期输出格式、artifact 路径、validation、可验证的成功判据与必要证据；
 - 报告开头必须声明自身的 runtime、provider 和 model；自报与 event stream 不符时以 event stream 为准；
 - 禁止 commit、push、PR、merge 或进入其它 gate，除非任务明确授权。
 
@@ -116,7 +132,10 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 写入顺序依赖或 file ownership 重叠时必须串行。不得让多个子 Agent 并发修改同一文件，除非已划分互不重叠的写入范围。
 
 不要仅因运行时间长而 kill、重派或切换 provider。后台任务仍在运行、或输出文件仍有变化时，默认仍为 in-flight；
-判活不得依赖 ps / pgrep / kill -0 等进程查询。只有明确失败、阻塞、用户停止或进程退出证据才能结束该次派发。
+判活不得依赖 ps / pgrep / kill -0 等进程查询。只有托管调用句柄返回、进程退出或用户停止等证据，
+才能认定该进程已结束；文件暂时没有变化不等于进程已退出。Agent 报告无法继续、托管工具明确报告阻塞，
+或预先约定的超时条件触发时，可标记任务 `blocked`；仍在运行的进程须继续收集或经用户授权停止，
+不得把 `blocked` 冒充进程已退出。用户明确停止并完成中止后，记录为 `blocked` 与停止原因。
 
 ### Sandbox Process Management
 
@@ -128,19 +147,24 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 - **派发与收集（Codex 总控）**：每个子 Agent 一次独立的 `exec_command`；可能直接返回退出码，也可能返回 session_id，
   后者用 `write_stdin` 持续收集，直到取得退出码；
 - **进度判据**：run_dir 内输出文件（或后台任务的 harness 输出文件）的大小 / mtime 变化，不要用进程列表；
-- **退出码**：前台取 `wait "$pid"` 的返回值；后台取完成通知（其输出文件末尾留有 `[exited with code N]` 标记）；
+- **退出码**：Claude 后台取托管任务完成通知，Codex 取 `exec_command` / `write_stdin` 返回的退出码；
+  前台直接调用取其返回码。仅在对应 harness 明确提供时使用完成通知中的退出标记，不假设 runner 输出文件自带该标记；
 - **输出流**：后台模式会把 stdout/stderr 合并进同一文件，因此结构化输出与日志必须继续通过 `--output` /
   `--stderr` 落到 run_dir。
 
 ## Result Validation
 
-每个进程结束后必须检查 exit code、stderr 和输出文件，不得只读取最终自然语言。退出码来源：前台 `wait "$pid"`
-的返回值，或后台任务完成通知（输出文件末尾同样留有 `[exited with code N]` 标记）。
+分开裁定**派发生命周期**和**结果可信度**。沙箱内以 Sandbox Process Management 一节所述句柄收集退出状态：Claude 后台任务的完成通知，
+Codex `exec_command` 的退出码或 `session_id` 后续 `write_stdin` 的退出码；前台调用则取其直接返回的退出码。
+不得以 `ps` / `pgrep`、文件大小或最终消息代替退出证据。进程结束后检查 exit code、stderr、取得的全部结构化输出、
+最终消息及要求的 artifact；结构化终态与外层退出码都要核对。任一仍在途时不作最终验收。
 
-任务要求工具调用时，"完成"不算成功，必须有工具执行成功的证据：
+任务要求工具调用时，"完成"不证明实际执行过工具；需有可核对的工具执行记录。它只证明调用发生，
+不证明每项必需取证都成功，后者还须按任务要求核对：
 
-- Codex：event stream 存在 `item.completed` 且 `item.type == "command_execution"`、`exit_code == 0`；
-- Claude：`num_turns >= 2` 只证明调用过工具，不证明调用成功——以 canary 为准。
+- Codex：event stream 中有实际 `command_execution` 或 `mcp_tool_call` 的结果；命令非零退出也可能是有效反例，
+  但必须按下文检查影响；
+- Claude：`num_turns >= 2` 只表明多轮交互；canary 匹配只证明指定文件读取成功，不能证明其它工具调用成功。
 
 验证类派发（探针、验收、产出会被下游信任）必须使用 canary：
 
@@ -153,8 +177,7 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 伪造型静默失败是硬失败，不重试，记录并上报：最终消息含字面工具调用语法（`<tool_call>`、`<tool_result>`、
 裸 JSON 工具对象）而 event stream 无对应执行事件——provider 级缺陷特征。
 
-已确认的非致命诊断不构成失败，但必须逐条记录为 warning。豁免只适用于按下表 predicate 命中的诊断，不做近似
-匹配；检查位置按下表，不看其它流：
+已确认的非致命诊断记录为 warning。下表只给这些诊断的精确识别方式，不做近似匹配；检查位置按表，不看其它流：
 
 | predicate（精确判据） | 检查位置 | 处理 |
 | --- | --- | --- |
@@ -162,8 +185,22 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 | `item.type == "error"` 且其 message 匹配 `^Model metadata for \S+ not found` | Codex event stream（stderr 不作为豁免依据） | 记录 warning，不判失败 |
 | `item.type == "error"` 且其 message 含子串 `unrecognized_model` | Codex event stream（stderr 不作为豁免依据） | 记录 warning，不判失败 |
 
-其它 error / failed 事件一律按失败处理；只有在退出码、turn completion、工具执行证据与 canary 全部满足、且无其它
-失败证据时才判为通过，并附上 warning。
+除 turn 级终态外，其它 `error` / `failed` 事件及 `command_execution` 的每个非零 `exit_code` 都不得忽略，
+也**不自动判整次派发失败**。即使 item 外层状态为 `completed`，也要检查命令退出码。总控逐条查看事件对应的命令、错误、任务目的、
+后续恢复和最终结论：
+
+- 探索性无匹配、预期的反例或已成功改用其它证据的失败，可以记录为已解释的 warning；例如 `rg` 无匹配本身
+  不证明审核失败。必须说明该失败为何不影响结论，不能只凭 Agent 最终消息未提失败就认定无影响。
+- 测试失败、冻结 diff 比对不一致、读取关键来源失败或工具内核崩溃，先判断该步骤对任务的作用。若它揭示了
+  被审核对象的问题，可保留为有效 finding；若关键取证未恢复，相关结论不得采纳，也不得把缺口写成通过。
+- 审核输入身份校验失败（如冻结 diff 比对不一致）时，先查明并恢复输入身份；未恢复前，针对该冻结输入的
+  审核不能记为 `accepted`。若无法确定失败是否影响必要证据，标记未解决并停在当前 gate；
+  先裁定影响与失败类别，再按 Retry And Sessions 决定是否可重派，不得用重派抹去可评分的错误结论。
+
+runner / 托管调用的**外层进程**退出非零、缺少可信终态、结构化输出损坏、canary 不匹配、伪造型静默失败
+仍是硬性拒收条件；`command_execution.exit_code` 非零按上文逐项裁决，不等于外层进程失败。关键 artifact 缺失、
+无法证明审核了指定输入、未恢复的关键工具失败是结果验收失败。即使派发生命周期正常结束，也须由总控独立核对
+关键代码、来源、测试或其它任务证据，再决定采纳、部分采纳或驳回；子 Agent 的 final answer 不单独构成验收。
 
 Claude JSON：
 
@@ -175,11 +212,14 @@ Claude JSON：
 Codex JSONL：
 
 - 每个非空行都必须是有效 JSON event；
-- 检查 error / failed events，并要求存在明确的 turn completion；上段列出的已确认非致命诊断不按失败计；
-- 非零退出码、失败 event 或缺少 completion evidence 均不得判定成功（已确认非致命诊断除外）；
+- 检查每个 error / failed event、每条 `command_execution` 的非零 `exit_code` 及其后续处理；
+  要求存在明确的 `turn.completed`。`turn.failed` 或缺少 completion evidence 属派发失败，item 级工具失败按上述影响判定；
 - 优先使用 `--last-message` 保存最终消息，但仍必须同时审查完整 event stream 和 stderr。
 
-空 stderr 不证明成功，非空 stderr 也不自动证明失败；结合退出码和结构化状态裁决。
+Claude 默认 JSON 只有汇总结果，无法逐条观察中间工具失败。记录此可见性限制；不能凭 JSON 成功或 canary 匹配
+断言中间调用均成功。总控须独立复核关键输入、产物及任务所要求的测试或取证；无法复核时，相关结论不能记为
+`accepted`。只有实际取得逐调用轨迹时，才要求逐条列出 Claude 的中间失败事件。
+空 stderr 不证明成功，非空 stderr 也不自动证明失败；结合退出码、结构化状态及任务证据裁决。
 
 ## Retry And Sessions
 
@@ -190,11 +230,16 @@ Codex JSONL：
   也不计入任何测量批次**；修好后用**新 label** 重派（同修复性重试规则），并在报告里单列为 setup 失败。
 - **provider / 测量失败**（子 Agent 真的运行过）：按下方规则处理。
 
-失败后先根据 stderr 和结构化输出区分配置错误、超时、模型错误或任务错误。只允许一次有明确理由的同 provider 重试；
-再次失败后可切换 provider，并记录两次失败和切换原因。不得无上限重试。
+派发或结果验收失败后，先根据 stderr、结构化输出和任务证据区分配置错误、超时、模型错误或任务错误。
+裁决块中 `retry_class=provider` 用于 provider / 运行环境故障，`task` 用于 Agent 的命令、取证或任务执行错误；
+尚未查清原因写 `unknown` 并停在当前 gate，不据此切换 provider。
+普通工具失败已恢复且不影响结论时，不消耗重试额度。确需重派时只允许一次有明确理由的同 provider 重试；
+再次失败后，若任务或项目另有替补路由限制，先遵从该限制；否则可切换 provider。记录两次失败和切换原因；
+不得用本 skill 绕过任务或项目的路由授权。
+不得无上限重试。
 
 区分派发错误与测量数据：基础设施失败（起不来、超时、配置错）可按上一条重试；测量 provider/环境行为的派发，
-失败必须计数，禁止重试到成功，且必须固定并发度。
+一旦启动，失败必须计入原批次，禁止用重派结果替换或重试到成功，且必须固定并发度；本条优先于通用重试规则。
 
 修复性重试必须使用新的 task label，并同步用于 prompt、输出文件名和 Claude `--instance`，同时记录与原尝试的关联
 标识；修复性重试不得并入原测量批次的通过率，如需重新测量，另建固定并发度、预定样本数的新批次。
@@ -207,26 +252,47 @@ Codex JSONL：
 
 ## Controller Adjudication
 
-子 Agent 输出只是输入证据。总控必须读取相关 artifact、review 关键代码或数据、交叉核对冲突，并自行采纳或驳回。
-不得因多个 Agent 表述一致就跳过证据检查。
+子 Agent 输出只是输入证据。总控必须读取相关 artifact、review 关键代码或数据、交叉核对冲突，逐条处理可能
+影响结论的工具失败，并自行采纳、部分采纳或驳回。不得因多个 Agent 表述一致或 final answer 没提失败就跳过证据检查。
 
-完成报告必须以固定键的裁决块开头（值取自实际检查，不得凭印象；确实未检查的写 `unknown`）：
+已派发任务只有取得进程终态并完成检查后，才填写完成报告的固定裁决块；预检失败可在确认子 Agent 未启动后
+填写 `setup_status=fail` 的裁决块。在途时只作进度更新，记录托管句柄状态、
+最近输出变化与尚未取得的退出码，不填写完成裁决块。值取自实际检查，不得凭印象；确实未检查的写 `unknown`，
+不得把 `unknown` 当作通过：
 
 ```yaml
-setup_status: ok | fail          # sub-agent-preflight 或手工预检的结果
+setup_status: ok | fail | unknown # sub-agent-preflight 或手工预检的结果
 agent_status: completed | blocked | failed | not_started
-tool_evidence: yes | no          # Codex: item.completed + command_execution + exit_code=0；Claude: 以 canary 为准
-canary_status: match | mismatch | not_run
-warnings: []                     # 非致命诊断逐条列出
-retry_class: none | setup | provider
+tool_evidence: yes | no | unknown # 至少一次可核对的工具执行；不代表全部必需取证已成功
+tool_trace: complete | partial | summary_only | missing | not_required | unknown # 可见轨迹范围
+required_evidence: complete | partial | missing | not_required | not_assessed # 任务必需证据经总控复核后的状态
+canary_status: match | mismatch | not_run | unknown
+result_status: accepted | partial | rejected | not_assessed # 总控对任务结论的裁定，独立于 agent_status
+warnings: []                     # 已解释且不影响结论的诊断 / 工具失败逐条列出
+evidence_gaps: []                # 未解决的关键取证缺口；无则空列表
+retry_class: none | setup | provider | task | unknown
 ```
 
+`result_status=accepted` 只表示该子任务的证据与报告可采纳；code review 报告含 blocking finding 时，代码仍不得放行。
+`tool_trace=complete` 表示逐调用轨迹可核查，`partial` 表示有缺段，`summary_only` 表示只有 Claude 等汇总结果，
+`missing` 表示应有轨迹却没有；这组值不替代 `required_evidence` 的逐项复核。`partial` 或 `summary_only`
+只有在全部必需证据经总控独立复核、且无其它硬性拒收条件时，才可支持 `result_status=accepted`。
+`agent_status` 记录进程 / 任务终态，`result_status` 记录报告可采纳性：进程退出 0、结构化终态成功但 canary 不匹配时，
+`agent_status=completed`、`result_status=rejected`，不能伪称进程失败。`agent_status=failed`、`canary_status=mismatch`
+或 `setup_status=fail` 时，`result_status` 只能为 `rejected` 或 `not_assessed`；`agent_status=blocked` 或
+`not_started` 时不能为 `accepted`。任务要求工具调用而 `tool_evidence=no`，或任务有必需证据但
+`required_evidence` 不是 `complete` 时，受影响结论不能记为 `accepted`。验证类任务若 `canary_status`
+不是 `match`，也不能记为 `accepted`。`tool_trace=summary_only`（Claude 默认 JSON）并不自动拒收；
+须逐项独立复核必需证据并说明范围。`evidence_gaps` 非空时不能把受影响结论记为 `accepted`。
+
 `setup_status=fail` 时子 Agent 未启动：`agent_status` 必须写 `not_started`、`canary_status` 必须写 `not_run`、
-`retry_class` 写 `setup`。其后接人读叙述，逐个列出：
+`result_status` 必须写 `not_assessed`、`retry_class` 写 `setup`。每次派发的裁决块后接人读叙述，逐个列出：
 
 - runtime、provider 和唯一 task label；
 - 子任务；
-- exit status；
+- 退出状态的来源与数值；
 - stdout、stderr、last-message 或 artifact 路径；
-- 总控采纳、部分采纳或驳回的结论及理由；
+- 每条可观测的非豁免失败事件（Codex 优先用 `item.id`，否则用 JSONL 行号）、步骤、恢复证据及对结论的影响；
+  Claude 汇总 JSON 无逐调用事件时明确说明；列出未解决的关键证据缺口；
+- 总控实际独立复核的关键文件、命令或数据范围，以及采纳、部分采纳或驳回的结论与理由；
 - retry、provider switch 和未解决风险。

@@ -32,8 +32,15 @@ Prompt (give exactly one):
                              stop condition). The body must carry the Dispatch Contract
                              sections, one per line, starting with the section name:
                              `目标` / `非目标` / `停止条件` (or `Goal` / `Non-goals` /
-                             `Stop condition`).
-  --prompt-file <path>       Use this complete prompt verbatim; the same section check applies.
+                             `Stop condition`). All three input forms must be clean task bodies:
+                             recognizable stale canary values, `canary.txt` or `canary.expected`
+                             filenames (bare or in paths), provider-shaped tokens, and fixed
+                             report markers fail. These mechanical checks cannot prove that
+                             natural-language old report instructions are absent;
+                             the controller must review their meaning before dispatch.
+  --prompt-file <path>       Use this complete task prompt as input. The script copies it into
+                             run_dir and appends this run's fixed report protocol; the original
+                             file stays unchanged. The same section and clean-body checks apply.
 
 On success prints (stdout, key=value):
   setup_status, runtime, provider, runner, launcher, workspace, git_repo,
@@ -87,17 +94,47 @@ skip_git_repo_check=""
 workspace=""
 profile_home=""
 
-# --- runner -----------------------------------------------------------------
+# --- runner / provider catalogs ---------------------------------------------
 runner="${runtime}-agent-run"          # claude-agent-run / codex-agent-run
-if command -v "$runner" >/dev/null 2>&1; then
-  if "$runner" --list-providers 2>/dev/null | grep -qx -- "$provider"; then
+# Keep these baselines aligned with the runners' --list-providers contract.
+# A successful but truncated catalog must not narrow the stale-token check.
+codex_required='ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business'
+claude_required='ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy'
+token_prefixes=""
+for catalog_runner in codex-agent-run claude-agent-run; do
+  if ! command -v "$catalog_runner" >/dev/null 2>&1; then
+    failures+=("runner 不在 PATH: $catalog_runner（无法核对 provider catalog）")
+    continue
+  fi
+  if catalog_output="$("$catalog_runner" --list-providers 2>/dev/null)"; then
     :
   else
+    failures+=("$catalog_runner --list-providers 失败（provider catalog 不可信）")
+    continue
+  fi
+  if [[ "$catalog_runner" == codex-agent-run ]]; then
+    required_providers="$codex_required"
+  else
+    required_providers="$claude_required"
+  fi
+  missing_providers=""
+  for required_provider in $required_providers; do
+    if ! grep -qxF -- "$required_provider" <<< "$catalog_output"; then
+      missing_providers="${missing_providers:+$missing_providers }$required_provider"
+    fi
+  done
+  if [[ -n "$missing_providers" ]]; then
+    failures+=("$catalog_runner --list-providers 输出不完整，缺少: $missing_providers")
+  fi
+  if [[ "$catalog_runner" == "$runner" ]] &&
+     ! grep -qxF -- "$provider" <<< "$catalog_output"; then
     failures+=("provider '$provider' 不在 $runner --list-providers 中")
   fi
-else
-  failures+=("runner 不在 PATH: $runner")
-fi
+  while IFS= read -r catalog_provider; do
+    [[ "$catalog_provider" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || continue
+    token_prefixes="${token_prefixes:+$token_prefixes|}$catalog_provider"
+  done <<< "$catalog_output"
+done
 
 # --- workspace --------------------------------------------------------------
 if [[ -d "$cwd" ]]; then
@@ -171,14 +208,15 @@ prompt_arg_count=0
   || failures+=("--prompt-file / --task / --task-file 必须且只能给一个（当前给了 $prompt_arg_count 个）")
 
 if [[ -n "$prompt_file" ]]; then
-  if [[ -r "$prompt_file" && -s "$prompt_file" ]]; then
-    prompt_used="$prompt_file"
+  if [[ -f "$prompt_file" && -r "$prompt_file" && -s "$prompt_file" ]]; then
+    prompt_used="$run_dir/prompt.txt"
+    cat -- "$prompt_file" > "$prompt_used"
     prompt_source="provided"
   else
     failures+=("--prompt-file 不可读或为空: $prompt_file")
   fi
 elif [[ -n "$task_file" && -z "$task_text" ]]; then
-  if [[ -r "$task_file" && -s "$task_file" ]]; then
+  if [[ -f "$task_file" && -r "$task_file" && -s "$task_file" ]]; then
     task_text="$(cat -- "$task_file")"
   else
     failures+=("--task-file 不可读或为空: $task_file")
@@ -188,19 +226,51 @@ elif [[ -z "$task_text" ]]; then
 fi
 
 if [[ -z "$prompt_used" && -n "$task_text" ]]; then
-  # 由脚本拼出完整 prompt：任务正文 + 固定报告协议（含 canary 读取）。不存在占位状态。
   prompt_used="$run_dir/prompt.txt"
-  {
-    printf '%s\n\n' "$task_text"
-    printf '报告要求（必须遵守）：\n'
-    printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
-    printf -- '- 用工具读取 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写）\n' "$canary_file"
-    printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
-  } > "$prompt_used"
+  printf '%s\n' "$task_text" > "$prompt_used"
   prompt_source="composed"
 fi
 
 if [[ -n "$prompt_used" ]]; then
+  # The same check runs on the task body from --task, --task-file, or
+  # --prompt-file, before this run's report protocol is appended. Provider
+  # names come from captured runner catalogs; unreadable or incomplete catalogs
+  # fail setup. A canary-named prefix covers labeled samples independently.
+  stale_prompt=false
+  if grep -qiE '(^|[^[:alnum:]_])CANARY[[:space:]]*[:=][[:space:]]*[^[:space:]<]' "$prompt_used"; then
+    failures+=("任务正文含 CANARY 值；请移除旧轮次值后重试")
+    stale_prompt=true
+  fi
+  if grep -qiE '(^|[^[:alnum:]_.-])canary\.(txt|expected)($|[^[:alnum:]_.-]|[.]($|[^[:alnum:]_.-]))' "$prompt_used"; then
+    failures+=("任务正文含 canary 文件路径；请移除旧轮次路径后重试")
+    stale_prompt=true
+  fi
+  if { [[ -n "$token_prefixes" ]] &&
+       grep -qiE "(^|[^[:alnum:]_-])(${token_prefixes})-[[:xdigit:]]{8}($|[^[:alnum:]_-])" "$prompt_used"; } ||
+     grep -qiE '(^|[^[:alnum:]_-])[[:alnum:]_-]*canary[[:alnum:]_-]*-[[:xdigit:]]{8}($|[^[:alnum:]_-])' "$prompt_used"; then
+    failures+=("任务正文含 canary token；请移除旧轮次 token 后重试")
+    stale_prompt=true
+  fi
+  if grep -qiE 'RUNTIME/PROVIDER/MODEL[[:space:]]*:|报告要求[（(]必须遵守|(输出|报告|写成|print|report).*CANARY[[:space:]]*[:=]|用工具读取.*CANARY[[:space:]]*[:=]' "$prompt_used"; then
+    failures+=("任务正文含固定报告协议；请只提供干净任务正文")
+    stale_prompt=true
+  fi
+  if [[ "$stale_prompt" == true ]]; then
+    rm -- "$prompt_used"
+    prompt_used=""
+    prompt_source="none"
+  fi
+fi
+
+if [[ -n "$prompt_used" ]]; then
+  # 两种来源均在本轮 run_dir 中生成最终副本；只有这个路径进入 runner 命令。
+  # 旧 prompt 中的 canary 路径不能替代本轮读取与比对。
+  {
+    printf '\n报告要求（必须遵守，以本轮以下协议为准）：\n'
+    printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
+    printf -- '- 用工具读取本轮 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写；旧轮次 CANARY 不作为本轮证明）\n' "$canary_file"
+    printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
+  } >> "$prompt_used"
   grep -qF -- "$token" "$prompt_used" \
     && failures+=("prompt 包含 canary token（必须让子 Agent 自己读文件）")
   # Dispatch Contract 要求 prompt 说明目标、非目标与停止条件；按下表逐节校验结构，
