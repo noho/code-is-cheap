@@ -219,8 +219,8 @@ Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话�
 `gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
-Astra 默认使用 medium reasoning effort，Sol 默认使用 high，Luna 默认使用 xhigh（extra high）。
-独立 CODEX_HOME 的 `business` 使用 GPT-6 Sol / high；`sync-codex-agent.sh` 只更新它的
+Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（extra high）。
+`gpt-6-sol` profile 选择 GPT-6.1 Sol；独立 CODEX_HOME 的 `business` 使用同一模型 / high；`sync-codex-agent.sh` 只更新它的
 模型和推理等级两个顶层键，保留账号及其他本机设置。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
@@ -235,7 +235,7 @@ Astra 默认使用 medium reasoning effort，Sol 默认使用 high，Luna 默认
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
-| `gpt-6-sol` | `gpt-6-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
+| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
 凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`、`HY_API_KEY`）；
@@ -273,7 +273,8 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 `model-catalogs/<id>.json`（全部九个第三方 profile）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
 （`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成：修正 guardian 的工具模式，并给各模型补入
 模型卡配置的窗口和 direct 工具模式。否则 Codex 会将未知模型限制在 272K 的后备上限。
-若 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
+会话模板按当前 catalog 顺序选择第一个工具能力兼容的 direct 模型，不绑定固定模型 ID；
+code-mode 模型和 guardian 不作为模板。若没有兼容模板或 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
 失败不会替换已安装的模型卡或 catalog。
 
 ### 修复跨 provider 恢复时的 reasoning 历史

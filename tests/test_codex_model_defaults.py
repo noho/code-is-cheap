@@ -24,11 +24,11 @@ SPEC.loader.exec_module(module)
 
 class BusinessModelDefaultsTests(unittest.TestCase):
     def test_three_gpt_cards_have_requested_efforts(self) -> None:
-        for profile, expected in (("gpt-6-astra", "medium"), ("gpt-6-sol", "high"), ("gpt-6-luna", "xhigh")):
+        for profile, model, effort in (("gpt-6-astra", "gpt-6-astra", "high"), ("gpt-6-sol", "gpt-6.1-sol", "high"), ("gpt-6-luna", "gpt-6-luna", "xhigh")):
             with self.subTest(profile=profile):
                 card = tomllib.loads((ROOT / "codex-agent/profiles" / profile / "config.toml").read_text())
-                self.assertEqual(card["model"], profile)
-                self.assertEqual(card["model_reasoning_effort"], expected)
+                self.assertEqual(card["model"], model)
+                self.assertEqual(card["model_reasoning_effort"], effort)
 
     def test_updates_only_business_defaults_and_preserves_local_settings(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -42,7 +42,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
             config.chmod(0o600)
             self.assertTrue(module.sync(config, CARD))
             updated = tomllib.loads(config.read_text())
-            self.assertEqual(updated["model"], "gpt-6-sol")
+            self.assertEqual(updated["model"], "gpt-6.1-sol")
             self.assertEqual(updated["model_reasoning_effort"], "high")
             self.assertEqual(updated["notify"], ["/private/path", "turn-ended"])
             self.assertEqual(updated["projects"], {"/work": {"trust_level": "trusted"}})
@@ -51,7 +51,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
 
     def test_inserts_missing_defaults_before_tables(self) -> None:
         result = module.compose('[projects."/work"]\ntrust_level = "trusted"\n', CARD.read_text())
-        self.assertEqual(tomllib.loads(result)["model"], "gpt-6-sol")
+        self.assertEqual(tomllib.loads(result)["model"], "gpt-6.1-sol")
         self.assertEqual(tomllib.loads(result)["model_reasoning_effort"], "high")
         self.assertIn('[projects."/work"]\ntrust_level = "trusted"\n', result)
 

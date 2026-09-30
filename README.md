@@ -234,8 +234,8 @@ Run `./scripts/sync-agent-tools.sh` and open a new shell before using this optio
 such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
-`gpt-6-luna` the low-cost bulk work. Astra defaults to medium reasoning effort,
-Sol to high, and Luna to xhigh. `business` uses GPT-6 Sol at high effort in its separate
+`gpt-6-luna` the low-cost bulk work. Astra and Sol default to high reasoning effort,
+and Luna to xhigh. The `gpt-6-sol` profile selects GPT-6.1 Sol; `business` uses the same model at high effort in its separate
 CODEX_HOME. `sync-codex-agent.sh` updates only those two business model defaults,
 leaving its account and other local settings intact.
 `gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
@@ -252,7 +252,7 @@ leaving its account and other local settings intact.
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
-| `gpt-6-sol` | `gpt-6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`, `MIMO_API_KEY`,
@@ -294,8 +294,11 @@ one model's setting, edit its card in the repo and re-sync (layering makes card 
 `model-catalogs/<id>.json` for all nine third-party profiles are **generated artifacts and are not tracked**. The sync
 script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`), patches the
 guardian tool mode, and adds each profile's model with its card's context window and direct tool mode. Without that
-entry, Codex clamps unknown models to its 272K fallback maximum. If Codex changes the required catalog shape, the
-generator exits non-zero; sync stages all cards and catalogs first, so installed cards and catalogs stay intact.
+entry, Codex clamps unknown models to its 272K fallback maximum. The session template is the first compatible
+direct-tool model in the current catalog's order, selected by tool capabilities rather than a fixed model ID.
+Code-mode models and the guardian are excluded. If no compatible template exists or Codex changes the required
+catalog shape, the generator exits non-zero; sync stages all cards and catalogs first, so installed cards and
+catalogs stay intact.
 
 ### Repairing reasoning history for cross-provider resume
 
