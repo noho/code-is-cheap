@@ -231,8 +231,11 @@ fix/re-review 最终状态只用：
 review gate 通过条件：
 
 - review artifact 已记录 artifact path；
-- accepted findings 都有 fix/re-review 状态；
-- re-review 已回写或列出最终 finding 状态；
+- 每个仍裁决为 `accepted` 的 finding 均为 `已修复`，且修复证据已由 re-review 验证并回写最终状态；
+  `未修复`、`部分修复`、`证据失效` 不得仅因有状态、风险已分类或没有 open question 而放行；
+- 未完成的 finding 只有正式改裁决为 `deferred-with-owner` 才能退出本 gate 的修复要求；artifact 必须记录
+  既有授权依据、明确的非阻塞理由、owner 和 destination。缺任一项不得通过；延期改变 goal、scope 或验收标准时，
+  先按 Goal Confirmation 规则重新确认；
 - 没有 blocking open question；
 - residual risks 已分类。
 

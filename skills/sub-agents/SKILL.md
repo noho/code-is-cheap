@@ -21,8 +21,11 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 
 ## Preflight Checklist
 
-每次派发前逐项过，用 `sub-agent-preflight` 机器化完成——它执行全部检查、生成 run_dir / canary / 完整 prompt
-（任务正文 + 固定报告协议），并打印可直接执行的完整命令：
+每次派发前逐项过。`sub-agent-preflight` 只完成可机械验证的 setup / 结构检查，生成 run_dir / canary /
+最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。它只能拒绝可识别的字面值、路径、
+provider 形式 token 和固定协议标记，不能靠正则证明任意自然语言同义旧报告指令不存在。总控仍须逐项核对
+下方 Dispatch Contract、prompt 的语义完整性、实际授权和并发写边界；尤其要按语义拒绝任何与本轮报告协议
+冲突的旧报告动作。`setup_status=ok` 不证明这些内容正确：
 
 ```bash
 sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd "<absolute-workspace>" --label "<unique-label>" --task-file <path>
@@ -36,25 +39,38 @@ setup 错误派发。
 
 - [ ] workspace 用 `pwd -P` 解析为绝对路径，`--cwd` 显式传入，不依赖总控当前目录；
 - [ ] Git 条件已判定（`git -C "$workspace" rev-parse --is-inside-work-tree`）；codex 的非仓库情形由 runner 自动处理；
-- [ ] runner 在 PATH，且 `<provider>` 出现在 `<runner> --list-providers`；
-- [ ] launcher 函数与 profile 已部署（codex：`~/.codex-agent/<provider>/config.toml` 可读）；
-- [ ] prompt 是完整任务正文（`--task` / `--task-file`，报告协议由预检拼入；或 `--prompt-file` 给完整 prompt），
+- [ ] 两个 runner 均在 PATH，且各自的 `--list-providers` 成功并包含完整基线；`<provider>` 出现在所选 runner 的
+      catalog（预检用另一 runtime 的 catalog 识别跨 runtime 旧 token）；
+- [ ] launcher 函数与 profile 已部署（codex `business`：`~/.codex-agent/business/config.toml`；其它 Codex
+      provider：`~/.codex/<provider>.config.toml`；与 `scripts/agent-tools.zsh` 的 home / `-p` 解析一致）；
+- [ ] prompt 是完整任务正文（`--task` / `--task-file`，或 `--prompt-file` 给完整正文；预检均生成本轮最终副本并追加报告协议），
       含 `目标` / `非目标` / `停止条件` 三节（每节单独一行、行首写节名，英文 `Goal` / `Non-goals` / `Stop condition`
-      等价；预检会校验），且**不含 canary token**；
+      等价；预检会校验）。三种来源均不得含旧 `CANARY=` / `CANARY:` 值、`canary.txt` / `canary.expected`
+      文件名（包括裸文件名或路径）、provider 形式的裸旧 token、或固定报告指令；普通讨论 CANARY 概念可以保留。
+      预检会在追加本轮协议前检查机械特征；总控还须语义检查其它旧报告动作，确保追加的本轮协议为准；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
 - [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。
 
 ## Dispatch Contract
 
+runner 收到的 `--prompt` / `--prompt-file` 在新的独立 Agent 上下文执行；它不继承总控对话、裁决或用户授权。
+相同 `--cwd` 只确定工作目录，同一文件系统或相同 provider 也不传递这些上下文。总控须在任务 prompt 中交接
+本任务必要的背景、已决事项及其依据、用户授权范围、冻结输入版本、依赖和验收信号；也可给出明确可定位的
+文件路径及版本供子 Agent 读取。只交接本任务必要信息，不转发无关的对话全历史或敏感信息。
+不得使用只有父上下文知道意义的“刚才”“照旧”“已确认”等引用。必要信息缺失、不可访问或版本不符时，
+子 Agent 应报告 `blocked` 和缺项，不得猜测。
+
 每个子 Agent 的 prompt 必须明确：
 
 - 目标、非目标和 stop condition；
+- 本任务所需的既有决定、授权边界、输入 artifact 与冻结身份（适用的 HEAD/base/hash/版本）以及关键依赖；
+  不适用项明确写 `N/A`，不得把 `--cwd` 或工具权限当作用户授权；
 - 探针 / 验证类任务的非目标必须包含"不得再派发子 Agent"（任务本身是编排时除外）；
 - 可读取、可修改以及禁止修改的文件；
 - 是否允许调用工具和允许的副作用；
 - 相关代码、文档和约束的路径；
-- 预期输出格式、artifact 路径和 validation；
+- 预期输出格式、artifact 路径、validation、可验证的成功判据与必要证据；
 - 报告开头必须声明自身的 runtime、provider 和 model；自报与 event stream 不符时以 event stream 为准；
 - 禁止 commit、push、PR、merge 或进入其它 gate，除非任务明确授权。
 

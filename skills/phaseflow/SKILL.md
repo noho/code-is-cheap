@@ -102,6 +102,7 @@ git status --short
 - 当前 phase/work unit；
 - 当前 gate；
 - `design_doc` 路径；
+- `control_doc` 路径与当前记录版本，以及本 gate 消费的输入 artifact 路径、版本/commit/hash 和相关裁决摘要；
 - Goal Confirmation 中已确认的目标、非目标、success signal 和 scope boundary；
 - 从 `control_doc` 提炼出的当前 gate 约束和风险；
 - 从 `control_doc` 提炼出的 Slice 切分原则（如有）；
@@ -111,6 +112,19 @@ git status --short
 - stop condition；
 - completion report format；
 - 禁止 commit、push、PR、merge、进入其它 gate，除非当前任务明确要求。
+
+总控按 gate 交接必需输入，不传无关历史；新 Agent 必须能仅凭 prompt 和所指的文件/版本唯一确定目标：
+
+| Agent gate | 必需的可定位输入与身份 |
+| --- | --- |
+| plan review | 待审 target plan artifact 的路径/版本，以及已确认 goal 与适用的 Slice 原则。 |
+| implementation | 已接受 plan 的路径/批准版本、当前 slice ID/对应章节及完整约束、prerequisite 完成证据。两个草稿并存时必须唯一指向已批准者。 |
+| code review / aggregate deepreview | 冻结的代码范围与版本（适用的 base/head、commit 或工作树 diff 身份），以及本 gate 相关的实现 artifact。 |
+| fix / re-review | 来源 review 与裁决 artifact 路径/版本、accepted finding IDs、待修版本；re-review 还需已修版本与修复证据。 |
+| PR review | repository、PR number、head/base OID 与需审核的 PR 版本；深挖与收尾按 Deepreview 的 PR 版本核对规则。 |
+
+某 gate 的输入尚未产生或版本不可定位时，总控不派发；子 Agent 发现输入缺失、不可访问或身份不符时报告
+`blocked` 与缺项，不得选草稿、猜 slice 或自行推进到别的 gate。
 
 Agent/provider 选择与派发协议是两个独立决策。如果用户指定 Agent/provider，就按用户指定；未指定时由 phaseflow 按当前
 gate 选择合适 Agent。
@@ -130,23 +144,26 @@ blocker；不得静默回退到 tmux。
 
 ## Agent Liveness and Completion
 
-Agent 派发后，默认状态是 `in-flight`，直到出现明确 completion / blocked / failed / user-stop 证据。耗时长、一次
+分开记录 Agent 自报的任务状态、派发生命周期和总控的结果验收。Agent 派发后，生命周期默认是 `in-flight`，直到
+当前派发协议取得终态证据。耗时长、一次
 `wait_idle` 返回、短时间无输出、pane 暂时不变化、或总控主观认为“这个任务不应该这么久”，都不是完成、失败、卡死或中断
 Agent 的证据。
 
-只有以下情况之一成立时，phaseflow 才能认为 Agent gate 返回：
+runner 子进程路由须遵守 Sub-agents 的 Result Validation：收集托管句柄的进程退出码、runner 结构化终态、stderr、
+最终消息和必要 artifact，再由总控裁决结果。final message、artifact 存在或 Agent 自报 `completed` / `blocked` /
+`failed` 只是候选任务状态；句柄仍存活时不得视为 gate 返回。即使先看到 final message，随后 runner 收尾退出非零，
+也必须按实际终态和证据处理，不能提前推进。
 
-- Agent 按 completion report format 明确报告完成，并给出 expected artifact path；
-- expected artifact 已存在，且 Agent 明确表示该 gate 完成；
-- Agent 明确报告 blocked / needs user input / failed，并说明 blocker；
-- Agent 进程或 pane 已结束，且 capture / exit evidence 表明任务不再运行；
-- 用户明确要求停止、接管、clear、重派或改变 gate。
+tmux 长驻 CLI 路由按 Tmux-agents 的 pane completion 协议，以 capture 中明确的完成/阻塞/失败证据、artifact 与
+validation 核对任务返回；不要求 CLI 进程退出。用户明确要求停止时，先完成相应协议的中止/终态收集，
+再记录停止结果。两种路由都必须在总控验收后才能更新 gate。
 
 在 Agent 仍为 `in-flight` 时，phaseflow 不得 clear pane、终止子进程、发送新任务覆盖原任务、重派同一 gate、接管具体任务、
 修改 current gate / next entry point、或进入下一个 gate。
 
 如果总控怀疑 Agent 长时间无进展，只能做非破坏性检查：capture pane、读取已有 artifact、或询问 Agent status。status probe
-不得改变 Agent 当前任务，不得包含新任务，不得要求 Agent 停止；除非 Agent 返回明确 blocked / failed / completion，否则继续等待。
+不得改变 Agent 当前任务，不得包含新任务，不得要求 Agent 停止；自报 blocked / failed / completion 只记录为候选任务状态，
+仍须按所选协议取得终态证据，未取得时继续等待。
 
 ## Slice Principle Handoff
 
@@ -215,15 +232,16 @@ implementation -> code review -> fix -> re-review -> accepted slice commit
 - Goal Confirmation 中已确认的目标、非目标、success signal、scope boundary、约束和风险；`plan` / `plan review` gate
   还必须包含从 `control_doc` 提炼出的 Slice 切分原则（如有）；
 - current gate；
+- `control_doc` 路径/当前版本与本 gate 消费的 artifact 身份，按上方 Agent Dispatch 表逐项交接；
 - allowed files/modules；
-- accepted findings（fix / re-review gate）；
+- accepted findings（fix / re-review gate）及其来源裁决和待修/已修版本；
 - expected artifact path；
 - required validation；
 - stop condition；
 - completion report format；
 - 禁止 commit、push、PR、merge、进入其它 gate，除非当前 gate 明确要求。
 
-每个 Agent 返回后，phaseflow 读取 artifact，裁决结果，更新 `control_doc`，再进入下一个 gate。
+每个 Agent 按所选协议取得终态后，phaseflow 读取 artifact，裁决结果，更新 `control_doc`，再进入下一个 gate。
 
 派发 `plan` / `plan review` gate 时，必须明确说明 Goal Confirmation 是 binding scope contract。plan 不得新增
 Goal Confirmation 未确认的目标、验收标准、设计强化或 future-slice work；plan review 必须把 goal drift / scope creep
