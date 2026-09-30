@@ -292,8 +292,11 @@ one model's setting, edit its card in the repo and re-sync (layering makes card 
 `model-catalogs/<id>.json` for all nine third-party profiles are **generated artifacts and are not tracked**. The sync
 script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`), patches the
 guardian tool mode, and adds each profile's model with its card's context window and direct tool mode. Without that
-entry, Codex clamps unknown models to its 272K fallback maximum. If Codex changes the required catalog shape, the
-generator exits non-zero; sync stages all cards and catalogs first, so installed cards and catalogs stay intact.
+entry, Codex clamps unknown models to its 272K fallback maximum. The session template is the first compatible
+direct-tool model in the current catalog's order, selected by tool capabilities rather than a fixed model ID.
+Code-mode models and the guardian are excluded. If no compatible template exists or Codex changes the required
+catalog shape, the generator exits non-zero; sync stages all cards and catalogs first, so installed cards and
+catalogs stay intact.
 
 ### Repairing reasoning history for cross-provider resume
 

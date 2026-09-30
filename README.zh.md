@@ -271,7 +271,8 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 `model-catalogs/<id>.json`（全部九个第三方 profile）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
 （`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成：修正 guardian 的工具模式，并给各模型补入
 模型卡配置的窗口和 direct 工具模式。否则 Codex 会将未知模型限制在 272K 的后备上限。
-若 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
+会话模板按当前 catalog 顺序选择第一个工具能力兼容的 direct 模型，不绑定固定模型 ID；
+code-mode 模型和 guardian 不作为模板。若没有兼容模板或 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
 失败不会替换已安装的模型卡或 catalog。
 
 ### 修复跨 provider 恢复时的 reasoning 历史

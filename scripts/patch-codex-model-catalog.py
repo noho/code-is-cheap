@@ -14,7 +14,8 @@ Copy Codex's current catalog, set `codex-auto-review.tool_mode` to `direct`,
 and add the selected profile's session model with its configured context
 window. Unknown models otherwise inherit Codex's 272K fallback maximum, which
 clamps even an explicit `model_context_window` override. The new entry uses a
-current bundled direct-tool model as its schema template, then removes GPT-only
+current bundled direct-tool model as its schema template, selected by tool
+capabilities rather than a fixed model/version id, then removes GPT-only
 capabilities and forces direct tools. Never check in a generated catalog.
 
 Source of truth
@@ -56,7 +57,6 @@ DEFAULT_PROFILES = ["ds-flash", "glm", "glm-flash", "kimi", "local", "mimo", "mi
 TARGET_ENTRY = "codex-auto-review"
 WANT_TOOL_MODE = "direct"
 EXPECTED_BEFORE = "code_mode_only"
-SESSION_TEMPLATE = "gpt-5.4"
 
 warnings: list[str] = []
 
@@ -145,18 +145,34 @@ def profile_model(profile: str, cards_dir: Path) -> tuple[str, int] | None:
     return model, window
 
 
+def select_session_template(catalog: dict) -> dict | None:
+    """Use the first compatible session model in Codex's own catalog order.
+
+    Code-mode entries carry instructions for functions.exec; changing their
+    tool_mode alone does not make them suitable direct-tool session templates.
+    The guardian is also not a session template, even after patch() changes it.
+    """
+    for entry in catalog["models"]:
+        if (entry_key(entry) and entry_key(entry) != TARGET_ENTRY
+                and isinstance(entry.get("base_instructions"), str)
+                and entry["base_instructions"].strip()
+                and entry.get("tool_mode") in (None, "direct")
+                and entry.get("shell_type") == "unified_exec"
+                and entry.get("use_responses_lite") is False
+                and entry.get("experimental_supported_tools") == []):
+            return entry
+    warn("no compatible direct-tool session template in Codex's catalog; "
+         "template shape changed or compatible models were removed; nothing written")
+    return None
+
+
 def session_entry(catalog: dict, model: str, window: int) -> dict | None:
     models = catalog["models"]
     if any(entry_key(entry) == model for entry in models):
         warn(f"{model}: already present in Codex's catalog; refusing to replace built-in metadata")
         return None
-    template = next((entry for entry in models if entry_key(entry) == SESSION_TEMPLATE), None)
-    if (template is None or not isinstance(template.get("base_instructions"), str)
-            or template.get("tool_mode") not in (None, "direct")
-            or template.get("shell_type") != "unified_exec"
-            or template.get("use_responses_lite") is not False
-            or template.get("experimental_supported_tools") != []):
-        warn(f"{SESSION_TEMPLATE}: direct-tool template shape changed; inspect Codex's new catalog")
+    template = select_session_template(catalog)
+    if template is None:
         return None
     # Catalog entries require base instructions. Reusing the installed Codex
     # template keeps the generated file in sync with this binary, while the
