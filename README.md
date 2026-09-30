@@ -232,8 +232,8 @@ Run `./scripts/sync-agent-tools.sh` and open a new shell before using this optio
 such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
-`gpt-6-luna` the low-cost bulk work. Astra defaults to medium reasoning effort,
-Sol to high, and Luna to xhigh. `business` uses GPT-6 Sol at high effort in its separate
+`gpt-6-luna` the low-cost bulk work. Astra and Sol default to high reasoning effort,
+and Luna to xhigh. The `gpt-6-sol` profile selects GPT-6.1 Sol; `business` uses the same model at high effort in its separate
 CODEX_HOME. `sync-codex-agent.sh` updates only those two business model defaults,
 leaving its account and other local settings intact.
 `gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
@@ -250,7 +250,7 @@ leaving its account and other local settings intact.
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
-| `gpt-6-sol` | `gpt-6-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
 Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`, `MIMO_API_KEY`,

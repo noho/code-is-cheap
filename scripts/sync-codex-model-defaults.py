@@ -24,7 +24,7 @@ def compose(original: str, card: str) -> str:
     values = {key: defaults.get(key) for key in KEYS}
     if any(not isinstance(value, str) or not value for value in values.values()):
         raise ValueError("card must define nonempty model and model_reasoning_effort strings")
-    if values["model"] != "gpt-6-sol":
+    if values["model"] != "gpt-6.1-sol":
         raise ValueError("business defaults must use the gpt-6-sol card")
 
     lines = original.splitlines(keepends=True)

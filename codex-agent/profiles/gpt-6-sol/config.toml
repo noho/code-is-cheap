@@ -2,5 +2,5 @@
 # (~/.codex/config.toml), which owns policy and machine-local
 # runtime state. Only model deltas live here.
 
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
