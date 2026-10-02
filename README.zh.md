@@ -72,13 +72,13 @@ review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
 set -gw allow-set-title off
 ```
 
-`tmux-cli` 属于 `claude-code-tools` 包。安装或更新到固定的上游补丁提交：
+`tmux-cli` 属于 `claude-code-tools` 包。安装或更新到固定的官方发行版：
 
 ```bash
-uv tool install --force 'git+https://github.com/noho/claude-code-tools.git@2610c66d4e712b44510b67641a6938ce3571922d'
+uv tool install --force 'claude-code-tools==1.29.1'
 ```
 
-此命令会更新整个 `claude-code-tools` 包，不只更新 `tmux-cli`。补丁提交已推送至上游公开 PR https://github.com/pchalasani/claude-code-tools/pull/212。本项目的 skills 另用已有的 `./scripts/sync-skills.sh` 同步。
+此命令会更新整个 `claude-code-tools` 包，不只更新 `tmux-cli`。[v1.29.1](https://github.com/pchalasani/claude-code-tools/releases/tag/v1.29.1) 已通过合入上游的 [PR #213](https://github.com/pchalasani/claude-code-tools/pull/213) 包含我们的 [PR #212](https://github.com/pchalasani/claude-code-tools/pull/212)：remote status/preflight 不再创建托管 session，缓存的 window target 会在复用前重新验证。无需再依赖 fork。本项目的 skills 另用已有的 `./scripts/sync-skills.sh` 同步。
 
 官方文档：
 
