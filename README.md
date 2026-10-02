@@ -76,13 +76,13 @@ If you use the zsh agent launcher functions below, their `tmux select-pane -T` c
 set -gw allow-set-title off
 ```
 
-`tmux-cli` is part of the `claude-code-tools` package. Install or update it from the pinned upstream patch commit:
+`tmux-cli` is part of the `claude-code-tools` package. Install or update to the pinned official release:
 
 ```bash
-uv tool install --force 'git+https://github.com/noho/claude-code-tools.git@2610c66d4e712b44510b67641a6938ce3571922d'
+uv tool install --force 'claude-code-tools==1.29.1'
 ```
 
-This command updates the entire `claude-code-tools` package, not just `tmux-cli`. The patch commit is pushed upstream in public PR https://github.com/pchalasani/claude-code-tools/pull/212. Sync this project's skills separately with `./scripts/sync-skills.sh`.
+This command updates the entire `claude-code-tools` package, not just `tmux-cli`. Release [v1.29.1](https://github.com/pchalasani/claude-code-tools/releases/tag/v1.29.1) includes our [PR #212](https://github.com/pchalasani/claude-code-tools/pull/212) through merged upstream [PR #213](https://github.com/pchalasani/claude-code-tools/pull/213): remote status/preflight no longer create a managed session, and cached window targets are revalidated before reuse. The fork is no longer required. Sync this project's skills separately with `./scripts/sync-skills.sh`.
 
 Official documentation:
 
