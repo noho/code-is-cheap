@@ -18,7 +18,7 @@ gated feature development, plan review, deep code review, and multi-agent handof
 This repository is the source of truth for the skills under `skills/`, the agent launcher under
 `scripts/agent-tools.zsh`, the child-agent runners under `scripts/*-agent-run`, and the provider registry under
 `codex-agent/model-providers.toml`. Local runtime files are installation
-targets only. Edit and validate sources here, then sync them out.
+targets for project code. Edit and validate sources here, then sync them out. User-owned API key and upstream URL files are separate and never overwritten by sync.
 
 ## Included Skills
 
@@ -91,52 +91,53 @@ Official documentation:
 
 ## Install
 
-Clone the repository:
+On macOS, with Git, Codex CLI, Claude Code, Python 3.11+, jq, uv, tmux, rsync, zsh and curl available, download and run the installer:
 
 ```bash
-git clone <repo-url> code-is-cheap
-cd code-is-cheap
+curl -fsSL https://raw.githubusercontent.com/noho/code-is-cheap/main/install.sh -o install-code-is-cheap.sh
+bash install-code-is-cheap.sh
 ```
 
-Install the Python dependency required by the skill validator:
+Run the second command only after the download succeeds. From an existing checkout, run `bash ./install.sh` instead.
+The downloaded installer clones to `~/.local/share/code-is-cheap`; rerunning it updates that clean `main` checkout with a fast-forward pull. Set `AGENT_INSTALL_DIR` to choose another checkout location.
 
-```bash
-python3 -m pip install pyyaml
-```
+The installer creates a private validator environment with PyYAML (also reused automatically by later manual syncs), installs `claude-code-tools==1.29.1`, syncs skills to both `~/.codex/skills` and `~/.claude/skills`, deploys launchers/runners/model cards, adds PATH and launcher loading to `~/.zshrc`, and installs the launchd shim service. Use `bash install.sh --no-service` to skip service installation. It does not install the Codex/Claude CLIs, log in, create the optional business account home, or start a local model server.
 
-> **Note:** On macOS with Homebrew Python you may need `--break-system-packages`, or use a virtual environment.
+Existing API keys, upstream URLs, Codex login and unrelated Codex settings are preserved. Reopen Agent sessions to reload skills, and run `source ~/.zshrc` to load launchers in the current shell.
 
-Sync skills to any local Codex / Claude skill homes that already exist:
+### Local API keys and upstream URLs
 
-```bash
-./scripts/sync-skills.sh
-```
+Two user-owned files are initialized **only when absent** by the installer and never overwritten by the sync scripts:
 
-The sync script installs to these directories when present:
+| File | Contents |
+| --- | --- |
+| `~/.config/zsh/agent-tools.local.zsh` | Provider API keys, e.g. `export DEEPSEEK_API_KEY="your-key"` |
+| `~/.config/agent-tools/endpoints.json` | Per-provider `claude` and `codex` upstream base URLs |
 
-```text
-~/.codex/skills
-~/.claude/skills
-```
+Project defaults come from `config/endpoints.example.json`, deployed as separate program resources. Missing local files, missing provider/runtime fields, and empty URL strings use these defaults; local values take precedence and sync never fills in the user file. Malformed local files fail explicitly. The installer initializes a complete default config once and preserves it on later runs. These initial values remain local overrides even if project defaults change. To follow the current project default for one URL, delete that field or set it to `""`; your other custom URLs remain intact. Both files are created with mode `600`; keep credentials out of the repository. Keys can also come from the environment; the existing local key file takes precedence.
 
-After syncing, start a new Codex / Claude session so the runtime reloads the skill list.
+For example, keep the `ds-flash` model/profile and change only its URL to a gateway. Set its `codex` field to the gateway's full **Responses API base URL** (without `/responses`), and its `claude` field to the gateway's **Anthropic API base URL** (without `/v1/messages`). Use the corresponding gateway key in `DEEPSEEK_API_KEY`. A Chat Completions-only gateway is insufficient; changing URLs does not translate protocols or change model IDs. Check which protocols and model slug your OpenCode endpoint actually serves before using it.
+
+Claude reads URLs at each launch. Codex cloud profiles retain loopback URLs in the shared registry for the guardian shim; the shim reads the user-owned upstream URLs for every request and replaces the managed request prefix with the configured base path. Thus a gateway path such as `/custom/v1` is retained exactly. After editing a cloud provider URL, the next request uses it without sync or restart.
+
+The `local.codex` URL is written into the managed registry by `sync-codex-agent.sh`; rerun that script after changing it. Existing installations can sync directly; a missing URL file uses defaults. Sync updates default resources and validates the merged URLs without creating or overwriting the user URL file.
 
 ## Prepare Agent Environment
 
 The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
 installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
 editing installed copies.
-`sync-agent-tools.sh` also installs `repair-codex-reasoning-history.py` to `~/.local/bin`.
+`sync-agent-tools.sh` also installs the URL helper, default URL resources and `repair-codex-reasoning-history.py` to `~/.local/bin`.
 
 Prerequisites:
 
 - `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
-- `python3` 3.11 or newer is required for the launcher-only `--resume` repair option.
+- `python3` 3.11 or newer is required for URL resolution and the `--resume` repair option; `agent-endpoint.py` must be on `PATH` alongside the runners.
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - Provider credentials are exported before launching the matching agent:
   `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
 - Each Codex profile has its model card deployed at `~/.codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
-- The `local` launchers require a healthy OpenAI-compatible service at `http://127.0.0.1:8080`.
+- Local service URLs come from the local URL file, defaulting to `http://127.0.0.1:8080`; health checks use the matching runtime URL plus `/health` (Codex first removes a terminal `/v1`), so Claude and Codex can use different local ports.
 
 Keep credentials in the environment or in the untracked local file
 `~/.config/zsh/agent-tools.local.zsh`. The installed launcher loads that file automatically when it exists. Never add
@@ -250,7 +251,7 @@ leaving its account and other local settings intact.
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080 (llama.cpp) | none | patched catalog, runs unsandboxed, no shim |
+| `local` | `qwen3.8-27b-local` | user-configurable (default 127.0.0.1:8080) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
@@ -271,7 +272,7 @@ Set up or update the profiles:
 
 After restoring the agent environment on another Mac, run `install` again. It discovers that machine's Python 3.11+
 interpreter, rewrites the launchd plist, and reloads an existing service. `restart` only restarts the current plist.
-If the archive contains an older service script, run `./scripts/sync-codex-agent.sh` from an updated checkout first.
+If the archive contains an older service script, run `./scripts/sync-codex-agent.sh` from an updated checkout first; it also deploys the URL helper and default resources. Missing local URL files use defaults, and existing custom files are preserved.
 
 The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
 install (Codex accepts only absolute paths in these fields).
@@ -333,7 +334,7 @@ running). For a per-model exception, set `sandbox_mode` in that model's card to 
 `local` gets `"danger-full-access"` (no sandbox; used from a terminal, not dispatched as a sub-agent). Re-run
 `./scripts/sync-codex-agent.sh` after editing a card.
 
-`local` points straight at llama.cpp (`http://127.0.0.1:8080/v1`); its route is in the shared provider registry.
+`local` connects directly to `local.codex` (default `http://127.0.0.1:8080/v1`); its route is in the shared provider registry.
 
 ## Usage
 
@@ -559,7 +560,12 @@ codex-agent/
     codex-auto-review-shim
     codex-auto-review-shim-service
   shim-routes.json
+install.sh
+config/
+  endpoints.example.json
 scripts/
+  agent-endpoint.py
+  validate-skill.py
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
@@ -574,6 +580,7 @@ scripts/
   validate-skills.sh
   sync-skills.sh
 tests/
+  test_install_endpoints.py
   test_codex_model_defaults.py
   test_provider_registry.py
   test_repair_codex_reasoning_history.py
@@ -586,6 +593,10 @@ Edit only the source files in this repository:
 ```text
 skills/<skill-name>/SKILL.md
 skills/<skill-name>/agents/openai.yaml
+install.sh
+config/endpoints.example.json
+scripts/agent-endpoint.py
+scripts/validate-skill.py
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
@@ -600,6 +611,7 @@ scripts/sync-codex-model-defaults.py
 scripts/sync-codex-providers.py
 tests/test_codex_model_defaults.py
 tests/test_provider_registry.py
+tests/test_install_endpoints.py
 tests/test_repair_codex_reasoning_history.py
 ```
 

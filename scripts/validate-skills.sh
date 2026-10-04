@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-validator="${SKILL_VALIDATOR:-$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py}"
+validator="${SKILL_VALIDATOR:-$repo_root/scripts/validate-skill.py}"
 python_cmd="${SKILL_VALIDATOR_PYTHON:-${PYTHON:-}}"
 
 if [[ ! -f "$validator" ]]; then
@@ -12,7 +12,7 @@ if [[ ! -f "$validator" ]]; then
 fi
 
 if [[ -z "$python_cmd" ]]; then
-  for candidate in python3 /opt/homebrew/bin/python3 /usr/local/bin/python3 python; do
+  for candidate in "$HOME/.local/share/code-is-cheap-installer/venv/bin/python" python3 /opt/homebrew/bin/python3 /usr/local/bin/python3 python; do
     if command -v "$candidate" >/dev/null 2>&1 && "$candidate" -c 'import yaml' >/dev/null 2>&1; then
       python_cmd="$candidate"
       break

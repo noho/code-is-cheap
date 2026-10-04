@@ -82,7 +82,11 @@ class BusinessModelDefaultsTests(unittest.TestCase):
             launchctl = bin_dir / "launchctl"
             launchctl.write_text("#!/bin/sh\nexit 1\n")
             launchctl.chmod(0o755)
+            endpoints = root / ".config/agent-tools/endpoints.json"
+            endpoints.parent.mkdir(parents=True)
+            shutil.copyfile(ROOT / "config/endpoints.example.json", endpoints)
             env = os.environ | {
+                "HOME": str(root),
                 "CODEX_SHARED_HOME": str(shared),
                 "CODEX_AGENT_TARGET": str(target),
                 "PATH": f"{bin_dir}:{os.environ['PATH']}",

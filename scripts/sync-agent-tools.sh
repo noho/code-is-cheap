@@ -13,6 +13,9 @@ install -m 755 "$repo_root/scripts/codex-agent-run" "$agent_run_bin_dir/codex-ag
 install -m 755 "$repo_root/scripts/sub-agent-preflight" "$agent_run_bin_dir/sub-agent-preflight"
 install -m 755 "$repo_root/scripts/compose-codex-app-config.py" "$agent_run_bin_dir/compose-codex-app-config.py"
 install -m 755 "$repo_root/scripts/repair-codex-reasoning-history.py" "$agent_run_bin_dir/repair-codex-reasoning-history.py"
+install -m 755 "$repo_root/scripts/agent-endpoint.py" "$agent_run_bin_dir/agent-endpoint.py"
+install -m 600 "$repo_root/config/endpoints.example.json" "$agent_run_bin_dir/agent-endpoints.defaults.json.tmp.$$"
+mv "$agent_run_bin_dir/agent-endpoints.defaults.json.tmp.$$" "$agent_run_bin_dir/agent-endpoints.defaults.json"
 
 echo "Synced agent tools to $agent_tools_target"
 echo "Synced agent runners to $agent_run_bin_dir"

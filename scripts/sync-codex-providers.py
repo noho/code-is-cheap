@@ -12,6 +12,8 @@ import os
 import stat
 import tempfile
 import tomllib
+import json
+import re
 from pathlib import Path
 
 START = "# BEGIN code-is-cheap managed model providers"
@@ -53,6 +55,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base", required=True, type=Path)
     ap.add_argument("--registry", required=True, type=Path)
+    ap.add_argument("--local-base-url", help="User-owned local llama.cpp endpoint")
     args = ap.parse_args()
 
     base = args.base
@@ -63,7 +66,22 @@ def main() -> int:
     existed = base.exists()
     try:
         original = base.read_text() if existed else ""
-        result = compose(original, args.registry.read_text())
+        registry_text = args.registry.read_text()
+        if args.local_base_url:
+            active = False
+            count = 0
+            rendered = []
+            for line in registry_text.splitlines(keepends=True):
+                if re.match(r"^[ \t]*\[", line):
+                    active = bool(re.match(r"^[ \t]*\[model_providers\.local_llama\][ \t]*(?:#.*)?$", line.rstrip()))
+                if active and re.match(r"^[ \t]*base_url[ \t]*=", line):
+                    line = "base_url = " + json.dumps(args.local_base_url) + "\n"
+                    count += 1
+                rendered.append(line)
+            if count != 1:
+                raise ValueError("cannot replace local_llama base_url: expected one single-line setting in registry")
+            registry_text = "".join(rendered)
+        result = compose(original, registry_text)
     except (OSError, ValueError, tomllib.TOMLDecodeError) as exc:
         ap.error(str(exc))
 

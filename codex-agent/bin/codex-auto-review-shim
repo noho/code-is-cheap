@@ -14,18 +14,17 @@ Multi-route mode (one process, one listener per provider):
   SHIM_ROUTES   path to a routes file (default ~/.codex-agent/shim-routes.json)
 
     {
-      "from": "codex-auto-review",
       "bind": "127.0.0.1",
       "routes": [
-        {"port": 8788, "upstream": "https://api.deepseek.com", "to": "deepseek-flash"},
-        {"port": 8789, "upstream": "https://open.bigmodel.cn", "to": "glm-5.3"}
+        {"port": 8788, "endpoint_id": "ds-flash", "request_prefix": "/v1", "to": "deepseek-flash"}
       ]
     }
 
-  Each route's `upstream` is the provider ORIGIN; the request path arrives
-  verbatim (Codex posts to `<base_url>/responses`, so a base_url carrying
-  `/api/v1` yields a path of `/api/v1/responses`). A trailing `/v1` on the
-  upstream is de-duplicated, so either form works.
+  Managed routes resolve a full upstream base URL from the user-owned
+  ~/.config/agent-tools/endpoints.json on every request. request_prefix is
+  stripped from the incoming path before appending it to that upstream base.
+  Explicit upstream routes (e.g. test/single-route deployments) forward the
+  path verbatim, de-duplicating a trailing /v1 prefix.
 
 Single-route mode (no routes file) -- configured entirely by environment:
 
@@ -51,6 +50,9 @@ import time
 import urllib.error
 import urllib.request
 import zlib
+import importlib.util
+from functools import lru_cache
+from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 DEFAULT_ROUTES = os.path.expanduser("~/.codex-agent/shim-routes.json")
@@ -73,6 +75,35 @@ def upstream_url(upstream: str, path: str) -> str:
     if upstream.endswith("/v1") and path.startswith("/v1/"):
         return upstream[: -len("/v1")] + path
     return upstream + path
+
+
+@lru_cache(maxsize=1)
+def endpoint_module():
+    helper = Path(__file__).with_name("agent-endpoint.py")
+    if not helper.exists():
+        helper = Path(__file__).resolve().parents[2] / "scripts/agent-endpoint.py"
+    if not helper.is_file():
+        raise ValueError("agent-endpoint.py unavailable; run scripts/sync-codex-agent.sh")
+    spec = importlib.util.spec_from_file_location("agent_endpoint", helper)
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+    except OSError:
+        raise ValueError("cannot load agent-endpoint.py; run scripts/sync-codex-agent.sh") from None
+    return module
+
+
+def route_url(route, path):
+    # Reload the user-owned endpoint on every request: editing a URL requires
+    # neither synchronization nor a service restart, including App sessions.
+    upstream = (endpoint_module().endpoint(route["endpoint_id"], "codex")
+                if route.get("endpoint_id") else route["upstream"])
+    prefix = route.get("request_prefix", "")
+    if prefix:
+        if not path.startswith(prefix + "/"):
+            raise ValueError("Unexpected route prefix")
+        return upstream + path[len(prefix):]
+    return upstream_url(upstream, path)
 
 
 def _swap(body: bytes, src: str, dst: str) -> tuple[bytes, str]:
@@ -181,16 +212,31 @@ def load_routes() -> list[dict]:
         return []
     with open(path, encoding="utf-8") as fh:
         doc = json.load(fh)
+    if not isinstance(doc, dict) or not isinstance(doc.get("routes"), list):
+        raise SystemExit("routes config must be an object containing a routes array")
     default_from = doc.get("from", "codex-auto-review")
     bind = doc.get("bind", "127.0.0.1")
     routes = []
+    endpoints = None
     for i, r in enumerate(doc.get("routes") or []):
-        for key in ("port", "upstream", "to"):
+        if not isinstance(r, dict):
+            raise SystemExit(f"routes[{i}] must be an object")
+        for key in ("port", "to"):
             if key not in r:
                 raise SystemExit(f"routes[{i}] missing {key!r}")
+        upstream = r.get("upstream")
+        if "endpoint_id" in r:
+            if endpoints is None:
+                module = endpoint_module()
+                endpoints = module.load_endpoints()
+            upstream = module.endpoint(r["endpoint_id"], "codex", endpoints)
+        if not upstream:
+            raise SystemExit(f"routes[{i}] missing upstream endpoint")
         routes.append({
             "listen": f"{r.get('bind', bind)}:{int(r['port'])}",
-            "upstream": str(r["upstream"]).rstrip("/"),
+            "upstream": str(upstream).rstrip("/"),
+            "request_prefix": r.get("request_prefix", ""),
+            "endpoint_id": r.get("endpoint_id"),
             "from": r.get("from", default_from),
             "to": str(r["to"]),
             "id_fix": bool(r.get("id_fix", doc.get("id_fix", False))),
@@ -276,7 +322,12 @@ class Handler(BaseHTTPRequestHandler):
                 if n:
                     how = f"{how}+droptools{n}"
 
-        url = upstream_url(route["upstream"], self.path)
+        try:
+            url = route_url(route, self.path)
+        except ValueError as exc:
+            self._log(f"endpoint error: {exc}")
+            self.send_error(503, "Invalid local endpoint settings or request prefix")
+            return
         headers = {k: v for k, v in self.headers.items() if k.lower() not in HOP_BY_HOP}
         req = urllib.request.Request(url, data=body or None, headers=headers, method=self.command)
 
@@ -415,7 +466,10 @@ def main():
         print(out.decode())
         return 0
 
-    routes = load_routes()
+    try:
+        routes = load_routes()
+    except (ValueError, OSError, TypeError) as exc:
+        raise SystemExit(f"invalid routes configuration: {exc}") from None
     if not routes:
         routes = [{
             "listen": os.environ.get("SHIM_LISTEN", "127.0.0.1:8788"),
@@ -426,7 +480,7 @@ def main():
 
     if argv[:1] == ["--routes"]:
         for r in routes:
-            print(f"{r['listen']:>16}  {r['upstream']}   ({r['from']} -> {r['to']})")
+            print(f"{r['listen']:>16}  {('endpoint:' + r['endpoint_id']) if r.get('endpoint_id') else r['upstream']}   ({r['from']} -> {r['to']})")
         return 0
 
     servers = []
@@ -437,7 +491,7 @@ def main():
             print(f"[shim] cannot bind {r['listen']}: {e}", file=sys.stderr, flush=True)
             return 1
         print(
-            f"[shim] {r['listen']} -> {r['upstream']}  ({r['from']} -> {r['to']})",
+            f"[shim] {r['listen']} -> {('endpoint:' + r['endpoint_id']) if r.get('endpoint_id') else r['upstream']}  ({r['from']} -> {r['to']})",
             file=sys.stderr, flush=True,
         )
 
