@@ -124,6 +124,8 @@ The `local.codex` URL is written into the managed registry by `sync-codex-agent.
 
 ## Prepare Agent Environment
 
+If `install.sh` completed successfully, skip the manual deployment steps in this section: it has deployed the launchers/runners and model cards and configured shell loading. You still need to set API keys and any custom URLs as described above, then run `source ~/.zshrc` (or open a new shell) to load the launchers; also reopen Agent sessions to reload skills. The optional `business` profile and local models still require their account home or local service to be prepared separately. The steps below are for manual installation or later updates.
+
 The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
 installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
 editing installed copies.

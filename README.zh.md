@@ -120,6 +120,8 @@ Claude 每次启动读取 URL。Codex 云端 profile 的共享 registry 仍指�
 
 ## 准备 Agent 环境
 
+如果已成功运行 `install.sh`，可跳过本节的手动部署步骤：安装器已部署 launcher/runner、模型卡并配置 shell 加载入口。仍需按上一节填写 API key 和可选的自定义 URL，并执行 `source ~/.zshrc`（或打开新 shell）以加载启动函数；另需重新打开 Agent 会话以加载 skills。使用可选的 `business` 或本地模型时，仍需自行准备对应账号 home 或本地服务。下面的步骤用于手动安装或后续更新。
+
 受版本控制的真源是 `scripts/agent-tools.zsh`、`scripts/claude-agent-run` 和 `scripts/codex-agent-run`，安装副本位于
 `~/.config/zsh` 和 `~/.local/bin`。应修改仓库真源并重新同步，不要直接编辑安装副本。
 `sync-agent-tools.sh` 还会把 URL helper、默认 URL 资源和 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。

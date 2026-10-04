@@ -143,3 +143,55 @@ Final patches were limited to these adjudicated findings and the demonstrated he
 - Final isolated candidate: 57 tests passed with `TMPDIR=/private/tmp`; installer tests mock network/tool/service actions. The affected endpoint test module also passed all 10 tests after the final jq fixture changes.
 - Bash/zsh syntax, all six skill metadata validations, and worktree whitespace checks passed after final application.
 - No live installation/sync, real launchd deployment or gateway model probe occurred. Preinstalled runtime tools are required; URL changes do not translate protocols/model IDs.
+
+## Follow-up: skip manual preparation after installation
+
+- User requested that Prepare Agent Environment explicitly say successful installer users can skip manual deployment. Reused the same open PR #45 branch; frozen HEAD/base `61f19e42b439aa034d4f5738cc916af2b7e5fdd4`.
+- Scope: one added paragraph per README, compared with the installer and its sync entry points. Original frozen diff SHA-256 `4fc2313efadb0219010066a714415882ef350269fa3770dca30c931102ef8c73`; manifest SHA-256 `4cacce22bd15cb8182a482008f05d97419f52c0d2daef934353b5851189928f7`. Both routes independently checked HEAD and all three source hashes before/after. Controller checked them again before fixing the documentation.
+- MiMo report: `install-skip-readme-mimo-20261004.md`; managed handle `58049`, outer exit 0, JSONL `turn.completed`, exact artifact token matches private expected file, stderr empty, real command evidence and no observed nonzero/error/failed event.
+- Qwen report: `install-skip-readme-qwen-20261004.md`; managed handle `9057`, outer exit 0, JSONL `turn.completed`, exact artifact token matches private expected file, stderr empty, real command evidence and no observed nonzero/error/failed event.
+
+### MiMo acceptance
+
+```yaml
+setup_status: ok
+agent_status: completed
+tool_evidence: yes
+tool_trace: complete
+required_evidence: complete
+canary_status: match
+result_status: accepted
+warnings:
+  - "Generic self-reported gpt-5 identity does not establish a wire model. Dispatch used the configured MiMo launcher; no independent model identity probe was requested."
+evidence_gaps: []
+retry_class: none
+```
+
+Evidence directory: `/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.UGcSu3`. No material finding; static deployment/credential/optional-service evidence was independently checked by the controller.
+
+### Qwen acceptance
+
+```yaml
+setup_status: ok
+agent_status: completed
+tool_evidence: yes
+tool_trace: complete
+required_evidence: complete
+canary_status: match
+result_status: accepted
+warnings:
+  - "Generic self-reported gpt-5 identity does not establish a wire model. Dispatch used the configured Qwen launcher; no independent model identity probe was requested."
+  - "Reviewer unnecessarily listed profile directories, grepped repository tests for README references and listed report filenames outside the narrow allowed input list. These static reads caused no source/live mutation; other report contents were not read. The controller does not adopt the test-coverage speculation, which is unnecessary for this doc-only conclusion."
+evidence_gaps: []
+retry_class: none
+```
+
+Evidence directory: `/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.9nNhsj`.
+
+### Follow-up adjudication and verification
+
+- Accepted Qwen finding 1: explicitly reopen Agent sessions to load skills, separately from shell reload. Both paragraphs now retain both instructions from `install.sh:90`.
+- Adopted Qwen open question 2 as a clarification: skip the manual deployment steps **in this section**, so the text does not imply skipping other optional setup such as a service deliberately omitted with `--no-service`.
+- Open question 1 needs no extra success marker: the instruction already requires successful completion, and the installer uses nonzero failures. No new Agent verification workflow is introduced.
+- Both READMEs preserve user-owned credential/URL configuration, optional business account home and local model-service requirements, and manual installation/later update use cases.
+- Controller rechecked the final wording against `install.sh` and the deployment scripts and ran diff whitespace checks. Pure prose changes do not require additional implementation tests; the previous 57-test result remains the evidence for unchanged installation source. No live install/sync performed in this follow-up.
