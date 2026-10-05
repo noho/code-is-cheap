@@ -4,67 +4,75 @@
   "routes": [
     {
       "port": 8788,
-      "upstream": "https://api.deepseek.com",
       "to": "deepseek-flash",
       "id_fix": false,
       "json_fmt_fix": false,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "ds-flash",
+      "request_prefix": "/v1"
     },
     {
       "port": 8789,
-      "upstream": "https://open.bigmodel.cn",
       "to": "glm-5.3",
       "id_fix": false,
       "json_fmt_fix": false,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "glm",
+      "request_prefix": "/api/v1"
     },
     {
       "port": 8790,
-      "upstream": "https://api.kimi.com",
       "to": "kimi-k3",
       "id_fix": false,
       "json_fmt_fix": false,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "kimi",
+      "request_prefix": "/coding/v1"
     },
     {
       "port": 8791,
-      "upstream": "https://token-plan-cn.xiaomimimo.com",
       "to": "mimo-v2.6-pro",
       "id_fix": false,
       "json_fmt_fix": true,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "mimo",
+      "request_prefix": "/v1"
     },
     {
       "port": 8792,
-      "upstream": "https://dashscope.aliyuncs.com",
       "to": "qwen3.8-max",
       "id_fix": true,
       "json_fmt_fix": false,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "qwen",
+      "request_prefix": "/compatible-mode/v1"
     },
     {
       "port": 8793,
-      "upstream": "https://token-plan-cn.xiaomimimo.com",
       "to": "mimo-v2.6-flash",
       "id_fix": false,
       "json_fmt_fix": true,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "mimo-flash",
+      "request_prefix": "/v1"
     },
     {
       "port": 8794,
-      "upstream": "https://api.xiaomimimo.com",
       "to": "mimo-v2.6-pro-ultraspeed",
       "id_fix": false,
       "json_fmt_fix": true,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "mimo-fast",
+      "request_prefix": "/v1"
     },
     {
       "port": 8795,
-      "upstream": "https://open.bigmodel.cn",
       "to": "glm-5.3-flash",
       "id_fix": false,
       "json_fmt_fix": false,
-      "drop_tools_item": false
+      "drop_tools_item": false,
+      "endpoint_id": "glm-flash",
+      "request_prefix": "/api/v1"
     }
   ]
 }

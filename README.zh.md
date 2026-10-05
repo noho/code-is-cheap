@@ -87,43 +87,54 @@ uv tool install --force 'claude-code-tools==1.29.1'
 
 ## 安装
 
-克隆仓库：
+macOS 上需已有 Git、Codex CLI、Claude Code、Python 3.11+、jq、uv、tmux、rsync、zsh 和 curl。下载并运行安装入口：
 
 ```bash
-git clone <repo-url> code-is-cheap
-cd code-is-cheap
+curl -fsSL https://raw.githubusercontent.com/noho/code-is-cheap/main/install.sh -o install-code-is-cheap.sh
+bash install-code-is-cheap.sh
 ```
 
-同步 skills 到已存在的本地 Codex / Claude skill 目录：
+下载成功后再执行第二条命令。已有 checkout 可直接运行 `bash ./install.sh`。
+下载的安装脚本将仓库克隆到 `~/.local/share/code-is-cheap`；重复运行时对干净的 `main` checkout 执行 fast-forward 更新。可通过 `AGENT_INSTALL_DIR` 指定其它目录。
 
-```bash
-./scripts/sync-skills.sh
-```
+脚本创建含 PyYAML 的独立校验环境（以后手动 sync 也会自动复用），安装 `claude-code-tools==1.29.1`，将 skills 同步到 `~/.codex/skills` 和 `~/.claude/skills`，部署启动函数、runner、模型卡，向 `~/.zshrc` 添加 PATH 和 launcher 加载入口，并安装 launchd shim 服务。`bash install.sh --no-service` 可跳过服务安装。脚本不安装 Codex/Claude CLI、不登录账号、不创建可选 business 账号 home，也不启动本地模型服务。
 
-同步脚本会安装到以下已存在的目录：
+已有 API key、上游 URL、Codex 登录和其它本机 Codex 设置会保留。安装后重新打开 Agent 会话以加载 skills，并运行 `source ~/.zshrc` 在当前 shell 加载启动函数。
 
-```text
-~/.codex/skills
-~/.claude/skills
-```
+### 本地 API key 和上游 URL
 
-同步后，重新打开一个 Codex / Claude session，让运行时重新加载 skill 列表。
+安装器仅在文件不存在时初始化以下两个用户文件；sync 脚本不会覆盖它们：
+
+| 文件 | 内容 |
+| --- | --- |
+| `~/.config/zsh/agent-tools.local.zsh` | Provider API key，例如 `export DEEPSEEK_API_KEY="your-key"` |
+| `~/.config/agent-tools/endpoints.json` | 各 provider 的 `claude`、`codex` 上游 base URL |
+
+项目默认 URL 来自 `config/endpoints.example.json`，随程序作为独立的默认资源部署。缺少本地文件、provider/runtime 字段，或 URL 为空字符串时，读取默认值；已有本地值优先，sync 不会补写用户文件。格式错误的本地文件会明确报错。安装器首次生成完整默认配置，后续安装保留原文件。这些初始值属于本地覆盖项，项目默认值更新后也不会被替换。如需让某个 URL 跟随当前项目默认值，删除该字段或设为 `""` 即可，其他自定义 URL 不受影响。两个文件新建时权限为 `600`；凭据不要写入仓库。API key 也可来自环境变量，已有本地 key 文件优先。
+
+例如保留 `ds-flash` 模型和 profile，只把 URL 改为网关：其 `codex` 字段填写网关完整的 **Responses API base URL**（不含 `/responses`），`claude` 字段填写网关的 **Anthropic API base URL**（不含 `/v1/messages`）；对应网关的 key 填入 `DEEPSEEK_API_KEY`。仅支持 Chat Completions 的网关不能直接使用；修改 URL 不会转换协议或改变模型 ID。使用 OpenCode 端点前，应确认它实际提供的协议及模型 slug。
+
+Claude 每次启动读取 URL。Codex 云端 profile 的共享 registry 仍指向本地 guardian shim；shim 每次请求读取用户上游 URL，将请求中托管的路径前缀替换为配置的 base path，因此网关的 `/custom/v1` 等路径会正确保留。编辑云端 provider URL 后，下一次请求直接使用新地址，无需 sync 或重启。
+
+`local.codex` URL 由 `sync-codex-agent.sh` 写入托管 registry，修改它后需重跑该同步脚本。已有安装可以直接 sync；缺少 URL 文件时仍可使用默认地址。sync 更新默认资源并校验合并后的 URL，不会创建或覆盖用户的 URL 文件。
 
 ## 准备 Agent 环境
 
+如果已成功运行 `install.sh`，可跳过本节的手动部署步骤：安装器已部署 launcher/runner、模型卡并配置 shell 加载入口。仍需按上一节填写 API key 和可选的自定义 URL，并执行 `source ~/.zshrc`（或打开新 shell）以加载启动函数；另需重新打开 Agent 会话以加载 skills。使用可选的 `business` 或本地模型时，仍需自行准备对应账号 home 或本地服务。下面的步骤用于手动安装或后续更新。
+
 受版本控制的真源是 `scripts/agent-tools.zsh`、`scripts/claude-agent-run` 和 `scripts/codex-agent-run`，安装副本位于
 `~/.config/zsh` 和 `~/.local/bin`。应修改仓库真源并重新同步，不要直接编辑安装副本。
-`sync-agent-tools.sh` 还会把 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
+`sync-agent-tools.sh` 还会把 URL helper、默认 URL 资源和 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
 
 前置要求：
 
 - `zsh`、`claude`、`codex`、`jq` 和 `curl` 已在 `PATH` 中。
-- launcher 专用的 `--resume` 修复参数需要 `python3` 3.11 或更新版本。
+- URL 读取和 `--resume` 修复需要 `python3` 3.11 或更新版本；`agent-endpoint.py` 应与其它 runner 一起在 `PATH` 中。
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 启动对应 Agent 前已导出 provider 凭据：
   `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
 - 每个 Codex profile 的模型卡已部署为可读的 `~/.codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
-- `local` 启动函数需要 `http://127.0.0.1:8080` 上存在健康的 OpenAI-compatible 服务。
+- `local` 服务地址由本地 URL 文件决定，默认 `http://127.0.0.1:8080`；健康检查使用对应 runtime 的 URL 加 `/health`（Codex 先去掉末尾 `/v1`），因此 Claude/Codex 可配置不同端口。
 
 凭据应保存在环境变量或不受版本控制的本机文件
 `~/.config/zsh/agent-tools.local.zsh` 中。安装后的启动脚本会自动加载该文件。不要把凭据写入
@@ -233,7 +244,7 @@ Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（ext
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
-| `local` | `qwen3.8-27b-local` | 127.0.0.1:8080（llama.cpp） | 无 | 目录补丁、不走沙箱或 shim |
+| `local` | `qwen3.8-27b-local` | 用户可配置（默认 127.0.0.1:8080） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
@@ -254,7 +265,7 @@ Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（ext
 
 把 Agent 环境恢复到另一台 Mac 后，再运行一次 `install`。它会查找目标机器上的 Python 3.11+，重写
 launchd plist，并重新加载已有服务。`restart` 只重启现有 plist，不会更新 Python 路径。
-如果归档里还是旧版服务脚本，先从更新后的仓库执行 `./scripts/sync-codex-agent.sh`。
+如果归档里还是旧版服务脚本，先从更新后的仓库执行 `./scripts/sync-codex-agent.sh`；它也部署 URL helper 和默认资源。缺少本地 URL 文件时仍使用默认地址，已有自定义文件保持原样。
 
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
@@ -309,7 +320,7 @@ python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.
 在它的模型卡里写 `sandbox_mode` 覆盖 base——`local` 就是这样拿到 `"danger-full-access"`（无沙箱，
 只在终端交互使用，不作为子 Agent 派发）。改卡后重跑 `./scripts/sync-codex-agent.sh`。
 
-`local` 在共享 provider 注册表中直连 llama.cpp（`http://127.0.0.1:8080/v1`）。
+`local` 在共享 provider 注册表中直连 `local.codex` 指定的服务（默认 `http://127.0.0.1:8080/v1`）。
 
 ## 使用方式
 
@@ -530,7 +541,12 @@ codex-agent/
     codex-auto-review-shim
     codex-auto-review-shim-service
   shim-routes.json
+install.sh
+config/
+  endpoints.example.json
 scripts/
+  agent-endpoint.py
+  validate-skill.py
   agent-tools.zsh
   claude-agent-run
   codex-agent-run
@@ -545,6 +561,7 @@ scripts/
   validate-skills.sh
   sync-skills.sh
 tests/
+  test_install_endpoints.py
   test_codex_model_defaults.py
   test_provider_registry.py
   test_repair_codex_reasoning_history.py
@@ -557,6 +574,10 @@ tests/
 ```text
 skills/<skill-name>/SKILL.md
 skills/<skill-name>/agents/openai.yaml
+install.sh
+config/endpoints.example.json
+scripts/agent-endpoint.py
+scripts/validate-skill.py
 scripts/agent-tools.zsh
 scripts/claude-agent-run
 scripts/codex-agent-run
@@ -571,6 +592,7 @@ scripts/sync-codex-model-defaults.py
 scripts/sync-codex-providers.py
 tests/test_codex_model_defaults.py
 tests/test_provider_registry.py
+tests/test_install_endpoints.py
 tests/test_repair_codex_reasoning_history.py
 ```
 

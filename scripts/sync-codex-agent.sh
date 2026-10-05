@@ -25,6 +25,11 @@ target_root="${CODEX_AGENT_TARGET:-$HOME/.codex-agent}"
 shared_home="${CODEX_SHARED_HOME:-$HOME/.codex}"
 shim_label="com.leo.codex-auto-review-shim"
 
+# Validate effective settings (local overrides + defaults), without writing user files.
+python3 "$repo_root/scripts/agent-endpoint.py" --check
+SHIM_ROUTES="$repo_root/codex-agent/shim-routes.json" python3 "$repo_root/codex-agent/bin/codex-auto-review-shim" --routes >/dev/null
+local_base_url="$(python3 "$repo_root/scripts/agent-endpoint.py" --provider local --runtime codex)"
+
 mkdir -p "$target_root"
 mkdir -p "$shared_home/model-catalogs"
 
@@ -32,7 +37,8 @@ mkdir -p "$shared_home/model-catalogs"
 # apply a different model card. Sync this registry before deploying cards.
 python3 "$repo_root/scripts/sync-codex-providers.py" \
   --base "$shared_home/config.toml" \
-  --registry "$repo_root/codex-agent/model-providers.toml"
+  --registry "$repo_root/codex-agent/model-providers.toml" \
+  --local-base-url "$local_base_url"
 
 # --- stage cards and catalogs before replacing installed cards -------------
 stage_dir="$(mktemp -d "$shared_home/.catalog-stage.XXXXXX")"
@@ -83,6 +89,9 @@ for src in "$repo_root"/codex-agent/bin/*; do
 done
 
 # --- shim routes ------------------------------------------------------------
+install -m 755 "$repo_root/scripts/agent-endpoint.py" "$target_root/bin/agent-endpoint.py"
+install -m 600 "$repo_root/config/endpoints.example.json" "$target_root/bin/agent-endpoints.defaults.json.tmp.$$"
+mv "$target_root/bin/agent-endpoints.defaults.json.tmp.$$" "$target_root/bin/agent-endpoints.defaults.json"
 install -m 644 "$repo_root/codex-agent/shim-routes.json" "$target_root/shim-routes.json"
 echo "synced shim-routes.json"
 

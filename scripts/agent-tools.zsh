@@ -70,19 +70,16 @@ _claude_agent_key_name() {
   esac
 }
 
-_claude_agent_base_url() {
-  case "$1" in
-    ds-flash)    print -r -- "https://api.deepseek.com/anthropic" ;;
-    mimo|mimo-flash)  print -r -- "https://token-plan-cn.xiaomimimo.com/anthropic" ;;
-    mimo-fast)  print -r -- "https://api.xiaomimimo.com/anthropic" ;;
-    qwen)  print -r -- "https://dashscope.aliyuncs.com/apps/anthropic" ;;
-    kimi)  print -r -- "https://api.kimi.com/coding/" ;;
-    glm|glm-flash)   print -r -- "https://open.bigmodel.cn/api/anthropic" ;;
-    hy)    print -r -- "https://tokenhub.tencentmaas.com" ;;
-    local) print -r -- "http://127.0.0.1:8080" ;;
-    *)     return 1 ;;
-  esac
+_agent_tools_base_url() {
+  local helper
+  helper="$(command -v agent-endpoint.py)" || {
+    print -u2 -- "agent-endpoint.py 不在 PATH（请运行 sync-agent-tools.sh）"
+    return 1
+  }
+  python3 "$helper" --provider "$1" --runtime "${2:-claude}"
 }
+
+_claude_agent_base_url() { _agent_tools_base_url "$1" claude; }
 
 _claude_agent_model() {
   case "$1" in
@@ -117,13 +114,15 @@ _claude_agent_max_context() {
 }
 
 _local_agent_require_service() {
+  local base_url
+  base_url="$(_agent_tools_base_url local "${1:-claude}")" || return 1
+  [[ "${1:-claude}" == codex ]] && base_url="${base_url%/v1}"
   command -v curl >/dev/null 2>&1 || {
     echo "curl 未安装" >&2
     return 1
   }
-  curl -fsS --max-time 2 "http://127.0.0.1:8080/health" >/dev/null 2>&1 || {
-    echo "Qwen3.8 本地服务未启动或不可访问（http://127.0.0.1:8080）" >&2
-    echo "启动命令：\"/Users/leo/Library/Application Support/Qwen38-27B/qwen38ctl\" start" >&2
+  curl -fsS --max-time 2 "${base_url%/}/health" >/dev/null 2>&1 || {
+    echo "本地模型服务未启动或不可访问，请检查 endpoints.json 的 local/claude URL" >&2
     return 1
   }
 }
@@ -149,7 +148,7 @@ _claude_agent_launch() (
 
   local title="$(_claude_agent_title "$agent_id")" || return 1
   local key_name="$(_claude_agent_key_name "$agent_id")" || return 1
-  local base_url="$(_claude_agent_base_url "$agent_id")" || return 1
+  local base_url
   local model="$(_claude_agent_model "$agent_id")" || return 1
   local compact_window="$(_claude_agent_compact_window "$agent_id")" || return 1
   local auth_token="local"
@@ -161,14 +160,16 @@ _claude_agent_launch() (
 
   _agent_tools_prepare_credentials "$key_name" || return 1
   _claude_agent_require_provider "$agent_id" || return 1
+  [[ -n "$key_name" ]] && auth_token="${(P)key_name}"
+  # Only the final Claude process receives the canonical auth variable.
+  [[ -n "$key_name" ]] && unset "$key_name"
+  base_url="$(_claude_agent_base_url "$agent_id")" || return 1
+  [[ -n "$base_url" ]] || { print -u2 -- "Claude base URL 为空"; return 1; }
   command -v jq >/dev/null 2>&1 || {
     echo "jq 未安装" >&2
     return 1
   }
 
-  [[ -n "$key_name" ]] && auth_token="${(P)key_name}"
-  # Claude only needs the canonical auth variable, not the provider alias.
-  [[ -n "$key_name" ]] && unset "$key_name"
   [[ "$agent_id" == local ]] && api_timeout="3600000"
 
   while (( $# > 0 )); do
@@ -341,7 +342,7 @@ _codex_agent_require_home() {
     return 1
   fi
   if [[ "$agent_id" == local ]]; then
-    _local_agent_require_service || return 1
+    _local_agent_require_service codex || return 1
   fi
   _codex_agent_require_shim "$agent_id" || return 1
 }

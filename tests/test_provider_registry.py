@@ -49,6 +49,7 @@ class ProviderRegistryTests(unittest.TestCase):
                 port = urlsplit(provider["base_url"]).port
                 self.assertIn(port, routes)
                 self.assertEqual(routes[port]["to"], data["model"])
+                self.assertEqual(routes[port]["request_prefix"], urlsplit(provider["base_url"]).path)
                 if shutil.which("zsh"):
                     script = 'source "$1"; _codex_agent_shim_port "$2"; _codex_agent_key_name "$2"'
                     done = subprocess.run(["zsh", "-c", script, "_", str(ROOT / "scripts/agent-tools.zsh"), card.parent.name], check=True, capture_output=True, text=True)
@@ -64,6 +65,25 @@ class ProviderRegistryTests(unittest.TestCase):
         data = tomllib.loads(first)
         self.assertEqual(data["projects"]["/work"]["trust_level"], "trusted")
         self.assertIn("kimi", data["model_providers"])
+
+    def test_local_url_override_handles_comments_and_preserves_base_on_failure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base = root / "config.toml"
+            registry = root / "registry.toml"
+            registry.write_text(REGISTRY.read_text().replace('[model_providers.local_llama]', '[model_providers.local_llama]\n# see [docs]'))
+            command = [sys.executable, str(SYNC), '--base', str(base), '--registry', str(registry), '--local-base-url', 'http://127.0.0.1:9999/custom/v1']
+            first = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(first.returncode, 0, first.stderr)
+            self.assertEqual(tomllib.loads(base.read_text())['model_providers']['local_llama']['base_url'], 'http://127.0.0.1:9999/custom/v1')
+            snapshot = base.read_bytes()
+            self.assertEqual(subprocess.run(command, capture_output=True).returncode, 0)
+            self.assertEqual(base.read_bytes(), snapshot)
+            registry.write_text('[model_providers.other]\nname="Other"\n')
+            bad = subprocess.run(command, capture_output=True, text=True)
+            self.assertNotEqual(bad.returncode, 0)
+            self.assertIn('expected one single-line setting', bad.stderr)
+            self.assertEqual(base.read_bytes(), snapshot)
 
     def test_sync_refuses_unowned_conflict(self) -> None:
         base = '[model_providers.kimi]\nbase_url = "https://custom.example"\n'
