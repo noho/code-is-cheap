@@ -1,27 +1,8 @@
-# Agent launcher helpers for Claude Code and Codex.
-# Source this file from ~/.zshrc. Keep credentials in the environment or in
-# ~/.config/zsh/agent-tools.local.zsh; never add credentials to this file.
-
-# Loading this file only defines launchers; it never loads credentials into the
-# interactive shell. Call this helper only from the subshell launchers below.
-_agent_tools_prepare_credentials() {
-  local selected_key="$1"
-  local credentials_file="${AGENT_TOOLS_LOCAL_FILE:-$HOME/.config/zsh/agent-tools.local.zsh}"
-  local selected_value=""
+# Agent launchers use private JSON connections. Loading this file exports no keys.
+# Remove inherited credentials before helpers/Agents run; this is environment
+# isolation, not protection against same-user reads of the private JSON file.
+_agent_tools_scrub_credentials() {
   local variable_name
-
-  # Preserve the existing file-over-environment precedence. Profiles using
-  # account login or the local service do not need to read the credential file.
-  if [[ -n "$selected_key" && -r "$credentials_file" ]]; then
-    source "$credentials_file" || {
-      print -u2 -- "Failed to load agent credentials"
-      return 1
-    }
-  fi
-  [[ -n "$selected_key" ]] && selected_value="${(P)selected_key:-}"
-
-  # Also scrub credentials inherited from terminals started before this change.
-  # Fail closed if an exported readonly parameter cannot be removed.
   for variable_name in ${(k)parameters}; do
     [[ ${parameters[$variable_name]} == *export* ]] || continue
     case "${(U)variable_name}" in
@@ -30,14 +11,13 @@ _agent_tools_prepare_credentials() {
         ;;
     esac
   done
+}
 
-  if [[ -n "$selected_key" ]]; then
-    [[ -n "$selected_value" ]] || {
-      print -u2 -- "$selected_key 未设置"
-      return 1
-    }
-    export "$selected_key=$selected_value"
-  fi
+_agent_tools_connection_helper() {
+  command -v agent-endpoint.py || {
+    print -u2 -- "agent-endpoint.py 不在 PATH（请运行 sync-agent-tools.sh）"
+    return 1
+  }
 }
 
 _claude_agent_title() {
@@ -56,46 +36,13 @@ _claude_agent_title() {
   esac
 }
 
-_claude_agent_key_name() {
-  case "$1" in
-    ds-flash)    print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo|mimo-flash)  print -r -- "MIMO_PLAN_API_KEY" ;;
-    mimo-fast)  print -r -- "MIMO_API_KEY" ;;
-    qwen)  print -r -- "QWEN_API_KEY" ;;
-    kimi)  print -r -- "KIMI_API_KEY" ;;
-    glm|glm-flash)   print -r -- "GLM_API_KEY" ;;
-    hy)    print -r -- "HY_API_KEY" ;;
-    local) print -r -- "" ;;
-    *)     return 1 ;;
-  esac
-}
-
 _agent_tools_base_url() {
   local helper
-  helper="$(command -v agent-endpoint.py)" || {
-    print -u2 -- "agent-endpoint.py 不在 PATH（请运行 sync-agent-tools.sh）"
-    return 1
-  }
+  helper="$(_agent_tools_connection_helper)" || return 1
   python3 "$helper" --provider "$1" --runtime "${2:-claude}"
 }
 
 _claude_agent_base_url() { _agent_tools_base_url "$1" claude; }
-
-_claude_agent_model() {
-  case "$1" in
-    ds-flash)    print -r -- "deepseek-flash[1m]" ;;
-    mimo)  print -r -- "mimo-v2.6-pro[1m]" ;;
-    mimo-fast) print -r -- "mimo-v2.6-pro-ultraspeed[1m]" ;;
-    mimo-flash) print -r -- "mimo-v2.6-flash[1m]" ;;
-    qwen)  print -r -- "qwen3.8-max[1m]" ;;
-    kimi)  print -r -- "kimi-k3[1m]" ;;
-    glm)   print -r -- "glm-5.3" ;;
-    glm-flash) print -r -- "glm-5.3-flash" ;;
-    hy)    print -r -- "hy4-preview" ;;
-    local) print -r -- "qwen3.8-27b-local" ;;
-    *)     return 1 ;;
-  esac
-}
 
 _claude_agent_compact_window() {
   case "$1" in
@@ -127,105 +74,37 @@ _local_agent_require_service() {
   }
 }
 
-_claude_agent_require_provider() {
-  local agent_id="$1"
-  local key_name="$(_claude_agent_key_name "$agent_id")" || return 1
-
-  if [[ -n "$key_name" && -z "${(P)key_name}" ]]; then
-    echo "$key_name 未设置" >&2
-    return 1
-  fi
-  if [[ "$agent_id" == local ]]; then
-    _local_agent_require_service || return 1
-  fi
-}
-
 _claude_agent_launch() (
   emulate -L zsh
   unsetopt xtrace verbose
   local agent_id="$1"
   shift
-
   local title="$(_claude_agent_title "$agent_id")" || return 1
-  local key_name="$(_claude_agent_key_name "$agent_id")" || return 1
-  local base_url
-  local model="$(_claude_agent_model "$agent_id")" || return 1
   local compact_window="$(_claude_agent_compact_window "$agent_id")" || return 1
-  local auth_token="local"
   local max_context="$(_claude_agent_max_context "$agent_id")" || return 1
-  local api_timeout=""
+  local api_timeout="" helper
   local set_title=false
-  local settings_json
   local -a claude_args=()
-
-  _agent_tools_prepare_credentials "$key_name" || return 1
-  _claude_agent_require_provider "$agent_id" || return 1
-  [[ -n "$key_name" ]] && auth_token="${(P)key_name}"
-  # Only the final Claude process receives the canonical auth variable.
-  [[ -n "$key_name" ]] && unset "$key_name"
-  base_url="$(_claude_agent_base_url "$agent_id")" || return 1
-  [[ -n "$base_url" ]] || { print -u2 -- "Claude base URL 为空"; return 1; }
-  command -v jq >/dev/null 2>&1 || {
-    echo "jq 未安装" >&2
-    return 1
-  }
-
-  [[ "$agent_id" == local ]] && api_timeout="3600000"
-
+  _agent_tools_scrub_credentials || return 1
+  helper="$(_agent_tools_connection_helper)" || return 1
+  [[ "$agent_id" == local ]] && { _local_agent_require_service || return 1; api_timeout="3600000"; }
   while (( $# > 0 )); do
     case "$1" in
       --title)
         set_title=true
         shift
-        if (( $# > 0 )); then
-          title="$1"
-          shift
-        fi
+        if (( $# > 0 )); then title="$1"; shift; fi
         ;;
-      *)
-        claude_args+=("$1")
-        shift
-        ;;
+      *) claude_args+=("$1"); shift ;;
     esac
   done
-
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
   fi
-
-  settings_json="$(jq -nc \
-    --arg base_url "$base_url" \
-    --arg model "$model" \
-    --arg compact_window "$compact_window" \
-    --arg max_context "$max_context" \
-    --arg api_timeout "$api_timeout" \
-    '{
-      env: {
-        ANTHROPIC_BASE_URL: $base_url,
-        ANTHROPIC_MODEL: $model,
-        ANTHROPIC_SMALL_FAST_MODEL: $model,
-        ANTHROPIC_DEFAULT_SONNET_MODEL: $model,
-        ANTHROPIC_DEFAULT_OPUS_MODEL: $model,
-        ANTHROPIC_DEFAULT_HAIKU_MODEL: $model,
-        ANTHROPIC_DEFAULT_FABLE_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL: $model,
-        CLAUDE_CODE_SUBAGENT_MODEL_FORCE: "1",
-        CLAUDE_CODE_ENABLE_TODO_TOOLS: "1",
-        CLAUDE_CODE_DISABLE_AUTO_TITLE: "1",
-        CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1",
-        CLAUDE_CODE_DISABLE_SESSIONMETADATA: "1",
-        CLAUDE_CODE_DISABLE_QUOTA_CHECK: "1",
-        DISABLE_NON_ESSENTIAL_MODEL_CALLS: "1",
-        CLAUDE_CODE_EFFORT_LEVEL: "max",
-        CLAUDE_CODE_AUTO_COMPACT_WINDOW: $compact_window
-      }
-    }
-    | if $max_context != "" then .env.CLAUDE_CODE_MAX_CONTEXT_TOKENS = $max_context else . end
-    | if $api_timeout != "" then .env.API_TIMEOUT_MS = $api_timeout else . end')" || return 1
-
-  # Keep the token out of jq/claude argv and settings JSON.
-  ANTHROPIC_AUTH_TOKEN="$auth_token" \
-    command claude --settings "$settings_json" "${claude_args[@]}"
+  # One helper snapshot selects URL/model/key; only exec'd Claude receives the
+  # canonical token. No key is printed or placed in argv/settings JSON.
+  python3 "$helper" --launch-claude "$agent_id" --compact-window "$compact_window" \
+    --max-context "$max_context" --api-timeout "$api_timeout" -- "${claude_args[@]}"
 )
 
 ds-flash_claude() { _claude_agent_launch ds-flash "$@"; }
@@ -270,19 +149,6 @@ _codex_agent_title() {
   esac
 }
 
-_codex_agent_key_name() {
-  case "$1" in
-    ds-flash)   print -r -- "DEEPSEEK_API_KEY" ;;
-    mimo|mimo-flash) print -r -- "MIMO_PLAN_API_KEY" ;;
-    mimo-fast) print -r -- "MIMO_API_KEY" ;;
-    qwen) print -r -- "QWEN_API_KEY" ;;
-    kimi) print -r -- "KIMI_API_KEY" ;;
-    glm|glm-flash)  print -r -- "GLM_API_KEY" ;;
-    local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) print -r -- "" ;;
-    *) return 1 ;;
-  esac
-}
-
 _codex_agent_shim_port() {
   case "$1" in
     ds-flash)   print -r -- "8788" ;;
@@ -320,7 +186,6 @@ _codex_agent_require_shim() {
 _codex_agent_require_home() {
   local agent_id="$1"
   local codex_home="$(_codex_agent_home "$agent_id")" || return 1
-  local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
 
   [[ -d "$codex_home" ]] || {
     echo "$agent_id Codex home 不存在：$codex_home" >&2
@@ -337,10 +202,14 @@ _codex_agent_require_home() {
       return 1
     }
   fi
-  if [[ -n "$key_name" && -z "${(P)key_name}" ]]; then
-    echo "$key_name 未设置" >&2
-    return 1
-  fi
+  case "$agent_id" in
+    local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) ;;
+    *)
+      local helper
+      helper="$(_agent_tools_connection_helper)" || return 1
+      python3 "$helper" --check --provider "$agent_id" --runtime codex --require-key || return 1
+      ;;
+  esac
   if [[ "$agent_id" == local ]]; then
     _local_agent_require_service codex || return 1
   fi
@@ -358,8 +227,7 @@ _codex_agent_app() (
     return 2
   }
 
-  local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
-  _agent_tools_prepare_credentials "$key_name" || return 1
+  _agent_tools_scrub_credentials || return 1
   _codex_agent_require_home "$agent_id" || return 1
   command -v jq >/dev/null 2>&1 || {
     echo "jq 未安装" >&2
@@ -397,8 +265,14 @@ _codex_agent_app() (
     }
     local app_home="$user_data/home"
     mkdir -p "$app_home" || return 1
-    compose-codex-app-config.py --base "$HOME/.codex/config.toml" \
-      --card "$HOME/.codex/$agent_id.config.toml" --out "$app_home/config.toml" || return 1
+    local -a compose_args=(--base "$HOME/.codex/config.toml" --card "$HOME/.codex/$agent_id.config.toml" --out "$app_home/config.toml")
+    if [[ "$agent_id" == local ]]; then
+      local helper local_model
+      helper="$(_agent_tools_connection_helper)" || return 1
+      local_model="$(python3 "$helper" --provider local --runtime codex --field upstream_model)" || return 1
+      compose_args+=(--model "$local_model")
+    fi
+    compose-codex-app-config.py "${compose_args[@]}" || return 1
     [[ -f "$app_home/auth.json" ]] || cp -p "$HOME/.codex/auth.json" "$app_home/auth.json" 2>/dev/null || true
     codex_home="$app_home"
   fi
@@ -408,9 +282,6 @@ _codex_agent_app() (
     --env "CODEX_SQLITE_HOME=$codex_home"
     --env "CODEX_ELECTRON_USER_DATA_PATH=$user_data"
   )
-  if [[ -n "$key_name" ]]; then
-    open_args+=(--env "$key_name=${(P)key_name}")
-  fi
   open_args+=(
     -a /Applications/ChatGPT.app
     "$workspace_url"
@@ -457,8 +328,7 @@ _codex_agent_launch() (
     esac
   done
 
-  local key_name="$(_codex_agent_key_name "$agent_id")" || return 1
-  _agent_tools_prepare_credentials "$key_name" || return 1
+  _agent_tools_scrub_credentials || return 1
   _codex_agent_require_home "$agent_id" || return 1
   local repair_requested=false
   local repair_session_id=""
@@ -529,6 +399,16 @@ _codex_agent_launch() (
     codex_args=(-p "$agent_id")
   fi
 
+  if [[ "$agent_id" == local ]]; then
+    local helper local_model model_option
+    helper="$(_agent_tools_connection_helper)" || return 1
+    local_model="$(python3 "$helper" --provider local --runtime codex --field upstream_model)" || return 1
+    model_option="model=\"$local_model\""
+    case "${codex_args[1]:-}" in
+      exec|resume|review) codex_args=("${codex_args[1]}" -c "$model_option" "${(@)codex_args[2,-1]}") ;;
+      *) codex_args=(-c "$model_option" "${codex_args[@]}") ;;
+    esac
+  fi
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
 )
 

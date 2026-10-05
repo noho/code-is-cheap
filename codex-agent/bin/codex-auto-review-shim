@@ -5,9 +5,9 @@ Codex's guardian (approvals_reviewer = "auto_review") always asks for the
 catalog model id `codex-auto-review`, but inherits the session's provider.
 Third-party endpoints do not serve that id, so every escalation fails closed.
 
-This shim sits in front of a provider, rewrites only that one model id in the
-request body, and passes everything else through -- including compressed
-request bodies and streaming responses.
+This shim sits in front of a provider and maps the guardian model id and the
+managed route's logical model id to the selected upstream model. It passes
+other model ids through, including compressed bodies and streaming responses.
 
 Multi-route mode (one process, one listener per provider):
 
@@ -20,8 +20,10 @@ Multi-route mode (one process, one listener per provider):
       ]
     }
 
-  Managed routes resolve a full upstream base URL from the user-owned
-  ~/.config/agent-tools/endpoints.json on every request. request_prefix is
+  Managed routes resolve a base URL, upstream model and Bearer API key from
+  one snapshot of user-owned ~/.config/agent-tools/endpoints.json on every
+  request. Incoming credentials are replaced; redirects are refused.
+  request_prefix is
   stripped from the incoming path before appending it to that upstream base.
   Explicit upstream routes (e.g. test/single-route deployments) forward the
   path verbatim, de-duplicating a trailing /v1 prefix.
@@ -70,6 +72,15 @@ DECODERS = {"gzip": gzip.decompress, "deflate": zlib.decompress}
 ENCODERS = {"gzip": gzip.compress, "deflate": zlib.compress}
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None  # A redirect must not forward the selected gateway key.
+
+
+def upstream_open(req, timeout):
+    return urllib.request.build_opener(NoRedirect).open(req, timeout=timeout)
+
+
 def upstream_url(upstream: str, path: str) -> str:
     """Join an origin with the incoming path without duplicating a /v1 prefix."""
     if upstream.endswith("/v1") and path.startswith("/v1/"):
@@ -93,10 +104,10 @@ def endpoint_module():
     return module
 
 
-def route_url(route, path):
+def route_url(route, path, selected=None):
     # Reload the user-owned endpoint on every request: editing a URL requires
     # neither synchronization nor a service restart, including App sessions.
-    upstream = (endpoint_module().endpoint(route["endpoint_id"], "codex")
+    upstream = ((selected or endpoint_module().connection(route["endpoint_id"], "codex"))["base_url"]
                 if route.get("endpoint_id") else route["upstream"])
     prefix = route.get("request_prefix", "")
     if prefix:
@@ -107,15 +118,14 @@ def route_url(route, path):
 
 
 def _swap(body: bytes, src: str, dst: str) -> tuple[bytes, str]:
-    """Replace the model id in an uncompressed body. `how` is none/bytes/json."""
-    exact = b'"model":"%s"' % src.encode()
-    if body.count(exact) == 1:
-        return body.replace(exact, b'"model":"%s"' % dst.encode()), "bytes"
+    """Replace the model id in an uncompressed body. `how` is none/json."""
     try:
         doc = json.loads(body)
     except Exception:
         return body, "none"
     if isinstance(doc, dict) and doc.get("model") == src:
+        if src == dst:
+            return body, "none"
         doc["model"] = dst
         return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), "json"
     return body, "none"
@@ -307,37 +317,64 @@ class Handler(BaseHTTPRequestHandler):
         body = self.rfile.read(length) if length else b""
         encoding = self.headers.get("Content-Encoding") or ""
         how = "none"
-        if body:
-            body, how = rewrite(body, encoding, route["from"], route["to"])
+        # Resolve a single URL/model/key snapshot for this request. API keys
+        # belong to the shim, not the Codex process, argv, catalog or plist.
+        selected = None
+        try:
+            if route.get("endpoint_id"):
+                selected = endpoint_module().connection(route["endpoint_id"], "codex", require_key=True)
+            url = route_url(route, self.path, selected)
+        except ValueError:
+            self._log("connection error: invalid private settings or missing selected API key")
+            self.send_error(503, "Invalid private connection settings")
+            return
+        # Determine guardian status from the ORIGINAL request, independently
+        # of ordinary model aliases; normal remapping must remain streaming.
+        enc = encoding.strip().lower()
+        plain = body
+        if enc not in ("", "identity"):
+            if enc not in DECODERS:
+                plain, how = None, f"passthrough:{enc}"
+            else:
+                try:
+                    plain = DECODERS[enc](body)
+                except (ValueError, OSError, zlib.error):
+                    plain, how = None, f"undecodable:{enc}"
+        try:
+            request_model = json.loads(plain).get("model") if plain else None
+        except (ValueError, AttributeError):
+            request_model = None
+        guardian = request_model == route["from"]
+        if plain:
+            target = selected["upstream_model"] if selected else route["to"]
+            source = route["from"] if guardian else route["to"]
+            transformed, how = _swap(plain, source, target)
             if route.get("id_fix"):
-                body, n = fix_message_ids(body)
+                transformed, n = fix_message_ids(transformed)
                 if n:
                     how = f"{how}+idfix{n}"
             if route.get("json_fmt_fix"):
-                body, n = json_object_format(body)
+                transformed, n = json_object_format(transformed)
                 if n:
                     how = f"{how}+jsonfmt{n}"
             if route.get("drop_tools_item"):
-                body, n = drop_tools_item(body)
+                transformed, n = drop_tools_item(transformed)
                 if n:
                     how = f"{how}+droptools{n}"
+            if transformed != plain:
+                body = ENCODERS[enc](transformed) if enc in ENCODERS else transformed
 
-        try:
-            url = route_url(route, self.path)
-        except ValueError as exc:
-            self._log(f"endpoint error: {exc}")
-            self.send_error(503, "Invalid local endpoint settings or request prefix")
-            return
         headers = {k: v for k, v in self.headers.items() if k.lower() not in HOP_BY_HOP}
+        if selected:
+            headers = {k: v for k, v in headers.items() if k.lower() not in {"authorization", "x-api-key", "api-key"}}
+            headers["Authorization"] = "Bearer " + selected["api_key"]
         req = urllib.request.Request(url, data=body or None, headers=headers, method=self.command)
 
-        # Guardian requests (model id replaced) get buffered-and-retried: a
+        # Guardian requests (identified before rewriting) get buffered-and-retried: a
         # half-delivered stream cannot be unsent, and the verdict call is small
         # enough that buffering costs nothing. Upstreams have been observed to
         # cut SSE mid-reasoning ("read SSE stream: unexpected EOF") in transient
         # windows, which fails the escalation closed for no reason.
-        guardian = body and how.split("+")[0] in ("bytes", "json")
-
         resp = None
         data = b""
         note = "ok"
@@ -345,7 +382,7 @@ class Handler(BaseHTTPRequestHandler):
         attempts = (1, 2, 3) if guardian else (1,)
         for attempt in attempts:
             try:
-                resp = urllib.request.urlopen(req, timeout=180)
+                resp = upstream_open(req, timeout=180)
             except urllib.error.HTTPError as e:
                 resp = e
             except Exception as e:
@@ -356,12 +393,22 @@ class Handler(BaseHTTPRequestHandler):
                 data = resp.read()
                 note = f"http{resp.status}"
                 break
-            data = resp.read() if guardian else b""
+            if guardian:
+                try:
+                    data = resp.read()
+                except (http.client.HTTPException, OSError) as exc:
+                    resp.close()
+                    resp, data, note = None, b"", f"error:{type(exc).__name__}"
+                    self._log(f"  ^ attempt {attempt}: guardian read failed ({type(exc).__name__}), retrying")
+                    continue
+            else:
+                data = b""
             if guardian:
                 done = b"response.completed" in data
                 if done:
                     break
                 note = "nostream"
+                resp.close()
                 self._log(f"  ^ attempt {attempt}: incomplete stream ({len(data)}B), retrying")
                 continue
             break  # non-guardian: stream below, no retry
@@ -438,7 +485,7 @@ class Handler(BaseHTTPRequestHandler):
             f"  ^ status={resp.status} stream={note} relayed={relayed}B "
             f"completed={done}"
         )
-        if body and (note == "TRUNCATED" or (how == "bytes" and not done)):
+        if body and (note == "TRUNCATED" or (how.split("+")[0] == "json" and not done)):
             self._dump(body, note if note != "ok" else "nostream")
             self._dump(bytes(head), note if note != "ok" else "nostream", kind="resp")
         elif not (200 <= resp.status < 300) and head:

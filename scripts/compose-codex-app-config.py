@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -71,6 +72,7 @@ def main() -> int:
     ap.add_argument("--base", required=True, help="shared-home base config.toml")
     ap.add_argument("--card", required=True, help="model card to overlay")
     ap.add_argument("--out", required=True, help="destination config.toml (composed app home)")
+    ap.add_argument("--model", help="optional local connection model override")
     args = ap.parse_args()
 
     out_path = Path(args.out)
@@ -85,7 +87,10 @@ def main() -> int:
     base_header, base_sections = split_sections(base_text)
     _, shared_sections = split_sections(shared_text)
 
-    header = apply_scalars(base_header, scalar_overrides(card_header))
+    overrides = scalar_overrides(card_header)
+    if args.model is not None:
+        overrides["model"] = json.dumps(args.model)
+    header = apply_scalars(base_header, overrides)
     for name, body in shared_sections.items():
         if name.startswith("model_providers."):
             base_sections[name] = body
