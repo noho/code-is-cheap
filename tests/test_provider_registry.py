@@ -36,7 +36,7 @@ class ProviderRegistryTests(unittest.TestCase):
         self.assertNotEqual(providers["mimo"]["base_url"], providers["mimo_flash"]["base_url"])
         self.assertNotEqual(providers["glm"]["base_url"], providers["glm_flash"]["base_url"])
 
-    def test_registry_matches_shim_routes_and_launcher_keys(self) -> None:
+    def test_registry_matches_shim_routes_without_client_credentials(self) -> None:
         providers = tomllib.loads(REGISTRY.read_text())["model_providers"]
         routes = {route["port"]: route for route in json.loads((ROOT / "codex-agent/shim-routes.json").read_text())["routes"]}
         for card in (ROOT / "codex-agent/profiles").glob("*/config.toml"):
@@ -51,11 +51,11 @@ class ProviderRegistryTests(unittest.TestCase):
                 self.assertEqual(routes[port]["to"], data["model"])
                 self.assertEqual(routes[port]["request_prefix"], urlsplit(provider["base_url"]).path)
                 if shutil.which("zsh"):
-                    script = 'source "$1"; _codex_agent_shim_port "$2"; _codex_agent_key_name "$2"'
+                    script = 'source "$1"; _codex_agent_shim_port "$2"'
                     done = subprocess.run(["zsh", "-c", script, "_", str(ROOT / "scripts/agent-tools.zsh"), card.parent.name], check=True, capture_output=True, text=True)
-                    actual_port, key_name = done.stdout.splitlines()
+                    actual_port = done.stdout.strip()
                     self.assertEqual(int(actual_port), port)
-                    self.assertEqual(key_name, provider["env_key"])
+                    self.assertNotIn("env_key", provider)
 
     def test_sync_preserves_local_config_and_is_idempotent(self) -> None:
         base = 'model = "gpt-6-sol"\n\n[projects."/work"]\ntrust_level = "trusted"\n'

@@ -1,41 +1,120 @@
 {
-  "ds-flash": {
-    "codex": "https://api.deepseek.com/v1",
-    "claude": "https://api.deepseek.com/anthropic"
+  "default": {
+    "ds-flash": {
+      "codex": {
+        "base_url": "https://api.deepseek.com/v1",
+        "upstream_model": "deepseek-flash",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://api.deepseek.com/anthropic",
+        "upstream_model": "deepseek-flash[1m]",
+        "api_key": ""
+      }
+    },
+    "glm": {
+      "codex": {
+        "base_url": "https://open.bigmodel.cn/api/v1",
+        "upstream_model": "glm-5.3",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://open.bigmodel.cn/api/anthropic",
+        "upstream_model": "glm-5.3",
+        "api_key": ""
+      }
+    },
+    "glm-flash": {
+      "codex": {
+        "base_url": "https://open.bigmodel.cn/api/v1",
+        "upstream_model": "glm-5.3-flash",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://open.bigmodel.cn/api/anthropic",
+        "upstream_model": "glm-5.3-flash",
+        "api_key": ""
+      }
+    },
+    "kimi": {
+      "codex": {
+        "base_url": "https://api.kimi.com/coding/v1",
+        "upstream_model": "kimi-k3",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://api.kimi.com/coding/",
+        "upstream_model": "kimi-k3[1m]",
+        "api_key": ""
+      }
+    },
+    "mimo": {
+      "codex": {
+        "base_url": "https://token-plan-cn.xiaomimimo.com/v1",
+        "upstream_model": "mimo-v2.6-pro",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://token-plan-cn.xiaomimimo.com/anthropic",
+        "upstream_model": "mimo-v2.6-pro[1m]",
+        "api_key": ""
+      }
+    },
+    "mimo-flash": {
+      "codex": {
+        "base_url": "https://token-plan-cn.xiaomimimo.com/v1",
+        "upstream_model": "mimo-v2.6-flash",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://token-plan-cn.xiaomimimo.com/anthropic",
+        "upstream_model": "mimo-v2.6-flash[1m]",
+        "api_key": ""
+      }
+    },
+    "mimo-fast": {
+      "codex": {
+        "base_url": "https://api.xiaomimimo.com/v1",
+        "upstream_model": "mimo-v2.6-pro-ultraspeed",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://api.xiaomimimo.com/anthropic",
+        "upstream_model": "mimo-v2.6-pro-ultraspeed[1m]",
+        "api_key": ""
+      }
+    },
+    "qwen": {
+      "codex": {
+        "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "upstream_model": "qwen3.8-max",
+        "api_key": ""
+      },
+      "claude": {
+        "base_url": "https://dashscope.aliyuncs.com/apps/anthropic",
+        "upstream_model": "qwen3.8-max[1m]",
+        "api_key": ""
+      }
+    },
+    "local": {
+      "claude": {
+        "base_url": "http://127.0.0.1:8080",
+        "upstream_model": "qwen3.8-27b-local",
+        "api_key": "local"
+      },
+      "codex": {
+        "base_url": "http://127.0.0.1:8080/v1",
+        "upstream_model": "qwen3.8-27b-local",
+        "api_key": ""
+      }
+    },
+    "hy": {
+      "claude": {
+        "base_url": "https://tokenhub.tencentmaas.com",
+        "upstream_model": "hy4-preview",
+        "api_key": ""
+      }
+    }
   },
-  "glm": {
-    "codex": "https://open.bigmodel.cn/api/v1",
-    "claude": "https://open.bigmodel.cn/api/anthropic"
-  },
-  "glm-flash": {
-    "codex": "https://open.bigmodel.cn/api/v1",
-    "claude": "https://open.bigmodel.cn/api/anthropic"
-  },
-  "kimi": {
-    "codex": "https://api.kimi.com/coding/v1",
-    "claude": "https://api.kimi.com/coding/"
-  },
-  "mimo": {
-    "codex": "https://token-plan-cn.xiaomimimo.com/v1",
-    "claude": "https://token-plan-cn.xiaomimimo.com/anthropic"
-  },
-  "mimo-flash": {
-    "codex": "https://token-plan-cn.xiaomimimo.com/v1",
-    "claude": "https://token-plan-cn.xiaomimimo.com/anthropic"
-  },
-  "mimo-fast": {
-    "codex": "https://api.xiaomimimo.com/v1",
-    "claude": "https://api.xiaomimimo.com/anthropic"
-  },
-  "qwen": {
-    "codex": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "claude": "https://dashscope.aliyuncs.com/apps/anthropic"
-  },
-  "local": {
-    "claude": "http://127.0.0.1:8080",
-    "codex": "http://127.0.0.1:8080/v1"
-  },
-  "hy": {
-    "claude": "https://tokenhub.tencentmaas.com"
-  }
+  "override": {}
 }

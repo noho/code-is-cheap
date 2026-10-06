@@ -47,24 +47,8 @@ export SKILL_VALIDATOR_PYTHON="$state_dir/venv/bin/python"
 export SKILL_VALIDATOR="$repo_root/scripts/validate-skill.py"
 "$repo_root/scripts/validate-skills.sh"
 
-# Initialize once with exclusive creation. Reinstallation preserves exact bytes.
-python3 - "$repo_root" <<'PY'
-import os
-import sys
-from pathlib import Path
-repo = Path(sys.argv[1])
-for target, content in [
-    (Path.home() / '.config/agent-tools/endpoints.json', (repo / 'config/endpoints.example.json').read_bytes()),
-    (Path.home() / '.config/zsh/agent-tools.local.zsh', b'# Provider keys; this file is never synchronized.\n# export DEEPSEEK_API_KEY="your-key"\n'),
-]:
-    target.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-    except FileExistsError:
-        continue
-    with os.fdopen(fd, 'wb') as stream:
-        stream.write(content)
-PY
+# Initialize private connections only when absent; validate existing files.
+python3 "$repo_root/scripts/agent-endpoint.py" --initialize
 python3 "$repo_root/scripts/agent-endpoint.py" --check
 mkdir -p "$HOME/.codex/skills" "$HOME/.claude/skills"
 "$repo_root/scripts/sync-skills.sh"
@@ -85,6 +69,6 @@ PY
 if [[ "$install_service" == true ]]; then
   "$HOME/.codex-agent/bin/codex-auto-review-shim-service" install
 fi
-echo 'Installed. Set provider keys in ~/.config/zsh/agent-tools.local.zsh.'
-echo 'Customize upstream URLs in ~/.config/agent-tools/endpoints.json.'
+echo 'Installed. Set connection api_key values in ~/.config/agent-tools/endpoints.json.'
+echo 'Keep current connections in default; add whole runtime connections in override to switch gateways.'
 echo 'Run: source ~/.zshrc; open new Agent sessions to reload skills.'

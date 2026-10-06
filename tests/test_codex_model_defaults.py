@@ -85,6 +85,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
             endpoints = root / ".config/agent-tools/endpoints.json"
             endpoints.parent.mkdir(parents=True)
             shutil.copyfile(ROOT / "config/endpoints.example.json", endpoints)
+            endpoints.chmod(0o600)
             env = os.environ | {
                 "HOME": str(root),
                 "CODEX_SHARED_HOME": str(shared),

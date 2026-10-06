@@ -18,7 +18,7 @@ gated feature development, plan review, deep code review, and multi-agent handof
 This repository is the source of truth for the skills under `skills/`, the agent launcher under
 `scripts/agent-tools.zsh`, the child-agent runners under `scripts/*-agent-run`, and the provider registry under
 `codex-agent/model-providers.toml`. Local runtime files are installation
-targets for project code. Edit and validate sources here, then sync them out. User-owned API key and upstream URL files are separate and never overwritten by sync.
+targets for project code. Edit and validate sources here, then sync them out. The private connection JSON is user-owned and never overwritten by sync.
 
 ## Included Skills
 
@@ -103,24 +103,38 @@ The downloaded installer clones to `~/.local/share/code-is-cheap`; rerunning it 
 
 The installer creates a private validator environment with PyYAML (also reused automatically by later manual syncs), installs `claude-code-tools==1.29.1`, syncs skills to both `~/.codex/skills` and `~/.claude/skills`, deploys launchers/runners/model cards, adds PATH and launcher loading to `~/.zshrc`, and installs the launchd shim service. Use `bash install.sh --no-service` to skip service installation. It does not install the Codex/Claude CLIs, log in, create the optional business account home, or start a local model server.
 
-Existing API keys, upstream URLs, Codex login and unrelated Codex settings are preserved. Reopen Agent sessions to reload skills, and run `source ~/.zshrc` to load launchers in the current shell.
+Existing private connection JSON, Codex login and unrelated Codex settings are preserved. Reopen Agent sessions to reload skills, and run `source ~/.zshrc` to load launchers in the current shell.
 
-### Local API keys and upstream URLs
+### Private connections: default and override
 
-Two user-owned files are initialized **only when absent** by the installer and never overwritten by the sync scripts:
+`~/.config/agent-tools/endpoints.json` now owns the upstream URL, model ID and API key for each provider/runtime. Keep it private with mode `600`. The installer creates it only when absent; sync never creates or changes it. Project defaults in `config/endpoints.example.json` contain no cloud credentials and are deployed separately. Existing default URLs and model choices remain the initial values; the examples below do not select a new gateway automatically.
 
-| File | Contents |
-| --- | --- |
-| `~/.config/zsh/agent-tools.local.zsh` | Provider API keys, e.g. `export DEEPSEEK_API_KEY="your-key"` |
-| `~/.config/agent-tools/endpoints.json` | Per-provider `claude` and `codex` upstream base URLs |
+- `default`: your baseline connections. Each runtime contains `base_url`, `upstream_model` and `api_key`.
+- `override`: optional connections with the same provider/runtime nesting. An override replaces **all three fields together**, so a new gateway cannot inherit an old gateway's key. Other runtimes/providers keep their defaults. Delete that runtime's override to revert.
+- Missing files or omitted runtime connections use program defaults; a cloud launch still requires a nonempty key in the effective connection. Existing files must have `default`; unknown fields, incomplete overrides, blank URLs/models, duplicate JSON fields and unsafe permissions fail explicitly. Empty strings do not mean inheritance.
 
-Project defaults come from `config/endpoints.example.json`, deployed as separate program resources. Missing local files, missing provider/runtime fields, and empty URL strings use these defaults; local values take precedence and sync never fills in the user file. Malformed local files fail explicitly. The installer initializes a complete default config once and preserves it on later runs. These initial values remain local overrides even if project defaults change. To follow the current project default for one URL, delete that field or set it to `""`; your other custom URLs remain intact. Both files are created with mode `600`; keep credentials out of the repository. Keys can also come from the environment; the existing local key file takes precedence.
+For example, add this connection under `override` to change only `ds-flash_codex` (use the gateway's actual URL/model/key):
 
-For example, keep the `ds-flash` model/profile and change only its URL to a gateway. Set its `codex` field to the gateway's full **Responses API base URL** (without `/responses`), and its `claude` field to the gateway's **Anthropic API base URL** (without `/v1/messages`). Use the corresponding gateway key in `DEEPSEEK_API_KEY`. A Chat Completions-only gateway is insufficient; changing URLs does not translate protocols or change model IDs. Check which protocols and model slug your OpenCode endpoint actually serves before using it.
+```json
+{
+  "default": {},
+  "override": {
+    "ds-flash": {
+      "codex": {
+        "base_url": "https://gateway.example/custom/v1",
+        "upstream_model": "gateway/model-id",
+        "api_key": "YOUR_GATEWAY_KEY"
+      }
+    }
+  }
+}
+```
 
-Claude reads URLs at each launch. Codex cloud profiles retain loopback URLs in the shared registry for the guardian shim; the shim reads the user-owned upstream URLs for every request and replaces the managed request prefix with the configured base path. Thus a gateway path such as `/custom/v1` is retained exactly. After editing a cloud provider URL, the next request uses it without sync or restart.
+In your initialized file, retain the existing `default` block and add the override; the empty block above only shortens the example. For Codex, `base_url` is the full Responses API base URL without `/responses`. For Claude, it is the Anthropic API base URL without `/v1/messages`; `upstream_model` is passed exactly, without adding `[1m]`. Both use Bearer authentication through their existing mechanisms. Protocols are not translated: a gateway must support streaming/tool calls and the selected API/model. Profile context limits/catalog metadata are retained; confirm the gateway supports those capabilities before switching.
 
-The `local.codex` URL is written into the managed registry by `sync-codex-agent.sh`; rerun that script after changing it. Existing installations can sync directly; a missing URL file uses defaults. Sync updates default resources and validates the merged URLs without creating or overwriting the user URL file.
+Claude resolves one connection snapshot at launch and passes only its selected token to the Claude process, outside argv/settings JSON. Codex cloud profiles keep their logical model cards/catalogs and loopback provider IDs. The shim resolves one URL/model/key snapshot per request, maps the ordinary logical model and `codex-auto-review` to the configured upstream model, and supplies the selected Bearer token itself. Ordinary streams remain unbuffered; guardian retry behavior remains separate. Upstream redirects are rejected to avoid forwarding a key to another destination. Cloud URL/model/key edits affect the next request without sync or service restart, including app sessions.
+
+`local.codex` remains a direct, unauthenticated connection (`api_key` must be empty); its URL requires `sync-codex-agent.sh`, while its model is applied at CLI/app launch. `local.claude` uses the configured URL/model/token just like other Claude connections; its initial token is `local`. GPT/business profiles continue to use their existing account login and model cards. Gateway API keys are not written into provider registries, catalogs, app config or service plists; account login still uses Codex's auth files. Inherited credential environment variables are still scrubbed; mode `600` does not isolate the file from other processes running as the same user.
 
 ## Prepare Agent Environment
 
@@ -136,14 +150,11 @@ Prerequisites:
 - `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
 - `python3` 3.11 or newer is required for URL resolution and the `--resume` repair option; `agent-endpoint.py` must be on `PATH` alongside the runners.
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
-- Provider credentials are exported before launching the matching agent:
-  `DEEPSEEK_API_KEY`, `MIMO_PLAN_API_KEY`, `QWEN_API_KEY`, `KIMI_API_KEY`, and `GLM_API_KEY`.
+- The selected cloud runtime has a nonempty `api_key` in the private connection JSON.
 - Each Codex profile has its model card deployed at `~/.codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
-- Local service URLs come from the local URL file, defaulting to `http://127.0.0.1:8080`; health checks use the matching runtime URL plus `/health` (Codex first removes a terminal `/v1`), so Claude and Codex can use different local ports.
+- Local service URLs come from `local.claude.base_url` and `local.codex.base_url` under `default` or `override` in `~/.config/agent-tools/endpoints.json`, defaulting to `http://127.0.0.1:8080`; health checks use the matching runtime URL plus `/health` (Codex first removes a terminal `/v1`), so Claude and Codex can use different local ports.
 
-Keep credentials in the environment or in the untracked local file
-`~/.config/zsh/agent-tools.local.zsh`. The installed launcher loads that file automatically when it exists. Never add
-credentials to `scripts/agent-tools.zsh`.
+Keep credentials only in the private connection JSON, outside the repository.
 
 Install or update the launcher and child-agent runners:
 
@@ -172,7 +183,7 @@ Available launchers:
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
-`hy` (hy4-preview on tokenhub.tencentmaas.com, `HY_API_KEY`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
+`hy` (hy4-preview on tokenhub.tencentmaas.com, with its JSON `api_key`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
 upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
 The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To continue a CLI conversation on another model, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`.
 
@@ -258,9 +269,7 @@ leaving its account and other local settings intact.
 | `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
 
-Credentials stay in the environment (`DEEPSEEK_API_KEY`, `GLM_API_KEY`, `KIMI_API_KEY`, `MIMO_PLAN_API_KEY`, `MIMO_API_KEY`,
-`QWEN_API_KEY`, `HY_API_KEY`); `local` needs none, and the three OpenAI profiles share one ChatGPT account login (the
-shared home's `auth.json`, not tracked here); `business` keeps its own `auth.json` under `~/.codex-agent/business/`.
+Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the three OpenAI profiles share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
 
 Set up or update the profiles:
 
@@ -274,7 +283,7 @@ Set up or update the profiles:
 
 After restoring the agent environment on another Mac, run `install` again. It discovers that machine's Python 3.11+
 interpreter, rewrites the launchd plist, and reloads an existing service. `restart` only restarts the current plist.
-If the archive contains an older service script, run `./scripts/sync-codex-agent.sh` from an updated checkout first; it also deploys the URL helper and default resources. Missing local URL files use defaults, and existing custom files are preserved.
+Run `./scripts/sync-codex-agent.sh` from an updated checkout to deploy the service, connection helper and default resources. Missing connection files use credential-free project defaults; initialize and fill cloud keys before launching. Existing custom files are preserved.
 
 The tracked templates write machine paths as `@HOME@`; the sync script substitutes your home directory on
 install (Codex accepts only absolute paths in these fields).

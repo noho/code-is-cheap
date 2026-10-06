@@ -99,24 +99,38 @@ bash install-code-is-cheap.sh
 
 脚本创建含 PyYAML 的独立校验环境（以后手动 sync 也会自动复用），安装 `claude-code-tools==1.29.1`，将 skills 同步到 `~/.codex/skills` 和 `~/.claude/skills`，部署启动函数、runner、模型卡，向 `~/.zshrc` 添加 PATH 和 launcher 加载入口，并安装 launchd shim 服务。`bash install.sh --no-service` 可跳过服务安装。脚本不安装 Codex/Claude CLI、不登录账号、不创建可选 business 账号 home，也不启动本地模型服务。
 
-已有 API key、上游 URL、Codex 登录和其它本机 Codex 设置会保留。安装后重新打开 Agent 会话以加载 skills，并运行 `source ~/.zshrc` 在当前 shell 加载启动函数。
+已有私有连接 JSON、Codex 登录和其它本机 Codex 设置会保留。安装后重新打开 Agent 会话以加载 skills，并运行 `source ~/.zshrc` 在当前 shell 加载启动函数。
 
-### 本地 API key 和上游 URL
+### 私有连接配置：default 和 override
 
-安装器仅在文件不存在时初始化以下两个用户文件；sync 脚本不会覆盖它们：
+`~/.config/agent-tools/endpoints.json` 统一保存每个 provider/runtime 的上游 URL、模型 ID 和 API key，权限必须为 `600`。安装器仅在文件不存在时创建；sync 不创建或修改用户文件。`config/endpoints.example.json` 是单独部署的程序默认资源，不含云端凭据。初始 URL 和模型选择保持当前值；以下示例不会自动选择新云商。
 
-| 文件 | 内容 |
-| --- | --- |
-| `~/.config/zsh/agent-tools.local.zsh` | Provider API key，例如 `export DEEPSEEK_API_KEY="your-key"` |
-| `~/.config/agent-tools/endpoints.json` | 各 provider 的 `claude`、`codex` 上游 base URL |
+- `default`：你的基线连接，每个 runtime 包含 `base_url`、`upstream_model`、`api_key`。
+- `override`：可选的覆盖连接，沿用 provider/runtime 层级。覆盖必须**同时填写这三个字段**，避免新云商沿用旧云商的 key。其他 runtime/provider 保持默认连接；删除该 runtime 的 override 即可恢复。
+- 缺少文件或某个 runtime 连接时使用程序默认资源；云端启动仍需要有效连接中的非空 key。已有文件必须包含 `default`；未知字段、不完整覆盖、空 URL/模型、重复 JSON 字段和不安全权限会明确报错。空字符串不表示继承。
 
-项目默认 URL 来自 `config/endpoints.example.json`，随程序作为独立的默认资源部署。缺少本地文件、provider/runtime 字段，或 URL 为空字符串时，读取默认值；已有本地值优先，sync 不会补写用户文件。格式错误的本地文件会明确报错。安装器首次生成完整默认配置，后续安装保留原文件。这些初始值属于本地覆盖项，项目默认值更新后也不会被替换。如需让某个 URL 跟随当前项目默认值，删除该字段或设为 `""` 即可，其他自定义 URL 不受影响。两个文件新建时权限为 `600`；凭据不要写入仓库。API key 也可来自环境变量，已有本地 key 文件优先。
+例如在 `override` 中添加以下连接，仅切换 `ds-flash_codex`（填入网关实际 URL/模型/key）：
 
-例如保留 `ds-flash` 模型和 profile，只把 URL 改为网关：其 `codex` 字段填写网关完整的 **Responses API base URL**（不含 `/responses`），`claude` 字段填写网关的 **Anthropic API base URL**（不含 `/v1/messages`）；对应网关的 key 填入 `DEEPSEEK_API_KEY`。仅支持 Chat Completions 的网关不能直接使用；修改 URL 不会转换协议或改变模型 ID。使用 OpenCode 端点前，应确认它实际提供的协议及模型 slug。
+```json
+{
+  "default": {},
+  "override": {
+    "ds-flash": {
+      "codex": {
+        "base_url": "https://gateway.example/custom/v1",
+        "upstream_model": "gateway/model-id",
+        "api_key": "YOUR_GATEWAY_KEY"
+      }
+    }
+  }
+}
+```
 
-Claude 每次启动读取 URL。Codex 云端 profile 的共享 registry 仍指向本地 guardian shim；shim 每次请求读取用户上游 URL，将请求中托管的路径前缀替换为配置的 base path，因此网关的 `/custom/v1` 等路径会正确保留。编辑云端 provider URL 后，下一次请求直接使用新地址，无需 sync 或重启。
+编辑初始化文件时保留已有的 `default`，只添加 override；上面的空块仅为缩短示例。Codex 的 `base_url` 是完整 Responses API base URL，不含 `/responses`；Claude 使用 Anthropic API base URL，不含 `/v1/messages`，准确传递 `upstream_model`，不额外追加 `[1m]`。两者沿用现有 Bearer 鉴权方式。不转换 API 协议，网关必须支持对应 API/模型以及流式响应、工具调用。保留现有 profile 的上下文限制和 catalog 元数据，切换前需确认网关支持这些能力。
 
-`local.codex` URL 由 `sync-codex-agent.sh` 写入托管 registry，修改它后需重跑该同步脚本。已有安装可以直接 sync；缺少 URL 文件时仍可使用默认地址。sync 更新默认资源并校验合并后的 URL，不会创建或覆盖用户的 URL 文件。
+Claude 启动时读取一份连接快照，只将选定 token 交给 Claude 进程，不放进 argv/settings JSON。Codex 云端保留逻辑模型卡/catalog 和 loopback provider ID；shim 每次请求读取一致的 URL/模型/key 快照，将普通逻辑模型和 `codex-auto-review` 映射到配置的上游模型，并自行添加选定 Bearer token。普通流式请求不会被缓冲，guardian 的重试行为单独保留。拒绝上游重定向，避免向其他地址转发 key。云端连接修改后下一次请求直接生效，无需 sync 或重启服务，App 会话也适用。
+
+`local.codex` 仍直接连接且不鉴权，`api_key` 必须为空；修改 URL 后需运行 `sync-codex-agent.sh`，模型在 CLI/App 启动时应用。`local.claude` 和其它 Claude 连接一样使用配置中的 URL/模型/token，初始 token 为 `local`。GPT/business 继续使用原有账号登录和模型卡。网关 API key 不写入 provider registry、catalog、App 配置或服务 plist；账号登录仍使用 Codex 的 auth 文件。仍清理继承的凭据环境变量；`600` 权限不隔离同用户运行的其他进程对文件的访问。
 
 ## 准备 Agent 环境
 
@@ -131,14 +145,11 @@ Claude 每次启动读取 URL。Codex 云端 profile 的共享 registry 仍指�
 - `zsh`、`claude`、`codex`、`jq` 和 `curl` 已在 `PATH` 中。
 - URL 读取和 `--resume` 修复需要 `python3` 3.11 或更新版本；`agent-endpoint.py` 应与其它 runner 一起在 `PATH` 中。
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
-- 启动对应 Agent 前已导出 provider 凭据：
-  `DEEPSEEK_API_KEY`、`MIMO_PLAN_API_KEY`、`QWEN_API_KEY`、`KIMI_API_KEY` 和 `GLM_API_KEY`。
+- 私有连接 JSON 中选定云端 runtime 的 `api_key` 已填入非空值。
 - 每个 Codex profile 的模型卡已部署为可读的 `~/.codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
-- `local` 服务地址由本地 URL 文件决定，默认 `http://127.0.0.1:8080`；健康检查使用对应 runtime 的 URL 加 `/health`（Codex 先去掉末尾 `/v1`），因此 Claude/Codex 可配置不同端口。
+- `local` 服务地址由 `~/.config/agent-tools/endpoints.json` 中 `default` 或 `override` 下的 `local.claude.base_url`、`local.codex.base_url` 决定，默认 `http://127.0.0.1:8080`；健康检查使用对应 runtime 的 URL 加 `/health`（Codex 先去掉末尾 `/v1`），因此 Claude/Codex 可配置不同端口。
 
-凭据应保存在环境变量或不受版本控制的本机文件
-`~/.config/zsh/agent-tools.local.zsh` 中。安装后的启动脚本会自动加载该文件。不要把凭据写入
-`scripts/agent-tools.zsh`。
+凭据只保存在私有连接 JSON 中，不入仓库。
 
 安装或更新启动函数和子 Agent runner：
 
@@ -167,7 +178,7 @@ source ~/.zshrc
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
-`hy`（tokenhub.tencentmaas.com 上的 hy4-preview，`HY_API_KEY`）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
+`hy`（tokenhub.tencentmaas.com 上的 hy4-preview，key 来自连接 JSON）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
 上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
 全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
@@ -249,9 +260,7 @@ Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（ext
 | `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
 
-凭据保持在环境变量里（`DEEPSEEK_API_KEY`、`GLM_API_KEY`、`KIMI_API_KEY`、`MIMO_PLAN_API_KEY`、`MIMO_API_KEY`、`QWEN_API_KEY`、`HY_API_KEY`）；
-`local` 不需要 key；三个 OpenAI profile 共享 ChatGPT 账号登录（共享 home 的 `auth.json`，不入仓库）；
-`business` 用自己的 `auth.json`（`~/.codex-agent/business/`）。
+云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。三个 OpenAI profile 共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
 
 安装或更新：
 
@@ -265,7 +274,7 @@ Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（ext
 
 把 Agent 环境恢复到另一台 Mac 后，再运行一次 `install`。它会查找目标机器上的 Python 3.11+，重写
 launchd plist，并重新加载已有服务。`restart` 只重启现有 plist，不会更新 Python 路径。
-如果归档里还是旧版服务脚本，先从更新后的仓库执行 `./scripts/sync-codex-agent.sh`；它也部署 URL helper 和默认资源。缺少本地 URL 文件时仍使用默认地址，已有自定义文件保持原样。
+从更新后的仓库执行 `./scripts/sync-codex-agent.sh`，部署服务、连接 helper 和默认资源。缺少连接文件时使用不含云端凭据的项目默认值，启动前需初始化并填写云端 key。已有自定义文件保持原样。
 
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
