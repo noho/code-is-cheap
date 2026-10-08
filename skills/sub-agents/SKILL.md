@@ -140,7 +140,7 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 ### 可选的任务禁读边界（macOS）
 
 默认调用没有任务级读取隔离。调用方需要禁止读取指定材料时，先备齐本次输入，创建 JSON 数组文件，
-其中每项为禁止读取的文件或目录的绝对路径；目录递归禁止。路径必须已存在，按字面值处理，不是 glob。
+其中每项为禁止读取的文件或目录的绝对路径；目录递归禁止。路径必须为已存在的普通文件或目录，按字面值处理，不是 glob。
 调用方决定范围：业务报告、历史日志及已知副本分别列出；封装不推断角色、业务规则或内容相同的未知副本。
 
 ```bash
@@ -150,7 +150,8 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace \
 
 预检生成 `agent-sandbox ... -- codex-agent-run ... --full-access ...` 命令；Claude 同样通过对应 runner。
 也可显式用 `agent-sandbox --cwd /absolute/workspace --deny-list /absolute/denied.json -- <runner> ...`。
-封装隐含 `--full-access --no-persist`，固定本次文件系统策略。它不支持 resume、native 参数透传、动态投递或追加 prompt。
+封装隐含 `--full-access --no-persist`，固定本次文件系统策略。它不支持 resume、native 参数透传、stdin prompt、动态投递或追加 prompt。必须恰好一个非空 `--prompt` 或普通
+`--prompt-file`，启动前复制到受写保护的状态；随后关闭 stdin。
 `--cwd` 只决定工作目录；获准来源、Python 依赖和 canary 仍可按原路径读取，禁读名单之外没有读取白名单。
 启动后在外层 Seatbelt 内验证禁读路径确实被拒绝，再启动 Agent；setup 通过本身不是隔离证据。
 
@@ -159,9 +160,9 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace \
 外层 Seatbelt。保留原有生命周期、canary 和结果验收协议；权限错误应报告具体缺项，不自动移除禁读项或放宽权限。
 
 首次使用前，由用户按仓库 README 安装可选 srt 依赖。封装只支持经测试的 macOS/srt 版本，检查失败立即停止。
-它保留原 runtime 写范围的保守子集及指定输出文件；不能推导的自定义权限配置会拒绝启动。隔离调用不加载
+它保留原 runtime 写范围的保守子集及指定输出文件，复制并保护 Codex 用户 `.rules`；不能推导的自定义权限配置会拒绝启动。隔离调用不加载
 宿主 MCP、hooks、plugins 或浏览器工具；Claude 仅启用 Bash/Read/Write/Edit/Glob/Grep，Codex 使用本地原生工具。
-禁读路径在运行期间不得由其它未隔离进程替换或复制；已有硬链接会拒绝启动。需要的工具/网络缺项须报给调用方裁定。
+禁读路径在运行期间不得由其它未隔离进程替换或复制；已有硬链接会拒绝启动。需要的工具/网络缺项须报给调用方裁定。必需的凭据/配置文件列入禁读时 setup 会停止；不提供凭据与 Agent 工具之间的隔离。
 
 ### Sandbox Process Management
 

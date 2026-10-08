@@ -2,6 +2,7 @@
 """Opt-in macOS srt envelope for a single ephemeral agent runner invocation."""
 
 import argparse
+import ctypes
 import importlib.util
 import json
 import os
@@ -45,6 +46,8 @@ def load_denies(path):
         p = absolute(value)
         if not p.exists():
             raise ValueError(f"deny entry does not exist: {value}")
+        if not p.is_file() and not p.is_dir():
+            raise ValueError(f"deny entry must be a regular file or directory: {value}")
         if str(p) not in result:
             result.append(str(p))
     # Seatbelt checks resolved paths, not inode identities. Refuse pre-existing
@@ -111,6 +114,8 @@ def parse_runner(command, cwd):
             elif option == "--prompt-file" and value != "-":
                 value = str(absolute(value))
             values[option] = value
+            if option in {"--prompt", "--prompt-file"}:
+                values["_prompt_index"] = len(normalized)
             normalized += [option, value]
             i += 2
         elif option in SWITCH_OPTIONS:
@@ -121,6 +126,10 @@ def parse_runner(command, cwd):
             raise ValueError(f"unsupported isolation runner argument: {option}; no native passthrough, resume or persist")
     if not values.get("--provider"):
         raise ValueError("runner --provider is required")
+    if ("--prompt" in values) == ("--prompt-file" in values):
+        raise ValueError("isolation requires exactly one --prompt or --prompt-file")
+    if values.get("--prompt-file") == "-" or values.get("--prompt") == "":
+        raise ValueError("isolation requires a prepared nonempty prompt; stdin is not supported")
     if "--cwd" not in values:
         normalized += ["--cwd", str(cwd)]
     if "--full-access" not in switches:
@@ -195,7 +204,11 @@ def write_boundary(runtime, provider, cwd, denies):
     managed = Path("/Library/Application Support/ClaudeCode/managed-settings.json")
     if managed.exists():
         raise ValueError(f"cannot infer managed Claude policy: {managed}")
-    for path in [Path.home()/".claude/settings.json", cwd/".claude/settings.json", cwd/".claude/settings.local.json"]:
+    config_dir = absolute(os.environ.get("CLAUDE_CONFIG_DIR", str(Path.home()/".claude")))
+    paths = [config_dir/"settings.json"]
+    for directory in [cwd, *cwd.parents]:
+        paths += [directory/".claude/settings.json", directory/".claude/settings.local.json"]
+    for path in dict.fromkeys(paths):
         if path.is_file():
             require_readable(path, denies)
             doc = json.loads(path.read_text())
@@ -204,10 +217,12 @@ def write_boundary(runtime, provider, cwd, denies):
             fs = doc.get("sandbox", {}).get("filesystem", {})
             if fs.get("allowRead") or fs.get("denyRead"):
                 # These existing read limits also need to remain in force.
-                raise ValueError(f"custom Claude filesystem read rules need an explicit combined deny list: {path}")
+                raise ValueError(f"cannot preserve custom Claude filesystem read rules: {path}")
             for entry in fs.get("denyWrite", []):
                 if not isinstance(entry, str) or any(c in entry for c in "*?["):
                     raise ValueError(f"cannot preserve nonliteral Claude denyWrite: {path}")
+                if not Path(entry).is_absolute() and not entry.startswith("~/"):
+                    raise ValueError(f"cannot infer relative Claude denyWrite: {path}")
                 blocked.append(str(absolute(entry, cwd)))
     return [str(cwd)], blocked
 
@@ -231,6 +246,15 @@ def prepare_codex(provider, state, denies):
     (home / "config.toml").write_text(toml_text(config))
     if provider != "business":
         (home / f"{provider}.config.toml").write_text("")
+    rules = source / "rules"
+    if rules.exists():
+        if not rules.is_dir():
+            raise ValueError(f"Codex rules path is not a directory: {rules}")
+        (home / "rules").mkdir()
+        for rule in sorted(rules.glob("*.rules")):
+            require_readable(rule, denies)
+            shutil.copyfile(rule, home / "rules" / rule.name)
+            (home / "rules" / rule.name).chmod(0o400)
     route = (provider_doc or {}).get("base_url", "https://chatgpt.com/backend-api/codex")
     if provider_id == "openai" or (provider_doc or {}).get("requires_openai_auth", True):
         auth = source / "auth.json"
@@ -257,9 +281,30 @@ def host_port(url):
     return f"{host}:{port}", parts
 
 
+def kernel_denies_read(path):
+    """Query Seatbelt itself; Unix ACL/mode denial alone is not a sandbox proof."""
+    if platform.system() != "Darwin":
+        raise ValueError("Seatbelt verification requires macOS")
+    library = ctypes.CDLL("/usr/lib/libSystem.B.dylib", use_errno=True)
+    check = library.sandbox_check
+    check.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+    check.restype = ctypes.c_int
+    # SANDBOX_FILTER_PATH = 1. The API is variadic after its first three args.
+    result = check(os.getpid(), b"file-read-data", 1, ctypes.c_char_p(os.fsencode(path)))
+    if result not in (0, 1):
+        raise ValueError(f"cannot query effective Seatbelt permission: {path}")
+    return result == 1
+
+
 def verify_and_exec(manifest_path, command):
     manifest = json.loads(Path(manifest_path).read_text())
+    if not isinstance(manifest.get("denies"), list) or not manifest["denies"] or not command:
+        raise ValueError("internal entry requires a fixed nonempty boundary and runner")
+    if command != manifest["command"] or Path(command[0]).name not in {"codex-agent-run", "claude-agent-run"}:
+        raise ValueError("internal entry does not match the fixed runner invocation")
     for value in manifest["denies"]:
+        if not kernel_denies_read(value):
+            raise ValueError(f"effective Seatbelt policy does not deny {value}; refusing to start Agent")
         try:
             if Path(value).is_dir():
                 os.listdir(value)
@@ -303,6 +348,11 @@ def main():
     prompt = options.get("--prompt-file")
     if prompt and prompt != "-":
         require_readable(prompt, denies)
+    text = options.get("--prompt")
+    if text is None:
+        text = Path(options["--prompt-file"]).read_text(encoding="utf-8")
+    if not text.strip():
+        raise ValueError("prompt must not be empty")
     srt = shutil.which("srt")
     if not srt:
         raise ValueError("srt is not installed; run scripts/install-agent-sandbox.sh (Node >=22.12)")
@@ -323,6 +373,9 @@ def main():
     if runtime == "claude" or provider not in {"gpt-6-astra", "gpt-6-sol", "gpt-6-luna", "business"}:
         connection = helper.connection(provider, runtime, require_key=True)
     write_roots, original_write_denies = write_boundary(runtime, provider, cwd, denies)
+    for path in outputs:
+        if is_denied(path, original_write_denies):
+            raise ValueError(f"output conflicts with original write denial: {path}")
     if args.check:
         if runtime == "codex":
             with tempfile.TemporaryDirectory(prefix="agent-sandbox-check.") as directory:
@@ -363,12 +416,19 @@ def main():
         Path(path).mkdir(parents=True, exist_ok=True)
     for path in outputs:
         path.parent.mkdir(parents=True, exist_ok=True)
+    task = state / "task.md"
+    task.write_text(text, encoding="utf-8")
+    position = options["_prompt_index"]
+    command[position:position+2] = ["--prompt-file", str(task)]
+    fixed_files = [str(task)]
+    if runtime == "codex":
+        fixed_files += [str(home/"rules"), str(home/"config.toml"), str(home/f"{provider}.config.toml")]
     settings = {
         "filesystem": {"denyRead": [{"path": p, "literal": True} for p in denies],
                        "allowRead": [], "allowWrite": [{"path": p, "literal": True} for p in writes] + file_writes,
                        "denyWrite": [{"path": p, "literal": True} for p in denies] +
                            ["/tmp/claude", "/private/tmp/claude", str(Path.home()/".npm/_logs"), str(Path.home()/".claude/debug")] +
-                           [{"path": p, "literal": True} for p in original_write_denies]},
+                           [{"path": p, "literal": True} for p in original_write_denies + fixed_files]},
         "network": {"allowedDomains": domains, "deniedDomains": [], "strictAllowlist": True,
                     "allowLocalBinding": False, "allowAllUnixSockets": False, "allowUnixSockets": []},
         "allowAppleEvents": False, "enableWeakerNestedSandbox": False, "enableWeakerNetworkIsolation": False,
@@ -376,7 +436,7 @@ def main():
     (state / "srt.json").write_text(json.dumps(settings, indent=2) + "\n")
     probe = state / "tmp/probe"
     probe.write_bytes(b"agent-sandbox-probe")
-    (state / "boundary.json").write_text(json.dumps({"denies": denies, "probe": str(probe)}) + "\n")
+    (state / "boundary.json").write_text(json.dumps({"denies": denies, "probe": str(probe), "command": command}) + "\n")
     env["CLAUDE_CODE_TMPDIR"] = str(state / "tmp")
     env["TMPDIR"] = str(state / "tmp") + "/"
     env["AGENT_SANDBOX_ACTIVE"] = "1"
@@ -389,6 +449,9 @@ def main():
     inner = ["/usr/bin/env", "NO_PROXY=", "no_proxy=", *inner]
     print(f"agent-sandbox: state={state}", file=sys.stderr)
     os.chdir(cwd)
+    # Prepared prompt only: unrelated inherited stdin must not enter the CLI.
+    with open(os.devnull, "rb") as empty:
+        os.dup2(empty.fileno(), 0)
     os.execvpe(srt, [srt, "--settings", str(state / "srt.json"), "--", *inner], env)
 
 

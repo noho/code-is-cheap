@@ -56,6 +56,7 @@ class RuntimeTests(unittest.TestCase):
                         n = len(requests)
                         if runtime == 'codex':
                             actions = [
+                                ('exec_command',{'cmd':'touch '+str(p/'work/rule-forbidden-output')}),
                                 ('exec_command',{'cmd':'cat '+str(p/'work/denied/report'),'sandbox_permissions':'require_escalated','justification':'synthetic isolation test'}),
                                 ('exec_command',{'cmd':shell}),
                                 ('view_image',{'path':str(p/'work/denied/image.png')}),
@@ -96,6 +97,8 @@ class RuntimeTests(unittest.TestCase):
             port = server.server_port
             config = f'sandbox_mode = "workspace-write"\nmodel = "gpt-5.4"\nmodel_provider = "mock"\n[model_providers.mock]\nname = "mock"\nbase_url = "http://127.0.0.1:{port}/v1"\nwire_api = "responses"\nrequires_openai_auth = false\n'
             (p/'home/.codex/config.toml').write_text(config); (p/'home/.codex/mimo.config.toml').write_text('')
+            (p/'home/.codex/rules').mkdir()
+            (p/'home/.codex/rules/default.rules').write_text('prefix_rule(pattern=["touch"], decision="forbidden", justification="deny synthetic write")\n')
             endpoints = json.loads((ROOT/'config/endpoints.example.json').read_text())
             endpoints['default']['mimo'][runtime] = dict(base_url=f'http://127.0.0.1:{port}',upstream_model='test-model',api_key='synthetic-test-key')
             ep = p/'home/.config/agent-tools/endpoints.json'; ep.write_text(json.dumps(endpoints)); ep.chmod(0o600)
@@ -115,13 +118,20 @@ class RuntimeTests(unittest.TestCase):
                     exit_code=result.returncode, wrapper_stderr=result.stderr,
                     runtime_stderr=stderr, trace=trace, requests=requests, server_errors=errors),indent=2))
             self.assertEqual(result.returncode,0,(result.stderr,stderr,trace,errors))
-            self.assertEqual(len(requests),5,(result.stderr,stderr,trace,errors))
+            self.assertEqual(len(requests),6 if runtime == 'codex' else 5,(result.stderr,stderr,trace,errors))
             wire = json.dumps(requests)
             self.assertNotIn(secret,wire)
             self.assertNotIn(base64.b64encode(forbidden_image).decode(),wire)
             self.assertIn('ALLOW_CANARY_002912',wire)
             self.assertIn(base64.b64encode(allowed_image).decode(),wire)
             self.assertIn('Operation not permitted',wire)
+            if runtime == 'codex':
+                self.assertFalse((p/'work/rule-forbidden-output').exists())
+                self.assertIn('deny synthetic write',json.dumps(requests[1]))
+            else:
+                init = next(json.loads(line) for line in trace.splitlines() if json.loads(line).get('subtype') == 'init')
+                self.assertEqual(init['permissionMode'],'bypassPermissions')
+                self.assertEqual(init['mcp_servers'],[])
             # Agent-facing trace shows actual tools and a terminal success, not agent assertions.
             self.assertIn('turn.completed' if runtime == 'codex' else '"type":"result"',trace.replace(' ',''))
 

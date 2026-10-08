@@ -166,7 +166,17 @@ def initialize():
         stream.write(data)
 
 
+class FullAccessConflict(ValueError):
+    pass
+
+
 def launch_claude(provider, args, compact_window, max_context, api_timeout, full_access=False):
+    if full_access:
+        for arg in args:
+            if arg == "--":
+                break
+            if arg == "--restricted" or arg.split("=", 1)[0] in {"--settings", "--permission-mode"}:
+                raise FullAccessConflict("--full-access conflicts with custom settings/permission mode/restricted mode")
     value = connection(provider, "claude", require_key=True)
     model = value["upstream_model"]
     settings = {
@@ -259,6 +269,8 @@ def main():
             )
             if not args.check:
                 print(value[args.field])
+    except FullAccessConflict as error:
+        parser.exit(2, str(error) + "\n")
     except (OSError, ValueError, KeyError, TypeError):
         parser.exit(
             1,

@@ -144,7 +144,7 @@ install-agent-sandbox.sh
 ```
 
 安装固定版本 Anthropic 的 Apache-2.0 `@anthropic-ai/sandbox-runtime` 0.0.79。普通安装/sync 不要求或安装 srt。
-两个封装命令由 `scripts/sync-agent-tools.sh` 部署。已测试 macOS、Codex 0.161.0、Claude Code 2.1.286。
+两个封装命令由 `scripts/sync-agent-tools.sh` 部署。已测试 macOS、Codex 0.161.0、Claude Code 2.1.294。
 
 `denied.json` 为非空 JSON 数组，每项是**绝对且已存在**的禁读文件/目录，字面路径，不是 glob；目录递归禁止。
 调用方自行列出业务报告、历史日志及已知副本；未列出的副本仍可读。
@@ -159,9 +159,10 @@ agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
 封装隐含 `--full-access --no-persist`，启动前固定策略，在 Seatbelt 内确认禁读路径确实被拒绝，再启动 runner。
 不支持的参数、缺失路径、版本不匹配、已有硬链接、无法保留原写边界的配置均明确失败，不退回无隔离运行。
 写入保留原 runtime 的保守子集：Codex read-only 不开放 cwd 写入；workspace-write 保留 cwd 并保护
-`.git/.codex/.agents/.aws`，不携带额外 writable roots。Claude 保留 cwd 和字面 sandbox `denyWrite`。
+`.git/.codex/.agents/.aws`，不携带额外 writable roots。Claude 保留 cwd 和各设置层中绝对路径或 `~/` 开头的字面 sandbox `denyWrite`。
 仅另加调用方指定的输出**文件**与独立运行状态目录，不开放输出文件的整个父目录。Codex permission profiles、
-项目层配置，以及 Claude 自定义读规则或 glob 写规则暂不支持。禁读路径同时不可写。
+项目层配置，以及 Claude 自定义读、glob/相对写路径或工具 deny 规则暂不支持。原 Codex `.rules` 复制到独立 home 并禁止修改。禁读路径同时不可写。
+运行时必需的凭据/配置文件（包括 endpoints JSON、所选 Codex auth）必须可读；列入禁读时 setup 停止。封装不隔离 Agent 与工具对凭据的访问。
 
 隔离运行使用全新 runtime 状态，关闭宿主 MCP/hooks/plugins/浏览器集成，禁止 Apple Events/Unix sockets，
 网络限于所选模型路由；Claude 只启用 Bash/Read/Write/Edit/Glob/Grep，Codex 保留本地原生工具。
@@ -172,7 +173,8 @@ agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
 preflight 可加 `--deny-list /absolute/denied.json` 生成完整封装命令；`--check` 仅预检，不证明内核隔离。
 封装必须从**总控**沙箱外派发：Codex 用 `exec_command(require_escalated)`；Claude 在自己的
 `sandbox.excludedCommands` 加入 `agent-sandbox`，以独立裸命令调用。生命周期、canary、结果验收仍按现有协议。
-一次隔离调用不支持 resume、动态投递或原生参数透传。
+一次隔离调用不支持 resume、动态投递或原生参数透传。必须恰好一个非空 `--prompt` 或普通 `--prompt-file`；
+关闭 stdin，并将准备好的 prompt 复制到受写保护的运行状态。验证同时查询 Seatbelt 权限和实际文件读取；普通 Unix 权限错误不足以证明隔离。
 
 ## 准备 Agent 环境
 

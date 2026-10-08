@@ -48,6 +48,46 @@ class SetupTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'hardlinked'):
                 sandbox.load_denies(p/'list')
 
+    def test_prepared_prompt_required(self):
+        with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
+            for extra in ([], ['--prompt-file','-'], ['--prompt','a','--prompt-file','x']):
+                with self.assertRaises(ValueError):
+                    sandbox.parse_runner(['codex-agent-run','--provider','mimo',*extra],Path.cwd())
+            _,options,command = sandbox.parse_runner(['codex-agent-run','--provider','mimo','--thread-source','--prompt','--prompt','actual task'],Path.cwd())
+            self.assertEqual(command[options['_prompt_index']+1],'actual task')
+
+    def test_fifo_denial_is_rejected_without_open(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory); os.mkfifo(p/'fifo'); (p/'list').write_text(json.dumps([str(p/'fifo')]))
+            with self.assertRaisesRegex(ValueError,'regular file'):
+                sandbox.load_denies(p/'list')
+
+    @unittest.skipUnless(platform.system() == 'Darwin','Seatbelt query requires macOS')
+    def test_direct_internal_entry_cannot_fake_seatbelt_with_unix_mode(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory); secret=p/'secret'; secret.write_text('secret'); secret.chmod(0)
+            probe=p/'probe'; probe.write_bytes(b'agent-sandbox-probe')
+            runner=p/'codex-agent-run'; runner.write_text('#!/bin/sh\necho DIRECT_VERIFY_BYPASS\n'); runner.chmod(0o755)
+            manifest=p/'boundary.json'; command=[str(runner)]
+            manifest.write_text(json.dumps(dict(denies=[str(secret)],probe=str(probe),command=command)))
+            result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--verify',str(manifest),*command],capture_output=True,text=True)
+            self.assertNotEqual(result.returncode,0)
+            self.assertNotIn('DIRECT_VERIFY_BYPASS',result.stdout)
+            self.assertIn('effective Seatbelt policy',result.stderr)
+            secret.chmod(0o600)
+
+    def test_original_claude_parent_settings_remain_effective(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory).resolve(); cwd=p/'repo/sub'; cwd.mkdir(parents=True)
+            settings=p/'repo/.claude/settings.json'; settings.parent.mkdir()
+            settings.write_text(json.dumps(dict(sandbox=dict(filesystem=dict(denyWrite=[str(cwd/'blocked')])))))
+            with unittest.mock.patch.dict(os.environ,HOME=str(p/'home'),CLAUDE_CONFIG_DIR=str(p/'custom')):
+                roots,blocked=sandbox.write_boundary('claude','mimo',cwd,[])
+                self.assertIn(str(cwd/'blocked'),blocked)
+                settings.write_text(json.dumps(dict(sandbox=dict(filesystem=dict(denyWrite=['./blocked'])))))
+                with self.assertRaisesRegex(ValueError,'relative'):
+                    sandbox.write_boundary('claude','mimo',cwd,[])
+
     def test_raw_native_options_cannot_change_policy(self):
         cwd = Path.cwd()
         with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
@@ -96,6 +136,8 @@ for name, path in [('direct',p/'work/denied/report'), ('symlink',p/'work/alias')
  ('dir_alias',p/'work/dir-alias/report'), ('dotdot',p/'work/../work/denied/report'),
  ('history',p/'work/history.jsonl'), ('data_alias','/System/Volumes/Data'+str(p/'work/denied/report')), ('tmp_alias',str(p/'work/denied/report').replace('/private/tmp/','/tmp/'))]:
     read(name,path)
+case_alias = p/'work/DENIED/REPORT'
+if os.environ['TEST_CASE_ALIAS_EXISTS'] == '1': read('case_alias',case_alias)
 s = subprocess.run(['rg','--no-ignore','-n','FORBIDDEN_',str(p/'work')], capture_output=True,text=True)
 r['recursive_stdout'] = s.stdout
 r['recursive_code'] = s.returncode
@@ -111,6 +153,8 @@ write('protected_write',p/'work/.git/evil')
 write('outside_write',p/'outside')
 write('sink_neighbor',p/'sinks/unrequested')
 write('sink_write',p/'sinks/result')
+write('original_blocked_write',p/'work/original-blocked')
+write('prompt_write',Path(sys.argv[sys.argv.index('--prompt-file')+1]))
 print(json.dumps(r))
 ''')
         runner.chmod(0o755)
@@ -118,7 +162,8 @@ print(json.dumps(r))
         if not srt: self.fail('SRT_TEST_BIN or srt required for kernel tests')
         (p/'bin/srt').symlink_to(srt)
         self.env = {**os.environ, 'HOME':str(p/'home'), 'PATH':str(p/'bin')+':'+os.environ['PATH'],
-                    'TEST_ROOT':str(p), 'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
+                    'TEST_ROOT':str(p), 'TEST_CASE_ALIAS_EXISTS':str(int((p/'work/DENIED/REPORT').exists())),
+                    'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
 
     def launch(self):
         p = self.root
@@ -133,12 +178,13 @@ print(json.dumps(r))
         self.assertEqual(r['allowed'],'ALLOW_INPUT')
         for name in ('direct','symlink','dir_alias','dotdot','history','data_alias','tmp_alias','hardlink'):
             self.assertEqual(r[name],'PermissionError',r)
+        if 'case_alias' in r: self.assertEqual(r['case_alias'],'PermissionError',r)
         self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
         self.assertNotEqual(r['nested_code'],0)
         self.assertNotIn('FORBIDDEN_',r['nested_stdout'])
         self.assertEqual(r['cwd_write'],'allowed')
         self.assertEqual(r['sink_write'],'allowed')
-        for name in ('protected_write','outside_write','sink_neighbor'):
+        for name in ('protected_write','outside_write','sink_neighbor','prompt_write'):
             self.assertEqual(r[name],'PermissionError',r)
 
     def test_read_only_does_not_gain_cwd_writes(self):
@@ -149,6 +195,32 @@ print(json.dumps(r))
         r = json.loads(result.stdout)
         self.assertEqual(r['cwd_write'],'PermissionError',r)
         self.assertEqual(r['sink_write'],'allowed')
+
+    def test_claude_original_deny_write_wins_over_cwd(self):
+        p = self.root
+        settings = p/'home/.claude/settings.json'; settings.parent.mkdir()
+        settings.write_text(json.dumps(dict(sandbox=dict(filesystem=dict(denyWrite=[str(p/'work/original-blocked')])))))
+        endpoints = p/'home/.config/agent-tools/endpoints.json'
+        doc = json.loads(endpoints.read_text())
+        doc['default']['mimo']['claude']['api_key'] = 'synthetic-test-key'
+        endpoints.write_text(json.dumps(doc))
+        (p/'bin/claude-agent-run').symlink_to(p/'bin/codex-agent-run')
+        check = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
+            '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
+            '--prompt','test','--output',str(p/'work/original-blocked')],
+            env=self.env,capture_output=True,text=True,timeout=45)
+        self.assertNotEqual(check.returncode,0)
+        self.assertIn('output conflicts with original write denial',check.stderr)
+        result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
+            '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
+            '--prompt','test','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
+            env=self.env,capture_output=True,text=True,timeout=45)
+        self.assertEqual(result.returncode,0,result.stderr)
+        r = json.loads(result.stdout)
+        self.assertEqual(r['original_blocked_write'],'PermissionError',r)
+        self.assertEqual(r['cwd_write'],'allowed',r)
+        self.assertEqual(r['sink_write'],'allowed',r)
+        self.assertEqual(r['outside_write'],'PermissionError',r)
 
     def test_unsupported_policy_fails_before_runner(self):
         config = self.root/'home/.codex/config.toml'
@@ -198,5 +270,13 @@ class FullAccessTests(unittest.TestCase):
                 done = subprocess.run(conflict,env=env,capture_output=True,text=True)
                 self.assertNotEqual(done.returncode,0)
                 self.assertIn('conflicts',done.stderr)
+
+
+    def test_direct_helper_full_access_conflicts(self):
+        for extra in (['--permission-mode','auto'],['--settings','{}'],['--settings={}'],['--restricted']):
+            done = subprocess.run([str(ROOT/'scripts/agent-endpoint.py'),'--full-access','--launch-claude','mimo','--',*extra],capture_output=True,text=True)
+            self.assertEqual(done.returncode,2,done.stderr)
+            self.assertEqual(done.stdout,'')
+            self.assertIn('--full-access conflicts',done.stderr)
 
 if __name__ == '__main__': unittest.main()

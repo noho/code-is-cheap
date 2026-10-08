@@ -105,16 +105,6 @@ _claude_agent_launch() (
       *) claude_args+=("$1"); shift ;;
     esac
   done
-  if [[ "$full_access" == true ]]; then
-    local arg
-    for arg in "${claude_args[@]}"; do
-      [[ "$arg" == -- ]] && break
-      case "$arg" in
-        --settings|--settings=*|--permission-mode|--permission-mode=*)
-          print -u2 -- "--full-access conflicts with custom settings/permission mode"; return 2 ;;
-      esac
-    done
-  fi
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
   fi

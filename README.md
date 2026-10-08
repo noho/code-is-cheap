@@ -148,9 +148,9 @@ install-agent-sandbox.sh
 ```
 
 This pins Anthropic's Apache-2.0 `@anthropic-ai/sandbox-runtime` to 0.0.79. Normal installation/sync does not install or require srt.
-Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.286 on macOS.
+Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.
 
-Create `denied.json` containing a nonempty JSON array of **absolute, existing** files/directories. Entries are literal paths;
+Create `denied.json` containing a nonempty JSON array of **absolute, existing** files/directories. Entries are literal regular-file paths;
 directories are recursive. Include every known forbidden history/report copy yourself. Unlisted copies remain readable.
 
 ```bash
@@ -164,9 +164,9 @@ The envelope adds `--full-access --no-persist`, fixes the policy before launch, 
 It rejects unsupported arguments, missing paths, incompatible srt, pre-existing hardlinks and configurations whose original write boundary
 cannot be preserved. It keeps a conservative subset of the runtime's original writes: Codex read-only retains no cwd writes;
 workspace-write retains cwd with `.git/.codex/.agents/.aws` protected. Additional write roots are not carried over. Claude retains cwd
-and literal sandbox `denyWrite` rules. Only explicitly selected output **files**, plus private per-run state, are added; their parent
-directories are not granted. Codex permission profiles/project-layer configs and Claude custom read rules or glob write rules are currently unsupported.
-Denied paths also become unwritable. The process exits on setup or verification failure, with no unsandboxed fallback.
+and absolute/home-relative literal sandbox `denyWrite` rules across discovered settings layers. Only explicitly selected output **files**, plus private per-run state, are added; their parent
+directories are not granted. Codex permission profiles/project-layer configs and Claude custom read, glob/relative write or tool deny rules are currently unsupported. User Codex `.rules` are copied into the fresh home and protected against writes.
+Required credential/config files (including endpoints JSON and selected Codex auth) must remain readable for runtime startup. Listing them as denied stops setup; this wrapper does not isolate credentials from the Agent or its tools. Denied paths also become unwritable. The process exits on setup or verification failure, with no unsandboxed fallback.
 
 This envelope uses fresh runtime state, disables host integrations (MCP/hooks/plugins/browser tools), blocks Apple Events/Unix sockets,
 and restricts network access to the selected model route. Claude tools are Bash/Read/Write/Edit/Glob/Grep; Codex native local tools
@@ -178,7 +178,7 @@ content elsewhere or isolate information already supplied in prompts. A runtime 
 Preflight supports `--deny-list /absolute/denied.json` and prints the wrapped command; `--check` validates setup only, not kernel enforcement.
 Launch the envelope outside the **controller's** sandbox: Codex uses `exec_command` with `require_escalated`; Claude must add
 `agent-sandbox` to its own `sandbox.excludedCommands` and invoke it as a standalone bare command. Existing canary, lifecycle and result validation still apply.
-There is no resume, dynamic input delivery or native argument passthrough in an isolated invocation.
+There is no resume, dynamic input delivery or native argument passthrough in an isolated invocation. Exactly one nonempty `--prompt` or regular `--prompt-file` is required; stdin is closed and the prepared prompt is copied to protected per-run state. Verification queries Seatbelt itself as well as actual file opens; ordinary Unix permission errors are insufficient proof.
 
 ## Prepare Agent Environment
 
