@@ -34,6 +34,7 @@ Run options:
   --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
   --last-message <path>      Save final message to a NEW file after the run completes.
   --sandbox <mode>           read-only, workspace-write, or danger-full-access.
+  --full-access              Disable the runtime sandbox and skip approvals (opt-in).
   --thread-source <source>   Pass a Codex thread source classification.
   --skip-git-repo-check      Permit execution outside a Git repository.
   --persist                  Save a new session.
@@ -125,6 +126,7 @@ output_file=""
 stderr_file=""
 last_message_file=""
 sandbox_mode=""
+full_access=false
 thread_source=""
 prompt_text=""
 prompt_file=""
@@ -172,6 +174,10 @@ while (( $# > 0 )); do
       require_value "$1" "$#"
       sandbox_mode="$2"
       shift 2
+      ;;
+    --full-access)
+      full_access=true
+      shift
       ;;
     --thread-source)
       require_value "$1" "$#"
@@ -305,6 +311,7 @@ case "$sandbox_mode" in
   ""|read-only|workspace-write|danger-full-access) ;;
   *) die "unsupported sandbox mode: $sandbox_mode" ;;
 esac
+[[ "$full_access" == false || -z "$sandbox_mode" ]] || die "--full-access conflicts with --sandbox"
 
 [[ -d "$workdir" ]] || die "working directory does not exist: $workdir"
 workdir="${workdir:A}"
@@ -418,6 +425,7 @@ fi
 [[ "$persist" == true ]] || codex_args+=(--ephemeral)
 [[ "$output_format" == text ]] || codex_args+=(--json)
 [[ -n "$sandbox_mode" ]] && codex_args+=(--sandbox "$sandbox_mode")
+[[ "$full_access" == true ]] && codex_args+=(--full-access)
 [[ -n "$thread_source" ]] && codex_args+=(--thread-source "$thread_source")
 [[ "$skip_git_repo_check" == true ]] && codex_args+=(--skip-git-repo-check)
 [[ -n "$last_message_file" ]] && codex_args+=(--output-last-message "$last_message_tmp")

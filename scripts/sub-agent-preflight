@@ -38,6 +38,11 @@ Prompt (give exactly one):
                              report markers fail. These mechanical checks cannot prove that
                              natural-language old report instructions are absent;
                              the controller must review their meaning before dispatch.
+
+Optional access mode (defaults remain unchanged):
+  --full-access             Disable the runtime's inner sandbox and tool approvals.
+  --deny-list <json>        Prefix the command with agent-sandbox; implies --full-access.
+                             macOS/srt required. Setup validation is not a kernel test.
   --prompt-file <path>       Use this complete task prompt as input. The script copies it into
                              run_dir and appends this run's fixed report protocol; the original
                              file stays unchanged. The same section and clean-body checks apply.
@@ -63,6 +68,8 @@ label=""
 prompt_file=""
 task_text=""
 task_file=""
+full_access=false
+deny_list=""
 
 while (( $# > 0 )); do
   case "$1" in
@@ -73,6 +80,8 @@ while (( $# > 0 )); do
     --prompt-file) [[ $# -ge 2 ]] || die_usage "--prompt-file needs a value"; prompt_file="$2"; shift 2 ;;
     --task)        [[ $# -ge 2 ]] || die_usage "--task needs a value";        task_text="$2"; shift 2 ;;
     --task-file)   [[ $# -ge 2 ]] || die_usage "--task-file needs a value";   task_file="$2"; shift 2 ;;
+    --full-access) full_access=true; shift ;;
+    --deny-list) [[ $# -ge 2 ]] || die_usage "--deny-list needs a value"; deny_list="$2"; full_access=true; shift 2 ;;
     -h|--help)     usage; exit 0 ;;
     *)             die_usage "unknown option: $1" ;;
   esac
@@ -305,6 +314,30 @@ if [[ "$status" == ok ]]; then
   else
     command_line="$runner --provider $provider --cwd \"$workspace\" --instance \"$label\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --prompt-file \"$prompt_used\""
   fi
+fi
+
+if [[ "$status" == ok && "$full_access" == true ]]; then
+  command_line="${command_line/ --no-persist/ --full-access --no-persist}"
+fi
+if [[ "$status" == ok && -n "$deny_list" ]]; then
+  if ! command -v agent-sandbox >/dev/null 2>&1; then
+    failures+=("agent-sandbox 未安装（运行 scripts/sync-agent-tools.sh）")
+    status=fail
+  else
+    deny_list="$(python3 -c 'import os,sys; print(os.path.abspath(os.path.expanduser(sys.argv[1])))' "$deny_list")"
+    check_args=(agent-sandbox --cwd "$workspace" --deny-list "$deny_list" --check -- "$runner"
+      --provider "$provider" --cwd "$workspace" --full-access --no-persist --output "$out_file"
+      --stderr "$stderr_file" --prompt-file "$prompt_used")
+    [[ "$runtime" != codex ]] || check_args+=(--last-message "$last_message_file")
+    if setup_error="$("${check_args[@]}" 2>&1)"; then
+      printf -v envelope_prefix 'agent-sandbox --cwd %q --deny-list %q -- ' "$workspace" "$deny_list"
+      command_line="$envelope_prefix$command_line"
+    else
+      failures+=("隔离 setup 失败: $setup_error")
+      status=fail
+    fi
+  fi
+  [[ "$status" == ok ]] || command_line=""
 fi
 
 printf 'setup_status=%s\n' "$status"

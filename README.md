@@ -136,6 +136,54 @@ Claude resolves one connection snapshot at launch and passes only its selected t
 
 `local.codex` remains a direct, unauthenticated connection (`api_key` must be empty); its URL requires `sync-codex-agent.sh`, while its model is applied at CLI/app launch. `local.claude` uses the configured URL/model/token just like other Claude connections; its initial token is `local`. GPT/business profiles continue to use their existing account login and model cards. Gateway API keys are not written into provider registries, catalogs, app config or service plists; account login still uses Codex's auth files. Inherited credential environment variables are still scrubbed; mode `600` does not isolate the file from other processes running as the same user.
 
+## Optional task read restrictions (macOS)
+
+**Platform support:** `agent-sandbox --deny-list` currently supports **macOS only**, using Seatbelt through srt.
+This project's Linux envelope is not implemented or tested; Windows is unsupported. On non-macOS systems the command
+fails explicitly without falling back to an unsandboxed run. `--full-access` uses native runtime options and does not require Seatbelt.
+
+Normal runner/launcher behavior is unchanged. `--full-access` is opt-in: Codex skips approvals and its inner sandbox;
+Claude uses `bypassPermissions` with its inner sandbox disabled. This flag alone does not isolate input.
+
+For filesystem read denials, install the optional dependency after normal installation (Node >=22.12 and npm required):
+
+```bash
+install-agent-sandbox.sh
+```
+
+This pins Anthropic's Apache-2.0 `@anthropic-ai/sandbox-runtime` to 0.0.79. Normal installation/sync does not install or require srt.
+Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.
+
+Create `denied.json` containing a nonempty JSON array of **absolute, existing** files/directories. Entries are literal regular-file paths;
+directories are recursive. Include every known forbidden history/report copy yourself. Unlisted copies remain readable.
+
+```bash
+agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
+  codex-agent-run --provider mimo --prompt-file /path/to/task.md \
+  --output /path/to/new-events.jsonl --stderr /path/to/new-stderr
+# claude-agent-run works through the same envelope.
+```
+
+The envelope adds `--full-access --no-persist`, fixes the policy before launch, and checks the denial **inside Seatbelt** before starting the runner.
+It rejects unsupported arguments, missing paths, incompatible srt, pre-existing hardlinks and configurations whose original write boundary
+cannot be preserved. It keeps a conservative subset of the runtime's original writes: Codex read-only retains no cwd writes;
+workspace-write retains cwd with `.git/.codex/.agents/.aws` protected. Additional write roots are not carried over. Claude retains cwd
+and absolute/home-relative literal sandbox `denyWrite` rules across discovered settings layers. Only explicitly selected output **files**, plus private per-run state, are added; their parent
+directories are not granted. Codex permission profiles/project-layer configs and Claude custom read, glob/relative write or tool deny rules are currently unsupported. User Codex `.rules` are copied into the fresh home and protected against writes.
+Required credential/config files (including endpoints JSON and selected Codex auth) must remain readable for runtime startup. Listing them as denied stops setup; this wrapper does not isolate credentials from the Agent or its tools. Denied paths also become unwritable. The process exits on setup or verification failure, with no unsandboxed fallback.
+
+This envelope uses fresh runtime state, disables host integrations (MCP/hooks/plugins/browser tools), blocks Apple Events/Unix sockets,
+and restricts network access to the selected model route. Claude tools are Bash/Read/Write/Edit/Glob/Grep; Codex native local tools
+remain available. Optional `--allow-domain host[:port]` adds a caller-authorized network destination. Permission failures report missing
+access; the runner does not expand the policy. Per-run policy/evidence paths are printed to stderr and retained under the temporary directory.
+Do not let another unsandboxed process replace denied paths or create readable copies during a run. Path denial does not identify identical
+content elsewhere or isolate information already supplied in prompts. A runtime upgrade needs boundary tests before claiming coverage.
+
+Preflight supports `--deny-list /absolute/denied.json` and prints the wrapped command; `--check` validates setup only, not kernel enforcement.
+Launch the envelope outside the **controller's** sandbox: Codex uses `exec_command` with `require_escalated`; Claude must add
+`agent-sandbox` to its own `sandbox.excludedCommands` and invoke it as a standalone bare command. Existing canary, lifecycle and result validation still apply.
+There is no resume, dynamic input delivery or native argument passthrough in an isolated invocation. Exactly one nonempty `--prompt` or regular `--prompt-file` is required; stdin is closed and the prepared prompt is copied to protected per-run state. Verification queries Seatbelt itself as well as actual file opens; ordinary Unix permission errors are insufficient proof.
+
 ## Prepare Agent Environment
 
 If `install.sh` completed successfully, skip the manual deployment steps in this section: it has deployed the launchers/runners and model cards and configured shell loading. You still need to set API keys and any custom URLs as described above, then run `source ~/.zshrc` (or open a new shell) to load the launchers; also reopen Agent sessions to reload skills. The optional `business` profile and local models still require their account home or local service to be prepared separately. The steps below are for manual installation or later updates.

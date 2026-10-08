@@ -33,6 +33,7 @@ Run options:
   --output <path>            Write stdout to a NEW private file; existing paths are rejected.
   --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
   --permission-mode <mode>   Pass a Claude Code permission mode unchanged.
+  --full-access              Disable the runtime sandbox and bypass tool approvals (opt-in).
   --persist                  Save the session; generates a UUID when needed.
   --session-id <uuid>        Save a new session with this UUID.
   --resume <session-id>      Resume an existing session.
@@ -137,6 +138,7 @@ output_format="json"
 output_file=""
 stderr_file=""
 permission_mode=""
+full_access=false
 prompt_text=""
 prompt_file=""
 session_id=""
@@ -182,6 +184,10 @@ while (( $# > 0 )); do
       require_value "$1" "$#"
       permission_mode="$2"
       shift 2
+      ;;
+    --full-access)
+      full_access=true
+      shift
       ;;
     --prompt)
       require_value "$1" "$#"
@@ -365,6 +371,8 @@ typeset -a claude_args=(
 
 [[ "$output_format" == "stream-json" ]] && claude_args+=(--verbose)
 [[ -n "$permission_mode" ]] && claude_args+=(--permission-mode "$permission_mode")
+[[ "$full_access" == false || -z "$permission_mode" ]] || die "--full-access conflicts with --permission-mode"
+[[ "$full_access" == true ]] && claude_args+=(--full-access)
 
 if [[ -n "$resume_id" ]]; then
   claude_args+=(--resume "$resume_id")
@@ -375,7 +383,7 @@ else
 fi
 
 claude_args+=("${extra_args[@]}")
-claude_args+=("$prompt_text")
+claude_args+=(-- "$prompt_text")
 
 open_output_streams
 "$runner" "${claude_args[@]}" >&$stdout_fd 2>&$stderr_fd

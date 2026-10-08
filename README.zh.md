@@ -132,6 +132,54 @@ Claude 启动时读取一份连接快照，只将选定 token 交给 Claude 进�
 
 `local.codex` 仍直接连接且不鉴权，`api_key` 必须为空；修改 URL 后需运行 `sync-codex-agent.sh`，模型在 CLI/App 启动时应用。`local.claude` 和其它 Claude 连接一样使用配置中的 URL/模型/token，初始 token 为 `local`。GPT/business 继续使用原有账号登录和模型卡。网关 API key 不写入 provider registry、catalog、App 配置或服务 plist；账号登录仍使用 Codex 的 auth 文件。仍清理继承的凭据环境变量；`600` 权限不隔离同用户运行的其他进程对文件的访问。
 
+## 可选任务禁读边界（macOS）
+
+**平台限制：`agent-sandbox --deny-list` 当前仅支持 macOS**，通过 srt 使用 Seatbelt。
+本项目尚未实现和验证 Linux 封装，Windows 不支持。非 macOS 系统会明确报错，不会退回无沙箱运行。
+`--full-access` 使用 runtime 原生参数，不依赖 Seatbelt。
+
+默认 runner/launcher 行为不变。显式 `--full-access`：Codex 关闭内层沙箱和审批；Claude 使用
+`bypassPermissions` 并关闭内层沙箱。单独使用该参数没有读取隔离。
+
+普通安装之后，需要禁读边界时再安装可选依赖（Node >=22.12、npm）：
+
+```bash
+install-agent-sandbox.sh
+```
+
+安装固定版本 Anthropic 的 Apache-2.0 `@anthropic-ai/sandbox-runtime` 0.0.79。普通安装/sync 不要求或安装 srt。
+两个封装命令由 `scripts/sync-agent-tools.sh` 部署。已测试 macOS、Codex 0.161.0、Claude Code 2.1.294。
+
+`denied.json` 为非空 JSON 数组，每项是**绝对且已存在**的禁读文件/目录，字面路径，不是 glob；目录递归禁止。
+调用方自行列出业务报告、历史日志及已知副本；未列出的副本仍可读。
+
+```bash
+agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
+  codex-agent-run --provider mimo --prompt-file /path/to/task.md \
+  --output /path/to/new-events.jsonl --stderr /path/to/new-stderr
+# claude-agent-run 使用相同封装。
+```
+
+封装隐含 `--full-access --no-persist`，启动前固定策略，在 Seatbelt 内确认禁读路径确实被拒绝，再启动 runner。
+不支持的参数、缺失路径、版本不匹配、已有硬链接、无法保留原写边界的配置均明确失败，不退回无隔离运行。
+写入保留原 runtime 的保守子集：Codex read-only 不开放 cwd 写入；workspace-write 保留 cwd 并保护
+`.git/.codex/.agents/.aws`，不携带额外 writable roots。Claude 保留 cwd 和各设置层中绝对路径或 `~/` 开头的字面 sandbox `denyWrite`。
+仅另加调用方指定的输出**文件**与独立运行状态目录，不开放输出文件的整个父目录。Codex permission profiles、
+项目层配置，以及 Claude 自定义读、glob/相对写路径或工具 deny 规则暂不支持。原 Codex `.rules` 复制到独立 home 并禁止修改。禁读路径同时不可写。
+运行时必需的凭据/配置文件（包括 endpoints JSON、所选 Codex auth）必须可读；列入禁读时 setup 停止。封装不隔离 Agent 与工具对凭据的访问。
+
+隔离运行使用全新 runtime 状态，关闭宿主 MCP/hooks/plugins/浏览器集成，禁止 Apple Events/Unix sockets，
+网络限于所选模型路由；Claude 只启用 Bash/Read/Write/Edit/Glob/Grep，Codex 保留本地原生工具。
+可用 `--allow-domain host[:port]` 额外开放调用方授权的网络目的地。权限不足应报告缺项，不自动放宽。
+每次策略/状态路径打印在 stderr 并保留在临时目录。运行期间不能由未隔离进程替换禁读路径或另造可读副本。
+路径禁令不识别其它位置的相同内容，也不隔离 prompt 已提供的信息；runtime 升级后应重测读取通道。
+
+preflight 可加 `--deny-list /absolute/denied.json` 生成完整封装命令；`--check` 仅预检，不证明内核隔离。
+封装必须从**总控**沙箱外派发：Codex 用 `exec_command(require_escalated)`；Claude 在自己的
+`sandbox.excludedCommands` 加入 `agent-sandbox`，以独立裸命令调用。生命周期、canary、结果验收仍按现有协议。
+一次隔离调用不支持 resume、动态投递或原生参数透传。必须恰好一个非空 `--prompt` 或普通 `--prompt-file`；
+关闭 stdin，并将准备好的 prompt 复制到受写保护的运行状态。验证同时查询 Seatbelt 权限和实际文件读取；普通 Unix 权限错误不足以证明隔离。
+
 ## 准备 Agent 环境
 
 如果已成功运行 `install.sh`，可跳过本节的手动部署步骤：安装器已部署 launcher/runner、模型卡并配置 shell 加载入口。仍需按上一节填写 API key 和可选的自定义 URL，并执行 `source ~/.zshrc`（或打开新 shell）以加载启动函数；另需重新打开 Agent 会话以加载 skills。使用可选的 `business` 或本地模型时，仍需自行准备对应账号 home 或本地服务。下面的步骤用于手动安装或后续更新。
