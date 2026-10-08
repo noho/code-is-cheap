@@ -1,0 +1,400 @@
+#!/usr/bin/env python3
+"""Opt-in macOS srt envelope for a single ephemeral agent runner invocation."""
+
+import argparse
+import importlib.util
+import json
+import os
+import platform
+from pathlib import Path
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import tomllib
+from urllib.parse import urlsplit
+
+SRT_VERSION = "0.0.79"
+VALUE_OPTIONS = {"--provider", "--cwd", "--prompt", "--prompt-file", "--output",
+                 "--stderr", "--last-message", "--instance", "--output-format", "--thread-source"}
+SWITCH_OPTIONS = {"--full-access", "--no-persist", "--skip-git-repo-check"}
+MODEL_KEYS = {"model", "model_provider", "model_reasoning_effort", "model_reasoning_summary",
+              "model_context_window", "model_auto_compact_token_limit", "model_catalog_json",
+              "model_verbosity", "model_max_output_tokens"}
+FEATURES = {name: False for name in ("apps", "plugins", "remote_plugin", "hooks", "goals",
+           "browser_use", "computer_use", "multi_agent", "multi_agent_v2", "code_mode",
+           "request_permissions_tool", "skill_search", "daemon_auto_start")}
+FEATURES["skip_host_skill_discovery"] = True
+
+
+def absolute(path, base=None):
+    p = Path(path).expanduser()
+    return (p if p.is_absolute() else (base or Path.cwd()) / p).resolve()
+
+
+def load_denies(path):
+    values = json.loads(Path(path).read_text())
+    if not isinstance(values, list) or not values:
+        raise ValueError("--deny-list must be a nonempty JSON array of absolute existing paths")
+    result = []
+    for value in values:
+        if not isinstance(value, str) or not value or not Path(value).is_absolute() or "\0" in value:
+            raise ValueError("deny entries must be absolute paths, not globs or relative paths")
+        # Literal paths also work when a real filename contains glob characters.
+        p = absolute(value)
+        if not p.exists():
+            raise ValueError(f"deny entry does not exist: {value}")
+        if str(p) not in result:
+            result.append(str(p))
+    # Seatbelt checks resolved paths, not inode identities. Refuse pre-existing
+    # hardlinks rather than pretending one path denies every name for the inode.
+    # Also deny targets of symlinks already inside a denied directory.
+    pending = list(result)
+    visited = set()
+    while pending:
+        p = Path(pending.pop())
+        if str(p) in visited:
+            continue
+        visited.add(str(p))
+        if p.is_dir():
+            os.listdir(p)  # Must be readable BEFORE sandboxing: no false proof.
+            def walk_error(error):
+                raise error
+            entries = (Path(root)/name for root, dirs, files in os.walk(p, onerror=walk_error)
+                       for name in dirs + files)
+        else:
+            with p.open("rb") as stream:
+                stream.read(1)
+            entries = [p]
+        for entry in entries:
+            if entry.is_symlink():
+                target = entry.resolve(strict=True)
+                if not any(target == Path(d) or Path(d) in target.parents for d in result):
+                    result.append(str(target))
+                    pending.append(str(target))
+            elif entry.is_file() and entry.stat().st_nlink > 1:
+                raise ValueError(f"cannot enforce path-based denial for a hardlinked file: {entry}")
+    return result
+
+
+def is_denied(path, denies):
+    p = absolute(path)
+    return any(p == Path(d) or Path(d) in p.parents for d in denies)
+
+
+def parse_runner(command, cwd):
+    if not command or Path(command[0]).name not in {"codex-agent-run", "claude-agent-run"}:
+        raise ValueError("command must be codex-agent-run or claude-agent-run")
+    executable = shutil.which(command[0])
+    if not executable:
+        raise ValueError(f"runner not found: {command[0]}")
+    values, switches, normalized = {}, set(), [executable]
+    i = 1
+    while i < len(command):
+        option = command[i]
+        if option in VALUE_OPTIONS:
+            if i + 1 >= len(command) or option in values:
+                raise ValueError(f"missing or duplicate runner option: {option}")
+            value = command[i + 1]
+            if option == "--cwd":
+                if absolute(value) != cwd:
+                    raise ValueError("runner --cwd differs from envelope --cwd")
+                value = str(cwd)
+            elif option in {"--output", "--stderr", "--last-message"} and value != "-":
+                output = Path(value).expanduser()
+                if not output.is_absolute():
+                    output = cwd / output
+                if output.is_symlink():
+                    raise ValueError(f"output must not be a symlink: {output}")
+                value = str(absolute(value, cwd))
+            elif option == "--prompt-file" and value != "-":
+                value = str(absolute(value))
+            values[option] = value
+            normalized += [option, value]
+            i += 2
+        elif option in SWITCH_OPTIONS:
+            switches.add(option)
+            normalized.append(option)
+            i += 1
+        else:
+            raise ValueError(f"unsupported isolation runner argument: {option}; no native passthrough, resume or persist")
+    if not values.get("--provider"):
+        raise ValueError("runner --provider is required")
+    if "--cwd" not in values:
+        normalized += ["--cwd", str(cwd)]
+    if "--full-access" not in switches:
+        normalized.append("--full-access")
+    if "--no-persist" not in switches:
+        normalized.append("--no-persist")
+    return Path(command[0]).name.split("-")[0], values, normalized
+
+
+def toml_text(document):
+    lines = []
+    def emit(table, prefix=""):
+        for key, value in table.items():
+            if not isinstance(value, dict):
+                rendered = json.dumps(value, ensure_ascii=False)
+                lines.append(f"{json.dumps(key)} = {rendered}")
+        for key, value in table.items():
+            if isinstance(value, dict):
+                section = f"{prefix}.{json.dumps(key)}" if prefix else json.dumps(key)
+                lines.extend(["", f"[{section}]"])
+                emit(value, section)
+    emit(document)
+    return "\n".join(lines) + "\n"
+
+
+def require_readable(path, denies):
+    if is_denied(path, denies):
+        raise ValueError(f"required setup input is denied: {path}")
+    if not Path(path).is_file():
+        raise ValueError(f"required setup input missing: {path}")
+
+
+def codex_source(provider):
+    return Path.home() / (".codex-agent/business" if provider == "business" else ".codex")
+
+
+def codex_documents(provider, denies):
+    source = codex_source(provider)
+    base = source / "config.toml"
+    card = base if provider == "business" else source / f"{provider}.config.toml"
+    for path in {base, card}:
+        require_readable(path, denies)
+    base_doc, card_doc = (tomllib.loads(p.read_text()) for p in (base, card))
+    return source, {**base_doc, **card_doc}
+
+
+def write_boundary(runtime, provider, cwd, denies):
+    """Conservative subset of the existing runtime filesystem write boundary."""
+    if runtime == "codex":
+        for path in (Path("/etc/codex/config.toml"), Path("/etc/codex/requirements.toml")):
+            if path.exists():
+                raise ValueError(f"cannot infer managed Codex policy: {path}")
+        _, doc = codex_documents(provider, denies)
+        if "default_permissions" in doc or "permissions" in doc:
+            raise ValueError("cannot preserve custom Codex permission-profile writes; use the legacy sandbox_mode configuration")
+        # Project layers can alter permissions. Do not guess the effective policy.
+        for directory in [cwd, *cwd.parents]:
+            project_config = directory / ".codex/config.toml"
+            if project_config.is_file() and directory != Path.home():
+                raise ValueError(f"cannot preserve project-layer Codex writes: {project_config}")
+        mode = doc.get("sandbox_mode", "read-only")
+        if mode not in {"read-only", "workspace-write", "danger-full-access"}:
+            raise ValueError(f"unsupported original sandbox_mode: {mode}")
+        roots = [str(cwd)] if mode != "read-only" else []
+        protected = []
+        for root in roots:
+            protected += [str(Path(root)/name) for name in (".git", ".codex", ".agents", ".aws")]
+        return roots, protected
+    # Only cwd is retained; additional roots are not widened or inferred.
+    # Carry forward explicit sandbox denyWrite from loaded settings layers.
+    blocked = []
+    managed = Path("/Library/Application Support/ClaudeCode/managed-settings.json")
+    if managed.exists():
+        raise ValueError(f"cannot infer managed Claude policy: {managed}")
+    for path in [Path.home()/".claude/settings.json", cwd/".claude/settings.json", cwd/".claude/settings.local.json"]:
+        if path.is_file():
+            require_readable(path, denies)
+            doc = json.loads(path.read_text())
+            if doc.get("permissions", {}).get("deny"):
+                raise ValueError(f"cannot preserve Claude tool deny rules with isolated settings: {path}")
+            fs = doc.get("sandbox", {}).get("filesystem", {})
+            if fs.get("allowRead") or fs.get("denyRead"):
+                # These existing read limits also need to remain in force.
+                raise ValueError(f"custom Claude filesystem read rules need an explicit combined deny list: {path}")
+            for entry in fs.get("denyWrite", []):
+                if not isinstance(entry, str) or any(c in entry for c in "*?["):
+                    raise ValueError(f"cannot preserve nonliteral Claude denyWrite: {path}")
+                blocked.append(str(absolute(entry, cwd)))
+    return [str(cwd)], blocked
+
+
+def prepare_codex(provider, state, denies):
+    source, selected = codex_documents(provider, denies)
+    config = {k: v for k, v in selected.items() if k in MODEL_KEYS}
+    provider_id = config.get("model_provider", "openai")
+    provider_doc = selected.get("model_providers", {}).get(provider_id)
+    if provider_doc is not None:
+        config["model_providers"] = {provider_id: provider_doc}
+    config.update(sandbox_mode="danger-full-access", approval_policy="never", web_search="disabled",
+                  features=FEATURES)
+    catalog = config.get("model_catalog_json")
+    if catalog:
+        path = absolute(catalog, source)
+        require_readable(path, denies)
+        config["model_catalog_json"] = str(path)
+    home = state / "codex"
+    home.mkdir()
+    (home / "config.toml").write_text(toml_text(config))
+    if provider != "business":
+        (home / f"{provider}.config.toml").write_text("")
+    route = (provider_doc or {}).get("base_url", "https://chatgpt.com/backend-api/codex")
+    if provider_id == "openai" or (provider_doc or {}).get("requires_openai_auth", True):
+        auth = source / "auth.json"
+        require_readable(auth, denies)
+        shutil.copyfile(auth, home / "auth.json")
+        (home / "auth.json").chmod(0o600)
+    return home, route
+
+
+def connection_helper():
+    candidate = Path(__file__).resolve().with_name("agent-endpoint.py")
+    spec = importlib.util.spec_from_file_location("sandbox_connection", candidate)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def host_port(url):
+    parts = urlsplit(url)
+    if parts.scheme not in {"http", "https"} or not parts.hostname or parts.username or parts.password:
+        raise ValueError("invalid model route")
+    port = parts.port or (443 if parts.scheme == "https" else 80)
+    host = f"[{parts.hostname}]" if ":" in parts.hostname else parts.hostname
+    return f"{host}:{port}", parts
+
+
+def verify_and_exec(manifest_path, command):
+    manifest = json.loads(Path(manifest_path).read_text())
+    for value in manifest["denies"]:
+        try:
+            if Path(value).is_dir():
+                os.listdir(value)
+            else:
+                with open(value, "rb") as stream:
+                    stream.read(1)
+        except PermissionError:
+            continue
+        raise ValueError(f"read boundary did not deny {value}; refusing to start Agent")
+    # An allowed probe distinguishes successful sandbox setup from blanket failure.
+    probe = Path(manifest["probe"])
+    if probe.read_bytes() != b"agent-sandbox-probe":
+        raise ValueError("allowed sandbox probe is unreadable")
+    probe.write_bytes(b"agent-sandbox-probe")
+    print("agent-sandbox: read boundary verified; starting runner", file=sys.stderr)
+    os.execvpe(command[0], command, os.environ)
+
+
+def main():
+    if sys.argv[1:2] == ["--verify"]:
+        verify_and_exec(sys.argv[2], sys.argv[3:])
+        return
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cwd", required=True)
+    parser.add_argument("--deny-list", required=True, help="JSON array of absolute existing files/directories; literal, recursive directories")
+    parser.add_argument("--allow-domain", action="append", default=[], help="additional network host[:port]; repeatable")
+    parser.add_argument("--check", action="store_true", help="validate setup without starting a sandbox or Agent")
+    parser.add_argument("command", nargs=argparse.REMAINDER)
+    args = parser.parse_args()
+    command = args.command[1:] if args.command[:1] == ["--"] else args.command
+    if platform.system() != "Darwin":
+        raise ValueError("agent-sandbox currently supports verified macOS Seatbelt only")
+    cwd = absolute(args.cwd)
+    if not cwd.is_dir():
+        raise ValueError(f"cwd is not a directory: {cwd}")
+    denies = load_denies(absolute(args.deny_list))
+    runtime, options, command = parse_runner(command, cwd)
+    for path in [command[0], __file__, shutil.which("python3"), os.environ.get("AGENT_TOOLS_FILE", str(Path.home()/".config/zsh/agent-tools.zsh"))]:
+        if path:
+            require_readable(absolute(path), denies)
+    prompt = options.get("--prompt-file")
+    if prompt and prompt != "-":
+        require_readable(prompt, denies)
+    srt = shutil.which("srt")
+    if not srt:
+        raise ValueError("srt is not installed; run scripts/install-agent-sandbox.sh (Node >=22.12)")
+    version = subprocess.run([srt, "--version"], capture_output=True, text=True, check=True).stdout.strip()
+    if version != SRT_VERSION:
+        raise ValueError(f"srt {SRT_VERSION} required, found {version}")
+    outputs = [Path(v) for k, v in options.items() if k in {"--output", "--stderr", "--last-message"} and v != "-"]
+    for path in outputs:
+        if path.exists() or path.is_symlink():
+            raise ValueError(f"output must be new: {path}")
+        if is_denied(path, denies):
+            raise ValueError(f"output is denied: {path}")
+    helper = connection_helper()
+    require_readable(Path(__file__).resolve().with_name("agent-endpoint.py"), denies)
+    require_readable(helper.user_path(), denies) if helper.user_path().exists() else None
+    # Check keys without printing their values; preserve current default/override routing.
+    provider = options["--provider"]
+    if runtime == "claude" or provider not in {"gpt-6-astra", "gpt-6-sol", "gpt-6-luna", "business"}:
+        connection = helper.connection(provider, runtime, require_key=True)
+    write_roots, original_write_denies = write_boundary(runtime, provider, cwd, denies)
+    if args.check:
+        if runtime == "codex":
+            with tempfile.TemporaryDirectory(prefix="agent-sandbox-check.") as directory:
+                _, route = prepare_codex(provider, Path(directory), denies)
+                host_port(route)
+        else:
+            host_port(connection["base_url"])
+        print("setup_status=ok")
+        return
+    # Retain state for evidence/debugging, never reuse it for another invocation.
+    os.umask(0o077)
+    state = Path(tempfile.mkdtemp(prefix="agent-sandbox."))
+    (state / "tmp").mkdir()
+    env = dict(os.environ)
+    env["AGENT_SANDBOX_ENDPOINT_HELPER"] = str(Path(__file__).resolve().with_name("agent-endpoint.py"))
+    if runtime == "codex":
+        home, route = prepare_codex(provider, state, denies)
+        env["AGENT_SANDBOX_CODEX_HOME"] = str(home)
+    else:
+        route = connection["base_url"]
+        home = state / "claude"
+        home.mkdir()
+        env["CLAUDE_CONFIG_DIR"] = str(home)
+    domain, parts = host_port(route)
+    if parts.hostname in {"localhost", "127.0.0.1", "::1"}:
+        with socket.create_connection((parts.hostname, parts.port or 80), timeout=2):
+            pass
+    domains = [domain, *args.allow_domain]
+    if runtime == "codex" and provider in {"gpt-6-astra", "gpt-6-sol", "gpt-6-luna", "business"}:
+        domains += ["auth.openai.com:443", "api.openai.com:443", "chatgpt.com:443"]
+    writes = [str(state), *write_roots]
+    # Runner outputs were already caller-selected sinks before runtime sandboxing.
+    # Grant only those FILES, never their whole parent directories.
+    file_writes = [{"path": str(p), "literal": True} for p in outputs]
+    for path in writes:
+        if is_denied(path, denies):
+            raise ValueError(f"write directory is denied: {path}")
+        Path(path).mkdir(parents=True, exist_ok=True)
+    for path in outputs:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    settings = {
+        "filesystem": {"denyRead": [{"path": p, "literal": True} for p in denies],
+                       "allowRead": [], "allowWrite": [{"path": p, "literal": True} for p in writes] + file_writes,
+                       "denyWrite": [{"path": p, "literal": True} for p in denies] +
+                           ["/tmp/claude", "/private/tmp/claude", str(Path.home()/".npm/_logs"), str(Path.home()/".claude/debug")] +
+                           [{"path": p, "literal": True} for p in original_write_denies]},
+        "network": {"allowedDomains": domains, "deniedDomains": [], "strictAllowlist": True,
+                    "allowLocalBinding": False, "allowAllUnixSockets": False, "allowUnixSockets": []},
+        "allowAppleEvents": False, "enableWeakerNestedSandbox": False, "enableWeakerNetworkIsolation": False,
+    }
+    (state / "srt.json").write_text(json.dumps(settings, indent=2) + "\n")
+    probe = state / "tmp/probe"
+    probe.write_bytes(b"agent-sandbox-probe")
+    (state / "boundary.json").write_text(json.dumps({"denies": denies, "probe": str(probe)}) + "\n")
+    env["CLAUDE_CODE_TMPDIR"] = str(state / "tmp")
+    env["TMPDIR"] = str(state / "tmp") + "/"
+    env["AGENT_SANDBOX_ACTIVE"] = "1"
+    if runtime == "claude":
+        # Fixed local tool surface; no out-of-process configured MCP/hook/browser agents.
+        env["AGENT_SANDBOX_CLAUDE"] = "1"
+    inner = [sys.executable, str(Path(__file__).resolve()), "--verify", str(state / "boundary.json"), *command]
+    # srt's default NO_PROXY excludes loopback. Clear it INSIDE the envelope so
+    # only the selected shim port is reached through the strict network proxy.
+    inner = ["/usr/bin/env", "NO_PROXY=", "no_proxy=", *inner]
+    print(f"agent-sandbox: state={state}", file=sys.stderr)
+    os.chdir(cwd)
+    os.execvpe(srt, [srt, "--settings", str(state / "srt.json"), "--", *inner], env)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
+        print(f"agent-sandbox: {error}", file=sys.stderr)
+        sys.exit(1)

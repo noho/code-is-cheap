@@ -49,7 +49,7 @@ setup 错误派发。
       文件名（包括裸文件名或路径）、provider 形式的裸旧 token、或固定报告指令；普通讨论 CANARY 概念可以保留。
       预检会在追加本轮协议前检查机械特征；总控还须语义检查其它旧报告动作，确保追加的本轮协议为准；
 - [ ] 输出路径（`--output` / `--stderr` / `--last-message`）全新，label / `--instance` 唯一；
-- [ ] 一次性任务用 `--no-persist`；权限继承默认，不得传 `bypassPermissions`；
+- [ ] 一次性任务用 `--no-persist`；默认权限不变；显式隔离派发见下节；
 - [ ] 并发无写冲突：写入范围重叠或有依赖时必须串行。
 
 ## Dispatch Contract
@@ -77,9 +77,9 @@ runner 收到的 `--prompt` / `--prompt-file` 在新的独立 Agent 上下文执
 一次性任务默认使用 `--no-persist`。Claude 调用必须使用唯一 `--instance`。Codex runner 没有
 `--instance` 参数，应使用唯一 task label、输出文件名，并把该 label 写入 prompt。
 
-子 Agent 权限默认继承 auto 模式，无需显式传 `--permission-mode`；需要收紧时显式指定。不得传
-`bypassPermissions`（父会话 auto 分类器会拒绝该派发）。Codex 用 `--sandbox` 选择沙箱级别。
-不得通过宽权限扩张用户授权或任务 scope。
+子 Agent 权限默认继承 auto 模式，无需显式传 `--permission-mode`；需要收紧时显式指定。Codex 用 `--sandbox`
+选择内层沙箱级别。单独的 `--full-access` 关闭内层沙箱与工具审批，不提供输入隔离；只在调用方明确选择
+这种权限时使用。不得通过宽权限扩张用户授权或任务 scope。
 
 ## Execution And Isolation
 
@@ -136,6 +136,32 @@ claude 子 Agent 能启动但自身 Bash 不可用（`EPERM ... srt-mux`）。�
 才能认定该进程已结束；文件暂时没有变化不等于进程已退出。Agent 报告无法继续、托管工具明确报告阻塞，
 或预先约定的超时条件触发时，可标记任务 `blocked`；仍在运行的进程须继续收集或经用户授权停止，
 不得把 `blocked` 冒充进程已退出。用户明确停止并完成中止后，记录为 `blocked` 与停止原因。
+
+### 可选的任务禁读边界（macOS）
+
+默认调用没有任务级读取隔离。调用方需要禁止读取指定材料时，先备齐本次输入，创建 JSON 数组文件，
+其中每项为禁止读取的文件或目录的绝对路径；目录递归禁止。路径必须已存在，按字面值处理，不是 glob。
+调用方决定范围：业务报告、历史日志及已知副本分别列出；封装不推断角色、业务规则或内容相同的未知副本。
+
+```bash
+sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace \
+  --label unique-review --task-file /absolute/task.md --deny-list /absolute/denied.json
+```
+
+预检生成 `agent-sandbox ... -- codex-agent-run ... --full-access ...` 命令；Claude 同样通过对应 runner。
+也可显式用 `agent-sandbox --cwd /absolute/workspace --deny-list /absolute/denied.json -- <runner> ...`。
+封装隐含 `--full-access --no-persist`，固定本次文件系统策略。它不支持 resume、native 参数透传、动态投递或追加 prompt。
+`--cwd` 只决定工作目录；获准来源、Python 依赖和 canary 仍可按原路径读取，禁读名单之外没有读取白名单。
+启动后在外层 Seatbelt 内验证禁读路径确实被拒绝，再启动 Agent；setup 通过本身不是隔离证据。
+
+封装必须从总控沙箱外启动：Codex 总控仍使用独立 `exec_command(require_escalated)`；Claude 总控须将
+`agent-sandbox` 加入自己的 `sandbox.excludedCommands`，并以独立裸命令派发。内层 Full Access 无法解除
+外层 Seatbelt。保留原有生命周期、canary 和结果验收协议；权限错误应报告具体缺项，不自动移除禁读项或放宽权限。
+
+首次使用前，由用户按仓库 README 安装可选 srt 依赖。封装只支持经测试的 macOS/srt 版本，检查失败立即停止。
+它保留原 runtime 写范围的保守子集及指定输出文件；不能推导的自定义权限配置会拒绝启动。隔离调用不加载
+宿主 MCP、hooks、plugins 或浏览器工具；Claude 仅启用 Bash/Read/Write/Edit/Glob/Grep，Codex 使用本地原生工具。
+禁读路径在运行期间不得由其它未隔离进程替换或复制；已有硬链接会拒绝启动。需要的工具/网络缺项须报给调用方裁定。
 
 ### Sandbox Process Management
 

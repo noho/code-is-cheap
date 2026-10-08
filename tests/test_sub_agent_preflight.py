@@ -50,7 +50,7 @@ class PreflightStaleCanaryTests(unittest.TestCase):
             "FAKE_CLAUDE_EXIT": "0",
         }
 
-    def preflight(self, source: str, body: str | Path) -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
+    def preflight(self, source: str, body: str | Path, *options: str) -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
         if source == "--task":
             value = str(body)
         elif isinstance(body, Path):
@@ -62,12 +62,34 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         result = subprocess.run(
             [
                 "bash", str(PREFLIGHT), "--runtime", "codex", "--provider", "mimo",
-                "--cwd", str(ROOT), "--label", "preflight-stale-canary-test", source, value,
+                "--cwd", str(ROOT), "--label", "preflight-stale-canary-test", source, value, *options,
             ],
             env=self.env, capture_output=True, text=True, check=False,
         )
         report = dict(line.split("=", 1) for line in result.stdout.splitlines() if "=" in line)
         return result, report
+
+    def test_optional_envelope_setup_failure_never_prints_dispatch(self):
+        wrapper = self.root / "bin/agent-sandbox"
+        wrapper.write_text("#!/bin/sh\necho 'unsupported original permission profile' >&2\nexit 1\n")
+        wrapper.chmod(0o755)
+        denied = self.root / "denied.json"
+        denied.write_text('[]')
+        result, report = self.preflight("--task", BODY, "--deny-list", str(denied))
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(report["command"], "")
+        self.assertIn("unsupported original permission profile", result.stdout)
+
+    def test_optional_envelope_and_full_access_commands(self):
+        wrapper = self.root / "bin/agent-sandbox"
+        wrapper.write_text("#!/bin/sh\nexit 0\n")
+        wrapper.chmod(0o755)
+        denied = self.root / "denied.json"
+        denied.write_text('[]')
+        result, report = self.preflight("--task", BODY, "--deny-list", str(denied))
+        self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+        self.assertTrue(report["command"].startswith("agent-sandbox --cwd "))
+        self.assertIn("--full-access --no-persist", report["command"])
 
     def test_prompt_file_directory_reports_structured_failure(self) -> None:
         directory = self.root / "prompt-input-dir"

@@ -166,7 +166,7 @@ def initialize():
         stream.write(data)
 
 
-def launch_claude(provider, args, compact_window, max_context, api_timeout):
+def launch_claude(provider, args, compact_window, max_context, api_timeout, full_access=False):
     value = connection(provider, "claude", require_key=True)
     model = value["upstream_model"]
     settings = {
@@ -214,9 +214,11 @@ def launch_claude(provider, args, compact_window, max_context, api_timeout):
         and name.upper() not in {"ANTHROPIC_CUSTOM_HEADERS", "SSH_AUTH_SOCK"}
     }
     env["ANTHROPIC_AUTH_TOKEN"] = value["api_key"]
-    os.execvpe(
-        "claude", ["claude", "--settings", json.dumps({"env": settings}), *args], env
-    )
+    document = {"env": settings}
+    if full_access:
+        document.update(sandbox={"enabled": False}, skipDangerousModePermissionPrompt=True)
+        args = ["--permission-mode", "bypassPermissions", *args]
+    os.execvpe("claude", ["claude", "--settings", json.dumps(document), *args], env)
 
 
 def main():
@@ -229,6 +231,7 @@ def main():
     for flag in ["check", "require-key", "initialize"]:
         parser.add_argument("--" + flag, action="store_true")
     parser.add_argument("--launch-claude")
+    parser.add_argument("--full-access", action="store_true")
     parser.add_argument("--compact-window", default="786432")
     parser.add_argument("--max-context", default="")
     parser.add_argument("--api-timeout", default="")
@@ -244,6 +247,7 @@ def main():
                 args.compact_window,
                 args.max_context,
                 args.api_timeout,
+                args.full_access,
             )
         elif args.check and not args.provider:
             load_endpoints()

@@ -14,6 +14,10 @@ _agent_tools_scrub_credentials() {
 }
 
 _agent_tools_connection_helper() {
+  if [[ -n "${AGENT_SANDBOX_ENDPOINT_HELPER:-}" ]]; then
+    print -r -- "$AGENT_SANDBOX_ENDPOINT_HELPER"
+    return
+  fi
   command -v agent-endpoint.py || {
     print -u2 -- "agent-endpoint.py 不在 PATH（请运行 sync-agent-tools.sh）"
     return 1
@@ -84,12 +88,15 @@ _claude_agent_launch() (
   local max_context="$(_claude_agent_max_context "$agent_id")" || return 1
   local api_timeout="" helper
   local set_title=false
+  local full_access=false
   local -a claude_args=()
   _agent_tools_scrub_credentials || return 1
   helper="$(_agent_tools_connection_helper)" || return 1
   [[ "$agent_id" == local ]] && { _local_agent_require_service || return 1; api_timeout="3600000"; }
   while (( $# > 0 )); do
     case "$1" in
+      --) claude_args+=("$@"); break ;;
+      --full-access) full_access=true; shift ;;
       --title)
         set_title=true
         shift
@@ -98,12 +105,27 @@ _claude_agent_launch() (
       *) claude_args+=("$1"); shift ;;
     esac
   done
+  if [[ "$full_access" == true ]]; then
+    local arg
+    for arg in "${claude_args[@]}"; do
+      [[ "$arg" == -- ]] && break
+      case "$arg" in
+        --settings|--settings=*|--permission-mode|--permission-mode=*)
+          print -u2 -- "--full-access conflicts with custom settings/permission mode"; return 2 ;;
+      esac
+    done
+  fi
   if [[ "$set_title" == true && -n "${TMUX:-}" ]] && command -v tmux >/dev/null 2>&1; then
     tmux select-pane -T "$title" >/dev/null 2>&1 || true
   fi
   # One helper snapshot selects URL/model/key; only exec'd Claude receives the
   # canonical token. No key is printed or placed in argv/settings JSON.
-  python3 "$helper" --launch-claude "$agent_id" --compact-window "$compact_window" \
+  local -a helper_args=()
+  [[ "$full_access" == true ]] && helper_args+=(--full-access)
+  if [[ "${AGENT_SANDBOX_CLAUDE:-}" == 1 ]]; then
+    claude_args=(--safe-mode --setting-sources "" --strict-mcp-config --mcp-config '{"mcpServers":{}}' --tools 'Bash,Read,Write,Edit,Glob,Grep' "${claude_args[@]}")
+  fi
+  python3 "$helper" "${helper_args[@]}" --launch-claude "$agent_id" --compact-window "$compact_window" \
     --max-context "$max_context" --api-timeout "$api_timeout" -- "${claude_args[@]}"
 )
 
@@ -123,6 +145,10 @@ hy_claude()    { _claude_agent_launch hy "$@"; }
 # symlink components in its writable paths). business keeps its own CODEX_HOME
 # (separate ChatGPT login) and is the sole exception.
 _codex_agent_home() {
+  if [[ -n "${AGENT_SANDBOX_CODEX_HOME:-}" ]]; then
+    print -r -- "$AGENT_SANDBOX_CODEX_HOME"
+    return
+  fi
   if [[ "$1" == business ]]; then
     print -r -- "$HOME/.codex-agent/business"
   else
@@ -168,6 +194,9 @@ _codex_agent_require_shim() {
   local agent_id="$1"
   local port="$(_codex_agent_shim_port "$agent_id")" || return 1
   [[ -n "$port" ]] || return 0
+  # The external sandbox already checked the selected route. ztcp bypasses
+  # HTTP_PROXY and cannot reach a shim through srt's network proxy.
+  [[ -z "${AGENT_SANDBOX_CODEX_HOME:-}" ]] || return 0
 
   zmodload zsh/net/tcp 2>/dev/null || {
     echo "无法加载 zsh/net/tcp，跳过 shim 端口检查" >&2
@@ -300,10 +329,13 @@ _codex_agent_launch() (
   local title="$(_codex_agent_title "$agent_id")" || return 1
   local codex_home="$(_codex_agent_home "$agent_id")" || return 1
   local set_title=false
+  local full_access=false
   local -a codex_args=()
 
   while (( $# > 0 )); do
     case "$1" in
+      --) codex_args+=("$@"); break ;;
+      --full-access) full_access=true; shift ;;
       --title)
         set_title=true
         shift
@@ -314,6 +346,9 @@ _codex_agent_launch() (
         ;;
       app)
         if (( ${#codex_args[@]} == 0 )); then
+          [[ "$full_access" == false ]] || {
+            print -u2 -- "--full-access applies to CLI launches, not the desktop App"; return 2
+          }
           shift
           _codex_agent_app "$agent_id" "$@"
           return $?
@@ -327,6 +362,16 @@ _codex_agent_launch() (
         ;;
     esac
   done
+  if [[ "$full_access" == true ]]; then
+    local arg
+    for arg in "${codex_args[@]}"; do
+      [[ "$arg" == -- ]] && break
+      case "$arg" in
+        --sandbox|--sandbox=*|-s|--approve-for-me)
+          print -u2 -- "--full-access conflicts with sandbox/approve-for-me"; return 2 ;;
+      esac
+    done
+  fi
 
   _agent_tools_scrub_credentials || return 1
   _codex_agent_require_home "$agent_id" || return 1
@@ -409,6 +454,7 @@ _codex_agent_launch() (
       *) codex_args=(-c "$model_option" "${codex_args[@]}") ;;
     esac
   fi
+  [[ "$full_access" == true ]] && codex_args=(--dangerously-bypass-approvals-and-sandbox "${codex_args[@]}")
   CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
 )
 
