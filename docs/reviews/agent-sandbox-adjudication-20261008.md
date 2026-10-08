@@ -127,3 +127,24 @@ TMPPREFIX to state/tmp/zsh, alongside existing TMPDIR; the write policy is uncha
 15-test kernel/setup suite prove heredoc success in workspace-write and read-only, with denied reads/outside writes unchanged.
 MiMo Flash's explicitly authorized focused follow-up checks this one-variable fix using exec_command to write its report.
 All earlier attempts/reports remain retained; this follow-up does not replace them or recalculate a measurement batch.
+
+## Authorized focused follow-up and closure (e995c19)
+
+MiMo Flash report: `mimo-flash/code-review-20261008-zsh-final.md`.
+Label `deny-zsh-review-mimo-flash-v4-20261008`, run_dir `sub-agents.2MMRPx`; 34 completed commands.
+The run completed naturally with outer exit 0 and `turn.completed`. Canary read in item_4, expected bytes and final
+report agree. The exact base/head and two-file diff match this operational repair. No substantive finding was reported.
+Controller checked actual zsh outputs: missing TMPPREFIX parent fails, the allowed per-run prefix succeeds with the exact
+marker. Nine focused SetupTests passed. The independent kernel receipt agrees with the controller's applied 15-test suite.
+
+Warnings adjudicated: an exploratory command containing rm was rejected by the preserved original Codex rule; item_27/32
+recovered the consumption probe with Python temporary-directory management. item_37 wrote the complete report, then its
+header assertion failed because it compared literal backslash-n text; item_38 independently read the nonempty artifact.
+Controller checked the actual header, canary, sections and complete content rather than treating that assertion as a failed
+review. The experimental skip_host_skill_discovery warning remains expected. No required evidence gap remains.
+
+Receipt: setup_status=ok, agent_status=completed, tool_evidence=yes, tool_trace=complete, required_evidence=complete,
+canary_status=match, result_status=accepted, retry_class=none, evidence_gaps=[].
+Both independent full reviews and the authorized final operational follow-up are closed. Existing hardlinks, unlisted
+copies, readable runtime credentials and unsupported policies retain the limitations documented in validation/README.
+No live sync was performed; the branch is ready for a PR and manual user merge.
