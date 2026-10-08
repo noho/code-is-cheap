@@ -29,6 +29,7 @@ No portfolio project files, running workflows or live deployment files were modi
 | Default behavior | Fake native binary tests observed no bypass flag/sandbox setting without opt-in, and the proper Full Access flags/settings with opt-in |
 | Original Codex rules | Copied user .rules actually rejected a touch command with the original justification; the forbidden output did not exist |
 | Fixed task | Missing/dual/stdin prompts rejected; prepared prompt snapshotted; attempted snapshot write returned PermissionError |
+| Shell temporary files | zsh login-shell here-documents work with TMPPREFIX inside the already allowed per-run temporary directory, including original read-only mode; no additional write roots |
 
 Raw synthetic native-tool evidence retained at `/private/tmp/code-is-cheap-agent-sandbox-evidence-v3/{codex,claude}-probe.json`
 includes actual request bodies, structured output, stderr and exit codes. Reproduce via
@@ -54,3 +55,8 @@ No GUI or user application was launched. These checks do not assert coverage of 
 - Isolation uses fresh state and a reduced tool/integration surface. No resume, native passthrough, staged inputs or dynamic prompts.
 - Runtime upgrades and additional enabled channels require boundary tests before asserting coverage.
 - A symlink inside a denied directory targeting a FIFO/special file is rejected before opening it, so setup cannot block on that input.
+
+Final operational fix sets zsh TMPPREFIX alongside TMPDIR. The preserved candidate receipt
+`/private/tmp/code-is-cheap-agent-sandbox-evidence-v3/zsh-candidate-check.json` proves heredoc success,
+denied reads, outside-write denial and original read-only/workspace-write distinctions. The applied fix's
+15-test agent-sandbox suite passed, including kernel assertions for heredocs in both write modes.

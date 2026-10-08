@@ -169,6 +169,8 @@ write('sink_neighbor',p/'sinks/unrequested')
 write('sink_write',p/'sinks/result')
 write('original_blocked_write',p/'work/original-blocked')
 write('prompt_write',Path(sys.argv[sys.argv.index('--prompt-file')+1]))
+heredoc = subprocess.run(['/bin/zsh','-lc','cat <<EOF\nALLOW_HEREDOC_MARKER\nEOF\n'],capture_output=True,text=True)
+r['heredoc_code'], r['heredoc_stdout'], r['heredoc_stderr'] = heredoc.returncode, heredoc.stdout, heredoc.stderr
 print(json.dumps(r))
 ''')
         runner.chmod(0o755)
@@ -198,6 +200,8 @@ print(json.dumps(r))
         self.assertNotIn('FORBIDDEN_',r['nested_stdout'])
         self.assertEqual(r['cwd_write'],'allowed')
         self.assertEqual(r['sink_write'],'allowed')
+        self.assertEqual(r['heredoc_code'],0,r)
+        self.assertEqual(r['heredoc_stdout'],'ALLOW_HEREDOC_MARKER\n',r)
         for name in ('protected_write','outside_write','sink_neighbor','prompt_write'):
             self.assertEqual(r[name],'PermissionError',r)
 
@@ -209,6 +213,7 @@ print(json.dumps(r))
         r = json.loads(result.stdout)
         self.assertEqual(r['cwd_write'],'PermissionError',r)
         self.assertEqual(r['sink_write'],'allowed')
+        self.assertEqual(r['heredoc_code'],0,r)
 
     def test_claude_original_deny_write_wins_over_cwd(self):
         p = self.root

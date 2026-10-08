@@ -92,4 +92,38 @@ An exploratory --check declaring the entire ~/.claude failed before any Agent be
 No fallback occurred. The controller then explicitly selected the concrete project/session logs required for this review's declared
 boundary; the hardlink directory is not claimed isolated. Setup with those literal paths succeeds.
 
-Final review receipts and closure are recorded below after collection.
+## Bounded final reviews (b27a9fd)
+
+Reports: `mimo/code-review-20261008-2048-final.md`, `mimo-flash/code-review-20261008-2048-final.md`.
+Both completed naturally with outer exit 0 and `turn.completed`; both canaries match the expected bytes and observed cat.
+Both found no substantive defect in the FIFO guard increment. Actual cat of ~/.claude/history.jsonl and recursive rg of
+~/.claude/projects returned only Operation not permitted, with no history content. Allowed code and canary reads, and own
+report writes succeeded. No peer report content was read. Root independently checked the frozen diff and original tool events.
+
+For both: setup_status=ok, agent_status=completed, tool_evidence=yes, tool_trace=complete, required_evidence=complete,
+canary_status=match, result_status=accepted, evidence_gaps=[], retry_class=none. Temporary tooling errors below recovered;
+they do not mechanically invalidate the review. Full nested kernel reruns were not necessary evidence for these reviewers;
+controller's outside-sandbox suite provides that evidence.
+
+- MiMo: label deny-final-review-mimo-v3-20261008-2048, run_dir sub-agents.av8ddH; 70 commands.
+  Expected deny probes item_9/10; item_48 expected no forbidden marker matches; item_55/56 here-document temp failures
+  recovered with Python -c. Three focused regression tests and normal symlink expansion passed.
+- MiMo Flash: label deny-final-review-mimo-flash-v3-20261008-2048, run_dir sub-agents.nQTH9s.
+  Expected deny probes item_12/13; jq item_30 fixed by correct trace parsing; nested kernel item_38/45 failed at socket/ancestor
+  config setup and are explicitly not counted as passes. Fixture/import errors item_47/51/60/66/67/68 recovered through
+  corrected synthetic checks. Here-doc item_43/87, unsupported apply_patch router call, PTY item_88, /tmp-write item_91,
+  malformed shell quoting item_97 and intermediate report validation errors recovered before final artifact/terminal checks.
+  Nine SetupTests and end-to-end --check FIFO rejection passed. Intermediate draft corruption was replaced by a complete,
+  single-header final report; final provider/model/canary and scope were independently checked.
+  User authorized stopping/retrying while report writing stalled; original process then completed naturally, so no stop occurred.
+
+Both streams record skip_host_skill_discovery's experimental-feature warning. That configured reduction in host discovery is
+intentional, exercised with the pinned runtime, and not a failed initialization or missing evidence.
+
+## Final operational repair
+
+Native review logs exposed zsh here-doc temporary files defaulting outside the allowed state. Accepted controller fix sets
+TMPPREFIX to state/tmp/zsh, alongside existing TMPDIR; the write policy is unchanged. Isolated candidate tests and the applied
+15-test kernel/setup suite prove heredoc success in workspace-write and read-only, with denied reads/outside writes unchanged.
+MiMo Flash's explicitly authorized focused follow-up checks this one-variable fix using exec_command to write its report.
+All earlier attempts/reports remain retained; this follow-up does not replace them or recalculate a measurement batch.

@@ -441,6 +441,7 @@ def main():
     (state / "boundary.json").write_text(json.dumps({"denies": denies, "probe": str(probe), "command": command}) + "\n")
     env["CLAUDE_CODE_TMPDIR"] = str(state / "tmp")
     env["TMPDIR"] = str(state / "tmp") + "/"
+    env["TMPPREFIX"] = str(state / "tmp" / "zsh")
     env["AGENT_SANDBOX_ACTIVE"] = "1"
     if runtime == "claude":
         # Fixed local tool surface; no out-of-process configured MCP/hook/browser agents.
