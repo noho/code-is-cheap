@@ -134,6 +134,10 @@ Claude 启动时读取一份连接快照，只将选定 token 交给 Claude 进�
 
 ## 可选任务禁读边界（macOS）
 
+**平台限制：`agent-sandbox --deny-list` 当前仅支持 macOS**，通过 srt 使用 Seatbelt。
+本项目尚未实现和验证 Linux 封装，Windows 不支持。非 macOS 系统会明确报错，不会退回无沙箱运行。
+`--full-access` 使用 runtime 原生参数，不依赖 Seatbelt。
+
 默认 runner/launcher 行为不变。显式 `--full-access`：Codex 关闭内层沙箱和审批；Claude 使用
 `bypassPermissions` 并关闭内层沙箱。单独使用该参数没有读取隔离。
 

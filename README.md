@@ -138,6 +138,10 @@ Claude resolves one connection snapshot at launch and passes only its selected t
 
 ## Optional task read restrictions (macOS)
 
+**Platform support:** `agent-sandbox --deny-list` currently supports **macOS only**, using Seatbelt through srt.
+This project's Linux envelope is not implemented or tested; Windows is unsupported. On non-macOS systems the command
+fails explicitly without falling back to an unsandboxed run. `--full-access` uses native runtime options and does not require Seatbelt.
+
 Normal runner/launcher behavior is unchanged. `--full-access` is opt-in: Codex skips approvals and its inner sandbox;
 Claude uses `bypassPermissions` with its inner sandbox disabled. This flag alone does not isolate input.
 
