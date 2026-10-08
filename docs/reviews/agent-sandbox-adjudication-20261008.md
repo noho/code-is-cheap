@@ -57,4 +57,39 @@ Output conflicts with original write bans now fail at setup, including --check. 
 No portfolio business source, data or running workflow was accessed or changed for these tests.
 
 See `agent-sandbox-validation-20261008.md` for commands, observations and implementation limits.
-Fix re-review and final closure are recorded below after collection.
+## First fix re-review (a791aa1)
+
+Both independent fix re-reviews completed with outer exit 0 and one `turn.completed`; both report canaries and observed cat
+outputs match their own preflight expected bytes. Reports are `mimo/code-review-20261008-2024-fix.md` and
+`mimo-flash/code-review-20261008-2024-fix.md`. Neither found another substantive code defect; accepted fixes were verified.
+
+- MiMo label `deny-fix-review-mimo-v2-20261008-2024`, run directory `sub-agents.mtuEBm` under the same system TMPDIR above.
+  `setup_status=ok`, `agent_status=completed`, `tool_evidence=yes`, `tool_trace=complete`, `required_evidence=complete`,
+  `canary_status=match`, `result_status=accepted`, `retry_class=none`, `evidence_gaps=[]`.
+  Explained command warnings: item_24/25 absent system headers/man entry; item_38 srt not on PATH; item_65 expected no
+  forbidden marker match; item_82/83/86 missing/unmatched source distributions; item_95 native binary not a symlink;
+  item_96/99 absent Claude source directories. Existing binaries/help, pinned srt package documentation and native traces
+  provided the relevant evidence instead. No necessary evidence remained unresolved.
+- MiMo Flash label `deny-fix-review-mimo-flash-v2-20261008-2024`, run directory `sub-agents.xutp0F`.
+  `setup_status=ok`, `agent_status=completed`, `tool_evidence=yes`, `tool_trace=complete`, `required_evidence=complete`,
+  `canary_status=match`, `result_status=partial`, `retry_class=task`.
+  item_66 used jq input incorrectly (exit 5); corrected inspection recovered the counts and native evidence.
+  **Input-scope gap:** item_34 recursively searched ~/.claude and ~/.config, outside the permitted repository/evidence inputs.
+  The output included public cache/plugin source plus two lines from a portfolio project's historical tool-output copy.
+  No literal key was returned; the reviewer disclosed the broad search and did not cite it. Nevertheless this is not an
+  input-clean review pass. Directly verified technical findings remain usable; this report alone does not close review.
+  This is a scope defect, not automatic rejection due to a tool command failure.
+
+## Additional controller fix and final bounded review setup
+
+Controller found a denied-directory symlink to a FIFO could cause load_denies to block while proving pre-sandbox readability.
+Minimal fix checks recursively discovered targets are regular files/directories before opening; regression asserts that a special
+target is never opened. Final ordinary suite: 84 passed, 6 opt-in skips; kernel/native suite: 17 passed.
+
+Final reviews explicitly use the new envelope to deny the known Claude project-log/history paths, listed Codex sessions/logs/
+history databases and peer reports. This is a caller-provided list, not inferred business rules or an all-home allowlist.
+An exploratory --check declaring the entire ~/.claude failed before any Agent because file-history contains a pre-existing hardlink.
+No fallback occurred. The controller then explicitly selected the concrete project/session logs required for this review's declared
+boundary; the hardlink directory is not claimed isolated. Setup with those literal paths succeeds.
+
+Final review receipts and closure are recorded below after collection.

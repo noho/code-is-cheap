@@ -60,6 +60,8 @@ def load_denies(path):
         if str(p) in visited:
             continue
         visited.add(str(p))
+        if not p.is_file() and not p.is_dir():
+            raise ValueError(f"deny target must be a regular file or directory: {p}")
         if p.is_dir():
             os.listdir(p)  # Must be readable BEFORE sandboxing: no false proof.
             def walk_error(error):

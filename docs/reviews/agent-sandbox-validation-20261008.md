@@ -8,9 +8,9 @@ No portfolio project files, running workflows or live deployment files were modi
 
 ## Observed checks
 
-- `python3 -m unittest discover -s tests`: 83 tests, OK, 6 opt-in kernel/runtime tests skipped.
+- `python3 -m unittest discover -s tests`: 84 tests, OK, 6 opt-in kernel/runtime tests skipped.
 - `AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/private/tmp/code-is-cheap-srt-test/node_modules/.bin/srt python3 -m unittest discover -s tests -p 'test_agent_sandbox*.py'`:
-  16 tests, OK; kernel tests run outside the controller sandbox with managed escalation.
+  17 tests, OK; kernel tests run outside the controller sandbox with managed escalation.
 - Existing endpoint regression: 18 tests OK; preflight: 8 tests OK.
 - `git diff --check`, Python compilation, zsh/bash syntax checks passed; skill-creator quick_validate passed.
 
@@ -30,7 +30,7 @@ No portfolio project files, running workflows or live deployment files were modi
 | Original Codex rules | Copied user .rules actually rejected a touch command with the original justification; the forbidden output did not exist |
 | Fixed task | Missing/dual/stdin prompts rejected; prepared prompt snapshotted; attempted snapshot write returned PermissionError |
 
-Raw synthetic native-tool evidence retained at `/private/tmp/code-is-cheap-agent-sandbox-evidence-v2/{codex,claude}-probe.json`
+Raw synthetic native-tool evidence retained at `/private/tmp/code-is-cheap-agent-sandbox-evidence-v3/{codex,claude}-probe.json`
 includes actual request bodies, structured output, stderr and exit codes. Reproduce via
 `AGENT_SANDBOX_EVIDENCE_DIR=/absolute/temp/evidence` with the opt-in tests. This is diagnostic evidence, not installed configuration.
 Codex tool inventory was exec_command/write_stdin/request_user_input/view_image; Claude inventory was Bash/Edit/Glob/Grep/Read/Write.
@@ -53,3 +53,4 @@ No GUI or user application was launched. These checks do not assert coverage of 
 - Required runtime configuration/credentials are readable dependencies; denying them stops setup. This feature does not isolate credentials from Agent tools.
 - Isolation uses fresh state and a reduced tool/integration surface. No resume, native passthrough, staged inputs or dynamic prompts.
 - Runtime upgrades and additional enabled channels require boundary tests before asserting coverage.
+- A symlink inside a denied directory targeting a FIFO/special file is rejected before opening it, so setup cannot block on that input.

@@ -62,6 +62,20 @@ class SetupTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'regular file'):
                 sandbox.load_denies(p/'list')
 
+    def test_denied_directory_symlink_to_fifo_is_rejected_without_open(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory).resolve(); (p/'denied').mkdir(); os.mkfifo(p/'fifo')
+            (p/'denied/pipe-link').symlink_to(p/'fifo')
+            (p/'list').write_text(json.dumps([str(p/'denied')]))
+            original_open = Path.open
+            def guarded_open(path,*args,**kwargs):
+                if path.resolve() == p/'fifo':
+                    raise AssertionError('must not open a special-file target')
+                return original_open(path,*args,**kwargs)
+            with unittest.mock.patch.object(Path,'open',guarded_open):
+                with self.assertRaisesRegex(ValueError,'regular file'):
+                    sandbox.load_denies(p/'list')
+
     @unittest.skipUnless(platform.system() == 'Darwin','Seatbelt query requires macOS')
     def test_direct_internal_entry_cannot_fake_seatbelt_with_unix_mode(self):
         with tempfile.TemporaryDirectory() as directory:
