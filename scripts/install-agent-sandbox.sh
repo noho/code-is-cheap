@@ -2,7 +2,7 @@
 # Optional dependency: normal runners and sync do not require srt.
 set -euo pipefail
 command -v node >/dev/null || { echo 'Node >=22.12 is required' >&2; exit 1; }
-node -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit(a<22||(a===22&&b<12))'
+node -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit(Number(a<22||(a===22&&b<12)))'
 command -v npm >/dev/null
 prefix="${AGENT_SANDBOX_INSTALL_DIR:-$HOME/.local/share/agent-sandbox}"
 bin_dir="${AGENT_RUN_BIN_DIR:-$HOME/.local/bin}"
