@@ -108,3 +108,21 @@ These probes use actual selected live provider routes and synthetic files. They 
 HTTP payloads; the earlier mock/native tests retain that wire-level evidence. They do not claim isolation of unknown
 copies, credentials or future channels. Existing hardlinks and unsupported original policies remain fail-closed.
 No persistence/resume/dynamic prompt capability or business workflow was changed.
+
+## README platform clarification
+
+User subsequently requested an explicit platform restriction. Commit `212d05a0775665f87ef01c3bd4b2d909b07b73db`
+adds matching notices before optional installation in both READMEs: the envelope is macOS-only; this project's Linux
+envelope is not implemented/tested; Windows is unsupported; non-macOS refuses execution without an unsandboxed fallback.
+Native --full-access options are documented separately as independent of Seatbelt.
+
+Parallel independent reports: `mimo/code-review-20261008-221758.md` and
+`mimo-flash/code-review-20261008-221758.md`, comparing frozen 6a1885a..212d05a. Both found no substantive issue.
+Controller checked the actual notices, non-Darwin guard and native flag/settings branches, each complete report,
+observed canary output and terminal completion. Both collected outer exits are 0; stderr is empty.
+MiMo performed 15 commands; its item_3 read loop emitted no canary because the file has no trailing newline,
+then item_5 recovered with direct shell file reading and printed the exact token. MiMo Flash performed 9 commands;
+item_7's Python read printed the exact token. Report tokens match both expected files. No evidence gap remains.
+For both: setup_status=ok, agent_status=completed, tool_evidence=yes, tool_trace=complete,
+required_evidence=complete, canary_status=match, result_status=accepted, retry_class=none, evidence_gaps=[].
+Controller accepts both conclusions. This documentation-only change requires no live sync or runtime retesting.
