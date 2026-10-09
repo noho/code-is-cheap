@@ -10,7 +10,8 @@
 
 为各 runtime 支持的常见模型提供统一的启动入口，例如 `mimo_claude`、`ds-flash_codex` 和 `gpt_codex`。
 可以按任务选择模型，在熟悉的 Claude Code / Codex CLI 中交互，也可以通过 runner 托管非交互任务。
-上游 URL、模型 ID 和 API key 由本机私有连接配置管理，便于切换支持相应 API 的云商；各 runtime 的可用入口见后文表格。
+第三方模型的上游 URL、模型 ID 和 API key 由本机私有连接配置管理，便于切换支持相应 API 的云商。
+GPT/business profiles 保持使用 Codex 账号登录与模型卡；各 runtime 的可用入口见后文表格。
 
 ### sub-agents SKILL 代替内置子 Agent
 
@@ -42,12 +43,13 @@ Codex / Claude Code 的默认沙箱、工作目录或 prompt 中的禁读约定�
 
 ### 大型 feature 开发的自动化 AI Coding 工程控制框架
 
-先准备架构设计和实施总控计划，再由 `phaseflow` 推进 phase / work unit，按 `gateflow` 的固定 gates 执行。
-覆盖目标与非目标确认、plan review、按 slice 实施、code review、fix / re-review、aggregate deepreview、
+先准备架构设计和实施总控计划，完成 preflight，再由 `phaseflow` 推进 phase / work unit，按 `gateflow` 的固定 gate 顺序执行。
+流程包括目标与非目标确认、plan、plan review、按 slice 实施、code review、fix / re-review、aggregate deepreview、
 accepted commits、draft PR 和 final closeout。
 
 每一步留下可追踪的 artifact、审核裁决、剩余风险及下一步入口，让长流程在明确边界内推进。
 PR 合并由用户手工完成；跨会话继续时，可依据总控文档与已验收成果恢复进度。
+merge、approve、mark ready for review、request reviewers、delete branch、对外 comment、创建或修改外部 issue 仍需用户明确授权。
 
 本仓库是 `skills/` 下所有 skill、`scripts/agent-tools.zsh` 中 Agent 启动函数，以及 `scripts/*-agent-run` 子 Agent
 调用入口的真源。本地运行时文件只是安装目标，不应作为编辑源；应先修改并验证仓库真源，再同步到本地运行环境。
@@ -446,7 +448,7 @@ Gateflow + `tmux-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，ClaudeAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review / re-review。
+$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，CodexAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review / re-review。
 每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -455,7 +457,7 @@ Gateflow + `sub-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Claude mimo / ds-flash 负责两路 review / re-review。
+$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Codex mimo / Claude ds-flash 负责两路 review / re-review。
 所有调用显式传入 workspace 绝对路径，并使用独立 output / stderr 文件；总控检查结构化结果后自行裁决。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -483,7 +485,7 @@ Phaseflow + `tmux-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$tmux-agents 路由 Agents，ClaudeAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
+$tmux-agents 路由 Agents，CodexAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
 总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
 final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
@@ -494,7 +496,7 @@ Phaseflow + `sub-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$sub-agents 通过 runner 子进程派发，Claude mimo / ds-flash 负责两路 review，Codex gpt-6-astra 负责 plan / implement / fix。
+$sub-agents 通过 runner 子进程派发，Codex mimo / Claude ds-flash 负责两路 review，Codex gpt-6-astra 负责 plan / implement / fix。
 总控按 Gateflow 的 Gate Order 推进，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
 严格遵循 AGENTS.md 的约束。
 ```
