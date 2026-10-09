@@ -2,6 +2,7 @@
 // The original CLI still owns proxy setup, signals, child status and cleanup.
 import childProcess from 'node:child_process';
 import { syncBuiltinESMExports } from 'node:module';
+import { createHash } from 'node:crypto';
 import { accessSync, constants, chmodSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -111,8 +112,9 @@ export function fileBackedArgv(command, profilePath, expectedCommand, quote) {
       throw new Error('unsupported srt env prefix');
     }
   }
-  // Exclusive creation in the fresh private state. The generated policy also
-  // denies writes/moves of this file, including when its parent is writable.
+  // Exclusive creation in fresh private state; the policy denies direct-path
+  // writes/moves. Hard-link aliases can alter retained files after load, so
+  // report hashes of the exact pre-spawn bytes to the caller's stderr capture.
   const original = argv[index + 2];
   const profile = compactDenyRules(original);
   if (profile !== original) {
@@ -122,7 +124,9 @@ export function fileBackedArgv(command, profilePath, expectedCommand, quote) {
   writeFileSync(profilePath, profile, { flag: 'wx', mode: 0o600 });
   chmodSync(profilePath, 0o400);
   argv.splice(index + 1, 2, '-f', profilePath);
-  return { argv, profileBytes: Buffer.byteLength(profile), sourceBytes: Buffer.byteLength(original) };
+  const sha256 = value => createHash('sha256').update(value).digest('hex');
+  return { argv, profileBytes: Buffer.byteLength(profile), sourceBytes: Buffer.byteLength(original),
+           profileSha256: sha256(profile), sourceSha256: sha256(original) };
 }
 
 export function validateRuntime(srt) {
@@ -167,7 +171,7 @@ async function main() {
       }
       const result = fileBackedArgv(command, profilePath, expectedCommand, quote);
       launched = true;
-      console.error(`agent-sandbox: seatbelt_profile=${profilePath} bytes=${result.profileBytes} source_bytes=${result.sourceBytes} file-backed`);
+      console.error(`agent-sandbox: seatbelt_profile=${profilePath} bytes=${result.profileBytes} source_bytes=${result.sourceBytes} profile_sha256=${result.profileSha256} source_sha256=${result.sourceSha256} file-backed`);
       return originalSpawn.call(this, result.argv[0], result.argv.slice(1), { ...opts, shell: false });
     }
     return originalSpawn.apply(this, arguments);

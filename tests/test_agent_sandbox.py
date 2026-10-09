@@ -1,6 +1,7 @@
 """Boundary tests. Kernel tests are opt-in and must run outside the parent sandbox.
 AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/path/to/srt python3 -m unittest discover -s tests -p test_agent_sandbox.py
 """
+import hashlib
 import importlib.machinery
 import importlib.util
 import json
@@ -109,6 +110,24 @@ class SetupTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     sandbox.parse_runner(['codex-agent-run', '--provider', 'mimo', option], cwd)
 
+    @unittest.skipUnless(platform.system() == 'Darwin' and shutil.which('node'), 'macOS/Node preflight')
+    def test_preflight_rejects_standalone_srt_without_executing_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory); (p/'bin').mkdir(); (p/'work').mkdir()
+            (p/'secret').write_text('synthetic')
+            (p/'denies.json').write_text(json.dumps([str(p/'secret')]))
+            marker=p/'must-not-execute'
+            srt=p/'bin/srt'; srt.write_text(f'#!/bin/sh\ntouch "{marker}"\necho 0.0.79\n'); srt.chmod(0o755)
+            runner=p/'bin/codex-agent-run'; runner.write_text('#!/bin/sh\nexit 0\n'); runner.chmod(0o755)
+            env={**os.environ,'PATH':str(p/'bin')+':'+os.environ['PATH']}
+            result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
+                '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo','--prompt','test'],
+                env=env,capture_output=True,text=True,timeout=20)
+            self.assertNotEqual(result.returncode,0)
+            self.assertNotIn('setup_status=ok',result.stdout)
+            self.assertIn('reinstall with install-agent-sandbox.sh',result.stderr)
+            self.assertFalse(marker.exists())
+
 
 @unittest.skipUnless(platform.system() == 'Darwin' and os.getenv('AGENT_SANDBOX_KERNEL_TESTS') == '1',
                      'requires macOS and explicit outer-sandbox test opt-in')
@@ -207,15 +226,33 @@ print(json.dumps(r))
         for name in ('protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
             self.assertEqual(r[name],'PermissionError',r)
 
-    def test_preflight_rejects_standalone_srt_before_reporting_success(self):
-        p=self.root; srt=p/'bin/srt'; srt.unlink()
-        srt.write_text('#!/bin/sh\necho 0.0.79\n'); srt.chmod(0o755)
-        result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
-            '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo','--prompt','test'],
-            env=self.env,capture_output=True,text=True,timeout=20)
-        self.assertNotEqual(result.returncode,0)
-        self.assertNotIn('setup_status=ok',result.stdout)
-        self.assertIn('reinstall with install-agent-sandbox.sh',result.stderr)
+    def test_profile_hardlink_changes_detected_by_prespawn_hashes(self):
+        p=self.root
+        entries=json.loads((p/'denies.json').read_text())
+        for i in range(150):
+            file=p/'work/mass'/f'item-{i:04d}'
+            file.parent.mkdir(exist_ok=True); file.write_text('synthetic')
+            entries.append(str(file))
+        (p/'denies.json').write_text(json.dumps(entries))
+        runner=p/'bin/codex-agent-run'
+        extra="""
+state=Path(os.environ['AGENT_SANDBOX_CODEX_HOME']).parent
+for name in ('seatbelt.sb','seatbelt.source.sb'):
+    alias=p/'work'/('alias-'+name)
+    os.link(state/name,alias)
+    alias.chmod(0o600)
+    alias.write_text('SYNTHETIC_CHANGED_AFTER_LOAD')
+"""
+        runner.write_text(runner.read_text().replace('print(json.dumps(r))',extra+'\nprint(json.dumps(r))'))
+        result=self.launch()
+        self.assertEqual(result.returncode,0,result.stderr)
+        state=Path(result.stderr.split('state=',1)[1].splitlines()[0])
+        fields=dict(item.split('=',1) for item in result.stderr.split() if '=' in item)
+        for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+            self.assertEqual(len(fields[key]),64)
+            self.assertNotEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
+        # Retained bytes changed; the policy already loaded by the kernel did not.
+        self.assertEqual(json.loads(result.stdout)['direct'],'PermissionError')
 
     def test_read_only_does_not_gain_cwd_writes(self):
         config = self.root/'home/.codex/config.toml'
@@ -250,6 +287,9 @@ print(json.dumps(r))
         profile = state/'seatbelt.sb'
         self.assertGreater((state/'seatbelt.source.sb').stat().st_size,os.sysconf('SC_ARG_MAX'))
         self.assertLess(profile.stat().st_size,(state/'seatbelt.source.sb').stat().st_size)
+        fields=dict(item.split('=',1) for item in result.stderr.split() if '=' in item)
+        for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+            self.assertEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
         r = json.loads(result.stdout)
         self.assertEqual(r['allowed'],'ALLOW_INPUT')
         self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])

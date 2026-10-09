@@ -364,12 +364,12 @@ def main():
         raise ValueError("node and agent-sandbox-launch.mjs required; sync agent tools before launching")
     require_readable(absolute(node), denies)
     require_readable(launcher, denies)
-    version = subprocess.run([srt, "--version"], capture_output=True, text=True, check=True).stdout.strip()
-    if version != SRT_VERSION:
-        raise ValueError(f"srt {SRT_VERSION} required, found {version}")
     validation = subprocess.run([node, str(launcher), "--validate", srt], capture_output=True, text=True)
     if validation.returncode:
         raise ValueError(validation.stderr.strip() or "invalid srt Node package installation")
+    version = subprocess.run([srt, "--version"], capture_output=True, text=True, check=True).stdout.strip()
+    if version != SRT_VERSION:
+        raise ValueError(f"srt {SRT_VERSION} required, found {version}")
     outputs = [Path(v) for k, v in options.items() if k in {"--output", "--stderr", "--last-message"} and v != "-"]
     for path in outputs:
         if path.exists() or path.is_symlink():

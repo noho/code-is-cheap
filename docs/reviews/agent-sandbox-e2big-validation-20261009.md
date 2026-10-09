@@ -47,7 +47,8 @@ include newline descendants, and do not merge rules or alter allows, operation
 sets, rule order, other filters or logging. Unmatched/small/oversized individual
 filters are retained. There is no deny-list truncation or widening of write
 permissions. Both the source and effective profiles are retained in fresh private
-state, and are protected against Agent writes/moves by the generated policy.
+state; the generated policy denies direct-path writes/moves. See the hard-link
+evidence limitation and pre-spawn hashes below.
 The effective profile is loaded with `sandbox-exec -f`, removing the policy from
 spawn argv. Every original manifest deny still goes through Seatbelt queries
 and actual open denial before runner startup.
@@ -113,3 +114,25 @@ The normal install/sync path deploys the adjacent adapter. Caller invocation,
 preflight, provider routing, lifecycle collection and result acceptance are
 unchanged. The skill now describes startup failure classification and retained
 policy evidence. Sync to live is a separate user action after review/merge.
+
+## MiMo review adjudication
+
+The preflight ordering finding was accepted: structural validation now precedes
+`srt --version`, and an ordinary (non-kernel-gated) marker fixture proves an
+unsupported standalone candidate is never executed.
+
+The hard-link concern was confirmed with a synthetic native probe: both retained
+policy files could be linked into cwd, chmodded and written through the alias.
+This changes evidence files after loading, not the already loaded kernel policy.
+The minimal remedy is explicit provenance: the adapter hashes the exact source
+and effective bytes before spawn and prints both SHA-256 values to envelope
+stderr. A caller must collect that stream through a trusted parent pipe and
+compare retained files before auditing; Agent-writable logs/files alone are not
+trusted evidence. This does not claim inode-level immutability or broaden writes.
+A native regression covers both alias mutations, hash mismatch detection and
+continued enforcement of the original loaded read boundary.
+
+After MiMo adjudication, ordinary suite: **93 tests, OK, 9 explicit opt-in skips**
+(35.883 seconds). Native Seatbelt plus Codex/Claude local-mock suite:
+**26 tests, all passed** (15.844 seconds). These supersede earlier counts for
+current HEAD; earlier results above retain their original snapshot identities.

@@ -1,4 +1,5 @@
 """Transport tests: no model calls or srt installation needed."""
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -68,12 +69,14 @@ const original=['env','-u','EXAMPLE','PROXY_VALUE=literal $()','/usr/bin/sandbox
 const result=fileBackedArgv(quote(original),input.path,expected,quote);
 const bytes=fs.readFileSync(input.path);
 let duplicateRejected=false;try{fileBackedArgv(quote(original),input.path,expected,quote);}catch{duplicateRejected=true;}
-console.log(JSON.stringify({argv:result.argv,equal:bytes.equals(Buffer.from(input.profile)),bytes:result.profileBytes,maxArgBytes:Math.max(...result.argv.map(s=>Buffer.byteLength(s))),mode:fs.statSync(input.path).mode&0o777,duplicateRejected}));
+console.log(JSON.stringify({argv:result.argv,equal:bytes.equals(Buffer.from(input.profile)),bytes:result.profileBytes,maxArgBytes:Math.max(...result.argv.map(s=>Buffer.byteLength(s))),mode:fs.statSync(input.path).mode&0o777,duplicateRejected,profileSha256:result.profileSha256,sourceSha256:result.sourceSha256}));
 """, dict(path=profile_path,profile=profile))
             self.assertTrue(result['equal'] and result['duplicateRejected'])
             self.assertGreater(result['bytes'],1048576)
             self.assertLess(result['maxArgBytes'],1024)
             self.assertEqual(result['mode'],0o400)
+            self.assertEqual(result['profileSha256'],hashlib.sha256(profile.encode()).hexdigest())
+            self.assertEqual(result['sourceSha256'],result['profileSha256'])
             self.assertIn('-f',result['argv'])
             self.assertNotIn('-p',result['argv'])
 
