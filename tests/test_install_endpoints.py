@@ -952,6 +952,7 @@ fi
             self.assertIn('trust_level="trusted"', config.read_text())
             self.assertEqual((home / "git-events").read_text(), "pull\n")
             self.assertTrue((home / ".local/bin/codex-agent-run").is_file())
+            self.assertEqual((home / ".local/bin/agent-sandbox-launch.mjs").read_bytes(), (ROOT / "scripts/agent-sandbox-launch.mjs").read_bytes())
             self.assertTrue((home / ".claude/skills/sub-agents/SKILL.md").is_file())
             self.assertTrue((home / ".codex/gpt-6-sol.config.toml").is_file())
             endpoint.unlink()

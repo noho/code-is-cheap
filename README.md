@@ -152,6 +152,13 @@ install-agent-sandbox.sh
 ```
 
 This pins Anthropic's Apache-2.0 `@anthropic-ai/sandbox-runtime` to 0.0.79. Normal installation/sync does not install or require srt.
+The envelope requires the installed **Node package CLI** (not a standalone srt executable). Sync deploys its adjacent
+`agent-sandbox-launch.mjs` adapter. It groups sibling literal/subpath conditions within each deny rule into bounded, exact regex unions to avoid
+Seatbelt's literal data table limit; it preserves every path, descendant coverage, rule order and operation.
+It retains the generated source as protected `seatbelt.source.sb` when compacting, saves the effective policy
+as protected `seatbelt.sb`, and loads it with `sandbox-exec -f`, avoiding inline-argv `spawn E2BIG`.
+Unsupported CLI layouts fail closed. Native macOS policy compiler limits still apply; a compiler failure stops
+the run before verification/runner startup and does not remove denies or grant additional permissions.
 Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.
 
 Create `denied.json` containing a nonempty JSON array of **absolute, existing** files/directories. Entries are literal regular-file paths;

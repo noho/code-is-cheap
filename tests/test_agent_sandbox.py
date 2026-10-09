@@ -114,7 +114,7 @@ class SetupTests(unittest.TestCase):
                      'requires macOS and explicit outer-sandbox test opt-in')
 class KernelTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix='agent-sandbox-tests.')
+        self.temp = tempfile.TemporaryDirectory(prefix='agent-sandbox-tests.', dir='/private/tmp')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         p = self.root
@@ -169,6 +169,7 @@ write('sink_neighbor',p/'sinks/unrequested')
 write('sink_write',p/'sinks/result')
 write('original_blocked_write',p/'work/original-blocked')
 write('prompt_write',Path(sys.argv[sys.argv.index('--prompt-file')+1]))
+write('profile_write',Path(os.environ.get('AGENT_SANDBOX_CODEX_HOME',os.environ.get('CLAUDE_CONFIG_DIR'))).parent/'seatbelt.sb')
 heredoc = subprocess.run(['/bin/zsh','-lc','cat <<EOF\nALLOW_HEREDOC_MARKER\nEOF\n'],capture_output=True,text=True)
 r['heredoc_code'], r['heredoc_stdout'], r['heredoc_stderr'] = heredoc.returncode, heredoc.stdout, heredoc.stderr
 print(json.dumps(r))
@@ -202,7 +203,7 @@ print(json.dumps(r))
         self.assertEqual(r['sink_write'],'allowed')
         self.assertEqual(r['heredoc_code'],0,r)
         self.assertEqual(r['heredoc_stdout'],'ALLOW_HEREDOC_MARKER\n',r)
-        for name in ('protected_write','outside_write','sink_neighbor','prompt_write'):
+        for name in ('protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
             self.assertEqual(r[name],'PermissionError',r)
 
     def test_read_only_does_not_gain_cwd_writes(self):
@@ -214,6 +215,35 @@ print(json.dumps(r))
         self.assertEqual(r['cwd_write'],'PermissionError',r)
         self.assertEqual(r['sink_write'],'allowed')
         self.assertEqual(r['heredoc_code'],0,r)
+
+    def test_large_deny_list_verifies_every_entry_before_runner(self):
+        p = self.root
+        entries = json.loads((p/'denies.json').read_text())
+        for i in range(4106):
+            directory = p/'work/mass'/f'node-{i % 66:02d}-aaaa'
+            directory.mkdir(parents=True, exist_ok=True)
+            file = directory/f'item-{i:04d}-bbbbbbbbbb.txt'
+            file.write_text('FORBIDDEN_MASS_MARKER')
+            entries.append(str(file))
+        (p/'denies.json').write_text(json.dumps(entries))
+        result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
+            '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
+            '--prompt','test','--output',str(p/'sinks/result')],
+            env=self.env,capture_output=True,text=True,timeout=300)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertIn('read boundary verified; starting runner',result.stderr)
+        self.assertIn('file-backed',result.stderr)
+        state = Path(result.stderr.split('state=',1)[1].splitlines()[0])
+        manifest = json.loads((state/'boundary.json').read_text())
+        self.assertEqual(len(manifest['denies']),4108)
+        profile = state/'seatbelt.sb'
+        self.assertGreater((state/'seatbelt.source.sb').stat().st_size,os.sysconf('SC_ARG_MAX'))
+        self.assertLess(profile.stat().st_size,(state/'seatbelt.source.sb').stat().st_size)
+        r = json.loads(result.stdout)
+        self.assertEqual(r['allowed'],'ALLOW_INPUT')
+        self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
+        self.assertEqual(r['profile_write'],'PermissionError')
+        self.assertEqual(r['outside_write'],'PermissionError')
 
     def test_claude_original_deny_write_wins_over_cwd(self):
         p = self.root
