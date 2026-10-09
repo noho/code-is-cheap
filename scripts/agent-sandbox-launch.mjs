@@ -2,7 +2,7 @@
 // The original CLI still owns proxy setup, signals, child status and cleanup.
 import childProcess from 'node:child_process';
 import { syncBuiltinESMExports } from 'node:module';
-import { chmodSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { accessSync, constants, chmodSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -125,20 +125,36 @@ export function fileBackedArgv(command, profilePath, expectedCommand, quote) {
   return { argv, profileBytes: Buffer.byteLength(profile), sourceBytes: Buffer.byteLength(original) };
 }
 
+export function validateRuntime(srt) {
+  try {
+    const cli = realpathSync(srt);
+    const packageRoot = path.dirname(path.dirname(cli));
+    const pkg = JSON.parse(readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
+    if (pkg.name !== '@anthropic-ai/sandbox-runtime' || pkg.version !== '0.0.79' ||
+        path.resolve(packageRoot, pkg.bin?.srt ?? '') !== cli) throw new Error('package/layout mismatch');
+    for (const file of [cli, path.join(packageRoot, 'dist/utils/shell-quote.js'),
+                       path.join(packageRoot, 'dist/sandbox/macos-sandbox-utils.js')]) {
+      if (!statSync(file).isFile()) throw new Error(`required module is not a file: ${file}`);
+      accessSync(file, constants.R_OK);
+    }
+    return { cli, packageRoot };
+  } catch (error) {
+    throw new Error(`srt 0.0.79 Node package CLI and required modules must be readable; reinstall with install-agent-sandbox.sh (${error.message})`);
+  }
+}
+
 async function main() {
   if (process.platform !== 'darwin') throw new Error('file-backed Seatbelt requires macOS');
+  if (process.argv[2] === '--validate' && process.argv.length === 4) {
+    validateRuntime(process.argv[3]);
+    return;
+  }
   const [srt, profilePath, ...cliArgs] = process.argv.slice(2);
   if (!srt || !profilePath || !path.isAbsolute(profilePath) ||
       cliArgs[0] !== '--settings' || cliArgs[2] !== '--' || cliArgs.length < 4) {
     throw new Error('invalid internal srt launch');
   }
-  const cli = realpathSync(srt);
-  const packageRoot = path.dirname(path.dirname(cli));
-  const pkg = JSON.parse(readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
-  if (pkg.name !== '@anthropic-ai/sandbox-runtime' || pkg.version !== '0.0.79' ||
-      path.resolve(packageRoot, pkg.bin?.srt ?? '') !== cli) {
-    throw new Error('srt 0.0.79 Node package CLI required; refusing alternate launcher');
-  }
+  const { cli, packageRoot } = validateRuntime(srt);
   const { quote } = await import(pathToFileURL(path.join(packageRoot, 'dist/utils/shell-quote.js')).href);
   const expectedCommand = quote(cliArgs.slice(3));
   const originalSpawn = childProcess.spawn;

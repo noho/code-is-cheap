@@ -195,6 +195,7 @@ print(json.dumps(r))
         self.assertEqual(r['allowed'],'ALLOW_INPUT')
         for name in ('direct','symlink','dir_alias','dotdot','history','data_alias','tmp_alias','hardlink'):
             self.assertEqual(r[name],'PermissionError',r)
+
         if 'case_alias' in r: self.assertEqual(r['case_alias'],'PermissionError',r)
         self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
         self.assertNotEqual(r['nested_code'],0)
@@ -205,6 +206,16 @@ print(json.dumps(r))
         self.assertEqual(r['heredoc_stdout'],'ALLOW_HEREDOC_MARKER\n',r)
         for name in ('protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
             self.assertEqual(r[name],'PermissionError',r)
+
+    def test_preflight_rejects_standalone_srt_before_reporting_success(self):
+        p=self.root; srt=p/'bin/srt'; srt.unlink()
+        srt.write_text('#!/bin/sh\necho 0.0.79\n'); srt.chmod(0o755)
+        result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
+            '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo','--prompt','test'],
+            env=self.env,capture_output=True,text=True,timeout=20)
+        self.assertNotEqual(result.returncode,0)
+        self.assertNotIn('setup_status=ok',result.stdout)
+        self.assertIn('reinstall with install-agent-sandbox.sh',result.stderr)
 
     def test_read_only_does_not_gain_cwd_writes(self):
         config = self.root/'home/.codex/config.toml'

@@ -82,6 +82,24 @@ AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/path/to/srt \
 python3 -m unittest discover -s tests
 ```
 
+## Review fix and final verification
+
+The accepted preflight finding was fixed: `--check` and real launch now share a
+non-spawning Node-package validator, checking canonical CLI path, pinned
+package/name/version/bin layout and readable regular required modules. A fake
+standalone CLI that prints 0.0.79, a mismatched package and missing modules are
+rejected with a reinstall instruction before `setup_status=ok`.
+
+After this fix the complete native suite passed **25 tests in 11.852 seconds**.
+The earlier 23-test result above records the original reviewed snapshot.
+
+The first historical reported policy also compiled with all 4476 entries:
+source 2153855 bytes, effective 770148 bytes. All 4476 kernel queries denied;
+4111 actual opens denied, 365 returned ENOENT because historical paths are now
+missing. Those missing entries are not claimed as complete open verification.
+No content read or business Agent start occurred. Local evidence:
+`/private/tmp/agent-sandbox-first-verified.5qrn3u4b/`.
+
 ## Limits and deployment
 
 macOS only, installed srt 0.0.79 Node package CLI required. Native policy compiler

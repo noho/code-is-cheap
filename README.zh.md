@@ -151,7 +151,7 @@ install-agent-sandbox.sh
 封装要求安装的 **Node 包 CLI**，不接受独立编译版 srt；sync 同时部署相邻的 `agent-sandbox-launch.mjs`。
 适配器将同一禁令中同父目录的字面路径/子树条件合并为有长度上限的精确正则并集，避免 Seatbelt 字面量数据表超限；
 保留所有路径、子树范围、规则顺序和操作。压缩时原策略保存在受写保护的 `seatbelt.source.sb`，实际策略保存为
-`seatbelt.sb` 并通过 `sandbox-exec -f` 加载，避免大策略嵌入启动参数导致 `spawn E2BIG`。不支持的 CLI 启动结构明确失败。macOS 原生策略编译器
+`seatbelt.sb` 并通过 `sandbox-exec -f` 加载，避免大策略嵌入启动参数导致 `spawn E2BIG`。预检和启动共用不派生子进程的安装结构/模块检查；不支持的 CLI 启动结构明确失败。macOS 原生策略编译器
 仍有容量限制；编译失败时在验证及 runner 启动前停止，不删减禁读项或扩大权限。
 两个封装命令由 `scripts/sync-agent-tools.sh` 部署。已测试 macOS、Codex 0.161.0、Claude Code 2.1.294。
 

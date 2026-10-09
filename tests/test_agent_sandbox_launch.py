@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class LaunchTests(unittest.TestCase):
     def run_node(self, source, inputs):
         result = subprocess.run(['node', '--input-type=module', '-e',
-            "import {decodeArgv,fileBackedArgv,compactDenyRules} from " + json.dumps((ROOT/'scripts/agent-sandbox-launch.mjs').as_uri()) + ";\n"
+            "import {decodeArgv,fileBackedArgv,compactDenyRules,validateRuntime} from " + json.dumps((ROOT/'scripts/agent-sandbox-launch.mjs').as_uri()) + ";\n"
             "import fs from 'node:fs';\nconst input=JSON.parse(fs.readFileSync(0,'utf8'));\n" + source],
             input=json.dumps(inputs), capture_output=True, text=True, timeout=20)
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -32,6 +32,30 @@ console.log(JSON.stringify({good,bad}));
             ["'Unicode 雪\nline'", ['Unicode 雪\nline']],
         ], bad=['env x;echo bad', 'env $HOME', 'env `id`', 'env a|b', "env 'unterminated", 'env  a', 'env a ']))
         self.assertTrue(all(result['good']) and all(result['bad']),result)
+
+    def test_runtime_validation_is_nonspawning_and_rejects_incomplete_installations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory); (p/'dist/utils').mkdir(parents=True); (p/'dist/sandbox').mkdir()
+            marker=p/'must-not-run'
+            cli=p/'dist/cli.js'; cli.write_text(f"require('fs').writeFileSync({json.dumps(str(marker))},'bad')")
+            quote=p/'dist/utils/shell-quote.js'; quote.write_text('export const quote = () => "";')
+            (p/'dist/sandbox/macos-sandbox-utils.js').write_text('// fixture')
+            pkg=p/'package.json'
+            doc=dict(name='@anthropic-ai/sandbox-runtime',version='0.0.79',bin=dict(srt='dist/cli.js'))
+            pkg.write_text(json.dumps(doc))
+            result=self.run_node('console.log(JSON.stringify(validateRuntime(input)));',str(cli))
+            self.assertEqual(result['cli'],str(cli.resolve()))
+            self.assertFalse(marker.exists())
+            for alteration in ('version','bin','missing-module','standalone'):
+                changed=dict(doc)
+                if alteration=='version': changed['version']='0.0.80'
+                if alteration=='bin': changed['bin']=dict(srt='dist/other.js')
+                if alteration=='missing-module': quote.unlink()
+                pkg.write_text(json.dumps(changed))
+                candidate=str(cli) if alteration!='standalone' else str(p/'standalone')
+                if alteration=='standalone': Path(candidate).write_text('#!/bin/sh\necho 0.0.79\n')
+                result=self.run_node('try{validateRuntime(input);console.log(JSON.stringify(false));}catch(e){console.log(JSON.stringify(e.message));}',candidate)
+                self.assertIn('reinstall with install-agent-sandbox.sh',result)
 
     def test_large_profile_is_byte_preserved_and_no_long_spawn_argument_remains(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -157,7 +157,7 @@ The envelope requires the installed **Node package CLI** (not a standalone srt e
 Seatbelt's literal data table limit; it preserves every path, descendant coverage, rule order and operation.
 It retains the generated source as protected `seatbelt.source.sb` when compacting, saves the effective policy
 as protected `seatbelt.sb`, and loads it with `sandbox-exec -f`, avoiding inline-argv `spawn E2BIG`.
-Unsupported CLI layouts fail closed. Native macOS policy compiler limits still apply; a compiler failure stops
+Preflight and launch share a non-spawning package/module-layout check. Unsupported CLI layouts fail closed. Native macOS policy compiler limits still apply; a compiler failure stops
 the run before verification/runner startup and does not remove denies or grant additional permissions.
 Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.
 
