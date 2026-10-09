@@ -2,18 +2,61 @@
 
 English | [中文](README.zh.md)
 
-An engineering control framework for automated AI coding. Its core assumption is that architecture, phase/work-unit
-boundaries, entry/exit criteria, and implementation control plans are prepared first; after that, agents can execute inside
-explicit gates with durable artifacts, review decisions, residual-risk tracking, and accepted checkpoints.
+Tools for using multiple models in Codex / Claude Code, with an engineering control framework for automated AI coding.
 
-This is not a loose collection of prompts. It is a workflow for putting AI coding inside an engineering loop: confirm goals
-and non-goals, plan, review, implement by slices, review code, fix findings, re-review, run aggregate deep review, track
-residual risks, create accepted commits, open a draft PR, run PR review, and continue through final closeout. Merge,
-approval, marking a PR ready for review, requesting reviewers, deleting branches, public comments, and external issue
-changes still require explicit user authorization.
+## Features
 
-This repository contains local skills and supporting scripts for Codex / Claude Code, covering phase-driven development,
-gated feature development, plan review, deep code review, and multi-agent handoff.
+### Claude Code / Codex launchers for common models
+
+Use consistent launchers for models supported by each runtime, such as `mimo_claude`, `ds-flash_codex`, and `gpt_codex`.
+Choose a model for interactive work in Claude Code / Codex CLI, or use a runner for non-interactive tasks.
+For third-party models, a private local connection file manages upstream URLs, model IDs, and API keys, so you can switch
+gateways that support the corresponding API. GPT/business profiles retain their Codex account login and model cards.
+See the launcher table below for the commands available in each runtime.
+
+### Replace built-in subagents with the sub-agents SKILL
+
+Different models suit different tasks. Built-in subagents are constrained by the model choices and routing offered by
+their runtime. The `sub-agents` skill launches external agents through `claude-agent-run` / `codex-agent-run`, letting an
+Orchestrator choose the provider and runtime for each task in place of built-in subagent dispatch.
+
+More importantly, large AI workflows consume many tokens, and not every step needs an expensive model.
+Assign demanding reasoning to capable models and retrieval, organization, or routine checks to more economical ones.
+The controller checks results, adjudicates disagreements, and accepts artifacts.
+
+### Stricter isolation for child agents
+
+Large AI workflows often need roles to reach independent conclusions without reading another role's answers.
+For example, Agent A creates questions and answers; Agent B may read the questions but must not read A's answers,
+analysis, or historical records before solving them independently.
+
+Default Codex / Claude Code sandboxes, working directories, and prompt-only read prohibitions do not themselves define
+that task-specific read boundary. On **macOS**, code-is-cheap offers the optional `agent-sandbox` envelope: the caller
+supplies forbidden files/directories through `--deny-list`, reads are blocked at the filesystem access layer, and the
+runner starts only after kernel read-denial verification. It retains a conservative subset of the original write limits.
+Install the pinned srt dependency first; ordinary runner calls do not enable this isolation automatically. The caller
+must also list known copies; unlisted copies remain readable. See "Optional task read restrictions (macOS)" below.
+
+### Communication between agents
+
+With `tmux-agents` and `tmux-cli`, running CLI agents can exchange prompts, wait for responses, and read feedback.
+For example, project A depends on project B. When A's agent finds a bug, it sends reproduction evidence and a repair
+request to B's agent; after receiving the fix result, A's agent verifies the dependency and continues its workflow.
+Repairs, merges, and further execution follow each project's process and user authorization.
+This connects existing CLI sessions; it does not inject instructions into a running one-shot runner task.
+
+### Engineering controls for automated coding of large features
+
+Prepare the architecture and implementation control plan first, then complete preflight. `phaseflow` advances phases /
+work units according to `gateflow`'s fixed gate order. The workflow includes goal and non-goal confirmation, planning,
+plan review, implementation by slices, code review, fixes and re-review, aggregate deep review, accepted commits,
+draft PRs, and final closeout.
+
+Each step leaves traceable artifacts, review decisions, residual risks, and a next entry point, so a long workflow can
+proceed within explicit boundaries. The user merges PRs manually. Across sessions, the control document and accepted
+artifacts provide the basis for resuming work.
+Merging, approving, marking a PR ready for review, requesting reviewers, deleting branches, public comments, and
+creating or modifying external issues still require explicit user authorization.
 
 This repository is the source of truth for the skills under `skills/`, the agent launcher under
 `scripts/agent-tools.zsh`, the child-agent runners under `scripts/*-agent-run`, and the provider registry under
@@ -431,7 +474,7 @@ Gateflow with `tmux-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while ClaudeAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review / re-review passes.
+$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while CodexAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review / re-review passes.
 Re-discover panes before every send, clear the session for new tasks, and avoid bare #numbers.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -440,7 +483,7 @@ Gateflow with `sub-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Claude mimo / ds-flash run the two review / re-review passes.
+$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Codex mimo / Claude ds-flash run the two review / re-review passes.
 Pass the workspace absolute path explicitly in every call and use separate output / stderr files; the controller checks the structured results and adjudicates itself.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -470,7 +513,7 @@ Phaseflow with `tmux-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$tmux-agents routes Agents: ClaudeAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
+$tmux-agents routes Agents: CodexAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
 The controller Agent completes preflight and goal confirmation first; after confirmation, dispatch gate by gate following Gateflow's Gate Order.
 After each Agent returns, the controller reads the artifact, adjudicates findings, updates control_doc, collects residual risks, and closes resolved risks.
 After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
@@ -481,7 +524,7 @@ Phaseflow with `sub-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$sub-agents dispatches through runner subprocesses: Claude mimo / ds-flash run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
+$sub-agents dispatches through runner subprocesses: Codex mimo / Claude ds-flash run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
 The controller advances through Gateflow's Gate Order, checks each subprocess's exit status and structured output, and updates control_doc.
 Strictly follow the constraints in AGENTS.md.
 ```
