@@ -152,6 +152,21 @@ install-agent-sandbox.sh
 ```
 
 This pins Anthropic's Apache-2.0 `@anthropic-ai/sandbox-runtime` to 0.0.79. Normal installation/sync does not install or require srt.
+The envelope requires the installed **Node package CLI** (not a standalone srt executable). Sync deploys its adjacent
+`agent-sandbox-launch.mjs` adapter. It groups sibling literal/subpath conditions within each deny rule into bounded, exact regex unions to avoid
+Seatbelt's literal data table limit; it preserves every path, descendant coverage, rule order and operation.
+It retains the generated source as `seatbelt.source.sb` when compacting, saves the effective policy
+as `seatbelt.sb`, and loads it with `sandbox-exec -f`, avoiding inline-argv `spawn E2BIG`.
+Their original paths deny writes/moves, but hard-link aliases can alter retained files after loading;
+this does not change the loaded kernel policy. Before spawning, the adapter prints `profile_sha256`
+and `source_sha256` to envelope stderr. The caller must collect that stream through a trusted parent
+pipe and compare retained files against those hashes before using them as evidence; an Agent-writable
+log or the retained files alone do not prove integrity. Keep the first adapter `seatbelt_profile=`
+record in envelope stderr, before runner startup; later duplicates can be child-authored and must
+never overwrite it (do not use last-wins parsing). When no compaction occurs, only `seatbelt.sb`
+is retained and the source/effective hashes are identical.
+Preflight and launch share a non-spawning package/module-layout check; preflight validates the layout before executing `srt --version`. Unsupported CLI layouts fail closed. Native macOS policy compiler limits still apply; a compiler failure stops
+the run before verification/runner startup and does not remove denies or grant additional permissions.
 Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.
 
 Create `denied.json` containing a nonempty JSON array of **absolute, existing** files/directories. Entries are literal regular-file paths;

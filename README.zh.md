@@ -148,6 +148,17 @@ install-agent-sandbox.sh
 ```
 
 安装固定版本 Anthropic 的 Apache-2.0 `@anthropic-ai/sandbox-runtime` 0.0.79。普通安装/sync 不要求或安装 srt。
+封装要求安装的 **Node 包 CLI**，不接受独立编译版 srt；sync 同时部署相邻的 `agent-sandbox-launch.mjs`。
+适配器将同一禁令中同父目录的字面路径/子树条件合并为有长度上限的精确正则并集，避免 Seatbelt 字面量数据表超限；
+保留所有路径、子树范围、规则顺序和操作。压缩时原策略保存在 `seatbelt.source.sb`，实际策略保存为
+`seatbelt.sb` 并通过 `sandbox-exec -f` 加载，避免大策略嵌入启动参数导致 `spawn E2BIG`。
+原路径禁止写入/移动，但运行期硬链接别名仍能改写留存文件，不会改变已加载的内核策略。
+适配器在启动子进程前把 `profile_sha256` / `source_sha256` 打到封装 stderr；调用方须通过可信父进程 pipe 收集该流，
+审计时先比对留存文件哈希。仅凭 Agent 可修改的日志或留存文件不能证明完整性。
+只认封装 stderr 中 runner 启动前的第一条 `seatbelt_profile=` 适配器记录；后续重复行可能由子进程伪造，
+不得覆盖首条记录或采用 last-wins 解析。未压缩时只留存 `seatbelt.sb`，两项哈希相同。
+预检和启动共用不派生子进程的安装结构/模块检查，预检先验证结构再执行 `srt --version`；不支持的 CLI 启动结构明确失败。macOS 原生策略编译器
+仍有容量限制；编译失败时在验证及 runner 启动前停止，不删减禁读项或扩大权限。
 两个封装命令由 `scripts/sync-agent-tools.sh` 部署。已测试 macOS、Codex 0.161.0、Claude Code 2.1.294。
 
 `denied.json` 为非空 JSON 数组，每项是**绝对且已存在**的禁读文件/目录，字面路径，不是 glob；目录递归禁止。

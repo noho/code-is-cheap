@@ -358,6 +358,15 @@ def main():
     srt = shutil.which("srt")
     if not srt:
         raise ValueError("srt is not installed; run scripts/install-agent-sandbox.sh (Node >=22.12)")
+    node = shutil.which("node")
+    launcher = Path(__file__).resolve().with_name("agent-sandbox-launch.mjs")
+    if not node or not launcher.is_file():
+        raise ValueError("node and agent-sandbox-launch.mjs required; sync agent tools before launching")
+    require_readable(absolute(node), denies)
+    require_readable(launcher, denies)
+    validation = subprocess.run([node, str(launcher), "--validate", srt], capture_output=True, text=True)
+    if validation.returncode:
+        raise ValueError(validation.stderr.strip() or "invalid srt Node package installation")
     version = subprocess.run([srt, "--version"], capture_output=True, text=True, check=True).stdout.strip()
     if version != SRT_VERSION:
         raise ValueError(f"srt {SRT_VERSION} required, found {version}")
@@ -422,7 +431,8 @@ def main():
     task.write_text(text, encoding="utf-8")
     position = options["_prompt_index"]
     command[position:position+2] = ["--prompt-file", str(task)]
-    fixed_files = [str(task)]
+    profile = state / "seatbelt.sb"
+    fixed_files = [str(task), str(profile), str(state / "seatbelt.source.sb")]
     if runtime == "codex":
         fixed_files += [str(home/"rules"), str(home/"config.toml"), str(home/f"{provider}.config.toml")]
     settings = {
@@ -455,7 +465,8 @@ def main():
     # Prepared prompt only: unrelated inherited stdin must not enter the CLI.
     with open(os.devnull, "rb") as empty:
         os.dup2(empty.fileno(), 0)
-    os.execvpe(srt, [srt, "--settings", str(state / "srt.json"), "--", *inner], env)
+    os.execvpe(node, [node, str(launcher), srt, str(profile),
+                     "--settings", str(state / "srt.json"), "--", *inner], env)
 
 
 if __name__ == "__main__":

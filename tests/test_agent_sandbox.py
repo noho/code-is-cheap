@@ -1,6 +1,7 @@
 """Boundary tests. Kernel tests are opt-in and must run outside the parent sandbox.
 AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/path/to/srt python3 -m unittest discover -s tests -p test_agent_sandbox.py
 """
+import hashlib
 import importlib.machinery
 import importlib.util
 import json
@@ -20,7 +21,20 @@ sandbox = importlib.util.module_from_spec(spec)
 loader.exec_module(sandbox)
 
 
+def profile_fields(stderr):
+    # The adapter emits before spawn; descendants can forge later duplicates.
+    line=next(line for line in stderr.splitlines() if line.startswith('agent-sandbox: seatbelt_profile='))
+    return dict(item.split('=',1) for item in line.split() if '=' in item)
+
+
 class SetupTests(unittest.TestCase):
+    def test_later_child_hash_record_cannot_replace_adapter_record(self):
+        stream=('agent-sandbox: seatbelt_profile=/first profile_sha256=original source_sha256=source file-backed\n'
+                'read boundary verified; starting runner\n'
+                'agent-sandbox: seatbelt_profile=/forged profile_sha256=forged source_sha256=forged file-backed\n')
+        self.assertEqual(profile_fields(stream)['profile_sha256'],'original')
+        self.assertEqual(profile_fields(stream)['source_sha256'],'source')
+
     def test_invalid_entries_fail(self):
         with tempfile.TemporaryDirectory() as directory:
             p = Path(directory)/'denies.json'
@@ -109,12 +123,31 @@ class SetupTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     sandbox.parse_runner(['codex-agent-run', '--provider', 'mimo', option], cwd)
 
+    @unittest.skipUnless(platform.system() == 'Darwin' and shutil.which('node'), 'macOS/Node preflight')
+    def test_preflight_rejects_standalone_srt_without_executing_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            p=Path(directory); (p/'bin').mkdir(); (p/'work').mkdir()
+            (p/'secret').write_text('synthetic')
+            (p/'denies.json').write_text(json.dumps([str(p/'secret')]))
+            marker=p/'must-not-execute'
+            srt=p/'bin/srt'; srt.write_text(f'#!/bin/sh\ntouch "{marker}"\necho 0.0.79\n'); srt.chmod(0o755)
+            runner=p/'bin/codex-agent-run'; runner.write_text('#!/bin/sh\nexit 0\n'); runner.chmod(0o755)
+            env={**os.environ,'PATH':str(p/'bin')+':'+os.environ['PATH'],
+                 'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
+            result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
+                '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo','--prompt','test'],
+                env=env,capture_output=True,text=True,timeout=20)
+            self.assertNotEqual(result.returncode,0)
+            self.assertNotIn('setup_status=ok',result.stdout)
+            self.assertIn('reinstall with install-agent-sandbox.sh',result.stderr)
+            self.assertFalse(marker.exists())
+
 
 @unittest.skipUnless(platform.system() == 'Darwin' and os.getenv('AGENT_SANDBOX_KERNEL_TESTS') == '1',
                      'requires macOS and explicit outer-sandbox test opt-in')
 class KernelTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix='agent-sandbox-tests.')
+        self.temp = tempfile.TemporaryDirectory(prefix='agent-sandbox-tests.', dir='/private/tmp')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
         p = self.root
@@ -169,6 +202,7 @@ write('sink_neighbor',p/'sinks/unrequested')
 write('sink_write',p/'sinks/result')
 write('original_blocked_write',p/'work/original-blocked')
 write('prompt_write',Path(sys.argv[sys.argv.index('--prompt-file')+1]))
+write('profile_write',Path(os.environ.get('AGENT_SANDBOX_CODEX_HOME',os.environ.get('CLAUDE_CONFIG_DIR'))).parent/'seatbelt.sb')
 heredoc = subprocess.run(['/bin/zsh','-lc','cat <<EOF\nALLOW_HEREDOC_MARKER\nEOF\n'],capture_output=True,text=True)
 r['heredoc_code'], r['heredoc_stdout'], r['heredoc_stderr'] = heredoc.returncode, heredoc.stdout, heredoc.stderr
 print(json.dumps(r))
@@ -194,6 +228,7 @@ print(json.dumps(r))
         self.assertEqual(r['allowed'],'ALLOW_INPUT')
         for name in ('direct','symlink','dir_alias','dotdot','history','data_alias','tmp_alias','hardlink'):
             self.assertEqual(r[name],'PermissionError',r)
+
         if 'case_alias' in r: self.assertEqual(r['case_alias'],'PermissionError',r)
         self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
         self.assertNotEqual(r['nested_code'],0)
@@ -202,8 +237,40 @@ print(json.dumps(r))
         self.assertEqual(r['sink_write'],'allowed')
         self.assertEqual(r['heredoc_code'],0,r)
         self.assertEqual(r['heredoc_stdout'],'ALLOW_HEREDOC_MARKER\n',r)
-        for name in ('protected_write','outside_write','sink_neighbor','prompt_write'):
+        for name in ('protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
             self.assertEqual(r[name],'PermissionError',r)
+
+    def test_profile_hardlink_changes_detected_by_prespawn_hashes(self):
+        p=self.root
+        entries=json.loads((p/'denies.json').read_text())
+        for i in range(150):
+            file=p/'work/mass'/f'item-{i:04d}'
+            file.parent.mkdir(exist_ok=True); file.write_text('synthetic')
+            entries.append(str(file))
+        (p/'denies.json').write_text(json.dumps(entries))
+        runner=p/'bin/codex-agent-run'
+        extra="""
+state=Path(os.environ['AGENT_SANDBOX_CODEX_HOME']).parent
+for name in ('seatbelt.sb','seatbelt.source.sb'):
+    alias=p/'work'/('alias-'+name)
+    os.link(state/name,alias)
+    alias.chmod(0o600)
+    alias.write_text('SYNTHETIC_CHANGED_AFTER_LOAD')
+from hashlib import sha256
+forged=sha256(b'SYNTHETIC_CHANGED_AFTER_LOAD').hexdigest()
+print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forged} source_sha256={forged} file-backed',file=sys.stderr)
+"""
+        runner.write_text(runner.read_text().replace('print(json.dumps(r))',extra+'\nprint(json.dumps(r))'))
+        result=self.launch()
+        self.assertEqual(result.returncode,0,result.stderr)
+        state=Path(result.stderr.split('state=',1)[1].splitlines()[0])
+        fields=profile_fields(result.stderr)
+        self.assertEqual(result.stderr.count('agent-sandbox: seatbelt_profile='),2)
+        for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+            self.assertEqual(len(fields[key]),64)
+            self.assertNotEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
+        # Retained bytes changed; the policy already loaded by the kernel did not.
+        self.assertEqual(json.loads(result.stdout)['direct'],'PermissionError')
 
     def test_read_only_does_not_gain_cwd_writes(self):
         config = self.root/'home/.codex/config.toml'
@@ -214,6 +281,38 @@ print(json.dumps(r))
         self.assertEqual(r['cwd_write'],'PermissionError',r)
         self.assertEqual(r['sink_write'],'allowed')
         self.assertEqual(r['heredoc_code'],0,r)
+
+    def test_large_deny_list_verifies_every_entry_before_runner(self):
+        p = self.root
+        entries = json.loads((p/'denies.json').read_text())
+        for i in range(4106):
+            directory = p/'work/mass'/f'node-{i % 66:02d}-aaaa'
+            directory.mkdir(parents=True, exist_ok=True)
+            file = directory/f'item-{i:04d}-bbbbbbbbbb.txt'
+            file.write_text('FORBIDDEN_MASS_MARKER')
+            entries.append(str(file))
+        (p/'denies.json').write_text(json.dumps(entries))
+        result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
+            '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
+            '--prompt','test','--output',str(p/'sinks/result')],
+            env=self.env,capture_output=True,text=True,timeout=300)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertIn('read boundary verified; starting runner',result.stderr)
+        self.assertIn('file-backed',result.stderr)
+        state = Path(result.stderr.split('state=',1)[1].splitlines()[0])
+        manifest = json.loads((state/'boundary.json').read_text())
+        self.assertEqual(len(manifest['denies']),4108)
+        profile = state/'seatbelt.sb'
+        self.assertGreater((state/'seatbelt.source.sb').stat().st_size,os.sysconf('SC_ARG_MAX'))
+        self.assertLess(profile.stat().st_size,(state/'seatbelt.source.sb').stat().st_size)
+        fields=profile_fields(result.stderr)
+        for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+            self.assertEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
+        r = json.loads(result.stdout)
+        self.assertEqual(r['allowed'],'ALLOW_INPUT')
+        self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
+        self.assertEqual(r['profile_write'],'PermissionError')
+        self.assertEqual(r['outside_write'],'PermissionError')
 
     def test_claude_original_deny_write_wins_over_cwd(self):
         p = self.root
