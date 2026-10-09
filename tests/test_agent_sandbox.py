@@ -21,7 +21,20 @@ sandbox = importlib.util.module_from_spec(spec)
 loader.exec_module(sandbox)
 
 
+def profile_fields(stderr):
+    # The adapter emits before spawn; descendants can forge later duplicates.
+    line=next(line for line in stderr.splitlines() if line.startswith('agent-sandbox: seatbelt_profile='))
+    return dict(item.split('=',1) for item in line.split() if '=' in item)
+
+
 class SetupTests(unittest.TestCase):
+    def test_later_child_hash_record_cannot_replace_adapter_record(self):
+        stream=('agent-sandbox: seatbelt_profile=/first profile_sha256=original source_sha256=source file-backed\n'
+                'read boundary verified; starting runner\n'
+                'agent-sandbox: seatbelt_profile=/forged profile_sha256=forged source_sha256=forged file-backed\n')
+        self.assertEqual(profile_fields(stream)['profile_sha256'],'original')
+        self.assertEqual(profile_fields(stream)['source_sha256'],'source')
+
     def test_invalid_entries_fail(self):
         with tempfile.TemporaryDirectory() as directory:
             p = Path(directory)/'denies.json'
@@ -119,7 +132,8 @@ class SetupTests(unittest.TestCase):
             marker=p/'must-not-execute'
             srt=p/'bin/srt'; srt.write_text(f'#!/bin/sh\ntouch "{marker}"\necho 0.0.79\n'); srt.chmod(0o755)
             runner=p/'bin/codex-agent-run'; runner.write_text('#!/bin/sh\nexit 0\n'); runner.chmod(0o755)
-            env={**os.environ,'PATH':str(p/'bin')+':'+os.environ['PATH']}
+            env={**os.environ,'PATH':str(p/'bin')+':'+os.environ['PATH'],
+                 'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
             result=subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
                 '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo','--prompt','test'],
                 env=env,capture_output=True,text=True,timeout=20)
@@ -242,12 +256,16 @@ for name in ('seatbelt.sb','seatbelt.source.sb'):
     os.link(state/name,alias)
     alias.chmod(0o600)
     alias.write_text('SYNTHETIC_CHANGED_AFTER_LOAD')
+from hashlib import sha256
+forged=sha256(b'SYNTHETIC_CHANGED_AFTER_LOAD').hexdigest()
+print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forged} source_sha256={forged} file-backed',file=sys.stderr)
 """
         runner.write_text(runner.read_text().replace('print(json.dumps(r))',extra+'\nprint(json.dumps(r))'))
         result=self.launch()
         self.assertEqual(result.returncode,0,result.stderr)
         state=Path(result.stderr.split('state=',1)[1].splitlines()[0])
-        fields=dict(item.split('=',1) for item in result.stderr.split() if '=' in item)
+        fields=profile_fields(result.stderr)
+        self.assertEqual(result.stderr.count('agent-sandbox: seatbelt_profile='),2)
         for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
             self.assertEqual(len(fields[key]),64)
             self.assertNotEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
@@ -287,7 +305,7 @@ for name in ('seatbelt.sb','seatbelt.source.sb'):
         profile = state/'seatbelt.sb'
         self.assertGreater((state/'seatbelt.source.sb').stat().st_size,os.sysconf('SC_ARG_MAX'))
         self.assertLess(profile.stat().st_size,(state/'seatbelt.source.sb').stat().st_size)
-        fields=dict(item.split('=',1) for item in result.stderr.split() if '=' in item)
+        fields=profile_fields(result.stderr)
         for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
             self.assertEqual(hashlib.sha256((state/name).read_bytes()).hexdigest(),fields[key])
         r = json.loads(result.stdout)

@@ -136,3 +136,16 @@ After MiMo adjudication, ordinary suite: **93 tests, OK, 9 explicit opt-in skips
 (35.883 seconds). Native Seatbelt plus Codex/Claude local-mock suite:
 **26 tests, all passed** (15.844 seconds). These supersede earlier counts for
 current HEAD; earlier results above retain their original snapshot identities.
+
+Final MiMo closure identified a shared-stderr parsing ambiguity. The controller
+accepted it: README/skill explicitly select the first pre-spawn adapter record,
+ignore later child-authored duplicates, and forbid last-wins parsing. Tests now
+use that rule; an ordinary duplicate-record fixture and a native post-mutation
+forged-hash line prove the true digest cannot be replaced. The ordinary marker
+fixture also pins AGENT_TOOLS_FILE to repository source for clean-machine use.
+Only docs/tests changed in this closure; production code remains ac5b244.
+
+Final closure verification: **94 ordinary tests, OK, 9 opt-in skips** (33.354s);
+**27 native tests, all passed** (12.423s), including the forged post-startup hash
+record scenario. Full adjudication and review-attempt lifecycle records:
+[controller closeout](agent-sandbox-e2big-review-closeout-20261009.md).

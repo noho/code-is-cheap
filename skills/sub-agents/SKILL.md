@@ -162,7 +162,8 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace \
 首次使用前，由用户按仓库 README 安装可选 srt 依赖。封装只支持经测试的 macOS/srt 版本，检查失败立即停止。
 大名单通过策略文件加载，同一禁令的路径条件仅做等价压缩；仍须逐项通过内核禁读验证。
 策略原路径禁止写入/移动，但硬链接别名可能改写留存文件，不影响已加载的内核策略。
-总控须通过可信父进程 pipe 收集封装 stderr 中启动前的 profile_sha256/source_sha256；
+总控须通过可信父进程 pipe 收集封装 stderr 中 runner 启动前第一条 seatbelt_profile= 适配器记录的
+profile_sha256/source_sha256；后续重复行可能由子进程伪造，不得覆盖首条或采用 last-wins 解析。
 使用留存策略作证据前比对哈希，不可信任 Agent 可修改的日志或仅凭留存文件。
 stderr 中的 state/seatbelt_profile 可定位保留的策略证据。启动参数超限或原生策略编译失败属于封装启动失败，
 runner 尚未启动，不能算 provider 已执行任务；向调用方报告原始错误，不删减禁读项、跳过验证或退回普通派发。
