@@ -8,6 +8,7 @@ setopt no_unset pipe_fail noclobber
 umask 077
 typeset -F 6 SECONDS
 
+readonly agent_run_script_dir="${0:A:h}"
 readonly PROGRAM_NAME="${0:t}"
 readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 
@@ -359,7 +360,9 @@ elif [[ "$explicit_prompt" == false ]]; then
   prompt_text="$(<&0)"
 fi
 
-[[ -n "${prompt_text//[[:space:]]/}" ]] || die "prompt is empty or whitespace-only"
+command -v python3 >/dev/null 2>&1 || die "python3 is required for prompt validation"
+print -rn -- "$prompt_text" | python3 -c 'import sys; sys.exit(0 if sys.stdin.read().strip() else 1)' \
+  || die "prompt is unreadable, empty or whitespace-only"
 
 if [[ -n "$resume_id" || "$resume_last" == true ]]; then
   [[ -z "$sandbox_mode" ]] || die "--sandbox is not supported by codex exec resume"
@@ -403,7 +406,7 @@ fi
 if [[ "$detail" == false ]]; then
   [[ "$output_format" != text ]] || die "--output-format text requires --detail"
   [[ -z "$canary_file" && -z "$canary_expected" || -n "$canary_file" && -n "$canary_expected" ]] || die "canary options must be paired"
-  result_adapter="${0:A:h}/agent-run-result.py"
+  result_adapter="$agent_run_script_dir/agent-run-result.py"
   [[ -r "$result_adapter" ]] || die "result adapter missing: $result_adapter"
   command -v python3 >/dev/null 2>&1 || die "python3 is required for result collection"
   if [[ -z "$output_file" || -z "$stderr_file" ]]; then

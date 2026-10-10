@@ -15,7 +15,7 @@ Gate: implementation; work unit sub-agents-defaults. Accepted plan commit: 1e204
 - python3 -m unittest discover -s tests: 131 run, 122 passed, 9 skipped (34.352s). Skips are opt-in/macOS external tests, not asserted pass.
 - bash scripts/validate-skills.sh: all six valid.
 - bash -n preflight, zsh -n both runners, python3 -m py_compile adapter, git diff --check: pass.
-- Actual Codex/Claude runtime Seatbelt synthetic tests: 2 passed (2.374s), local endpoint/synthetic credentials only. Evidence /private/tmp/defaults-native-20261010/{codex,claude}-probe.json; both exit 0, read-boundary kernel validation before runner, expected denied access not returned. These existing native tests exercise raw detail mode; collected metrics are verified by deterministic runner fixtures, not claimed as native collected-statistics proof.
+- Actual Codex/Claude runtime Seatbelt synthetic tests: 2 passed (2.374s), local endpoint/synthetic credentials only. Evidence /private/tmp/defaults-native-20261010/{codex,claude}-probe.json; both exit 0, read-boundary kernel validation before runner, expected denied access not returned. Correction after source re-read: these native tests call collected mode, asserting completed/needs_review and log paths. Their durable probe files retain raw traces and requests, not collected stdout; detailed statistics assertions are provided by deterministic runner fixtures. Earlier description of detail mode was inaccurate.
 - Fixed test setup PATH fallback and correct existing Claude ephemeral --name identity assertion; no implementation weakening to fit these tests.
 
 ## Finding and risk state

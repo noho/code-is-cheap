@@ -61,7 +61,8 @@ Codex `--last-message`，这些必须是新文件。
 ## 取得和使用结果
 
 默认在实际 runtime 退出后，runner stdout 返回一个 JSON 汇总；即使指定日志文件也会返回汇总。
-Claude 原始 stream-json、Codex JSONL、stderr 和 Codex 最终消息保留，路径在 `logs` 中。
+Claude 原始 stream-json、Codex JSONL 和 stderr 保留，路径在 `logs` 中。Codex 最终答复也在 JSONL 中；
+只有显式 `--last-message` 才另存最终消息文件并返回 `logs.last_message`，默认该字段为 null。
 
 先看实际外层退出码、`agent_status` 和 `final_answer`：结论、未完成事项、影响结果的问题以及文件路径。
 最终答复超过 12000 字符会标记截断，完整内容可从日志取得。runner 不提供中途注入指令、唤醒或自动完成通知；

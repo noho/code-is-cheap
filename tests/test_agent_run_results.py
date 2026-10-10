@@ -48,11 +48,11 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.expected = self.root / 'expected.txt'
         self.expected.write_text('fresh-12345678')
 
-    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None):
+    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None, workdir=None):
         fixture = self.root / 'events'
         fixture.write_text('\n'.join(json.dumps(e) if isinstance(e, dict) else e for e in events)+'\n')
         env = self.env | {'FIXTURE': str(fixture), 'RUNTIME_EXIT': str(exit_code), 'ERR': err, 'FINAL': final}
-        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(ROOT), '--prompt', 'bounded test', *args], env=env, capture_output=True, text=True)
+        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(workdir or ROOT), '--prompt', 'bounded test', *args], env=env, capture_output=True, text=True)
         return result
 
     def codex(self, text='done'):
@@ -93,13 +93,37 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         directory=self.root/'prompt-dir';directory.mkdir()
         blank=self.root/'blank';blank.write_text(' \t\r\n\v\f')
         for runtime in ('codex','claude'):
-            for args,stdin in ((['--prompt',' \t\n'],None),(['--prompt-file',str(blank)],None),
+            for args,stdin in ((['--prompt',' \t\n'],None),(['--prompt','\u3000'],None),(['--prompt','\u00a0'],None),(['--prompt-file',str(blank)],None),
                                (['--prompt-file',str(directory)],None),([' \t\n'],None),([], ' \t\n')):
                 result=subprocess.run([str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',
                     'mimo' if runtime=='codex' else 'ds-flash','--cwd',str(ROOT),*args],
                     env=self.env,input=stdin,capture_output=True,text=True)
                 self.assertEqual(result.returncode,2,result.stderr)
                 self.assertFalse(capture.exists())
+
+    def test_relative_runner_path_survives_workspace_change(self):
+        workspace=self.root/'other-workspace';workspace.mkdir()
+        for runtime in ('codex','claude'):
+            result=self.run_agent(runtime,getattr(self,runtime)(),
+                runner_path=Path('scripts')/f'{runtime}-agent-run',workdir=workspace)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual(json.loads(result.stdout)['validation_status'],'passed')
+
+    def test_overflow_numbers_never_escape_as_nonstandard_json(self):
+        for runtime in ('codex','claude'):
+            for number in ('1e400','-1e400'):
+                for field in ('usage','modelUsage'):
+                    events=getattr(self,runtime)()[:-1]
+                    terminal=('{"type":"turn.completed",' if runtime=='codex' else
+                        '{"type":"result","subtype":"success","is_error":false,"result":"done",')
+                    events.append(terminal+'"'+field+'":{"nested":{"tokens":'+number+'}}}')
+                    result=self.run_agent(runtime,events)
+                    report=json.loads(result.stdout,parse_constant=lambda x: (_ for _ in ()).throw(ValueError(x)))
+                    self.assertEqual(result.returncode,1,result.stderr)
+                    self.assertEqual(report['validation_status'],'rejected')
+                    self.assertIsNone(report['usage'])
+                    self.assertEqual(report['runtime_metrics'],{})
+                    self.assertTrue(any('finite float' in x['message'] for x in report['errors']))
 
     def test_terminal_statistics_are_verbatim_and_wall_clock_measured(self):
         self.env['RUNTIME_DELAY']='0.15'

@@ -24,6 +24,13 @@ def invalid_constant(value):
     raise ValueError(f"invalid JSON constant: {value}")
 
 
+def finite_json_float(value):
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("JSON number exceeds finite float range")
+    return number
+
+
 def reported_tokens(lines):
     """Only standalone proof lines outside fenced examples constitute reports."""
     fence = None
@@ -261,7 +268,7 @@ class Collection:
                     if not raw.strip():
                         continue
                     try:
-                        event = json.loads(raw, object_pairs_hook=strict_object, parse_constant=invalid_constant)
+                        event = json.loads(raw, object_pairs_hook=strict_object, parse_constant=invalid_constant, parse_float=finite_json_float)
                         if not isinstance(event, dict) or not isinstance(event.get("type"), str):
                             raise ValueError("expected an event object with type")
                         if self.terminal is not None and event["type"] not in {"rate_limit_event"}:
@@ -379,7 +386,7 @@ def main():
     if bool(args.canary_file) != bool(args.canary_expected):
         parser.error("canary-file and canary-expected must be supplied together")
     report = Collection(args).collect()
-    print(json.dumps(report, ensure_ascii=False))
+    print(json.dumps(report, ensure_ascii=False, allow_nan=False))
     return 1 if report["validation_status"] == "rejected" else 0
 
 

@@ -65,4 +65,3 @@ runner 尚未启动，不能算 provider 已执行任务；向调用方报告原
 它保留原 runtime 写范围的保守子集及指定输出文件，复制并保护 Codex 用户 `.rules`；不能推导的自定义权限配置会拒绝启动。隔离调用不加载
 宿主 MCP、hooks、plugins 或浏览器工具；Claude 仅启用 Bash/Read/Write/Edit/Glob/Grep，Codex 使用本地原生工具。
 禁读路径在运行期间不得由其它未隔离进程替换或复制；已有硬链接会拒绝启动。需要的工具/网络缺项须报给调用方裁定。必需的凭据/配置文件列入禁读时 setup 会停止；不提供凭据与 Agent 工具之间的隔离。
-

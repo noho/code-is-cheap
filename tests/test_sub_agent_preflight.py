@@ -169,7 +169,7 @@ class PreflightTests(unittest.TestCase):
 
     def test_empty_whitespace_and_conflicting_sources_fail_without_command(self):
         for source in ('--task','--task-file','--prompt-file'):
-            for body in ('', ' \t\r\n\v\f'):
+            for body in ('', ' \t\r\n\v\f', '\u3000', '\u00a0'):
                 with self.subTest(source=source,body=repr(body)):
                     result,report=self.preflight(source,body)
                     self.assertEqual(result.returncode,1,result.stdout+result.stderr)

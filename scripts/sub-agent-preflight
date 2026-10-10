@@ -209,8 +209,8 @@ fi
 
 if [[ -n "$prompt_used" ]]; then
   # Check the original body before appended instructions could manufacture a task.
-  if ! LC_ALL=C grep -q '[^[:space:]]' "$prompt_used"; then
-    failures+=("任务正文为空或仅含空白")
+  if ! python3 -c 'import sys; sys.exit(0 if open(sys.argv[1], encoding="utf-8").read().strip() else 1)' "$prompt_used"; then
+    failures+=("任务正文不可读取、为空或仅含空白")
     rm -- "$prompt_used"
     prompt_used=""
     prompt_source="none"
