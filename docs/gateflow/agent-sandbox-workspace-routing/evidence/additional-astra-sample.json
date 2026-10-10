@@ -1,0 +1,50 @@
+{
+  "scope": "Additional native startup-failure sample only; no business task or fallback content read; no source/plan changes",
+  "runtime": "codex",
+  "provider": "gpt-6-astra",
+  "registered_at": "2026-10-11T06:27:24.889360+08:00",
+  "runtime_exit_code": 1,
+  "runner_exit_code": 1,
+  "terminal": "turn.failed",
+  "wall_clock_seconds": 25.080314,
+  "tool_results": 0,
+  "final_answer_chars": 0,
+  "source_sha256": {
+    "dispatch.json": "3948f4ad119748e1f52b32a051abad678cb43774699493c12be9dbae18617ff0",
+    "closeout.json": "bd40471eb578f9ae8ac663445a840eadede306a2aaa909652185a29ac63c4b5a",
+    "runner-summary.json": "c092b7e3d6b5c7301040e67083a4a1fc8fd1fac0a24248bad3a22da7519601e1"
+  },
+  "raw": {
+    "output": {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.YYCYrS/tencent-g1-review-b-method-code-judge-01.jsonl",
+      "sha256": "7decdd86c226dcdce92cacb8a6b853fb4a88a446c02529e39c284bea9b36de7f",
+      "bytes": 1566,
+      "events": 15,
+      "terminal_types": [
+        "turn.failed"
+      ],
+      "routing_failure_lines": [
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "completed_tool_results": 0
+    },
+    "stderr": {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.YYCYrS/tencent-g1-review-b-method-code-judge-01.stderr",
+      "sha256": "f028b3d9e8e54d4649fed3b45668ff54c9dcc7b551575283f3da4f2ad635e50c",
+      "bytes": 352,
+      "model_refresh_failure": true,
+      "https_fallback": false,
+      "kernel_boundary_verified": false
+    }
+  }
+}

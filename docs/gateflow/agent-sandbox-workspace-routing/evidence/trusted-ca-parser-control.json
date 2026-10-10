@@ -1,0 +1,16 @@
+{
+  "trusted_label_present": true,
+  "trusted-original": {
+    "parsed": false,
+    "error": "SSLError",
+    "reason": null
+  },
+  "normalized-for-validation": {
+    "parsed": true,
+    "store": {
+      "x509": 1,
+      "crl": 0,
+      "x509_ca": 1
+    }
+  }
+}

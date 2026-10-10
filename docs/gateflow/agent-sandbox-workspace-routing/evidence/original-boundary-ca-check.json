@@ -1,0 +1,22 @@
+[
+  {
+    "label": "tencent-g1-review-b-method-dev-01",
+    "boundary_path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.zwh394hz/boundary.json",
+    "boundary_sha256": "962f473c3827c63987ba3e402fd88c2bd220aa56e1817d6f9eec4eb56869cf61",
+    "normalized_deny_count": 804,
+    "canonical_system_ca": "/private/etc/ssl/cert.pem",
+    "system_ca_covered_by_declared_boundary": false,
+    "matching_denies": [],
+    "original_task_run": false
+  },
+  {
+    "label": "tencent-g1-review-b-method-dev-01-primary-retry-01",
+    "boundary_path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.300ih15_/boundary.json",
+    "boundary_sha256": "99d5a1baa46092a96032242daecc8f0b3fc909814f1ab46e98222fb73d48b361",
+    "normalized_deny_count": 808,
+    "canonical_system_ca": "/private/etc/ssl/cert.pem",
+    "system_ca_covered_by_declared_boundary": false,
+    "matching_denies": [],
+    "original_task_run": false
+  }
+]

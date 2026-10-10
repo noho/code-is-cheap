@@ -1,0 +1,198 @@
+{
+  "source_index": "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/upstream-workspace-routing-evidence-20261011.json",
+  "source_index_sha256": "9d633cfec618ca0263d346c6e74f91b1c8d06ac5b3cca10bd7b029bc2c8f4579",
+  "caller_attempts": [
+    {
+      "label": "tencent-g1-review-b-method-dev-01",
+      "timestamp": "2026-10-11T02:43:58.198669+08:00",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "wall_clock_seconds": 25.177153,
+      "runtime_exit_code": 1,
+      "runner_exit_code": 1,
+      "terminal": "turn.failed",
+      "tool_results": 0,
+      "deny_count": 804,
+      "sandbox_state": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.zwh394hz"
+    },
+    {
+      "label": "tencent-g1-review-b-method-dev-01-primary-retry-01",
+      "timestamp": "2026-10-11T05:33:58.053419+08:00",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "wall_clock_seconds": 25.627246,
+      "runtime_exit_code": 1,
+      "runner_exit_code": 1,
+      "terminal": "turn.failed",
+      "tool_results": 0,
+      "deny_count": 808,
+      "sandbox_state": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.300ih15_"
+    }
+  ],
+  "synthetic_probes": [
+    {
+      "label": "ordinary-01",
+      "summary_path": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/ordinary-01-summary.json",
+      "summary_sha256": "f8980674fa0c2bcb074c5cfa6f90c2f891048b7224277b45eb020b78ef92ebc5",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "terminal": "turn.completed",
+      "tool_results": 0,
+      "wall_clock_seconds": 10.326699,
+      "final_answer": "OK",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/ordinary-01.jsonl",
+        "stderr": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/ordinary-01.stderr",
+        "last_message": null
+      },
+      "usage": {
+        "input_tokens": 15446,
+        "cached_input_tokens": 4608,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "validation_status": "passed"
+    },
+    {
+      "label": "isolated-01",
+      "summary_path": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-01-summary.json",
+      "summary_sha256": "e134f5abe30cad875cc484500caf88681f63785ccf1fa0c69282ae2ff8f6f89a",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 1,
+      "runner_exit_code": 1,
+      "terminal": "turn.failed",
+      "tool_results": 0,
+      "wall_clock_seconds": 25.536161,
+      "final_answer": "",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-01.jsonl",
+        "stderr": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-01.stderr",
+        "last_message": null
+      },
+      "usage": null,
+      "validation_status": "rejected"
+    },
+    {
+      "label": "home-control-01",
+      "summary_path": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/home-control-01-summary.json",
+      "summary_sha256": "6149354bc8244d227621c24c4d683cd220cb6667451e20aff6de330669f56eef",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "terminal": "turn.completed",
+      "tool_results": 0,
+      "wall_clock_seconds": 7.015163,
+      "final_answer": "OK",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/home-control-01.jsonl",
+        "stderr": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/home-control-01.stderr",
+        "last_message": null
+      },
+      "usage": {
+        "input_tokens": 10681,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "validation_status": "needs_review"
+    },
+    {
+      "label": "isolated-ca-01",
+      "summary_path": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-ca-01-summary.json",
+      "summary_sha256": "30c66d88c065c991446aa14e88b0ffd5b7196dea0356280c5cc54ef134b043d8",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "terminal": "turn.completed",
+      "tool_results": 0,
+      "wall_clock_seconds": 5.465033,
+      "final_answer": "OK",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-ca-01.jsonl",
+        "stderr": "/private/tmp/workspace-routing-diagnosis-eprmtk6q/isolated-ca-01.stderr",
+        "last_message": null
+      },
+      "usage": {
+        "input_tokens": 10709,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "validation_status": "needs_review"
+    }
+  ],
+  "config_comparison": {
+    "failed": {
+      "state": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.89gq29b6",
+      "model": "gpt-6.1-sol",
+      "model_provider": "openai",
+      "auth_sha256": "fb5c643946bc6bd9c9bfadef5ac75ff5196b7966447b0b40c3f3df9b09b69c06",
+      "network": {
+        "allowedDomains": [
+          "chatgpt.com:443",
+          "auth.openai.com:443",
+          "api.openai.com:443",
+          "chatgpt.com:443"
+        ],
+        "deniedDomains": [],
+        "strictAllowlist": true,
+        "allowLocalBinding": false,
+        "allowAllUnixSockets": false,
+        "allowUnixSockets": []
+      },
+      "denies": [
+        "/private/tmp/workspace-routing-diagnosis-eprmtk6q/denied"
+      ],
+      "policy_sha256": "7da156cd27811bfae1ac242de125d288cc726e2efb722bd8b945ee7755ad529d",
+      "policy_has_trustd_agent_allow": false
+    },
+    "ca_success": {
+      "state": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.s5s5e4ul",
+      "model": "gpt-6.1-sol",
+      "model_provider": "openai",
+      "auth_sha256": "fb5c643946bc6bd9c9bfadef5ac75ff5196b7966447b0b40c3f3df9b09b69c06",
+      "network": {
+        "allowedDomains": [
+          "chatgpt.com:443",
+          "auth.openai.com:443",
+          "api.openai.com:443",
+          "chatgpt.com:443"
+        ],
+        "deniedDomains": [],
+        "strictAllowlist": true,
+        "allowLocalBinding": false,
+        "allowAllUnixSockets": false,
+        "allowUnixSockets": []
+      },
+      "denies": [
+        "/private/tmp/workspace-routing-diagnosis-eprmtk6q/denied"
+      ],
+      "policy_sha256": "4759a57bb27f11ba70c7999637bcdfb06aede3230834465fbd36f3d44234ff50",
+      "policy_has_trustd_agent_allow": false
+    }
+  },
+  "limitations": [
+    "User manual argv/cwd/isolation unknown",
+    "Exact blocked macOS trust-service operation not measured",
+    "Synthetic deny list only; original business boundary not rerun"
+  ],
+  "runtime_versions": {
+    "codex": "0.162.1",
+    "node": "v25.9.0",
+    "srt": "0.0.79"
+  },
+  "ca": {
+    "path": "/etc/ssl/cert.pem",
+    "sha256": "9dae8d76e55cb08991f2b672d58999ea15560d910759c16b544f843bdffbb994",
+    "explicit_override": "CODEX_CA_CERTIFICATE=/etc/ssl/cert.pem",
+    "official_reference": "https://learn.chatgpt.com/docs/auth#custom-ca-bundles"
+  }
+}
