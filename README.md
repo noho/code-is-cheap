@@ -222,8 +222,23 @@ agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
 # claude-agent-run works through the same envelope.
 ```
 
+Valid symlink targets keep strict stdlib canonicalization. For a dangling symlink discovered while scanning a denied directory,
+only a confirmed ENOENT uses `os.path.realpath(strict=os.path.ALLOW_MISSING)`; this capability is required for that branch
+and its absence produces a located setup failure, with no installation or fallback (the Python 3.11+ minimum is unchanged).
+Missing-aware canonicalization can reach an existing target after `..`; setup reports and conservatively denies that target,
+without claiming the raw link is currently reachable. Subsequent non-ENOENT errors fail with declared/link/raw-target context;
+stdlib resolution and kernel open need not report the same error first.
+
+A final missing target remains denied, together with its nearest existing directory ancestor, recursively for reads and writes.
+That ancestor is scanned through the same symlink expansion graph; further dangling links can add ancestors in other trees.
+Each expansion reports its origin and discovery directory. This can block siblings, enlarge scanning or conflict with required
+inputs; root ancestors, unreadable/unsupported targets, scan failures and input conflicts stop setup without relaxing the policy.
+Verification first queries and actually proves denial of every existing boundary. Only a registered missing target covered by
+an actually verified ancestor may return ENOENT; ENOENT or a denied-looking query alone is never isolation proof. Allowed
+probe reads and writes must still succeed before the fixed runner starts.
+
 The envelope adds `--full-access --no-persist`, fixes the policy before launch, and checks the denial **inside Seatbelt** before starting the runner.
-It rejects unsupported arguments, missing paths, incompatible srt, pre-existing hardlinks and configurations whose original write boundary
+It rejects unsupported arguments, declared missing paths, incompatible srt, pre-existing hardlinks and configurations whose original write boundary
 cannot be preserved. It keeps a conservative subset of the runtime's original writes: Codex read-only retains no cwd writes;
 workspace-write retains cwd with `.git/.codex/.agents/.aws` protected. Additional write roots are not carried over. Claude retains cwd
 and absolute/home-relative literal sandbox `denyWrite` rules across discovered settings layers. Only explicitly selected output **files**, plus private per-run state, are added; their parent

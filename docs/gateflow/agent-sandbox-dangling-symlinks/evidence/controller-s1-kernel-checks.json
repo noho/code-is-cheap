@@ -1,0 +1,258 @@
+{
+  "source": "controller inspected raw per-fixture tool output and first adapter hashes; not a new test execution",
+  "time": "2026-10-10T18:51:18.015249",
+  "suite_stderr": "/private/tmp/dangling-s1-PleSSk/kernel-final.stderr",
+  "kernel_tests": 52,
+  "kernel_skips": 0,
+  "cases": [
+    {
+      "case": "test_dangling_targets_with_verified_ancestor_boundary-mzkg0iu9",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_dangling_targets_with_verified_ancestor_boundary-mzkg0iu9/raw.json",
+      "sha256": "081b0affa5d690ca3b584f4f44658e0c9e67ffb84ebb20007e1cc6707961425f",
+      "exit": 0,
+      "stdout": [
+        {
+          "allowed": "ALLOW_INPUT",
+          "direct": "PermissionError",
+          "symlink": "PermissionError",
+          "dir_alias": "PermissionError",
+          "dotdot": "PermissionError",
+          "history": "PermissionError",
+          "data_alias": "PermissionError",
+          "tmp_alias": "PermissionError",
+          "case_alias": "PermissionError",
+          "recursive_stdout": "",
+          "recursive_code": 2,
+          "nested_stdout": "",
+          "nested_code": 71,
+          "hardlink": "PermissionError",
+          "cwd_write": "allowed",
+          "protected_write": "PermissionError",
+          "outside_write": "PermissionError",
+          "sink_neighbor": "PermissionError",
+          "sink_write": "allowed",
+          "original_blocked_write": "allowed",
+          "prompt_write": "PermissionError",
+          "profile_write": "PermissionError",
+          "heredoc_code": 0,
+          "heredoc_stdout": "ALLOW_HEREDOC_MARKER\n",
+          "heredoc_stderr": "",
+          "ancestor_query": 1,
+          "sentinel_query": 1,
+          "external_query": 1,
+          "ancestor_listdir": "PermissionError",
+          "sentinel_read": "PermissionError",
+          "missing_direct": "FileNotFoundError",
+          "dangling_alias": "PermissionError",
+          "external_direct": "PermissionError",
+          "secondary_direct": "PermissionError",
+          "valid_direct": "PermissionError",
+          "ancestor_sentinel_write": "PermissionError",
+          "ancestor_create": "PermissionError"
+        }
+      ]
+    },
+    {
+      "case": "test_missing_query_and_ENOENT_are_ambiguous_under_allow_default-j6h774ak",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_missing_query_and_ENOENT_are_ambiguous_under_allow_default-j6h774ak/raw.json",
+      "sha256": "5524bc5cbfde529490e076d5aef36efeda334fe5f2db87adb432579b9b6d9087",
+      "exit": 0,
+      "stdout": [
+        {
+          "ancestor_query": 0,
+          "ancestor_read": [
+            "sentinel"
+          ],
+          "sentinel_query": 0,
+          "sentinel_read": "sentinel",
+          "missing_dir_query": 1,
+          "missing_dir_read": {
+            "error": "FileNotFoundError",
+            "errno": 2
+          },
+          "missing_file_query": 1,
+          "missing_file_read": {
+            "error": "FileNotFoundError",
+            "errno": 2
+          },
+          "allowed_read": "ALLOW_INPUT",
+          "allowed_write": "allowed"
+        },
+        {
+          "ancestor_query": 0,
+          "ancestor_read": [
+            "missing",
+            "sentinel"
+          ],
+          "sentinel_query": 0,
+          "sentinel_read": "sentinel",
+          "missing_dir_query": 0,
+          "missing_dir_read": [
+            "leaf"
+          ],
+          "missing_file_query": 0,
+          "missing_file_read": "materialized fixture",
+          "allowed_read": "ALLOW_INPUT",
+          "allowed_write": "allowed"
+        }
+      ]
+    },
+    {
+      "case": "test_verified_ancestor_policy_denies_after_fixture_materialization-oox_jff8",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_verified_ancestor_policy_denies_after_fixture_materialization-oox_jff8/raw.json",
+      "sha256": "bfa203875afe0944567f4b7e9cf7a786b5bd9e04760c93e0ce6652ee05256d68",
+      "exit": 0,
+      "stdout": [
+        {
+          "ancestor_query": 1,
+          "ancestor_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "sentinel_query": 1,
+          "sentinel_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "missing_dir_query": 1,
+          "missing_dir_read": {
+            "error": "FileNotFoundError",
+            "errno": 2
+          },
+          "missing_file_query": 1,
+          "missing_file_read": {
+            "error": "FileNotFoundError",
+            "errno": 2
+          },
+          "allowed_read": "ALLOW_INPUT",
+          "allowed_write": "allowed"
+        },
+        {
+          "ancestor_query": 1,
+          "ancestor_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "sentinel_query": 1,
+          "sentinel_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "missing_dir_query": 1,
+          "missing_dir_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "missing_file_query": 1,
+          "missing_file_read": {
+            "error": "PermissionError",
+            "errno": 1
+          },
+          "allowed_read": "ALLOW_INPUT",
+          "allowed_write": "allowed"
+        }
+      ]
+    },
+    {
+      "case": "test_large_deny_list_verifies_every_entry_before_runner-wjq18cyo",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_large_deny_list_verifies_every_entry_before_runner-wjq18cyo/raw.json",
+      "sha256": "1a4a7f9430b67df1e0187138a7f8686291d2bdd3cd6820dc3029221586a53ce1",
+      "exit": 0,
+      "stdout": [
+        {
+          "allowed": "ALLOW_INPUT",
+          "direct": "PermissionError",
+          "symlink": "PermissionError",
+          "dir_alias": "PermissionError",
+          "dotdot": "PermissionError",
+          "history": "PermissionError",
+          "data_alias": "PermissionError",
+          "tmp_alias": "PermissionError",
+          "case_alias": "PermissionError",
+          "recursive_stdout": "",
+          "recursive_code": 2,
+          "nested_stdout": "",
+          "nested_code": 71,
+          "hardlink": "PermissionError",
+          "cwd_write": "allowed",
+          "protected_write": "PermissionError",
+          "outside_write": "PermissionError",
+          "sink_neighbor": "PermissionError",
+          "sink_write": "allowed",
+          "original_blocked_write": "allowed",
+          "prompt_write": "PermissionError",
+          "profile_write": "PermissionError",
+          "heredoc_code": 0,
+          "heredoc_stdout": "ALLOW_HEREDOC_MARKER\n",
+          "heredoc_stderr": ""
+        }
+      ]
+    }
+  ],
+  "first_adapter_matches": [
+    {
+      "case": "test_dangling_targets_with_verified_ancestor_boundary-mzkg0iu9",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_dangling_targets_with_verified_ancestor_boundary-mzkg0iu9/raw.json",
+      "exit": 0,
+      "first_adapter": {
+        "seatbelt_profile": "/tmp/dangling-s1-PleSSk/tmp/agent-sandbox.3if49_ux/seatbelt.sb",
+        "bytes": "18936",
+        "source_bytes": "18936",
+        "profile_sha256": "6bce7ef2d9bdccfc26b659db359800fe1dea0af2d10315299551231dfe58923a",
+        "source_sha256": "6bce7ef2d9bdccfc26b659db359800fe1dea0af2d10315299551231dfe58923a"
+      },
+      "retained_profile_sha256": "6bce7ef2d9bdccfc26b659db359800fe1dea0af2d10315299551231dfe58923a",
+      "retained_source_sha256": "6bce7ef2d9bdccfc26b659db359800fe1dea0af2d10315299551231dfe58923a",
+      "retained_matches_first_profile": true,
+      "retained_matches_first_source": true
+    },
+    {
+      "case": "test_large_deny_list_verifies_every_entry_before_runner-wjq18cyo",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_large_deny_list_verifies_every_entry_before_runner-wjq18cyo/raw.json",
+      "exit": 0,
+      "first_adapter": {
+        "seatbelt_profile": "/tmp/dangling-s1-PleSSk/tmp/agent-sandbox.3u8bf_ps/seatbelt.sb",
+        "bytes": "690704",
+        "source_bytes": "2167580",
+        "profile_sha256": "ba6452701dcee7b00c802c01dc43c3ec0c1e404406adf44d008642947e1dc86a",
+        "source_sha256": "bad6eb0c0743dc1eea5d411e777000cb0c67f6942f86d8973b68848d6b8d8d82"
+      },
+      "retained_profile_sha256": "ba6452701dcee7b00c802c01dc43c3ec0c1e404406adf44d008642947e1dc86a",
+      "retained_source_sha256": "bad6eb0c0743dc1eea5d411e777000cb0c67f6942f86d8973b68848d6b8d8d82",
+      "retained_matches_first_profile": true,
+      "retained_matches_first_source": true
+    },
+    {
+      "case": "test_missing_query_and_ENOENT_are_ambiguous_under_allow_default-j6h774ak",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_missing_query_and_ENOENT_are_ambiguous_under_allow_default-j6h774ak/raw.json",
+      "exit": 0,
+      "first_adapter": {
+        "seatbelt_profile": "/private/tmp/agent-sandbox-tests.n_rcz__i/control-seatbelt.sb",
+        "bytes": "11276",
+        "source_bytes": "11276",
+        "profile_sha256": "d669401822c5507e08469c5781b602c7caec74ab164de8ac61dc54a42addbfcf",
+        "source_sha256": "d669401822c5507e08469c5781b602c7caec74ab164de8ac61dc54a42addbfcf"
+      },
+      "retained_profile_sha256": "d669401822c5507e08469c5781b602c7caec74ab164de8ac61dc54a42addbfcf",
+      "retained_source_sha256": "d669401822c5507e08469c5781b602c7caec74ab164de8ac61dc54a42addbfcf",
+      "retained_matches_first_profile": true,
+      "retained_matches_first_source": true
+    },
+    {
+      "case": "test_verified_ancestor_policy_denies_after_fixture_materialization-oox_jff8",
+      "raw": "/private/tmp/dangling-s1-PleSSk/kernel-final-evidence/test_verified_ancestor_policy_denies_after_fixture_materialization-oox_jff8/raw.json",
+      "exit": 0,
+      "first_adapter": {
+        "seatbelt_profile": "/private/tmp/agent-sandbox-tests.0x_45603/control-seatbelt.sb",
+        "bytes": "12247",
+        "source_bytes": "12247",
+        "profile_sha256": "6fde625bf2fcd5fec50d59c767154ce12e38db33c16a8bc59d457db7eb3fac89",
+        "source_sha256": "6fde625bf2fcd5fec50d59c767154ce12e38db33c16a8bc59d457db7eb3fac89"
+      },
+      "retained_profile_sha256": "6fde625bf2fcd5fec50d59c767154ce12e38db33c16a8bc59d457db7eb3fac89",
+      "retained_source_sha256": "6fde625bf2fcd5fec50d59c767154ce12e38db33c16a8bc59d457db7eb3fac89",
+      "retained_matches_first_profile": true,
+      "retained_matches_first_source": true
+    }
+  ]
+}

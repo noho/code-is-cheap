@@ -54,7 +54,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 /private/tmp/dangling-symlink-plan-87_cajj0/cu
 python3 /private/tmp/dangling-symlink-plan-87_cajj0/assert-evidence.py
 ```
 
-本次 plan fix 另在新建 `/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/` 验证现成 stdlib 契约；原始结果 `stdlib-contract-probe.json` 保存 Python 版本、link/raw target、strict/ALLOW_MISSING/open 各自的结果，**12 个断言通过**。A：`plain/../good/data` 的 strict canonicalization 成功而 open 为 ENOTDIR，保留现状；B：strict ENOENT 后 canonicalization 重入 existing `otherdir/config`，open 仍 ENOENT，必须披露保守 target expansion；C：strict ENOENT 后 ALLOW_MISSING 报 ENOTDIR，open 仍 ENOENT，不声称错误优先级相同。还验证缺失路径返回 canonical target、缺失后续遇循环传播 ELOOP。本次没有实现 helper、运行 runner 或重做 kernel 实验。
+本次 plan fix 另在新建 `/private/tmp/dangling-plan-fix-0c4fzu_t/` 验证现成 stdlib 契约；原始结果 `/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-contract-probe.json` 保存 Python 版本、link/raw target、strict/ALLOW_MISSING/open 各自的结果，**12 个断言通过**。A：`plain/../good/data` 的 strict canonicalization 成功而 open 为 ENOTDIR，保留现状；B：strict ENOENT 后 canonicalization 重入 existing `otherdir/config`，open 仍 ENOENT，必须披露保守 target expansion；C：strict ENOENT 后 ALLOW_MISSING 报 ENOTDIR，open 仍 ENOENT，不声称错误优先级相同。还验证缺失路径返回 canonical target、缺失后续遇循环传播 ELOOP。本次没有实现 helper、运行 runner 或重做 kernel 实验。
 
 **方案决定：不采用“只保留不存在目标 + query=1 + ENOENT 即通过”。** 规则未来有效已证实，但它在目标缺失时不能提供当前调用要求的独立内核拒读证明。采用最小可验证保守替代：**仍保留安全解析的不存在目标作为 deny 路径，同时添加其最近的已存在目录祖先作为递归 denyRead/denyWrite 路径，并实际验证这个祖先。** 这不授予新读写权限，但会连带拒绝该祖先下的 sibling；setup 必须逐条报告此扩展，文档必须说明。祖先若为 `/`、不可预先列举、扫描失败、有现有不支持的 hardlink/扩展特殊目标，或者包含启动必需输入/允许 probe，则上下文失败，不上移到更广祖先、不移除规则、不采用 missing-only fallback。普通 setup 必需输入检查仍会拒绝与扩展集合冲突的配置、工具和输出。
 
