@@ -6,7 +6,9 @@
 emulate -LR zsh
 setopt no_unset pipe_fail noclobber
 umask 077
+typeset -F 6 SECONDS
 
+readonly agent_run_script_dir="${0:A:h}"
 readonly PROGRAM_NAME="${0:t}"
 readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
 
@@ -29,9 +31,13 @@ Prompt input (choose one):
 Run options:
   --instance <name>          Unique display name. Defaults to <provider>-<uuid-prefix>.
   --cwd <directory>          Working directory. Defaults to the current directory.
-  --output-format <format>   text, json, or stream-json. Defaults to json.
-  --output <path>            Write stdout to a NEW private file; existing paths are rejected.
-  --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
+  --output-format <format>   text, json, or stream-json. Defaults to stream-json (json with --detail).
+  --detail                   Return raw runtime output instead of the collected result.
+  --artifact <path>          Optional NEW regular task file; repeatable. Checked after execution.
+  --canary-file <path>       Optional canary input path (paired with --canary-expected).
+  --canary-expected <path>   Controller's expected token file; never sent in the prompt.
+  --output <path>            Save raw runtime output to a NEW private file; - requires --detail.
+  --stderr <path>            Write stderr to a NEW private file; - requires --detail.
   --permission-mode <mode>   Pass a Claude Code permission mode unchanged.
   --full-access              Disable the runtime sandbox and bypass tool approvals (opt-in).
   --persist                  Save the session; generates a UUID when needed.
@@ -131,10 +137,14 @@ open_output_streams() {
   [[ -z "$stderr_file" ]] || exec {stderr_fd}>"$stderr_file" || die "cannot create stderr: $stderr_file"
 }
 
+detail=false
+canary_file=""
+canary_expected=""
+typeset -a artifacts=()
 provider=""
 instance=""
 workdir="$PWD"
-output_format="json"
+output_format=""
 output_file=""
 stderr_file=""
 permission_mode=""
@@ -150,6 +160,10 @@ typeset -a extra_args=()
 
 while (( $# > 0 )); do
   case "$1" in
+    --detail) detail=true; shift ;;
+    --artifact) require_value "$1" "$#"; artifacts+=("$2"); shift 2 ;;
+    --canary-file) require_value "$1" "$#"; canary_file="$2"; shift 2 ;;
+    --canary-expected) require_value "$1" "$#"; canary_expected="$2"; shift 2 ;;
     --provider)
       require_value "$1" "$#"
       provider="$2"
@@ -291,6 +305,8 @@ case "$provider" in
     ;;
 esac
 
+[[ -n "$output_format" ]] || { if [[ "$detail" == true ]]; then output_format=json; else output_format=stream-json; fi; }
+
 case "$output_format" in
   text|json|stream-json) ;;
   *) die "unsupported output format: $output_format" ;;
@@ -311,7 +327,7 @@ if [[ -n "$prompt_file" ]]; then
   if [[ "$prompt_file" == "-" ]]; then
     prompt_text="$(<&0)"
   else
-    [[ -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
+    [[ -f "$prompt_file" && -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
     prompt_text="$(<"$prompt_file")"
   fi
 elif [[ "$explicit_prompt" == false ]]; then
@@ -319,7 +335,9 @@ elif [[ "$explicit_prompt" == false ]]; then
   prompt_text="$(<&0)"
 fi
 
-[[ -n "$prompt_text" ]] || die "prompt is empty"
+command -v python3 >/dev/null 2>&1 || die "python3 is required for prompt validation"
+print -rn -- "$prompt_text" | python3 -c 'import sys; sys.exit(0 if sys.stdin.read().strip() else 1)' \
+  || die "prompt is unreadable, empty or whitespace-only"
 
 run_uuid="$(new_uuid)"
 [[ -n "$instance" ]] || instance="${provider}-${run_uuid[1,8]}"
@@ -343,6 +361,11 @@ command -v jq >/dev/null 2>&1 || die "jq command not found"
 
 cd -- "$workdir" || die "cannot enter working directory: $workdir"
 
+if [[ "$detail" == false ]]; then
+  [[ "$output_file" != "-" ]] || die "--output - requires --detail"
+  [[ "$stderr_file" != "-" ]] || die "--stderr - requires --detail"
+fi
+
 if [[ "$output_file" == "-" ]]; then
   output_file=""
 elif [[ -n "$output_file" ]]; then
@@ -355,6 +378,38 @@ if [[ "$stderr_file" == "-" ]]; then
 elif [[ -n "$stderr_file" ]]; then
   prepare_output_path "$stderr_file"
   stderr_file="$REPLY"
+fi
+
+# Default collection always retains both streams, even without explicit destinations.
+if [[ "$detail" == false ]]; then
+  [[ "$output_format" != text ]] || die "--output-format text requires --detail"
+  [[ "$output_format" == stream-json ]] || die "collected Claude runs require stream-json; use --detail for other formats"
+  [[ -z "$canary_file" && -z "$canary_expected" || -n "$canary_file" && -n "$canary_expected" ]] || die "canary options must be paired"
+  result_adapter="$agent_run_script_dir/agent-run-result.py"
+  [[ -r "$result_adapter" ]] || die "result adapter missing: $result_adapter"
+  command -v python3 >/dev/null 2>&1 || die "python3 is required for result collection"
+  if [[ -n "$canary_file" ]]; then
+    python3 "$result_adapter" --validate-canary-inputs --canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}" \
+      || die "invalid canary setup; runtime was not started"
+  fi
+  if [[ -z "$output_file" || -z "$stderr_file" ]]; then
+    log_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-run.XXXXXXXX")" || die "cannot create log directory"
+    [[ -n "$output_file" ]] || output_file="$log_dir/output.jsonl"
+    [[ -n "$stderr_file" ]] || stderr_file="$log_dir/stderr.log"
+  fi
+fi
+
+if [[ "$detail" == false ]]; then
+  typeset -a normalized_artifacts=()
+  for artifact in "${artifacts[@]}"; do
+    prepare_output_path "$artifact"
+    artifact="$REPLY"
+    require_new_output "$artifact"
+    require_distinct_outputs "$artifact" "$output_file"
+    require_distinct_outputs "$artifact" "$stderr_file"
+    normalized_artifacts+=("$artifact")
+  done
+  artifacts=("${normalized_artifacts[@]}")
 fi
 
 require_distinct_outputs "$output_file" "$stderr_file"
@@ -387,4 +442,17 @@ claude_args+=(-- "$prompt_text")
 
 open_output_streams
 "$runner" "${claude_args[@]}" >&$stdout_fd 2>&$stderr_fd
-exit $?
+run_exit=$?
+
+if [[ "$detail" == false ]]; then
+  exec {stdout_fd}>&-
+  exec {stderr_fd}>&-
+  typeset -a collect_args=(--runtime claude --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$run_exit" --runner-exit-code "$run_exit")
+  [[ -z "$canary_file" ]] || collect_args+=(--canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}")
+  for artifact in "${artifacts[@]}"; do collect_args+=(--artifact "${artifact:A}"); done
+  collect_args+=(--wall-clock-seconds "$SECONDS")
+  python3 "$result_adapter" "${collect_args[@]}"
+  collect_exit=$?
+  (( run_exit != 0 )) || run_exit=$collect_exit
+fi
+exit "$run_exit"

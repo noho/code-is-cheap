@@ -116,6 +116,52 @@ class SetupTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'relative'):
                     sandbox.write_boundary('claude','mimo',cwd,[])
 
+    def test_collection_arguments_do_not_expand_outputs_or_write_boundary(self):
+        cwd=Path.cwd()
+        with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
+            _,options,command=sandbox.parse_runner(['codex-agent-run','--provider','mimo','--prompt','task',
+                '--canary-file','proof.txt','--canary-expected','expected.txt',
+                '--artifact','review1.md','--artifact','review2.md'],cwd)
+        self.assertEqual(command.count('--artifact'),2)
+        self.assertEqual(options['--canary-file'],str(cwd/'proof.txt'))
+        self.assertFalse({'--output','--stderr','--last-message'} & options.keys())
+
+    def test_result_contract_rejects_denied_canary_and_unwritable_artifact(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve();work=root/'work';work.mkdir()
+            runner=root/'codex-agent-run';runner.write_text('stub')
+            (root/'agent-run-result.py').write_text('stub')
+            proof=root/'proof';proof.write_text('token')
+            expected=root/'expected';expected.write_text('token')
+            options={'--canary-file':str(proof),'--canary-expected':str(expected)}
+            base=[str(runner)]
+            sandbox.validate_result_contract(options | {"_artifacts":[str(work/'report.md')]},base,[str(work)],[],[])
+            for path in (root/'outside.md',work/'denied/report.md',work/'.git/report.md'):
+                with self.assertRaisesRegex(ValueError,'outside retained write roots|artifact is denied'):
+                    sandbox.validate_result_contract(options | {"_artifacts":[str(path)]},base,[str(work)],
+                        [str(work/'.git')],[str(work/'denied')])
+            with unittest.mock.patch.object(shutil, 'which', return_value=str(runner)):
+                _, literal, command = sandbox.parse_runner([str(runner),'--provider','mimo','--prompt','--detail',
+                    '--artifact',str(root/'outside.md')],work)
+                self.assertFalse(literal['_detail'])
+                with self.assertRaisesRegex(ValueError,'outside retained write roots'):
+                    sandbox.validate_result_contract(literal,command,[str(work)],[],[])
+            for denied in (proof,expected):
+                with self.assertRaisesRegex(ValueError,'required setup input is denied'):
+                    sandbox.validate_result_contract(options,base,[str(work)],[],[str(denied)])
+
+    def test_artifact_leaf_symlinks_are_rejected_before_canonicalization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve();work=root/'work';work.mkdir()
+            existing=work/'existing';existing.write_text('old')
+            for target in (work/'missing', root/'outside', existing):
+                link=work/'artifact';link.symlink_to(target)
+                with unittest.mock.patch.object(shutil,'which',return_value='/bin/codex-agent-run'):
+                    with self.assertRaisesRegex(ValueError,'not a symlink'):
+                        sandbox.parse_runner(['codex-agent-run','--provider','mimo','--prompt','task',
+                            '--artifact',str(link)],work)
+                link.unlink()
+
     def test_raw_native_options_cannot_change_policy(self):
         cwd = Path.cwd()
         with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
@@ -219,7 +265,7 @@ print(json.dumps(r))
         p = self.root
         return subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
+            '--prompt','test','--detail','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
 
     def test_kernel_boundary_and_write_preservation(self):
         result = self.launch()
@@ -294,7 +340,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
         (p/'denies.json').write_text(json.dumps(entries))
         result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'sinks/result')],
+            '--prompt','test','--detail','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=300)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertIn('read boundary verified; starting runner',result.stderr)
@@ -325,13 +371,13 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
         (p/'bin/claude-agent-run').symlink_to(p/'bin/codex-agent-run')
         check = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'work/original-blocked')],
+            '--prompt','test','--detail','--output',str(p/'work/original-blocked')],
             env=self.env,capture_output=True,text=True,timeout=45)
         self.assertNotEqual(check.returncode,0)
         self.assertIn('output conflicts with original write denial',check.stderr)
         result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
-            '--prompt','test','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
+            '--prompt','test','--detail','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=45)
         self.assertEqual(result.returncode,0,result.stderr)
         r = json.loads(result.stdout)
@@ -368,7 +414,7 @@ class FullAccessTests(unittest.TestCase):
                    'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
             for runtime,provider in (('codex','gpt-6-sol'),('claude','mimo')):
                 for full in (False,True):
-                    cmd = [str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',provider,'--cwd',str(p),'--prompt','literal --full-access']
+                    cmd = [str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',provider,'--cwd',str(p),'--prompt','literal --full-access','--detail']
                     if full: cmd.append('--full-access')
                     done = subprocess.run(cmd,env=env,capture_output=True,text=True)
                     self.assertEqual(done.returncode,0,done.stderr)

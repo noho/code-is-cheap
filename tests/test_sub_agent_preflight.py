@@ -1,8 +1,9 @@
-"""Regression checks for stale canary input in the preflight task body."""
+"""Optional preflight setup, plain task sources and explicit result contracts."""
 
 from __future__ import annotations
 
 import os
+import shlex
 import subprocess
 import tempfile
 import unittest
@@ -16,7 +17,7 @@ CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash lo
 CLAUDE_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy".replace(" ", "\n") + "\n"
 
 
-class PreflightStaleCanaryTests(unittest.TestCase):
+class PreflightTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -25,7 +26,7 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         (home / ".codex").mkdir(parents=True)
         (home / ".codex/mimo.config.toml").write_text("", encoding="utf-8")
         tools = self.root / "agent-tools.zsh"
-        tools.write_text("mimo_codex() { :; }\n", encoding="utf-8")
+        tools.write_text("mimo_codex() { :; }\nds-flash_claude() { :; }\n", encoding="utf-8")
         bin_dir = self.root / "bin"
         bin_dir.mkdir()
         for name in ("codex-agent-run", "claude-agent-run"):
@@ -43,14 +44,14 @@ class PreflightStaleCanaryTests(unittest.TestCase):
             "HOME": str(home),
             "TMPDIR": str(self.root),
             "AGENT_TOOLS_FILE": str(tools),
-            "PATH": f"{bin_dir}:{os.environ['PATH']}",
+            "PATH": f"{bin_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
             "FAKE_CODEX_CATALOG": CODEX_PROVIDERS,
             "FAKE_CLAUDE_CATALOG": CLAUDE_PROVIDERS,
             "FAKE_CODEX_EXIT": "0",
             "FAKE_CLAUDE_EXIT": "0",
         }
 
-    def preflight(self, source: str, body: str | Path, *options: str) -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
+    def preflight(self, source: str, body: str | Path, *options: str, runtime: str = "codex") -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
         if source == "--task":
             value = str(body)
         elif isinstance(body, Path):
@@ -61,8 +62,8 @@ class PreflightStaleCanaryTests(unittest.TestCase):
             value = str(task_file)
         result = subprocess.run(
             [
-                "bash", str(PREFLIGHT), "--runtime", "codex", "--provider", "mimo",
-                "--cwd", str(ROOT), "--label", "preflight-stale-canary-test", source, value, *options,
+                "bash", str(PREFLIGHT), "--runtime", runtime, "--provider", "mimo" if runtime == "codex" else "ds-flash",
+                "--cwd", str(ROOT), source, value, *options,
             ],
             env=self.env, capture_output=True, text=True, check=False,
         )
@@ -89,7 +90,38 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         result, report = self.preflight("--task", BODY, "--deny-list", str(denied))
         self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
         self.assertTrue(report["command"].startswith("agent-sandbox --cwd "))
-        self.assertIn("--full-access --no-persist", report["command"])
+        self.assertIn("--full-access", shlex.split(report["command"]))
+        self.assertIn("--no-persist", shlex.split(report["command"]))
+
+    def test_collection_contract_and_claude_trace_match_envelope_check(self):
+        capture = self.root / "checked-args"
+        wrapper = self.root / "bin/agent-sandbox"
+        wrapper.write_text(f"#!/bin/sh\nprintf '%s\\n' \"$@\" > '{capture}'\n")
+        wrapper.chmod(0o755)
+        denied = self.root / "denied.json"
+        denied.write_text('[]')
+        artifacts = [self.root / "not yet created.md", self.root / "result2.md"]
+        result, report = self.preflight("--task", BODY, "--deny-list", str(denied),
+                                       "--artifact", str(artifacts[0]), "--artifact", str(artifacts[1]), "--canary", runtime="claude")
+        self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+        command = shlex.split(report["command"])
+        checked = capture.read_text().splitlines()
+        self.assertEqual(command[command.index("--")+1:], checked[checked.index("--")+1:])
+        self.assertEqual(command[command.index("--output-format")+1], "stream-json")
+        self.assertEqual(command.count("--artifact"), 2)
+        self.assertEqual(command[command.index("--canary-file")+1], report["canary_file"])
+        self.assertEqual(command[command.index("--canary-expected")+1], report["canary_expected"])
+        self.assertNotIn("--detail", command)
+        prompt=Path(report["prompt_file"]).read_text()
+        for artifact in artifacts:
+            self.assertIn(str(artifact.absolute()),prompt)
+
+    def test_existing_artifact_is_setup_failure(self):
+        old=self.root/'existing.md';old.write_text('old')
+        result,report=self.preflight('--task',BODY,'--artifact',str(old))
+        self.assertEqual(result.returncode,1)
+        self.assertEqual(report['command'],'')
+        self.assertIn('artifact 必须为本轮新文件',result.stdout)
 
     def test_prompt_file_directory_reports_structured_failure(self) -> None:
         directory = self.root / "prompt-input-dir"
@@ -109,80 +141,90 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         self.assertIn(f"failure=--task-file 不可读或为空: {directory}", result.stdout)
         self.assertEqual(report["command"], "")
 
-    def test_clean_concept_discussion_passes_for_all_three_sources(self) -> None:
+    def test_plain_tasks_and_arbitrary_protocol_discussion_for_all_sources(self):
+        body = "Discuss CANARY=old-token and canary.txt, mimo-deadbeef, RUNTIME/PROVIDER/MODEL: examples.\n"
         for source in ("--task", "--task-file", "--prompt-file"):
-            with self.subTest(source=source):
-                body = BODY + "A fix-deadbeef reference is unrelated to the canary.\n"
-                result, report = self.preflight(source, body)
-                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                self.assertEqual(report["setup_status"], "ok")
-                prompt = Path(report["prompt_file"]).read_text(encoding="utf-8")
-                self.assertIn(body, prompt)
-                self.assertEqual(prompt.count("RUNTIME/PROVIDER/MODEL:"), 1)
-                self.assertEqual(prompt.count(report["canary_file"]), 1)
-                self.assertNotIn(Path(report["canary_file"]).read_text(), prompt)
-                if source == "--prompt-file":
-                    self.assertEqual((self.root / "prompt-file.txt").read_text(), body)
+            result, report = self.preflight(source, body)
+            self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+            prompt=Path(report['prompt_file']).read_text()
+            self.assertTrue(prompt.startswith(body))
+            self.assertEqual(prompt.count('RUNTIME/PROVIDER/MODEL:'),1) # supplied text only
+            self.assertEqual(report['canary_file'],'')
+            self.assertEqual(report['canary_expected'],'')
+            self.assertNotIn('--canary-file',shlex.split(report['command']))
+            self.assertFalse((Path(report['run_dir'])/'canary.txt').exists())
+            if source=='--prompt-file':
+                self.assertEqual((self.root/'prompt-file.txt').read_text(),body)
 
-    def test_stale_inputs_fail_before_final_prompt_is_written(self) -> None:
-        stale_cases = (
-            "Read sub-agents.OLD123/canary.txt.",
-            "Read /tmp/sub-agents.OLD123/canary.expected.",
-            "Read ./legacy/canary.txt.",
-            "Read ../legacy/canary.expected.",
-            "Read /tmp/legacy/canary.txt.",
-            "Read //tmp/legacy/canary.expected.",
-            "Read canary.txt.",
-            "CANARY: old-canary-00000000",
-            "CANARY=old-task-00000000",
-            "Use bare mimo-deadbeef as the result.",
-            "Use bare hy-deadbeef as the result.",
-            "Use bare old-canary-deadbeef as the result.",
-            "RUNTIME/PROVIDER/MODEL: codex/mimo/old",
-        )
-        for source in ("--task", "--task-file", "--prompt-file"):
-            for stale_text in stale_cases:
-                with self.subTest(source=source, stale_text=stale_text):
-                    result, report = self.preflight(source, BODY + stale_text + "\n")
-                    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-                    self.assertEqual(report["setup_status"], "fail")
-                    self.assertEqual(report["command"], "")
-                    self.assertEqual(report["prompt_file"], "")
-                    self.assertFalse((Path(report["run_dir"]) / "prompt.txt").exists())
-                    self.assertIn("failure=任务正文含", result.stdout)
+    def test_opt_in_canary_is_private_paired_and_not_in_prompt(self):
+        result,report=self.preflight('--task','Read the proof and finish.','--canary')
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        token=Path(report['canary_file']).read_text()
+        self.assertEqual(token,Path(report['canary_expected']).read_text())
+        self.assertNotIn(token,Path(report['prompt_file']).read_text())
+        self.assertNotIn(token,result.stdout)
+        for key in ('canary_file','canary_expected','prompt_file'):
+            self.assertEqual(Path(report[key]).stat().st_mode & 0o777,0o600)
+        self.assertIn('--canary-file',shlex.split(report['command']))
 
-    def test_catalog_failures_and_partial_output_fail_setup(self) -> None:
-        scenarios = (
-            ("codex nonzero", {"FAKE_CODEX_EXIT": "7"}),
-            ("claude nonzero", {"FAKE_CLAUDE_EXIT": "7"}),
-            ("both nonzero", {"FAKE_CODEX_EXIT": "7", "FAKE_CLAUDE_EXIT": "7"}),
-            ("partial nonzero", {"FAKE_CODEX_CATALOG": "mimo\n", "FAKE_CODEX_EXIT": "7"}),
-            ("codex partial", {"FAKE_CODEX_CATALOG": "mimo\n"}),
-            ("claude partial", {"FAKE_CLAUDE_CATALOG": "mimo\n"}),
-        )
-        for name, overrides in scenarios:
-            with self.subTest(scenario=name):
-                env = self.env.copy()
-                self.env.update(overrides)
-                result, report = self.preflight("--task", BODY + "A fix-deadbeef reference is unrelated.\n")
-                self.env = env
-                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-                self.assertEqual(report["setup_status"], "fail")
-                self.assertEqual(report["command"], "")
-                if "nonzero" in name:
-                    self.assertIn("provider catalog", result.stdout)
-                else:
-                    self.assertIn("输出不完整", result.stdout)
+    def test_empty_whitespace_and_conflicting_sources_fail_without_command(self):
+        for source in ('--task','--task-file','--prompt-file'):
+            for body in ('', ' \t\r\n\v\f', '\u3000', '\u00a0'):
+                with self.subTest(source=source,body=repr(body)):
+                    result,report=self.preflight(source,body)
+                    self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+                    self.assertEqual(report['setup_status'],'fail')
+                    self.assertEqual(report['command'],'')
+        result,report=self.preflight('--task','Do a task.','--task-file',str(self.canary_path()))
+        self.assertEqual(result.returncode,1)
+        self.assertEqual(report['command'],'')
 
-    def test_canary_shape_check_is_independent_of_catalog(self) -> None:
-        self.env["FAKE_CODEX_EXIT"] = "7"
-        self.env["FAKE_CLAUDE_EXIT"] = "7"
-        for source in ("--task", "--task-file", "--prompt-file"):
-            with self.subTest(source=source):
-                result, report = self.preflight(source, BODY + "Use old-canary-deadbeef.\n")
-                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-                self.assertEqual(report["setup_status"], "fail")
-                self.assertIn("failure=任务正文含 canary token", result.stdout)
+    def canary_path(self):
+        p=self.root/'task-body';p.write_text('task');return p
+
+    def test_auto_labels_are_safe_distinct_and_explicit_label_can_be_reused(self):
+        labels=[]
+        for _ in range(2):
+            result,report=self.preflight('--task','Inspect only.')
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            labels.append(report['label'])
+            self.assertRegex(report['label'],r'^task-[A-Za-z0-9]+$')
+        self.assertNotEqual(labels[0],labels[1])
+        for _ in range(2):
+            result,report=self.preflight('--task','Inspect only.','--label','same-label')
+            self.assertEqual(result.returncode,0)
+        for label in ('../escape','.', '..','a b','bad/part','[*]'):
+            result,report=self.preflight('--task','Inspect only.','--label',label)
+            self.assertEqual(result.returncode,1)
+            self.assertEqual(report['command'],'')
+
+    def test_only_selected_catalog_is_required(self):
+        self.env['FAKE_CODEX_CATALOG']='mimo\n'
+        self.env['FAKE_CLAUDE_EXIT']='7'
+        (self.root/'bin/claude-agent-run').unlink()
+        result,report=self.preflight('--task','Inspect only.')
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        for overrides in ({'FAKE_CODEX_EXIT':'7'},{'FAKE_CODEX_CATALOG':'other\n'}):
+            env=self.env.copy();self.env.update(overrides)
+            result,report=self.preflight('--task','Inspect only.')
+            self.env=env
+            self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+            self.assertEqual(report['command'],'')
+
+    def test_only_selected_claude_runtime_is_required(self):
+        (self.root/'bin/codex-agent-run').unlink()
+        self.env['FAKE_CLAUDE_CATALOG']='ds-flash\n'
+        result,report=self.preflight('--task','Inspect only.',runtime='claude')
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+
+    def test_missing_selected_launcher_profile_or_runner_fails(self):
+        for target in ('home/.codex/mimo.config.toml','agent-tools.zsh','bin/codex-agent-run'):
+            p=self.root/target;old=p.read_bytes();p.unlink()
+            result,report=self.preflight('--task','Inspect only.')
+            p.write_bytes(old)
+            if target.startswith('bin/'):p.chmod(0o755)
+            self.assertEqual(result.returncode,1,result.stdout+result.stderr)
+            self.assertEqual(report['command'],'')
 
 
 if __name__ == "__main__":

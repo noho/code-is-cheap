@@ -118,6 +118,13 @@ class RuntimeTests(unittest.TestCase):
                     exit_code=result.returncode, wrapper_stderr=result.stderr,
                     runtime_stderr=stderr, trace=trace, requests=requests, server_errors=errors),indent=2))
             self.assertEqual(result.returncode,0,(result.stderr,stderr,trace,errors))
+            collected=json.loads(result.stdout)
+            self.assertEqual(collected['agent_status'],'completed')
+            self.assertEqual(collected['validation_status'],'needs_review')
+            self.assertEqual(collected['result_status'],'not_assessed')
+            self.assertGreater(collected['tool_results'],0)
+            self.assertEqual(collected['logs']['output'],str(p/'sinks/events'))
+            self.assertEqual(collected['tool_evidence_scope'],'recorded_events_only')
             self.assertEqual(len(requests),6 if runtime == 'codex' else 5,(result.stderr,stderr,trace,errors))
             wire = json.dumps(requests)
             self.assertNotIn(secret,wire)
