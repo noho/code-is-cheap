@@ -126,6 +126,30 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(options['--canary-file'],str(cwd/'proof.txt'))
         self.assertFalse({'--output','--stderr','--last-message'} & options.keys())
 
+    def test_result_contract_rejects_denied_canary_and_unwritable_artifact(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve();work=root/'work';work.mkdir()
+            runner=root/'codex-agent-run';runner.write_text('stub')
+            (root/'agent-run-result.py').write_text('stub')
+            proof=root/'proof';proof.write_text('token')
+            expected=root/'expected';expected.write_text('token')
+            options={'--canary-file':str(proof),'--canary-expected':str(expected)}
+            base=[str(runner)]
+            sandbox.validate_result_contract(options | {"_artifacts":[str(work/'report.md')]},base,[str(work)],[],[])
+            for path in (root/'outside.md',work/'denied/report.md',work/'.git/report.md'):
+                with self.assertRaisesRegex(ValueError,'outside retained write roots|artifact is denied'):
+                    sandbox.validate_result_contract(options | {"_artifacts":[str(path)]},base,[str(work)],
+                        [str(work/'.git')],[str(work/'denied')])
+            with unittest.mock.patch.object(shutil, 'which', return_value=str(runner)):
+                _, literal, command = sandbox.parse_runner([str(runner),'--provider','mimo','--prompt','--detail',
+                    '--artifact',str(root/'outside.md')],work)
+                self.assertFalse(literal['_detail'])
+                with self.assertRaisesRegex(ValueError,'outside retained write roots'):
+                    sandbox.validate_result_contract(literal,command,[str(work)],[],[])
+            for denied in (proof,expected):
+                with self.assertRaisesRegex(ValueError,'required setup input is denied'):
+                    sandbox.validate_result_contract(options,base,[str(work)],[],[str(denied)])
+
     def test_raw_native_options_cannot_change_policy(self):
         cwd = Path.cwd()
         with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
@@ -341,7 +365,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
         self.assertIn('output conflicts with original write denial',check.stderr)
         result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
-            '--prompt','test','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
+            '--prompt','test','--detail','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=45)
         self.assertEqual(result.returncode,0,result.stderr)
         r = json.loads(result.stdout)

@@ -334,7 +334,7 @@ in the prompt — the child reads it from the generated file.
 By default, each runner returns one JSON report on stdout after execution: status, final answer, anomaly summary,
 expected artifact paths, and full log paths. `--output` and `--stderr` save **raw logs**, not the report; missing
 log destinations get private temporary files. Claude uses `stream-json` internally. Add repeatable
-`--artifact /path/to/report.md` to preflight (or the runner) to declare required artifacts.
+`--artifact /path/to/report.md` to preflight (or the runner) to declare required **new regular files**. Existing files/directories are rejected before dispatch.
 
 ```bash
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
@@ -351,8 +351,10 @@ original nonzero exit code; otherwise mechanical rejection returns 1, and `needs
 The final answer is capped at 12,000 characters with an explicit truncation flag; each diagnostic category displays at
 most 20 entries of 2,000 characters, with full counts. Inspect retained logs when truncated. Preflight passes paired
 `--canary-file` / `--canary-expected` automatically; hand-built validation calls must pass them too. A canary match and
-candidate read trace do not replace independent verification of required task evidence. Full evidence belongs in the
-task artifact. `--detail` skips collection and requires the controller to perform all checks; `text` output and Claude
+candidate read trace do not replace independent verification of required task evidence. Write the proof as a standalone `CANARY=<token>` line outside code fences; inline examples are not proof.
+`tool_evidence_scope=recorded_events_only` does not certify complete tool visibility. Full evidence belongs in the
+task artifact. Under `agent-sandbox`, declared artifacts must fit existing write roots and canary inputs must be
+readable; setup rejects conflicts and never grants extra write access. `--detail` skips collection and requires the controller to perform all checks; `text` output and Claude
 `json` are available in that mode. Neither reports nor Agent messages grant user authorization.
 
 ## Codex Agent Profiles

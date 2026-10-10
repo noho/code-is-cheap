@@ -31,7 +31,7 @@ Run options:
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or jsonl. Defaults to json (JSONL event stream).
   --detail                   Return raw runtime output instead of the collected result.
-  --artifact <path>          Expected task artifact; repeatable. Checked after execution.
+  --artifact <path>          NEW regular task file; repeatable. Checked after execution.
   --canary-file <path>       Canary input path (paired with --canary-expected).
   --canary-expected <path>   Controller's expected token file; never sent in the prompt.
   --output <path>            Save raw runtime output to a NEW private file.
@@ -412,6 +412,20 @@ if [[ "$detail" == false ]]; then
   fi
 fi
 
+if [[ "$detail" == false ]]; then
+  typeset -a normalized_artifacts=()
+  for artifact in "${artifacts[@]}"; do
+    prepare_output_path "$artifact"
+    artifact="$REPLY"
+    require_new_output "$artifact"
+    require_distinct_outputs "$artifact" "$output_file"
+    require_distinct_outputs "$artifact" "$stderr_file"
+    require_distinct_outputs "$artifact" "$last_message_file"
+    normalized_artifacts+=("$artifact")
+  done
+  artifacts=("${normalized_artifacts[@]}")
+fi
+
 require_distinct_outputs "$output_file" "$stderr_file"
 require_distinct_outputs "$output_file" "$last_message_file"
 require_distinct_outputs "$stderr_file" "$last_message_file"
@@ -422,12 +436,14 @@ require_distinct_outputs "$stderr_file" "$last_message_file"
 typeset -i stdout_fd=1 stderr_fd=2
 last_message_dir=""
 last_message_tmp=""
+last_message_logged=false
+last_message_saved=false
 
 # Keep an unsaved final message on error or interruption and report its location.
 TRAPEXIT() {
   if [[ -n "$last_message_dir" && -d "$last_message_dir" ]]; then
     if [[ -e "$last_message_tmp" || -L "$last_message_tmp" ]]; then
-      print -u2 -- "$PROGRAM_NAME: final message retained at: $last_message_tmp"
+      [[ "$last_message_logged" == true ]] || print -u2 -- "$PROGRAM_NAME: final message retained at: $last_message_tmp"
     else
       rmdir -- "$last_message_dir" 2>/dev/null || true
     fi
@@ -474,6 +490,9 @@ run_codex >&$stdout_fd 2>&$stderr_fd
 runtime_exit=$?
 run_exit=$runtime_exit
 
+postprocessing_fd=2
+[[ "$detail" == true ]] || postprocessing_fd=$stderr_fd
+{
 if [[ -n "$last_message_file" ]]; then
   if [[ -f "$last_message_tmp" && ! -L "$last_message_tmp" ]]; then
     # Repeat the check after the run: another process may have created the path.
@@ -481,6 +500,7 @@ if [[ -n "$last_message_file" ]]; then
       print -u2 -- "$PROGRAM_NAME: final-message destination now exists: $last_message_file"
       (( run_exit != 0 )) || run_exit=1
     elif cat -- "$last_message_tmp" >"$last_message_file"; then
+      last_message_saved=true
       rm -- "$last_message_tmp"
       rmdir -- "$last_message_dir" 2>/dev/null || true
     else
@@ -493,13 +513,23 @@ if [[ -n "$last_message_file" ]]; then
   fi
 fi
 
+  if [[ "$detail" == false && -e "$last_message_tmp" ]]; then
+    print -u2 -- "$PROGRAM_NAME: final message retained at: $last_message_tmp"
+    last_message_logged=true
+  fi
+} 2>&$postprocessing_fd
+
 if [[ "$detail" == false ]]; then
   exec {stdout_fd}>&-
   exec {stderr_fd}>&-
   typeset -a collect_args=(--runtime codex --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$runtime_exit" --runner-exit-code "$run_exit")
   [[ -z "$canary_file" ]] || collect_args+=(--canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}")
   for artifact in "${artifacts[@]}"; do collect_args+=(--artifact "${artifact:A}"); done
-  [[ -z "$last_message_file" ]] || collect_args+=(--last-message "$last_message_file")
+  if [[ "$last_message_saved" == true ]]; then
+    collect_args+=(--last-message "$last_message_file")
+  elif [[ -f "$last_message_tmp" && ! -L "$last_message_tmp" ]]; then
+    collect_args+=(--last-message "$last_message_tmp")
+  fi
   python3 "$result_adapter" "${collect_args[@]}"
   collect_exit=$?
   (( run_exit != 0 )) || run_exit=$collect_exit

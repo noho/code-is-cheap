@@ -119,6 +119,8 @@ def parse_runner(command, cwd):
             elif option == "--prompt-file" and value != "-":
                 value = str(absolute(value))
             values[option] = value
+            if option == "--artifact":
+                values.setdefault("_artifacts", []).append(value)
             if option in {"--prompt", "--prompt-file"}:
                 values["_prompt_index"] = len(normalized)
             normalized += [option, value]
@@ -141,7 +143,33 @@ def parse_runner(command, cwd):
         normalized.append("--full-access")
     if "--no-persist" not in switches:
         normalized.append("--no-persist")
+    values["_detail"] = "--detail" in switches
     return Path(command[0]).name.split("-")[0], values, normalized
+
+
+def validate_result_contract(options, command, write_roots, write_denies, denies):
+    if options.get("_detail"):
+        return
+    adapter = Path(command[0]).resolve().with_name("agent-run-result.py")
+    require_readable(adapter, denies)
+    paths = [options.get("--canary-file"), options.get("--canary-expected")]
+    if bool(paths[0]) != bool(paths[1]):
+        raise ValueError("canary options must be paired")
+    for path in filter(None, paths):
+        require_readable(path, denies)
+        with Path(path).open("rb") as stream:
+            if not stream.read(1):
+                raise ValueError(f"required canary input empty: {path}")
+    for value in options.get("_artifacts", []):
+        path = Path(value)
+        if path.exists() or path.is_symlink():
+            raise ValueError(f"artifact must be new: {path}")
+        if is_denied(path, denies) or is_denied(path, write_denies):
+            raise ValueError(f"artifact is denied: {path}")
+        if not any(path == Path(root) or Path(root) in path.parents for root in write_roots):
+            raise ValueError(f"artifact outside retained write roots: {path}")
+        if str(path) in [options.get(key) for key in ("--output", "--stderr", "--last-message")]:
+            raise ValueError(f"artifact conflicts with runner log: {path}")
 
 
 def toml_text(document):
@@ -387,6 +415,7 @@ def main():
     if runtime == "claude" or provider not in {"gpt-6-astra", "gpt-6-sol", "gpt-6-luna", "business"}:
         connection = helper.connection(provider, runtime, require_key=True)
     write_roots, original_write_denies = write_boundary(runtime, provider, cwd, denies)
+    validate_result_contract(options, command, write_roots, original_write_denies, denies)
     for path in outputs:
         if is_denied(path, original_write_denies):
             raise ValueError(f"output conflicts with original write denial: {path}")

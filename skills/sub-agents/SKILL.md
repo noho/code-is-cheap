@@ -22,8 +22,9 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 ## Preflight Checklist
 
 每次派发前逐项过。`sub-agent-preflight` 只完成可机械验证的 setup / 结构检查，生成 run_dir / canary /
-最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。用重复的 `--artifact <path>` 声明必需产物，
-它们不要求在派发前存在。预检把本轮 canary 与产物路径交给 runner 收尾检查。它只能拒绝可识别的字面值、路径、
+最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。用重复的 `--artifact <path>` 声明必需的本轮新建普通文件，
+已存在文件、目录或符号链接在派发前拒绝；预检将产物路径写入 prompt，并交给 runner 收尾检查。
+已有源码的修改不作为 `--artifact`，用新报告描述修改与证据，仍由总控验收。它只能拒绝可识别的字面值、路径、
 provider 形式 token 和固定协议标记，不能靠正则证明任意自然语言同义旧报告指令不存在。总控仍须逐项核对
 下方 Dispatch Contract、prompt 的语义完整性、实际授权和并发写边界；尤其要按语义拒绝任何与本轮报告协议
 冲突的旧报告动作。`setup_status=ok` 不证明这些内容正确：
@@ -202,15 +203,20 @@ Sandbox Process Management 收集真实退出状态和 stdout；这没有增加 
 - `validation_status`：`passed` 是机械检查通过；`needs_review` 是异常或可见性缺口待总控裁决；
   `rejected` 是硬性缺项。汇总始终保留 `result_status=not_assessed`，不自动验收任务；
 - `errors`、`anomalies`、`warnings`：硬性缺项、待裁决诊断、精确匹配的非致命诊断；每类最多展示 20 条、
-  每条最多 2000 字符，计数和截断标记指向完整日志，不能只裁决展示的首批；
+  每条最多 2000 字符，流名、行号、原始字符数、计数和截断标记指向完整日志，不能只裁决展示的首批；
 - `canary_status`、`canary_read_candidate`：报告 token 比对与可定位的候选工具读取证据。
   候选仅表示调用参数提到路径且输出出现 token；总控仍须核对工具真正读取文件，不能当作完整取证证明；
 - `artifacts`、`logs`：调用方通过重复 `--artifact` 声明的产物及完整日志路径。
-  canary 可以报告在最终答复或已声明的文本产物中；产物存在不等于内容正确。
+  canary 可以报告在最终答复或已声明的文本产物中；证明须单独一行 `CANARY=<token>`，
+  不附说明、不放代码块。行内示例和代码块不作为证明；常见成对引号和句末标点只作为排版剥离，token 仍严格比较。
+  新产物是普通文件也不等于内容正确。
 
 `--canary-file` 与 `--canary-expected` 必须成对传入；预检自动设置。手工调用同样传入本轮路径，
 不得把预期 token 写入 prompt。没有 canary 声明的普通 runner 调用不进行 token 验证。
-缺少工具轨迹、未完成调用或普通工具失败列为待裁决，不机械判整次失败。
+缺少工具轨迹、未完成调用或普通工具失败列为待裁决，不机械判整次失败。`needs_review` 是总控待办，
+不要求用户追加授权、暂停 workflow 或重派；总控可自行核对恢复证据并解释影响。只有必要证据仍缺失
+或确需扩大授权时报告阻塞。`tool_evidence_scope=recorded_events_only` 仅表示扫描了实际留存事件，
+不证明所有读取通道都有逐调用轨迹，不可直接誊写为裁决块的 `tool_trace=complete`。
 结构化输出损坏、终态缺失、外层非零、canary 不匹配、必需产物缺失会拒收；runner 保留 runtime
 原始非零退出码，否则机械拒收返回 1。工具异常 `needs_review` 返回 0，不能只凭退出码采纳。
 
@@ -335,7 +341,7 @@ retry_class: none | setup | provider | task | unknown
 或 `setup_status=fail` 时，`result_status` 只能为 `rejected` 或 `not_assessed`；`agent_status=blocked` 或
 `not_started` 时不能为 `accepted`。任务要求工具调用而 `tool_evidence=no`，或任务有必需证据但
 `required_evidence` 不是 `complete` 时，受影响结论不能记为 `accepted`。验证类任务若 `canary_status`
-不是 `match`，也不能记为 `accepted`。`tool_trace=summary_only`（Claude 默认 JSON）并不自动拒收；
+不是 `match`，也不能记为 `accepted`。`tool_trace=summary_only`（例如 `--detail --output-format json`）并不自动拒收；
 须逐项独立复核必需证据并说明范围。`evidence_gaps` 非空时不能把受影响结论记为 `accepted`。
 
 `setup_status=fail` 时子 Agent 未启动：`agent_status` 必须写 `not_started`、`canary_status` 必须写 `not_run`、

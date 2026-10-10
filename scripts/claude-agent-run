@@ -31,7 +31,7 @@ Run options:
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or stream-json. Defaults to stream-json (json with --detail).
   --detail                   Return raw runtime output instead of the collected result.
-  --artifact <path>          Expected task artifact; repeatable. Checked after execution.
+  --artifact <path>          NEW regular task file; repeatable. Checked after execution.
   --canary-file <path>       Canary input path (paired with --canary-expected).
   --canary-expected <path>   Controller's expected token file; never sent in the prompt.
   --output <path>            Save raw runtime output to a NEW private file.
@@ -384,6 +384,19 @@ if [[ "$detail" == false ]]; then
     [[ -n "$output_file" ]] || output_file="$log_dir/output.jsonl"
     [[ -n "$stderr_file" ]] || stderr_file="$log_dir/stderr.log"
   fi
+fi
+
+if [[ "$detail" == false ]]; then
+  typeset -a normalized_artifacts=()
+  for artifact in "${artifacts[@]}"; do
+    prepare_output_path "$artifact"
+    artifact="$REPLY"
+    require_new_output "$artifact"
+    require_distinct_outputs "$artifact" "$output_file"
+    require_distinct_outputs "$artifact" "$stderr_file"
+    normalized_artifacts+=("$artifact")
+  done
+  artifacts=("${normalized_artifacts[@]}")
 fi
 
 require_distinct_outputs "$output_file" "$stderr_file"

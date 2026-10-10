@@ -318,7 +318,7 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 
 默认每个 runner 在执行结束后向 stdout 返回一个 JSON 汇总：状态、最终答复、异常摘要、必需产物路径和完整日志路径。
 `--output` 与 `--stderr` 保存**原始日志**，不是汇总；未指定日志路径时自动创建私有临时文件。Claude 内部使用
-`stream-json`。向 preflight（或 runner）重复传入 `--artifact /path/to/report.md` 声明必需产物。
+`stream-json`。向 preflight（或 runner）重复传入 `--artifact /path/to/report.md` 声明必需的**本轮新建普通文件**；已存在文件或目录在派发前拒绝。
 
 ```bash
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
@@ -333,7 +333,9 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 
 最终答复最多展示 12000 字符并显式标记截断；每类诊断最多 20 条、每条 2000 字符，保留完整计数。截断时查看留存日志。
 preflight 自动传入成对的 `--canary-file` / `--canary-expected`；手工构造验证调用也须传入。canary 匹配与候选读取轨迹
-不能代替任务必需证据的独立复核。完整取证应写入任务产物。`--detail` 跳过自动收集，由总控完成所有检查；
+不能代替任务必需证据的独立复核。证明须单独一行 `CANARY=<token>`、不放代码块；行内示例不作为证明。
+`tool_evidence_scope=recorded_events_only` 不保证所有工具通道的轨迹完整。完整取证应写入任务产物。
+`agent-sandbox` 下产物必须位于既有写范围，canary 必须可读；setup 拒绝冲突，不扩大写权限。`--detail` 跳过自动收集，由总控完成所有检查；
 `text` 输出和 Claude `json` 可在此模式使用。汇总和 Agent 答复均不构成用户授权。
 
 ## Codex Agent 配置（xx_codex）

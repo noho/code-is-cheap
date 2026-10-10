@@ -40,7 +40,7 @@ Prompt (give exactly one):
                              the controller must review their meaning before dispatch.
 
 Optional result contract:
-  --artifact <path>         Expected task artifact; repeatable. Checked by the runner after exit.
+  --artifact <path>         NEW regular task file; repeatable. Checked by the runner after exit.
 
 Optional access mode (defaults remain unchanged):
   --full-access             Disable the runtime's inner sandbox and tool approvals.
@@ -195,6 +195,15 @@ if [[ "$runtime" == codex ]]; then
   fi
 fi
 
+# Required task artifacts are new files, not old outputs or directories.
+if [[ -n "$workspace" ]] && (( ${#artifacts[@]} > 0 )); then
+  for index in "${!artifacts[@]}"; do
+    [[ -n "${artifacts[$index]}" && "${artifacts[$index]}" != */ ]] || failures+=("artifact 必须为普通文件路径: ${artifacts[$index]}")
+    artifacts[$index]="$(python3 -c 'import os,sys; p=os.path.expanduser(sys.argv[1]); print(os.path.abspath(p if os.path.isabs(p) else os.path.join(sys.argv[2],p)))' "${artifacts[$index]}" "$workspace")"
+    [[ ! -e "${artifacts[$index]}" && ! -L "${artifacts[$index]}" ]] || failures+=("artifact 必须为本轮新文件: ${artifacts[$index]}")
+  done
+fi
+
 # --- label 唯一性（best-effort）---------------------------------------------
 # 只查本机同一 TMPDIR 下历史 run_dir 里的同名 artifact；已清理的 run_dir 与其它机器查不到，
 # 所以这是护栏而非全局保证。修复性重试本来就必须用新 label。
@@ -282,8 +291,12 @@ if [[ -n "$prompt_used" ]]; then
   {
     printf '\n报告要求（必须遵守，以本轮以下协议为准）：\n'
     printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
-    printf -- '- 用工具读取本轮 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写；旧轮次 CANARY 不作为本轮证明）\n' "$canary_file"
+    printf -- '- 用工具读取本轮 %s 并把内容逐字写成 CANARY=<内容>（单独一行，不附说明、不放代码块；不要猜、不要改写；旧轮次 CANARY 不作为本轮证明）\n' "$canary_file"
     printf -- '- 最终答复保持简短：结论、未完成事项和产物路径；完整证据写入任务指定的 artifact\n'
+    if (( ${#artifacts[@]} > 0 )); then
+      printf -- '- 必需产物（本轮新建的普通文件，完成前必须写入）：\n'
+      for artifact in "${artifacts[@]}"; do printf -- '  %s\n' "$artifact"; done
+    fi
     printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
   } >> "$prompt_used"
   grep -qF -- "$token" "$prompt_used" \

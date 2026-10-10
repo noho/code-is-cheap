@@ -112,6 +112,16 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         self.assertEqual(command[command.index("--canary-file")+1], report["canary_file"])
         self.assertEqual(command[command.index("--canary-expected")+1], report["canary_expected"])
         self.assertNotIn("--detail", command)
+        prompt=Path(report["prompt_file"]).read_text()
+        for artifact in artifacts:
+            self.assertIn(str(artifact.absolute()),prompt)
+
+    def test_existing_artifact_is_setup_failure(self):
+        old=self.root/'existing.md';old.write_text('old')
+        result,report=self.preflight('--task',BODY,'--artifact',str(old))
+        self.assertEqual(result.returncode,1)
+        self.assertEqual(report['command'],'')
+        self.assertIn('artifact 必须为本轮新文件',result.stdout)
 
     def test_prompt_file_directory_reports_structured_failure(self) -> None:
         directory = self.root / "prompt-input-dir"
