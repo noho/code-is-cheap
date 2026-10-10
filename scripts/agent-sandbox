@@ -9,9 +9,11 @@ import json
 import os
 import platform
 from pathlib import Path
+import re
 import shutil
 import socket
 import stat
+import ssl
 import subprocess
 import sys
 import tempfile
@@ -19,6 +21,7 @@ import tomllib
 from urllib.parse import urlsplit
 
 SRT_VERSION = "0.0.79"
+DEFAULT_CODEX_CA_CERTIFICATE = "/etc/ssl/cert.pem"
 VALUE_OPTIONS = {"--provider", "--cwd", "--prompt", "--prompt-file", "--output",
                  "--stderr", "--last-message", "--instance", "--output-format", "--thread-source",
                  "--canary-file", "--canary-expected", "--artifact"}
@@ -377,6 +380,117 @@ def prepare_codex(provider, state, denies):
     return home, route
 
 
+def prepare_codex_ca(route, cwd, env, denies):
+    """Prepare only the selected HTTPS trust input, without changing its bytes."""
+    if urlsplit(route).scheme != "https":
+        return
+    source, declared = "system-default", DEFAULT_CODEX_CA_CERTIFICATE
+    selected_key = "CODEX_CA_CERTIFICATE"
+    for key in ("CODEX_CA_CERTIFICATE", "SSL_CERT_FILE"):
+        value = env.get(key, "")
+        if value != "":
+            source, declared, selected_key = key, value, key
+            break
+    context = {"source": source, "declared": declared}
+
+    def failure(message, error=None, reason=None):
+        detail = " ".join(f"{key}={value!r}" for key, value in context.items())
+        if error is not None:
+            detail += f" cause={type(error).__name__}(errno={getattr(error, 'errno', None)})"
+        if reason is not None:
+            detail += f" reason={reason}"
+        return ValueError(f"{message}: {detail}")
+
+    try:
+        path = Path(declared)
+        path = (path if path.is_absolute() else cwd / path).resolve(strict=True)
+    except (OSError, RuntimeError, ValueError) as error:
+        message = ("required Codex CA input missing" if getattr(error, "errno", None) == errno.ENOENT
+                   else "cannot read required Codex CA input")
+        raise failure(message, error) from error
+    context["canonical"] = str(path)
+    try:
+        denied = is_denied(path, denies)
+    except (OSError, RuntimeError, ValueError) as error:
+        raise failure("cannot read required Codex CA input", error) from error
+    if denied:
+        raise failure("required Codex CA input is denied")
+    try:
+        mode = path.lstat().st_mode
+    except (OSError, RuntimeError, ValueError) as error:
+        raise failure("cannot read required Codex CA input", error) from error
+    if not stat.S_ISREG(mode):
+        raise failure("required Codex CA input is not a regular file")
+
+    descriptor = None
+    try:
+        descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC)
+        mode = os.fstat(descriptor).st_mode
+        if stat.S_ISREG(mode):
+            stream = os.fdopen(descriptor, "rb")
+            descriptor = None  # The stream owns it from here, including read failures.
+            with stream:
+                data = stream.read()
+    except (OSError, RuntimeError, ValueError) as error:
+        raise failure("cannot read required Codex CA input", error) from error
+    finally:
+        if descriptor is not None:
+            try:
+                os.close(descriptor)
+            except OSError as error:
+                raise failure("cannot read required Codex CA input", error) from error
+    if not stat.S_ISREG(mode):
+        raise failure("required Codex CA input is not a regular file")
+
+    # Scan candidates as well as complete delimiters: a valid certificate must
+    # never hide a malformed companion. Noncertificate text/CRLs are ignored.
+    candidate = re.compile(rb"(?:-+[ \t]*|^[ \t]*)(BEGIN|END)[ \t]+(TRUSTED[ \t]+CERTIFICATE|CERTIFICATE)\b")
+    delimiter = re.compile(rb"-----(BEGIN|END) (TRUSTED CERTIFICATE|CERTIFICATE)-----")
+    label = None
+    block = []
+    count = 0
+    for line in data.splitlines(keepends=True):
+        spelling = line.rstrip(b"\r\n")
+        found = candidate.search(spelling)
+        if found is None:
+            if label is not None:
+                block.append(line)
+            continue
+        matched = delimiter.fullmatch(spelling)
+        if matched is None:
+            name = b" ".join(found[2].split()).decode("ascii")
+            raise failure("invalid Codex CA bundle", reason=f"malformed {name} delimiter")
+        action, name = matched.groups()
+        if action == b"BEGIN":
+            if label is not None:
+                raise failure("invalid Codex CA bundle", reason="nested certificate BEGIN")
+            label, block = name, [line]
+            continue
+        if label is None:
+            raise failure("invalid Codex CA bundle", reason="orphan certificate END")
+        if name != label:
+            raise failure("invalid Codex CA bundle", reason="mismatched certificate labels")
+        block.append(line)
+        count += 1
+        try:
+            validation = b"".join(block).decode("ascii")
+            if label == b"TRUSTED CERTIFICATE":
+                validation = validation.replace("-----BEGIN TRUSTED CERTIFICATE-----", "-----BEGIN CERTIFICATE-----")
+                validation = validation.replace("-----END TRUSTED CERTIFICATE-----", "-----END CERTIFICATE-----")
+            ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT).load_verify_locations(cadata=validation)
+        except (OSError, RuntimeError, ValueError) as error:
+            reason = type(error).__name__
+            if isinstance(error, ssl.SSLError):
+                reason += ": " + str(error.reason)[:256]
+            raise failure("invalid Codex CA bundle", reason=f"certificate {count} {label.decode('ascii')}: {reason}") from error
+        label, block = None, []
+    if label is not None:
+        raise failure("invalid Codex CA bundle", reason=f"incomplete {label.decode('ascii')} block")
+    if count == 0:
+        raise failure("invalid Codex CA bundle", reason="no certificate blocks")
+    env[selected_key] = str(path)
+
+
 def connection_helper():
     candidate = Path(__file__).resolve().with_name("agent-endpoint.py")
     spec = importlib.util.spec_from_file_location("sandbox_connection", candidate)
@@ -538,11 +652,13 @@ def main():
     for path in outputs:
         if is_denied(path, original_write_denies):
             raise ValueError(f"output conflicts with original write denial: {path}")
+    env = dict(os.environ)
     if args.check:
         if runtime == "codex":
             with tempfile.TemporaryDirectory(prefix="agent-sandbox-check.") as directory:
                 _, route = prepare_codex(provider, Path(directory), denies)
                 host_port(route)
+                prepare_codex_ca(route, cwd, env, denies)
         else:
             host_port(connection["base_url"])
         print("setup_status=ok")
@@ -551,7 +667,6 @@ def main():
     os.umask(0o077)
     state = Path(tempfile.mkdtemp(prefix="agent-sandbox."))
     (state / "tmp").mkdir()
-    env = dict(os.environ)
     env["AGENT_SANDBOX_ENDPOINT_HELPER"] = str(Path(__file__).resolve().with_name("agent-endpoint.py"))
     if runtime == "codex":
         home, route = prepare_codex(provider, state, denies)
@@ -562,6 +677,8 @@ def main():
         home.mkdir()
         env["CLAUDE_CONFIG_DIR"] = str(home)
     domain, parts = host_port(route)
+    if runtime == "codex":
+        prepare_codex_ca(route, cwd, env, denies)
     if parts.hostname in {"localhost", "127.0.0.1", "::1"}:
         with socket.create_connection((parts.hostname, parts.port or 80), timeout=2):
             pass

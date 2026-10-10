@@ -1,7 +1,7 @@
 # State: agent-sandbox-workspace-routing
 
 - Status: active; delegated caller confirmed goal on 2026-10-11.
-- Current gate / next entry point: accepted plan commit -> S1 implementation. Both actual plan re-reviews received; root closed original F1/F2/F3/C1/C2 and rejected the out-of-scope new notice-classification request with evidence.
+- Current gate / next entry point: accepted slice commit -> aggregate deepreview; dual code re-review confirmed K1 已修复, root kernel/live success accepted with explicit limits.
 - Branch: `fix/agent-sandbox-workspace-routing`.
 - Baseline: `20fc6c37751836329143567c166990bdffa9de3c`.
 - Worktree: `/private/tmp/code-is-cheap-workspace-routing`.

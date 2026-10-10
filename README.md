@@ -245,6 +245,30 @@ and absolute/home-relative literal sandbox `denyWrite` rules across discovered s
 directories are not granted. Codex permission profiles/project-layer configs and Claude custom read, glob/relative write or tool deny rules are currently unsupported. User Codex `.rules` are copied into the fresh home and protected against writes.
 Required credential/config files (including endpoints JSON and selected Codex auth) must remain readable for runtime startup. Listing them as denied stops setup; this wrapper does not isolate credentials from the Agent or its tools. Denied paths also become unwritable. The process exits on setup or verification failure, with no unsandboxed fallback.
 
+Isolated Codex HTTPS prepares explicit CA input in both `--check` and launch. Nonempty
+`CODEX_CA_CERTIFICATE` takes priority over nonempty `SSL_CERT_FILE`; exactly empty values fall through,
+while whitespace remains a literal path (CA behavior verified on Codex 0.162.1). When neither is effective,
+the wrapper selects `/etc/ssl/cert.pem`. Only the selected input is checked; a bad explicit input fails
+with its source/path and is never replaced by a lower-priority bundle. Relative paths use `--cwd`,
+exported literal `~` is not expanded, and the child receives the canonical path without changing the parent env.
+
+Inputs must be permitted, readable regular PEM files with one or more `CERTIFICATE` and/or
+`TRUSTED CERTIFICATE` entries. Every recognized certificate is syntax-checked; malformed companions fail.
+Trusted labels are normalized only in memory for validation; native Codex reads the original file and AUX data.
+`X509 CRL` entries are ignored, with no revocation validation. Setup does not prove endpoint trust,
+kernel enforcement or full native parser/algorithm equivalence, and grants no extra permissions or network access.
+
+The public system PEM may omit enterprise roots installed only in the macOS keychain; provide an explicit
+permitted PEM containing the required roots. The wrapper does not export keychain roots, grant trustd or disable TLS verification.
+For example, export an absolute custom bundle path before the envelope command above:
+
+```bash
+export CODEX_CA_CERTIFICATE=/absolute/path/to/permitted-ca.pem
+```
+
+Original task restoration and large deny-list verification remain with the caller after deployment;
+this work does not merge or sync a live installation.
+
 This envelope uses fresh runtime state, disables host integrations (MCP/hooks/plugins/browser tools), blocks Apple Events/Unix sockets,
 and restricts network access to the selected model route. Claude tools are Bash/Read/Write/Edit/Glob/Grep; Codex native local tools
 remain available. Optional `--allow-domain host[:port]` adds a caller-authorized network destination. Permission failures report missing

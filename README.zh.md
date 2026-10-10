@@ -226,6 +226,25 @@ root 祖先、不可读/不支持目标、扫描失败及输入冲突均停止 s
 项目层配置，以及 Claude 自定义读、glob/相对写路径或工具 deny 规则暂不支持。原 Codex `.rules` 复制到独立 home 并禁止修改。禁读路径同时不可写。
 运行时必需的凭据/配置文件（包括 endpoints JSON、所选 Codex auth）必须可读；列入禁读时 setup 停止。封装不隔离 Agent 与工具对凭据的访问。
 
+隔离 Codex HTTPS 在 `--check` 与启动时共用显式 CA 准备。非空 `CODEX_CA_CERTIFICATE` 优先于非空
+`SSL_CERT_FILE`；恰好空字符串会继续回退，空白字符仍是字面路径（此 CA 行为已在 Codex 0.162.1 验证）。
+两者都无效时选择 `/etc/ssl/cert.pem`。只检查所选输入；显式输入有误时带 source/path 定位失败，
+不会改用低优先级 bundle。相对路径基于 `--cwd`，导出的字面 `~` 不展开；子进程接收 canonical 路径，父环境不变。
+
+输入必须是获准可读的普通 PEM 文件，含至少一个 `CERTIFICATE` 和/或 `TRUSTED CERTIFICATE`。
+每个识别到的证书都检查语法，畸形伴随证书会失败；trusted 标签仅在内存中规范化用于验证，
+原生 Codex 仍读取原文件及 AUX 数据。忽略 `X509 CRL`，不做吊销验证。
+setup 不证明 endpoint trust、内核隔离或全部原生 parser/算法兼容性，也不增加文件权限或网络访问。
+
+公共系统 PEM 可能不含仅安装在 macOS keychain 的企业根；调用方须提供包含所需根的获准显式 PEM。
+封装不导出 keychain 根、不授予 trustd、不关闭 TLS 验证。可在上述封装命令前导出绝对路径：
+
+```bash
+export CODEX_CA_CERTIFICATE=/absolute/path/to/permitted-ca.pem
+```
+
+原任务恢复及大禁读名单验证由调用方在部署后负责；本次工作不 merge 或 sync 到在线安装。
+
 隔离运行使用全新 runtime 状态，关闭宿主 MCP/hooks/plugins/浏览器集成，禁止 Apple Events/Unix sockets，
 网络限于所选模型路由；Claude 只启用 Bash/Read/Write/Edit/Glob/Grep，Codex 保留本地原生工具。
 可用 `--allow-domain host[:port]` 额外开放调用方授权的网络目的地。权限不足应报告缺项，不自动放宽。

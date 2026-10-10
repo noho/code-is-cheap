@@ -28,6 +28,98 @@ sandbox = importlib.util.module_from_spec(spec)
 loader.exec_module(sandbox)
 
 
+# Fixed public CA and genuine OpenSSL trustout AUX bytes; no private keys.
+PUBLIC_CA = b"""-----BEGIN CERTIFICATE-----
+MIIGFDCCA/ygAwIBAgIIU+w77vuySF8wDQYJKoZIhvcNAQEFBQAwUTELMAkGA1UE
+BhMCRVMxQjBABgNVBAMMOUF1dG9yaWRhZCBkZSBDZXJ0aWZpY2FjaW9uIEZpcm1h
+cHJvZmVzaW9uYWwgQ0lGIEE2MjYzNDA2ODAeFw0wOTA1MjAwODM4MTVaFw0zMDEy
+MzEwODM4MTVaMFExCzAJBgNVBAYTAkVTMUIwQAYDVQQDDDlBdXRvcmlkYWQgZGUg
+Q2VydGlmaWNhY2lvbiBGaXJtYXByb2Zlc2lvbmFsIENJRiBBNjI2MzQwNjgwggIi
+MA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDKlmuO6vj78aI14H9M2uDDUtd9
+thDIAl6zQyrET2qyyhxdKJp4ERppWVevtSBC5IsP5t9bpgOSL/UR5GLXMnE42QQM
+cas9UX4PB99jBVzpv5RvwSmCwLTaUbDBPLutN0pcyvFLNg4kq7/DhHf9qFD0sefG
+L9ItWY16Ck6WaVICqjaY7Pz6FIMMNx/Jkjd/14Et5cS54D40/mf0PmbR0/RAz15i
+NA9wBj4gGFrO93IbJWyTdBSTo3OxDqqHECNZXyAFGUftaI6SEspd/NYrspI8IM/h
+X68gvqB2f3bl7BqGYTM+53u0P6APjqK5am+5hyZvQWyIplD9amML9ZMWGxmPsu2b
+m8mQ9QEM3xk9Dz44I8kvjwzRAv4bVdZO0I08r0+k8/6vKtMFnXkIoctXMbScyJCy
+Z/QYFpM6/EfY0XiWMR+6KwxfXZmtY4laJCB22N/9q06mIqqdXuYnin1oKaPnirja
+EbsXLZmdEyRG98Xi2J+Of8ePdG1asuhy9azuJBCtLxTa/y2aRnFHvkLfuwHb9H/T
+KI8xWVvTyQKmtFLKbpf7Q8UIJm+K9Lv9nyiqDdVF8xM6HdjAeI9BZzwelGSuewvF
+6NkBiDkal4ZkQdU7hwxu+g/GvUgUvzlN1J5Bto+WHWOWk9mVBngxaJ43BjuAiUVh
+OSPHG0SjFeUc+JIwuwIDAQABo4HvMIHsMBIGA1UdEwEB/wQIMAYBAf8CAQEwDgYD
+VR0PAQH/BAQDAgEGMB0GA1UdDgQWBBRlzeurNR4APn7VdMActHNHDhpkLzCBpgYD
+VR0gBIGeMIGbMIGYBgRVHSAAMIGPMC8GCCsGAQUFBwIBFiNodHRwOi8vd3d3LmZp
+cm1hcHJvZmVzaW9uYWwuY29tL2NwczBcBggrBgEFBQcCAjBQHk4AUABhAHMAZQBv
+ACAAZABlACAAbABhACAAQgBvAG4AYQBuAG8AdgBhACAANAA3ACAAQgBhAHIAYwBl
+AGwAbwBuAGEAIAAwADgAMAAxADcwDQYJKoZIhvcNAQEFBQADggIBABd9oPm03cXF
+661LJLWhAqvdpYhKsg9VSytXjDvlMd3+xDLx51tkljYyGOylMnfX40S2wBEqgLk9
+am58m9Ot/MPWo+ZkKXzR4Tgegiv/J2Wv+xYVxC5xhOW1//qkR71kMrv2JYSiJ0L1
+ILDCExARzRAVukKQKtJE4ZYm6zFIEv0q2skGz3QeqUvVhyj5eTSSPi5E6PaPT481
+PyWzOdxjKpBrIF/EUhJOlywqrJ2X3kjyo2bbwtKDlaZmp54lD+kLM5FlClrD2VQS
+3a/DTg4fJl4N3LON7NWBcN7STyQF82xO9UxJZo3R/9ILJUFI/lGExkKvgATP0H5k
+SeTy36LssUzAKh3ntLFlosS88Zj0qnAHY7S42jtM+kAiMFsRpvAFDsYCA0irhpuF
+3dvd6qJ2gHN99ZwExEWN57kci57q13XRcrHedUTnQn3iV2t93Jm8PYMo6oCTjcVM
+ZcFwgbg4/EMxsvYDNEeyrPsiBsse3RdHHF9mudMaotoRsaS8I8nkvof/uZS2+F0g
+StRf571oe2XyFR7SOqkt6dhrJKyXWERHrVkY8SFlcN7ONGCoQPHzPKTDKCOM/icz
+Q0CgFzzr6juwcqajuUpLXhZI9LK8yIySxZ2frHI2vDSANGupi5LAuBft7HZT9SQB
+jLMi6Et8Vcad+qMUu2WFbm5PEn4KPJ2V
+-----END CERTIFICATE-----"""
+
+PUBLIC_TRUSTED_CA = b"""-----BEGIN TRUSTED CERTIFICATE-----
+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
+-----END TRUSTED CERTIFICATE-----
+"""
+
+# Public CPython fixture: https://raw.githubusercontent.com/python/cpython/3.11/Lib/test/certdata/revocation.crl
+PUBLIC_CRL = b"""-----BEGIN X509 CRL-----
+MIICJjCBjwIBATANBgkqhkiG9w0BAQsFADBNMQswCQYDVQQGEwJYWTEmMCQGA1UE
+CgwdUHl0aG9uIFNvZnR3YXJlIEZvdW5kYXRpb24gQ0ExFjAUBgNVBAMMDW91ci1j
+YS1zZXJ2ZXIXDTIxMDMxNzA4NDgyMFoXDTQwMDUxNjA4NDgyMFqgDjAMMAoGA1Ud
+FAQDAgEAMA0GCSqGSIb3DQEBCwUAA4IBgQCd2GrHb4zr2R8eK7YMHwlkgICxbWP1
+4nuEi55yzUcmMcCZJ6ZQV3yYqTlAULGQ9qWAUdhsyH+yu3hRKFKHQv0DAdKKxgow
+66YasAQQ99DskXOPxmRoIA7qtIWZbLtBwHQJWh+uUFlTdUXitGIX5Xie74xu5YIr
+moa3QeuZyG5+gigSTUyst5T/J/cHfBzlAJLc2k3Ty4EPYXKHCVnrZWJbRmxq199l
+A7S+eBb9qWXSYXCn6v+EZ76pUS3u/66kZ86PO3h9294BzdhxbCJ27dQXNHw6owe2
+Iyiv0aWx+TNSGSf4yCqaYTH6RtEoviI3h/inVFHNGgjlMzdaGw/0I3bkB0rt2WSR
+Vck37HnXvQvVEkgO/39C0WKZus6m4gmOgZcbJbXaR8uIR5Hmw3SEyGEPEIBu6tXV
+BLJOSOSu2vVUH5GUIrpvK9FTySKYa+MGryoPasuqZNfwpaXK+ON2G6QsmcXPWZY0
+Dry6t0w2geW6UYVGmb831i8ZP3JVVVwcwi0=
+-----END X509 CRL-----
+"""
+
+
 def profile_fields(stderr):
     # The adapter emits before spawn; descendants can forge later duplicates.
     line=next(line for line in stderr.splitlines() if line.startswith('agent-sandbox: seatbelt_profile='))
@@ -214,6 +306,376 @@ class SetupTests(unittest.TestCase):
             self.assertNotIn('setup_status=ok',result.stdout)
             self.assertIn('reinstall with install-agent-sandbox.sh',result.stderr)
             self.assertFalse(marker.exists())
+
+
+
+class CodexCATests(unittest.TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory(prefix='codex-ca-', dir='/private/tmp')
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name).resolve()
+        self.cwd = self.root/'work'; self.cwd.mkdir()
+        self.ca = self.cwd/'ca.pem'; self.ca.write_bytes(PUBLIC_CA)
+        self.default = self.root/'default.pem'; self.default.write_bytes(PUBLIC_CA)
+        self.default_patch = unittest.mock.patch.object(sandbox, 'DEFAULT_CODEX_CA_CERTIFICATE', str(self.default))
+        self.default_patch.start(); self.addCleanup(self.default_patch.stop)
+
+    def prepare(self, env, denies=(), route='https://example.com/v1'):
+        sandbox.prepare_codex_ca(route, self.cwd, env, list(map(str, denies)))
+
+    def rejected(self, env, prefix, *, denies=(), reason=None):
+        before = dict(env)
+        with self.assertRaises(ValueError) as caught:
+            self.prepare(env, denies)
+        text = str(caught.exception)
+        self.assertTrue(text.startswith(prefix + ':'), text)
+        self.assertIn('source=', text); self.assertIn('declared=', text)
+        if reason: self.assertIn(reason, text)
+        self.assertEqual(env, before)
+        self.assertNotIn(PUBLIC_CA.splitlines()[1].decode(), text)
+        return text
+
+    def test_codex_priority_ignores_every_lower_input_and_parent(self):
+        bad = self.root/'bad'; bad.write_bytes(b'not PEM')
+        for lower in (self.root/'missing', bad, self.default):
+            with self.subTest(lower=lower):
+                parent = {'CODEX_CA_CERTIFICATE': 'ca.pem', 'SSL_CERT_FILE': str(lower)}
+                env = dict(parent)
+                original = os.open
+                with unittest.mock.patch.object(os, 'open', wraps=original) as opened:
+                    self.prepare(env, [lower])
+                self.assertEqual([call.args[0] for call in opened.call_args_list], [self.ca])
+                self.assertEqual(env, {**parent, 'CODEX_CA_CERTIFICATE': str(self.ca)})
+                self.assertEqual(parent['CODEX_CA_CERTIFICATE'], 'ca.pem')
+
+    def test_bad_selected_override_never_falls_through(self):
+        bad = self.root/'invalid'; bad.write_bytes(b'not PEM')
+        for key in ('CODEX_CA_CERTIFICATE', 'SSL_CERT_FILE'):
+            for selected, denies, prefix in (
+                (self.root/'absent', (), 'required Codex CA input missing'),
+                (self.ca, (self.ca,), 'required Codex CA input is denied'),
+                (bad, (), 'invalid Codex CA bundle')):
+                with self.subTest(key=key, selected=selected):
+                    env = {key: str(selected)}
+                    if key == 'CODEX_CA_CERTIFICATE': env['SSL_CERT_FILE'] = str(self.default)
+                    else: env['CODEX_CA_CERTIFICATE'] = ''
+                    text = self.rejected(env, prefix, denies=denies)
+                    self.assertIn('source='+repr(key), text)
+                    self.assertIn(repr(str(selected)), text)
+
+    def test_ssl_fallback_and_exact_empty_codex(self):
+        for codex in (None, ''):
+            env = {'SSL_CERT_FILE': 'ca.pem'}
+            if codex is not None: env['CODEX_CA_CERTIFICATE'] = codex
+            self.prepare(env)
+            self.assertEqual(env['SSL_CERT_FILE'], str(self.ca))
+            self.assertEqual(env.get('CODEX_CA_CERTIFICATE'), codex)
+
+    def test_default_with_unset_and_empty_overrides(self):
+        for codex in (None, ''):
+            for ssl_value in (None, ''):
+                with self.subTest(codex=codex, ssl=ssl_value):
+                    env = {}
+                    if codex is not None: env['CODEX_CA_CERTIFICATE'] = codex
+                    if ssl_value is not None: env['SSL_CERT_FILE'] = ssl_value
+                    self.prepare(env)
+                    self.assertEqual(env['CODEX_CA_CERTIFICATE'], str(self.default))
+                    self.assertEqual(env.get('SSL_CERT_FILE'), ssl_value)
+
+    def test_default_failure_is_located(self):
+        for kind in ('missing', 'denied', 'invalid'):
+            with self.subTest(kind=kind):
+                self.default.write_bytes(PUBLIC_CA)
+                denies = ()
+                if kind == 'missing': self.default.unlink()
+                if kind == 'denied': denies = (self.default,)
+                if kind == 'invalid': self.default.write_bytes(b'invalid')
+                prefix = {'missing':'required Codex CA input missing', 'denied':'required Codex CA input is denied',
+                          'invalid':'invalid Codex CA bundle'}[kind]
+                text = self.rejected({}, prefix, denies=denies)
+                self.assertIn("source='system-default'", text)
+                self.assertIn(repr(str(self.default)), text)
+
+    def test_selected_whitespace_is_literal_for_both_variables(self):
+        for key in ('CODEX_CA_CERTIFICATE', 'SSL_CERT_FILE'):
+            with self.subTest(key=key):
+                path = self.cwd/'   '
+                text = self.rejected({key: '   '}, 'required Codex CA input missing')
+                self.assertIn("declared='   '", text)
+                path.write_bytes(PUBLIC_CA)
+                env = {key: '   '}; self.prepare(env)
+                self.assertEqual(env[key], str(path))
+                path.unlink()
+
+    def test_relative_alias_and_literal_tilde_use_envelope_cwd(self):
+        (self.cwd/'alias').symlink_to(self.ca)
+        (self.cwd/'~').mkdir(); literal = self.cwd/'~/ca.pem'; literal.write_bytes(PUBLIC_CA)
+        with unittest.mock.patch.object(Path, 'cwd', return_value=self.root/'different-caller-cwd'):
+            for declared, expected in [('ca.pem', self.ca), ('alias', self.ca), ('~/ca.pem', literal)]:
+                with self.subTest(declared=declared):
+                    env = {'CODEX_CA_CERTIFICATE': declared}; self.prepare(env)
+                    self.assertEqual(env['CODEX_CA_CERTIFICATE'], str(expected))
+
+    def test_direct_alias_and_ancestor_denials_precede_open(self):
+        (self.cwd/'alias').symlink_to(self.ca)
+        for selected, denied in [('ca.pem', self.ca), ('alias', self.ca), ('alias', self.cwd)]:
+            with self.subTest(selected=selected, denied=denied), \
+                 unittest.mock.patch.object(os, 'open', side_effect=AssertionError('must not open denied CA')):
+                text = self.rejected({'CODEX_CA_CERTIFICATE': selected}, 'required Codex CA input is denied', denies=[denied])
+                self.assertIn('canonical='+repr(str(self.ca)), text)
+
+    def test_existing_deny_expansion_covers_external_ca_target(self):
+        denied = self.root/'denied'; denied.mkdir()
+        (denied/'ca-link').symlink_to(self.ca)
+        listing = self.root/'denies.json'; listing.write_text(json.dumps([str(denied)]))
+        denies, _ = sandbox.load_denies(listing)
+        with unittest.mock.patch.object(os, 'open', side_effect=AssertionError('must not open expanded deny')):
+            self.rejected({'CODEX_CA_CERTIFICATE': str(self.ca)}, 'required Codex CA input is denied', denies=denies)
+
+    def test_broken_cycle_and_nul_are_located(self):
+        (self.cwd/'broken').symlink_to('absent')
+        (self.cwd/'cycle').symlink_to('cycle')
+        for selected, prefix, cause in [('broken','required Codex CA input missing','errno=2'),
+                ('cycle','cannot read required Codex CA input','cause='),
+                ('bad\0path','cannot read required Codex CA input','ValueError'),
+                ('bad\ud800path','cannot read required Codex CA input','UnicodeEncodeError')]:
+            with self.subTest(selected=selected):
+                text = self.rejected({'CODEX_CA_CERTIFICATE': selected}, prefix)
+                self.assertIn(cause, text); self.assertNotIn('canonical=', text)
+
+    def test_special_files_and_alias_fail_before_open(self):
+        os.mkfifo(self.cwd/'fifo'); (self.cwd/'fifo-alias').symlink_to('fifo')
+        for selected in ('.', 'fifo', 'fifo-alias'):
+            with self.subTest(selected=selected), \
+                 unittest.mock.patch.object(os, 'open', side_effect=AssertionError('must not open special file')):
+                self.rejected({'CODEX_CA_CERTIFICATE': selected}, 'required Codex CA input is not a regular file')
+
+    def test_open_errors_remain_read_failures(self):
+        for number in (errno.EACCES, errno.EPERM, errno.ELOOP):
+            with self.subTest(errno=number), unittest.mock.patch.object(os, 'open', side_effect=OSError(number, 'fixture error')):
+                text = self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'cannot read required Codex CA input')
+                self.assertIn('errno='+str(number), text)
+
+    def test_post_open_special_file_does_not_read_and_closes_fd(self):
+        descriptors = []
+        real_open = os.open
+        def opened(*args):
+            fd = real_open(*args); descriptors.append(fd); return fd
+        fake = unittest.mock.Mock(st_mode=stat.S_IFIFO)
+        with unittest.mock.patch.object(os, 'open', side_effect=opened) as opening, \
+             unittest.mock.patch.object(os, 'fstat', return_value=fake), \
+             unittest.mock.patch.object(os, 'fdopen', side_effect=AssertionError('must not read special file')):
+            self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'required Codex CA input is not a regular file')
+        self.assertEqual(opening.call_args.args[1], os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC)
+        with self.assertRaises(OSError): os.fstat(descriptors[0])
+
+    def test_read_failure_closes_fd(self):
+        descriptors = []
+        real_open, real_fdopen = os.open, os.fdopen
+        def opened(*args):
+            fd = real_open(*args); descriptors.append(fd); return fd
+        def stream(fd, mode):
+            owned = real_fdopen(fd, mode)
+            failing = unittest.mock.MagicMock()
+            failing.__enter__.return_value = failing
+            failing.__exit__.side_effect = lambda *args: owned.close()
+            failing.read.side_effect = PermissionError(errno.EPERM, 'read fixture')
+            return failing
+        with unittest.mock.patch.object(os, 'open', side_effect=opened), \
+             unittest.mock.patch.object(os, 'fdopen', side_effect=stream):
+            text = self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'cannot read required Codex CA input')
+        self.assertIn('errno=1', text)
+        with self.assertRaises(OSError): os.fstat(descriptors[0])
+
+    def test_valid_ordinary_trusted_mixed_crl_and_comments_preserve_original(self):
+        ordinary = PUBLIC_CA + b'\n'
+        trusted = PUBLIC_TRUSTED_CA + b'\n'
+        crl = PUBLIC_CRL + b'\n'
+        bundles = [ordinary, ordinary*2, trusted, trusted*2, ordinary+trusted, trusted+ordinary]
+        bundles += [crl+cert+crl+cert+crl for cert in (ordinary, trusted)]
+        bundles += [b'# public non-ASCII comment \xff\n'+trusted+ordinary+b'\n# \xfe\n']
+        for data in bundles:
+            with self.subTest(size=len(data)):
+                self.ca.write_bytes(data)
+                env = {'CODEX_CA_CERTIFICATE':'ca.pem'}; self.prepare(env)
+                self.assertEqual(env['CODEX_CA_CERTIFICATE'], str(self.ca))
+                self.assertEqual(self.ca.read_bytes(), data)
+        # AUX is genuine additional payload, not an ordinary certificate relabel.
+        import base64
+        def der(data): return base64.b64decode(b''.join(data.splitlines()[1:-1]))
+        self.assertTrue(der(PUBLIC_TRUSTED_CA).startswith(der(PUBLIC_CA)))
+        self.assertGreater(len(der(PUBLIC_TRUSTED_CA)), len(der(PUBLIC_CA)))
+
+    def test_validator_receives_individual_normalized_certificates_never_crls(self):
+        context = unittest.mock.Mock()
+        self.ca.write_bytes(PUBLIC_CRL+b'\n'+PUBLIC_TRUSTED_CA+b'\n'+PUBLIC_CA+b'\n'+PUBLIC_CRL)
+        with unittest.mock.patch.object(sandbox.ssl, 'SSLContext', return_value=context) as contexts:
+            self.prepare({'CODEX_CA_CERTIFICATE':'ca.pem'})
+        self.assertEqual(contexts.call_count, 2)
+        values = [call.kwargs['cadata'] for call in context.load_verify_locations.call_args_list]
+        expected = [PUBLIC_TRUSTED_CA.decode().replace('TRUSTED CERTIFICATE','CERTIFICATE').rstrip('\n')+'\n',
+                    PUBLIC_CA.decode().rstrip('\n')+'\n']
+        self.assertEqual([hashlib.sha256(value.encode()).hexdigest() for value in values],
+                         [hashlib.sha256(value.encode()).hexdigest() for value in expected])
+        self.assertTrue(all('CRL' not in value and 'TRUSTED' not in value for value in values))
+
+    def test_empty_nonpem_and_genuine_crl_only_fail(self):
+        for data in (b'', b'not PEM', PUBLIC_CRL):
+            with self.subTest(data_length=len(data)):
+                self.ca.write_bytes(data)
+                self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle', reason='no certificate blocks')
+
+    def test_malformed_delimiters_for_both_labels(self):
+        for name in (b'CERTIFICATE', b'TRUSTED CERTIFICATE'):
+            begin = b'-----BEGIN '+name+b'-----\n'
+            end = b'-----END '+name+b'-----\n'
+            other = b'TRUSTED CERTIFICATE' if name == b'CERTIFICATE' else b'CERTIFICATE'
+            cases = [(begin+b'AAAA\n', 'incomplete '+name.decode()+' block'),
+                     (begin[:-3]+b'\n', 'malformed '+name.decode()+' delimiter'),
+                     (begin[5:], 'malformed '+name.decode()+' delimiter'),
+                     (begin+b'AAAA\n'+end[:-3]+b'\n', 'malformed '+name.decode()+' delimiter'),
+                     (end, 'orphan certificate END'), (begin+begin+end, 'nested certificate BEGIN'),
+                     (begin+b'-----END '+other+b'-----\n', 'mismatched certificate labels')]
+            for data, reason in cases:
+                for surrounding in (b'', PUBLIC_CA+b'\n'+PUBLIC_CRL+b'\n'):
+                    with self.subTest(label=name, reason=reason, companion=bool(surrounding)):
+                        self.ca.write_bytes(surrounding+data)
+                        self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle', reason=reason)
+
+    def test_invalid_payloads_and_every_companion_in_both_orders(self):
+        for name in (b'CERTIFICATE', b'TRUSTED CERTIFICATE'):
+            for payload in (b'%%%not-base64%%%', b'YWJjZA==', b'\xffNON_ASCII_PRIVATE_PAYLOAD'):
+                bad = b'-----BEGIN '+name+b'-----\n'+payload+b'\n-----END '+name+b'-----\n'
+                for good in (PUBLIC_CA+b'\n', PUBLIC_TRUSTED_CA+b'\n'):
+                    for crl in (b'', PUBLIC_CRL+b'\n'):
+                        for data in (bad+crl+good, good+crl+bad):
+                            with self.subTest(label=name, payload=payload[:1], length=len(data)):
+                                self.ca.write_bytes(data)
+                                text = self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle')
+                                self.assertIn(name.decode(), text)
+                                self.assertIn('UnicodeDecodeError' if b'\xff' in payload else 'SSLError', text)
+                                self.assertNotIn('PRIVATE_PAYLOAD', text)
+
+    def test_parser_error_detail_is_bounded(self):
+        error = sandbox.ssl.SSLError(1, 'fixture parse failure')
+        error.reason = 'R'*400 + 'PRIVATE_PAYLOAD'
+        context = unittest.mock.Mock()
+        context.load_verify_locations.side_effect = error
+        with unittest.mock.patch.object(sandbox.ssl, 'SSLContext', return_value=context):
+            text = self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle')
+        self.assertIn('certificate 1 CERTIFICATE: SSLError: '+'R'*256, text)
+        self.assertNotIn('R'*257, text)
+        self.assertNotIn('PRIVATE_PAYLOAD', text)
+
+    def test_http_does_not_inspect_or_mutate_ca(self):
+        env = {'CODEX_CA_CERTIFICATE':'bad\0path', 'SSL_CERT_FILE':'missing'}
+        before = dict(env)
+        with unittest.mock.patch.object(os, 'open', side_effect=AssertionError('no HTTP CA read')):
+            self.prepare(env, route='http://example.com/v1')
+        self.assertEqual(env, before)
+
+    def run_main(self, env, *, check, runtime='codex', denies=(), route='https://example.com/v1'):
+        home = self.root/'home'; config = home/'.codex'; config.mkdir(parents=True, exist_ok=True)
+        (config/'config.toml').write_text('model = "synthetic-model"\nmodel_provider = "mock"\n[model_providers.mock]\nname = "mock"\nbase_url = "'+route+'"\nrequires_openai_auth = false\n')
+        (config/'gpt-6-sol.config.toml').write_text('')
+        listing = self.root/'list.json'; listing.write_text(json.dumps(list(map(str, denies or [self.root/'secret']))))
+        (self.root/'secret').write_text('synthetic denied input')
+        runner = self.root/(runtime+'-agent-run'); runner.write_text('synthetic runner')
+        node, srt = self.root/'node', self.root/'srt'
+        node.write_text('synthetic node'); srt.write_text('synthetic srt')
+        bin_paths = {'python3':sys.executable, 'node':str(node), 'srt':str(srt), runtime+'-agent-run':str(runner)}
+        private_env = {'HOME':str(home), 'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh'), **env}
+        before = dict(private_env)
+        helper = unittest.mock.Mock()
+        helper.user_path.return_value = self.root/'absent-endpoints.json'
+        helper.connection.return_value = {'base_url':route}
+        stdout, stderr = io.StringIO(), io.StringIO()
+        original_mkdtemp = tempfile.mkdtemp
+        argv = ['agent-sandbox', *(['--check'] if check else []), '--cwd',str(self.cwd), '--deny-list',str(listing),
+                '--',str(runner),'--provider','gpt-6-sol','--prompt','synthetic task','--detail',
+                '--output',str(self.root/'sink/result')]
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(unittest.mock.patch.object(sys,'argv',argv))
+            stack.enter_context(unittest.mock.patch.object(os,'environ',private_env))
+            stack.enter_context(unittest.mock.patch.object(platform,'system',return_value='Darwin'))
+            stack.enter_context(unittest.mock.patch.object(shutil,'which',side_effect=lambda name:bin_paths.get(name, str(runner) if name == str(runner) else None)))
+            stack.enter_context(unittest.mock.patch.object(sandbox,'connection_helper',return_value=helper))
+            stack.enter_context(unittest.mock.patch.object(sandbox,'write_boundary',return_value=([str(self.cwd)],[str(self.cwd/'.git')])))
+            stack.enter_context(unittest.mock.patch.object(subprocess,'run',return_value=subprocess.CompletedProcess([],0,sandbox.SRT_VERSION,'')))
+            stack.enter_context(unittest.mock.patch.object(tempfile,'mkdtemp',side_effect=lambda suffix=None,prefix=None,dir=None:original_mkdtemp(suffix=suffix,prefix=prefix,dir=self.root)))
+            stack.enter_context(unittest.mock.patch.object(os,'chdir'))
+            stack.enter_context(unittest.mock.patch.object(os,'umask'))
+            stack.enter_context(unittest.mock.patch.object(os,'dup2'))
+            execute = stack.enter_context(unittest.mock.patch.object(os,'execvpe'))
+            stack.enter_context(contextlib.redirect_stdout(stdout)); stack.enter_context(contextlib.redirect_stderr(stderr))
+            try:
+                sandbox.main()
+            except ValueError as error:
+                print('agent-sandbox: '+str(error), file=sys.stderr)
+                code = 1
+            else:
+                code = 0
+        self.assertEqual(private_env, before)
+        return code, stdout.getvalue(), stderr.getvalue(), execute
+
+    def test_check_and_launch_reject_same_ca_without_exec_or_success(self):
+        bad = self.cwd/'bad'; bad.write_bytes(b'invalid')
+        for path, denies, prefix in [(self.cwd/'missing', (), 'required Codex CA input missing'),
+                (self.ca, [self.ca], 'required Codex CA input is denied'), (bad, (), 'invalid Codex CA bundle')]:
+            diagnostics = []
+            for check in (True, False):
+                with self.subTest(path=path, check=check):
+                    code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(path)}, check=check, denies=denies)
+                    self.assertEqual(code, 1); self.assertEqual(out, '')
+                    self.assertIn('agent-sandbox: '+prefix+':', err); self.assertIn(repr(str(path)), err)
+                    self.assertNotIn('setup_status=ok', out); execute.assert_not_called()
+                    diagnostics.append(err)
+            self.assertEqual(diagnostics[0], diagnostics[1])
+
+    def test_check_and_launch_share_selected_ca_and_unchanged_policy(self):
+        code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':'ca.pem','SSL_CERT_FILE':'ignored'}, check=True)
+        self.assertEqual((code,out,err), (0,'setup_status=ok\n','')); execute.assert_not_called()
+        code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':'ca.pem','SSL_CERT_FILE':'ignored'}, check=False)
+        self.assertEqual(code,0,err); execute.assert_called_once()
+        child = execute.call_args.args[2]
+        self.assertEqual(child['CODEX_CA_CERTIFICATE'],str(self.ca)); self.assertEqual(child['SSL_CERT_FILE'],'ignored')
+        state = Path(child['AGENT_SANDBOX_CODEX_HOME']).parent
+        settings = json.loads((state/'srt.json').read_text())
+        self.assertEqual(settings['network'], {'allowedDomains':['example.com:443','auth.openai.com:443','api.openai.com:443','chatgpt.com:443'],
+            'deniedDomains':[], 'strictAllowlist':True,'allowLocalBinding':False,'allowAllUnixSockets':False,'allowUnixSockets':[]})
+        for key in ('allowAppleEvents','enableWeakerNestedSandbox','enableWeakerNetworkIsolation'):
+            self.assertIs(settings[key],False)
+        fs = settings['filesystem']; self.assertEqual(fs['allowRead'],[])
+        self.assertEqual(fs['denyRead'],[{'path':str(self.root/'secret'),'literal':True}])
+        self.assertEqual(fs['allowWrite'],[{'path':str(path),'literal':True} for path in (state,self.cwd,self.root/'sink/result')])
+        expected_denies = [dict(path=str(self.root/'secret'), literal=True), '/tmp/claude', '/private/tmp/claude',
+            str(self.root/'home/.npm/_logs'), str(self.root/'home/.claude/debug')]
+        expected_denies += [dict(path=str(path),literal=True) for path in (self.cwd/'.git', state/'task.md',state/'seatbelt.sb',
+            state/'seatbelt.source.sb',state/'codex/rules',state/'codex/config.toml',state/'codex/gpt-6-sol.config.toml')]
+        self.assertEqual(fs['denyWrite'],expected_denies)
+        manifest = json.loads((state/'boundary.json').read_text())
+        command = manifest['command']
+        self.assertEqual(command[command.index('--provider')+1],'gpt-6-sol')
+        self.assertIn('--full-access',command); self.assertIn('--no-persist',command)
+        config = sandbox.tomllib.loads((state/'codex/config.toml').read_text())
+        self.assertEqual(config['model'],'synthetic-model'); self.assertEqual(config['model_provider'],'mock')
+        self.assertEqual(config['model_providers']['mock']['base_url'],'https://example.com/v1')
+        self.assertFalse(config['model_providers']['mock']['requires_openai_auth'])
+
+    def test_main_claude_and_codex_http_preserve_ca_env_without_default_requirement(self):
+        self.default.unlink()
+        original = {'CODEX_CA_CERTIFICATE':'bad\0path','SSL_CERT_FILE':'absent'}
+        for runtime, route in [('claude','https://example.com/v1'),('codex','http://example.com/v1')]:
+            for check in (True,False):
+                with self.subTest(runtime=runtime,check=check):
+                    with unittest.mock.patch.object(os,'open',wraps=os.open) as opened:
+                        code,out,err,execute = self.run_main(original, check=check, runtime=runtime, route=route)
+                    self.assertEqual(code,0,err)
+                    self.assertFalse(any(call.args[0] == self.default for call in opened.call_args_list))
+                    if check: self.assertEqual(out,'setup_status=ok\n')
+                    else:
+                        child = execute.call_args.args[2]
+                        self.assertEqual({key:child[key] for key in original},original)
 
 
 class DanglingSetupTests(unittest.TestCase):
@@ -724,7 +1186,8 @@ print(json.dumps(r))
         srt = os.getenv('SRT_TEST_BIN') or shutil.which('srt')
         if not srt: self.fail('SRT_TEST_BIN or srt required for kernel tests')
         (p/'bin/srt').symlink_to(srt)
-        self.env = {**os.environ, 'HOME':str(p/'home'), 'PATH':str(p/'bin')+':'+os.environ['PATH'],
+        (p/'ca.pem').write_bytes(PUBLIC_CA)
+        self.env = {**os.environ, 'CODEX_CA_CERTIFICATE':str(p/'ca.pem'), 'SSL_CERT_FILE':'', 'HOME':str(p/'home'), 'PATH':str(p/'bin')+':'+os.environ['PATH'],
                     'TEST_ROOT':str(p), 'TEST_CASE_ALIAS_EXISTS':str(int((p/'work/DENIED/REPORT').exists())),
                     'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
 
@@ -735,6 +1198,74 @@ print(json.dumps(r))
             '--prompt','test','--detail','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
         retain_kernel_evidence(self.id(),result)
         return result
+
+
+    def test_codex_ca_reaches_native_cli(self):
+        p = self.root
+        runner = p/'bin/codex-agent-run'; runner.unlink()
+        runner.symlink_to(ROOT/'scripts/codex-agent-run')
+        native = p/'bin/codex'
+        native.write_text('#!/usr/bin/env python3\n'+r'''
+import hashlib, os
+from pathlib import Path
+selected = os.environ.get('CODEX_CA_CERTIFICATE') or os.environ.get('SSL_CERT_FILE')
+assert selected == os.environ['TEST_CA_EXPECTED_PATH'], 'native CA path mismatch'
+data = Path(selected).read_bytes()
+assert data and hashlib.sha256(data).hexdigest() == os.environ['TEST_CA_EXPECTED_SHA256'], 'CA fixture changed or unreadable'
+print('NATIVE_CA_PATH='+selected)
+''')
+        native.chmod(0o755)
+        alias = p/'ca-alias.pem'; alias.symlink_to(p/'ca.pem')
+        for name in ('default','ssl'):
+            with self.subTest(source=name):
+                env = dict(self.env)
+                env.pop('CODEX_CA_CERTIFICATE',None); env.pop('SSL_CERT_FILE',None)
+                if name == 'default':
+                    # Runtime public OS bundle, never a historical fixed fixture/hash.
+                    expected = Path(sandbox.DEFAULT_CODEX_CA_CERTIFICATE).resolve(strict=True)
+                    data = expected.read_bytes()
+                else:
+                    env.update(CODEX_CA_CERTIFICATE='', SSL_CERT_FILE=str(alias))
+                    expected = p/'ca.pem'
+                    data = PUBLIC_CA
+                self.assertTrue(data)
+                env.update(TEST_CA_EXPECTED_PATH=str(expected), TEST_CA_EXPECTED_SHA256=hashlib.sha256(data).hexdigest())
+                result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
+                    '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
+                    '--prompt','test native CA environment','--detail','--output',str(p/'sinks'/('ca-'+name))],
+                    env=env,capture_output=True,text=True,timeout=45)
+                retain_kernel_evidence(self.id()+'.'+name,result)
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertEqual((p/'sinks'/('ca-'+name)).read_text(),'NATIVE_CA_PATH='+str(expected)+'\n')
+                self.assertIn('read boundary verified; starting runner',result.stderr)
+                self.assertLess(result.stderr.index('agent-sandbox: seatbelt_profile='),
+                                result.stderr.index('read boundary verified; starting runner'))
+                state = Path(next(line.split('=',1)[1] for line in result.stderr.splitlines()
+                                  if line.startswith('agent-sandbox: state=')))
+                fields = profile_fields(result.stderr)
+                for file, key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+                    source = state/file
+                    if not source.exists(): source = state/'seatbelt.sb'
+                    profile_bytes = source.read_bytes()
+                    self.assertEqual(hashlib.sha256(profile_bytes).hexdigest(),fields[key])
+                    self.assertNotIn(b'com.apple.trustd.agent',profile_bytes)
+                settings = json.loads((state/'srt.json').read_text())
+                self.assertEqual(settings['network'],dict(allowedDomains=['example.com:443'],deniedDomains=[],
+                    strictAllowlist=True,allowLocalBinding=False,allowAllUnixSockets=False,allowUnixSockets=[]))
+                self.assertEqual(settings['filesystem']['denyRead'],[
+                    dict(path=str(p/'work/denied'),literal=True),dict(path=str(p/'work/history.jsonl'),literal=True)])
+                self.assertEqual(settings['filesystem']['allowRead'],[])
+                self.assertEqual(settings['filesystem']['allowWrite'],[
+                    dict(path=str(path),literal=True) for path in (state,p/'work',p/'sinks'/('ca-'+name))])
+                fs = settings['filesystem']
+                expected_denies = [dict(path=str(path),literal=True) for path in (p/'work/denied',p/'work/history.jsonl')]
+                expected_denies += ['/tmp/claude','/private/tmp/claude',str(p/'home/.npm/_logs'),str(p/'home/.claude/debug')]
+                expected_denies += [dict(path=str(path),literal=True) for path in (
+                    p/'work/.git',p/'work/.codex',p/'work/.agents',p/'work/.aws',state/'task.md',state/'seatbelt.sb',
+                    state/'seatbelt.source.sb',state/'codex/rules',state/'codex/config.toml',state/'codex/mimo.config.toml')]
+                self.assertEqual(fs['denyWrite'],expected_denies)
+                for key in ('allowAppleEvents','enableWeakerNestedSandbox','enableWeakerNetworkIsolation'):
+                    self.assertIs(settings[key],False)
 
     def test_kernel_boundary_and_write_preservation(self):
         result = self.launch()

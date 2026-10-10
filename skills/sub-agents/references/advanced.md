@@ -64,6 +64,25 @@ missing-aware canonicalization 可能经 `..` 重入已有目标，仍逐条报�
 ENOENT/query=1 单独不是证明。允许 probe 实际读写成功后才 exec 固定 runner，不保证任意目录都可启动。
 
 
+隔离 Codex HTTPS 在 `--check` 与启动时共用显式 CA 准备。非空 `CODEX_CA_CERTIFICATE` 优先于非空
+`SSL_CERT_FILE`；恰好空字符串会继续回退，空白字符仍是字面路径（此 CA 行为已在 Codex 0.162.1 验证）。
+两者都无效时选择 `/etc/ssl/cert.pem`。只检查所选输入；显式输入有误时带 source/path 定位失败，
+不会改用低优先级 bundle。相对路径基于 `--cwd`，导出的字面 `~` 不展开；子进程接收 canonical 路径，父环境不变。
+
+输入必须是获准可读的普通 PEM 文件，含至少一个 `CERTIFICATE` 和/或 `TRUSTED CERTIFICATE`。
+每个识别到的证书都检查语法，畸形伴随证书会失败；trusted 标签仅在内存中规范化用于验证，
+原生 Codex 仍读取原文件及 AUX 数据。忽略 `X509 CRL`，不做吊销验证。
+setup 不证明 endpoint trust、内核隔离或全部原生 parser/算法兼容性，也不增加文件权限或网络访问。
+
+公共系统 PEM 可能不含仅安装在 macOS keychain 的企业根；调用方须提供包含所需根的获准显式 PEM。
+封装不导出 keychain 根、不授予 trustd、不关闭 TLS 验证。可在上述封装命令前导出绝对路径：
+
+```bash
+export CODEX_CA_CERTIFICATE=/absolute/path/to/permitted-ca.pem
+```
+
+原任务恢复及大禁读名单验证由调用方在部署后负责；本次工作不 merge 或 sync 到在线安装。
+
 封装必须从总控沙箱外启动：Codex 总控仍使用独立 `exec_command(require_escalated)`；Claude 总控须将
 `agent-sandbox` 加入自己的 `sandbox.excludedCommands`，并以独立裸命令派发。内层 Full Access 无法解除
 外层 Seatbelt。保留生命周期和调用方显式选择的结果检查；权限错误应报告具体缺项，不自动移除禁读项或放宽权限。

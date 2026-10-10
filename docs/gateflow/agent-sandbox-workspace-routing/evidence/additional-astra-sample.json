@@ -44,7 +44,8 @@
       "bytes": 352,
       "model_refresh_failure": true,
       "https_fallback": false,
-      "kernel_boundary_verified": false
+      "runner_stderr_contains_boundary_record": false,
+      "scope_note": "Runtime stderr is not wrapper trusted-parent stderr; absence here does not establish failed boundary verification."
     }
   }
 }
