@@ -46,6 +46,13 @@ def validate_event_text(event):
             value.encode("utf-8")
 
 
+def recognized_codex_connection_notice(event):
+    return (set(event) == {"type", "message"} and event.get("type") == "error"
+            and isinstance(event.get("message"), str)
+            and re.fullmatch(r"Reconnecting\.\.\. [1-5]/5 \(stream disconnected before completion: stream closed before response\.completed\)",
+                             event["message"]) is not None)
+
+
 def reported_tokens(lines):
     """Only standalone proof lines outside fenced examples constitute reports."""
     fence = None
@@ -143,6 +150,16 @@ class Collection:
         self.artifacts = []
         self.stream = "collection"
         self.text_truncated = False
+        # Supported proof for the Codex notice exception, not general event validation.
+        self.thread_starts = self.turn_starts = 0
+        self.thread_start_line = self.turn_start_line = None
+        self.thread_start_ordinal = self.turn_start_ordinal = None
+        self.thread_start_valid = self.turn_start_valid = False
+        self.completed_line = None
+        self.completed_valid = self.final_valid = False
+        self.connection_notice_count = 0
+        self.first_connection_notice_line = self.last_connection_notice_line = None
+        self.connection_notices = []
 
     def note(self, kind, message, line=None, path=None, proof_line=None):
         self.counts[kind] += 1
@@ -194,8 +211,22 @@ class Collection:
     def codex(self, event, line):
         kind = event.get("type")
         if kind == "thread.started":
+            self.thread_starts += 1
+            if self.thread_starts == 1:
+                self.thread_start_line, self.thread_start_ordinal = line, self.events
+                identity = event.get("thread_id")
+                self.thread_start_valid = (set(event) == {"type", "thread_id"}
+                                           and isinstance(identity, str) and bool(identity.strip()))
             self.session_identity(event.get("thread_id"))
+        elif kind == "turn.started":
+            self.turn_starts += 1
+            if self.turn_starts == 1:
+                self.turn_start_line, self.turn_start_ordinal = line, self.events
+                self.turn_start_valid = set(event) == {"type"}
         elif kind in {"turn.completed", "turn.failed"}:
+            if kind == "turn.completed" and self.completed_line is None:
+                self.completed_line = line
+                self.completed_valid = set(event) <= {"type", "usage"}
             if self.terminal is not None:
                 self.note("errors", "multiple turn terminals", line)
                 self.terminal = "conflicting"
@@ -205,7 +236,15 @@ class Collection:
             if kind == "turn.failed":
                 self.note("errors", event, line)
         elif kind == "error":
-            self.note("errors", event, line)
+            if recognized_codex_connection_notice(event):
+                self.connection_notice_count += 1
+                if self.first_connection_notice_line is None:
+                    self.first_connection_notice_line = line
+                self.last_connection_notice_line = line
+                if len(self.connection_notices) < DIAGNOSTIC_LIMIT:
+                    self.connection_notices.append((line, event))
+            else:
+                self.note("errors", event, line)
         elif kind in {"item.started", "item.completed", "item.updated"}:
             item = event.get("item")
             if not isinstance(item, dict):
@@ -225,6 +264,11 @@ class Collection:
                 else:
                     self.final = item["text"]
                     self.final_line = line
+                    identity = item.get("id")
+                    self.final_valid = (set(event) == {"type", "item"}
+                                        and set(item) == {"id", "type", "text"}
+                                        and isinstance(identity, str) and bool(identity.strip())
+                                        and bool(self.final.strip()))
             elif item_kind in {"command_execution", "mcp_tool_call", "file_change"}:
                 self.tool(item.get("command", item.get("arguments", "")), item.get("aggregated_output", item.get("result", "")))
                 if item.get("status") == "failed" or item.get("error") or item.get("exit_code") not in (None, 0):
@@ -237,6 +281,43 @@ class Collection:
                 self.note("anomalies", item, line)
         elif isinstance(kind, str) and kind.endswith(".failed"):
             self.note("anomalies", event, line)
+
+    def codex_connection_recovery_failure(self):
+        if (self.thread_starts != 1 or self.turn_starts != 1
+                or not self.thread_start_valid or not self.turn_start_valid
+                or self.thread_start_ordinal != 1 or self.turn_start_ordinal != 2
+                or not self.thread_start_line < self.turn_start_line):
+            return "start multiplicity, shape or initial frame order"
+        if self.first_connection_notice_line <= self.turn_start_line:
+            return "candidate outside started turn"
+        if self.terminal != "turn.completed" or not self.completed_valid:
+            return "terminal identity or shape"
+        if (not self.final_valid or self.final_line is None
+                or not self.last_connection_notice_line < self.final_line < self.completed_line):
+            return "final shape or order"
+        if self.args.exit_code != 0 or self.args.runner_exit_code != 0:
+            return "native or postprocessing nonzero"
+        if self.counts["errors"]:
+            return "other collector validation errors"
+        return None
+
+    def finalize_codex_connection_notices(self):
+        if self.args.runtime != "codex" or not self.connection_notice_count:
+            return
+        reason = self.codex_connection_recovery_failure()
+        kind = "errors" if reason else "warnings"
+        prefix = (f"Codex connection notice recovery not proven ({reason}): " if reason
+                  else "Recovered Codex connection notice: ")
+        target = getattr(self, kind)
+        # Reserve only the first candidate's display slot; totals stay authoritative.
+        if self.connection_notices and len(target) == DIAGNOSTIC_LIMIT:
+            target.pop()
+        prior_stream = self.stream
+        self.stream = "output"
+        for line, event in self.connection_notices:
+            self.note(kind, prefix + str(event), line)
+        self.counts[kind] += self.connection_notice_count - len(self.connection_notices)
+        self.stream = prior_stream
 
     def claude(self, event, line):
         kind = event.get("type")
@@ -395,6 +476,7 @@ class Collection:
         if len(self.session_ids) > 1:
             self.stream = "output"
             self.note("anomalies", "conflicting runtime session identifiers; session_id unavailable")
+        self.finalize_codex_connection_notices()
         validation = "rejected" if self.counts["errors"] else "needs_review" if self.counts["anomalies"] else "passed"
         return dict(schema_version=1, source="subagent_report", runtime=a.runtime, provider=a.provider,
                     runtime_exit_code=a.exit_code, runner_exit_code=a.runner_exit_code or (1 if validation == "rejected" else 0),

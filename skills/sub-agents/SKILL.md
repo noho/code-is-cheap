@@ -77,6 +77,7 @@ Claude 原始 stream-json、Codex JSONL 和 stderr 保留，路径在 `logs` 中
   `rejected` 是结构损坏、终态/最终答复缺失、进程失败或显式检查未满足。runtime 非零保留原码，否则机械拒收返回 1。
 - `errors` / `anomalies` / `warnings`：最多每类 20 条、每条 2000 字符，附计数、截断和日志位置。
   普通工具失败列入 anomalies，成功 runtime 仍返回 0；并不自动判 Agent 或任务失败。
+  已识别的 Codex 连接重试通知，只有在同一次执行中随后有效完成且所选检查通过后才列为 warnings；未知或未恢复的错误仍属致命错误。
 - `wall_clock_seconds`：runner 启动至调用结果收集器的实测秒数，含 setup/runtime/最终消息处理，
   不含收集器序列化、调用方预检和等待开销。`usage` 是单一终态的原始用量对象，不累计流式片段。
   `runtime_metrics` 保留 Claude 报告的时长、费用和 modelUsage；缺失数据为 null/空对象，不估算。

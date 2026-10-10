@@ -1,0 +1,796 @@
+{
+  "gate": "implementation",
+  "work_unit": "codex-recovered-stream-errors",
+  "slice": "S1",
+  "completion_status": "Implemented and validated; awaiting controller code review",
+  "next_gate": "code review",
+  "recorded_at_utc": "2026-10-10T20:31:05.729089+00:00",
+  "branch": "fix/codex-recovered-stream-errors",
+  "accepted_plan_checkpoint": "7c37bc6b4ef8b0e97ff63146cf66796ddc583d6e",
+  "baseline": "20fc6c37751836329143567c166990bdffa9de3c",
+  "accepted_plan_sha256": "15973171479f64c0820d82f6b57fc982e7f75fa920f06de45a55660f50e8401d",
+  "changed_owned_files": [
+    "scripts/agent-run-result.py",
+    "tests/test_agent_run_results.py",
+    "README.md",
+    "README.zh.md",
+    "skills/sub-agents/SKILL.md",
+    "docs/gateflow/codex-recovered-stream-errors/implementation.md",
+    "docs/gateflow/codex-recovered-stream-errors/evidence/implementation-validation.json"
+  ],
+  "preexisting_controller_dirty_file": "docs/gateflow/codex-recovered-stream-errors/state.md",
+  "changed_product_sha256": {
+    "scripts/agent-run-result.py": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4",
+    "tests/test_agent_run_results.py": "a5dc6f5d985e27cc5861af3d147ddcd09e202c613501b0106eac162bbdb90a58",
+    "README.md": "5f83449934e007cad048a3eca1a59d557f326bbc85853a2f0750ae44125aaf1c",
+    "README.zh.md": "0f136970389630d3c71bfc5fb1e8953ca75ee79cda0cd06d36fae5d9a059fa98",
+    "skills/sub-agents/SKILL.md": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4"
+  },
+  "commands": [
+    {
+      "label": "focused",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/test_agent_run_results.py",
+        "RunnerResults.test_codex_recovered_connection_notice",
+        "RunnerResults.test_codex_connection_notice_lookalikes_rejected",
+        "RunnerResults.test_codex_connection_notice_supported_shape_fence",
+        "RunnerResults.test_codex_connection_notice_mixed_order_rejected",
+        "RunnerResults.test_codex_connection_notice_requires_same_execution_completion",
+        "RunnerResults.test_codex_connection_notice_keeps_selected_checks",
+        "RunnerResults.test_codex_connection_notice_keeps_process_failures",
+        "RunnerResults.test_codex_connection_notice_diagnostic_bounds",
+        "RunnerResults.test_claude_connection_error_stays_fatal",
+        "RunnerResults.test_agent_run_report_contract",
+        "RunnerResults.test_codex_connection_notice_detail_preserves_raw_stream"
+      ],
+      "command": "python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_recovered_connection_notice RunnerResults.test_codex_connection_notice_lookalikes_rejected RunnerResults.test_codex_connection_notice_supported_shape_fence RunnerResults.test_codex_connection_notice_mixed_order_rejected RunnerResults.test_codex_connection_notice_requires_same_execution_completion RunnerResults.test_codex_connection_notice_keeps_selected_checks RunnerResults.test_codex_connection_notice_keeps_process_failures RunnerResults.test_codex_connection_notice_diagnostic_bounds RunnerResults.test_claude_connection_error_stays_fatal RunnerResults.test_agent_run_report_contract RunnerResults.test_codex_connection_notice_detail_preserves_raw_stream",
+      "started_at_utc": "2026-10-10T20:26:31.344243+00:00",
+      "ended_at_utc": "2026-10-10T20:26:42.847209+00:00",
+      "exit_code": 1,
+      "measured_duration_seconds": 11.502783374977298,
+      "unittest_methods_run": 11,
+      "unittest_reported_seconds": 11.456,
+      "unittest_result": "failed",
+      "reported_failures": 1,
+      "reported_errors": 10
+    },
+    {
+      "label": "original-replay",
+      "argv": [
+        "python3",
+        "-B",
+        "/private/tmp/codex-recovered-s1-qm8nf4wb/replay_original.py"
+      ],
+      "command": "python3 -B /private/tmp/codex-recovered-s1-qm8nf4wb/replay_original.py",
+      "started_at_utc": "2026-10-10T20:27:12.346152+00:00",
+      "ended_at_utc": "2026-10-10T20:27:12.398734+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 0.05249799997545779,
+      "unittest_methods_run": null,
+      "unittest_reported_seconds": null
+    },
+    {
+      "label": "focused-corrected",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/test_agent_run_results.py",
+        "RunnerResults.test_codex_recovered_connection_notice",
+        "RunnerResults.test_codex_connection_notice_lookalikes_rejected",
+        "RunnerResults.test_codex_connection_notice_supported_shape_fence",
+        "RunnerResults.test_codex_connection_notice_mixed_order_rejected",
+        "RunnerResults.test_codex_connection_notice_requires_same_execution_completion",
+        "RunnerResults.test_codex_connection_notice_keeps_selected_checks",
+        "RunnerResults.test_codex_connection_notice_keeps_process_failures",
+        "RunnerResults.test_codex_connection_notice_diagnostic_bounds",
+        "RunnerResults.test_claude_connection_error_stays_fatal",
+        "RunnerResults.test_agent_run_report_contract",
+        "RunnerResults.test_codex_connection_notice_detail_preserves_raw_stream"
+      ],
+      "command": "python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_recovered_connection_notice RunnerResults.test_codex_connection_notice_lookalikes_rejected RunnerResults.test_codex_connection_notice_supported_shape_fence RunnerResults.test_codex_connection_notice_mixed_order_rejected RunnerResults.test_codex_connection_notice_requires_same_execution_completion RunnerResults.test_codex_connection_notice_keeps_selected_checks RunnerResults.test_codex_connection_notice_keeps_process_failures RunnerResults.test_codex_connection_notice_diagnostic_bounds RunnerResults.test_claude_connection_error_stays_fatal RunnerResults.test_agent_run_report_contract RunnerResults.test_codex_connection_notice_detail_preserves_raw_stream",
+      "started_at_utc": "2026-10-10T20:27:36.371564+00:00",
+      "ended_at_utc": "2026-10-10T20:27:48.720892+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 12.349329167045653,
+      "unittest_methods_run": 11,
+      "unittest_reported_seconds": 12.305,
+      "unittest_result": "passed",
+      "reported_failures": 0,
+      "reported_errors": 0
+    },
+    {
+      "label": "full-module",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/test_agent_run_results.py"
+      ],
+      "command": "python3 -B tests/test_agent_run_results.py",
+      "started_at_utc": "2026-10-10T20:27:55.236438+00:00",
+      "ended_at_utc": "2026-10-10T20:28:23.225939+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 27.989576374995522,
+      "unittest_methods_run": 49,
+      "unittest_reported_seconds": 27.943,
+      "unittest_result": "passed",
+      "reported_failures": 0,
+      "reported_errors": 0
+    },
+    {
+      "label": "bounds-final",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/test_agent_run_results.py",
+        "RunnerResults.test_codex_connection_notice_diagnostic_bounds"
+      ],
+      "command": "python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_connection_notice_diagnostic_bounds",
+      "started_at_utc": "2026-10-10T20:29:01.685795+00:00",
+      "ended_at_utc": "2026-10-10T20:29:02.329667+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 0.6438082500826567,
+      "unittest_methods_run": 1,
+      "unittest_reported_seconds": 0.601,
+      "unittest_result": "passed",
+      "reported_failures": 0,
+      "reported_errors": 0
+    },
+    {
+      "label": "full-module-final",
+      "argv": [
+        "python3",
+        "-B",
+        "tests/test_agent_run_results.py"
+      ],
+      "command": "python3 -B tests/test_agent_run_results.py",
+      "started_at_utc": "2026-10-10T20:29:02.354858+00:00",
+      "ended_at_utc": "2026-10-10T20:29:30.571762+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 28.21699254203122,
+      "unittest_methods_run": 49,
+      "unittest_reported_seconds": 28.176,
+      "unittest_result": "passed",
+      "reported_failures": 0,
+      "reported_errors": 0
+    },
+    {
+      "label": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "command": "git diff --check",
+      "started_at_utc": "2026-10-10T20:29:35.549597+00:00",
+      "ended_at_utc": "2026-10-10T20:29:35.567159+00:00",
+      "exit_code": 0,
+      "measured_duration_seconds": 0.0174891249043867,
+      "unittest_methods_run": null,
+      "unittest_reported_seconds": null
+    }
+  ],
+  "focused_test_methods": [
+    "RunnerResults.test_codex_recovered_connection_notice",
+    "RunnerResults.test_codex_connection_notice_lookalikes_rejected",
+    "RunnerResults.test_codex_connection_notice_supported_shape_fence",
+    "RunnerResults.test_codex_connection_notice_mixed_order_rejected",
+    "RunnerResults.test_codex_connection_notice_requires_same_execution_completion",
+    "RunnerResults.test_codex_connection_notice_keeps_selected_checks",
+    "RunnerResults.test_codex_connection_notice_keeps_process_failures",
+    "RunnerResults.test_codex_connection_notice_diagnostic_bounds",
+    "RunnerResults.test_claude_connection_error_stays_fatal",
+    "RunnerResults.test_agent_run_report_contract",
+    "RunnerResults.test_codex_connection_notice_detail_preserves_raw_stream"
+  ],
+  "synthetic_controls": {
+    "method_counts": {
+      "baseline": 38,
+      "new": 11,
+      "full": 49
+    },
+    "supported_attempts": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "only_attempt_1_observed_in_original": true,
+    "supported_shape_negative_pairs": 17,
+    "mixed_order_notice_lines": [
+      3,
+      5
+    ],
+    "mixed_order_counts": {
+      "errors": 2,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "frozen_report_key_count": 29,
+    "frozen_contract_controls": 6,
+    "diagnostic_bounds": [
+      {
+        "fixture": "unsaturated-success-25",
+        "counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 25
+        },
+        "displayed": 20,
+        "first_notice_line": 3,
+        "runner_exit": 0,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      },
+      {
+        "fixture": "unsaturated-failure-25",
+        "counts": {
+          "errors": 25,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "displayed": 20,
+        "first_notice_line": 4,
+        "runner_exit": 1,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      },
+      {
+        "fixture": "saturated-success-20-old-25-notices",
+        "counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 45
+        },
+        "displayed": 20,
+        "first_notice_line": 23,
+        "old_entries_retained": 19,
+        "runner_exit": 0,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      },
+      {
+        "fixture": "saturated-failure-20-old-25-notices",
+        "counts": {
+          "errors": 45,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "displayed": 20,
+        "first_notice_line": 23,
+        "old_entries_retained": 19,
+        "runner_exit": 1,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      },
+      {
+        "fixture": "overflowed-failure-23-old-25-notices",
+        "counts": {
+          "errors": 48,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "displayed": 20,
+        "first_notice_line": 26,
+        "old_entries_retained": 19,
+        "runner_exit": 1,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      },
+      {
+        "fixture": "one-slot-success-19-old-25-notices",
+        "counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 44
+        },
+        "displayed": 20,
+        "first_notice_line": 22,
+        "old_entries_retained": 19,
+        "runner_exit": 0,
+        "asserted_by_passing_named_test": true,
+        "diagnostics_truncated": true
+      }
+    ],
+    "long_evicted_diagnostic": {
+      "original_chars": 2501,
+      "display_chars": 2000,
+      "category_total": 21,
+      "display_total": 20,
+      "old_entries_retained": 19,
+      "text_truncated_preserved": true,
+      "success_and_failure_categories_asserted": true
+    },
+    "selected_checks": "Synthetic matching/mismatching/missing canary, missing/unreadable expected input, regular/missing/directory/log-alias/hard-link artifacts and matching/mismatching/missing last-message checks",
+    "process_checks": "Native 7 remains 7; native0 with missing/raced/unwritable final-message save stays rejected; direct native0/precollection1 rejects",
+    "no_new_nonproof_kind_whitelist": true,
+    "claude_identical_notice_fatal": true,
+    "detail_raw_native_exit_and_redirection_preserved": true,
+    "sync_fixture_scope": "Existing full-module test only; private temporary installed destination and mock runtimes; no host/live sync",
+    "parser_accepted_duplicate_starts_counted": true,
+    "start_counter_claim_scope": "Every parser-accepted thread.started/turn.started dispatched to Collection.codex, including invalid recovery-proof shapes and duplicates. Strict JSON/event/UTF-8 parsing precedes dispatch; parser-rejected rows do not enter start counters or parsed-event ordinals and independently reject the stream. Corrupt streams must NEVER recover."
+  },
+  "original_replay": {
+    "scope": "Actual amended Collection; exact four authorized source files; structural controls only",
+    "collector_inputs": {
+      "runtime": "codex",
+      "provider": "mimo",
+      "native_exit": 0,
+      "precollection_exit": 0,
+      "canary_file": null,
+      "canary_expected": null,
+      "artifact": [],
+      "wall_clock_argument": 1271.418953
+    },
+    "wall_clock_argument_origin": "Archived measured runner value supplied to collector; not replay duration",
+    "events": 211,
+    "notice_line": 193,
+    "final_line": 210,
+    "terminal_line": 211,
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 5,
+      "warnings": 1
+    },
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "archived_bug_runner_exit_code": 1,
+    "terminal": "turn.completed",
+    "usage": {
+      "input_tokens": 8230600,
+      "cached_input_tokens": 7751168,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 42686,
+      "reasoning_output_tokens": 19732
+    },
+    "final_equal_to_native_saved_and_archived": true,
+    "final_sha256": "864edc0711a20123b9bceeebc2e81b72f40e33e151a9ceca9eb4420bd7bdee59",
+    "final_chars": 421,
+    "native_anomalies_and_tool_totals_preserved": true,
+    "log_locations_preserved": true,
+    "optional_checks_omitted": true,
+    "original_optional_or_business_validation_claimed": false,
+    "source_hashes_before": {
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.jsonl": {
+        "bytes": 1778012,
+        "sha256": "2aa7a70c47b2aa2d07a9187992601e814b94d02542d976fb7be63cba8d1292f5"
+      },
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.stderr": {
+        "bytes": 253,
+        "sha256": "64a473f3c344324da66ffe966582c3e49f01f545056b99b95489d39bd12d0385"
+      },
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.last.md": {
+        "bytes": 669,
+        "sha256": "864edc0711a20123b9bceeebc2e81b72f40e33e151a9ceca9eb4420bd7bdee59"
+      },
+      "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261010-0700-01/g1-location-code-review-b-02-evidence/runner-summary.json": {
+        "bytes": 7327,
+        "sha256": "4bed59c852d001b1c9fd3bcdb2c97a06f8e597f59679cd9a230917af01dc5bde"
+      }
+    },
+    "source_hashes_after": {
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.jsonl": {
+        "bytes": 1778012,
+        "sha256": "2aa7a70c47b2aa2d07a9187992601e814b94d02542d976fb7be63cba8d1292f5"
+      },
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.stderr": {
+        "bytes": 253,
+        "sha256": "64a473f3c344324da66ffe966582c3e49f01f545056b99b95489d39bd12d0385"
+      },
+      "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.last.md": {
+        "bytes": 669,
+        "sha256": "864edc0711a20123b9bceeebc2e81b72f40e33e151a9ceca9eb4420bd7bdee59"
+      },
+      "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261010-0700-01/g1-location-code-review-b-02-evidence/runner-summary.json": {
+        "bytes": 7327,
+        "sha256": "4bed59c852d001b1c9fd3bcdb2c97a06f8e597f59679cd9a230917af01dc5bde"
+      }
+    },
+    "all_four_sources_unchanged": true,
+    "warning_control": {
+      "stream": "output",
+      "line": 193,
+      "category": "warnings",
+      "recovered_prefix_asserted": true,
+      "original_exact_notice_text_asserted": true
+    }
+  },
+  "optional_owned_review_replay_used": false,
+  "resolved_validation_errors": {
+    "initial_focused_run": "10 optional-last-message assertion errors and 1 macOS resolved-path assertion failure",
+    "correction": "Explicit new last-message destinations; assert resolved artifact path",
+    "subsequent_focused_pass": true,
+    "final_bounds_change": "Added explicit report/outer runner-exit assertions; focused bounds and full module rerun passed",
+    "unresolved_effects": []
+  },
+  "docs_decision": "Short recovery classification sentence in both READMEs and repository sub-agents skill",
+  "accepted_plan_findings": [
+    {
+      "id": "DS-1",
+      "adjudication": "accepted",
+      "plan_status": "已修复",
+      "implementation_fix_status": "已修复",
+      "evidence": "Required full module: 49 methods = 38 baseline + 11 new; exit 0"
+    },
+    {
+      "id": "MiMo-01",
+      "adjudication": "accepted as clarification (option a)",
+      "plan_status": "已修复",
+      "implementation_fix_status": "已修复",
+      "evidence": "Supported proof shapes; 17 named extra-field/preamble negatives with paired baseline controls; all parser-accepted start events counted, including invalid-proof-shape duplicates after valid starts; parser-rejected rows independently fatal; no non-proof kind whitelist"
+    },
+    {
+      "id": "MiMo-02",
+      "adjudication": "accepted",
+      "plan_status": "已修复",
+      "implementation_fix_status": "已修复",
+      "evidence": "Exact six-line mixed-order fixture rejects, counts 2/0/0, notice B line 5; last notice beyond retained 20 also rejects"
+    },
+    {
+      "id": "MiMo-03",
+      "adjudication": "accepted",
+      "plan_status": "已修复",
+      "implementation_fix_status": "已修复",
+      "evidence": "Literal full 29-key set and four invariant values on six required recovery/failure/Codex/Claude controls"
+    },
+    {
+      "id": "Controller-01",
+      "adjudication": "accepted",
+      "plan_status": "已修复",
+      "implementation_fix_status": "已修复",
+      "evidence": "One-time reservation retains first notice and first 19 old entries; full 45/48/44 counts, display 20, persistent long-message truncation flag"
+    }
+  ],
+  "independent_code_review_performed": false,
+  "accepted_slice_commit_created": false,
+  "final_closeout_claimed": false,
+  "residuals": [
+    {
+      "area": "Known notice rejection, complete proof, diagnostic visibility and regression contract",
+      "classification": "fixed in current slice",
+      "owner": "S1 implementer; controller verifies at code review",
+      "destination": "codex-recovered-stream-errors code review",
+      "basis": "D1-D4 implemented; focused/full/replay assertions passed; independent review pending"
+    },
+    {
+      "area": "Unobserved notice wording/budgets, added proof-frame fields, preambles/items between starts, repeated starts and final before last notice",
+      "classification": "assigned to later work unit",
+      "owner": "Runner/protocol maintainer",
+      "destination": "Separately confirmed evidence-backed protocol-variant work unit if warranted",
+      "basis": "Conservative recovery fence intentionally refuses unsupported proof; ordinary no-candidate streams retain baseline handling"
+    },
+    {
+      "area": "Generic validation of non-proof event kinds or unrelated no-candidate protocol weaknesses",
+      "classification": "assigned to later work unit",
+      "owner": "Runner/protocol maintainer",
+      "destination": "Separately confirmed collector protocol-validation work unit if needed",
+      "basis": "Binding controller clarification forbids a new kind whitelist or generic hardening in S1"
+    },
+    {
+      "area": "Original optional checks and business correctness",
+      "classification": "requiring new issue or explicit user decision",
+      "owner": "Caller/controller",
+      "destination": "Original task workflow",
+      "basis": "Nonblocking under binding named-input limit: original optional checks intentionally omitted; selected checks independently covered by synthetic fixtures"
+    },
+    {
+      "area": "Merge, live deployment and original workflow restoration",
+      "classification": "requiring new issue or explicit user decision",
+      "owner": "User/caller",
+      "destination": "Later controller workflow or original task workflow",
+      "basis": "Outside S1 authorization; no merge, deployment or restoration performed"
+    }
+  ],
+  "evidence_limits": "Only synthetic runtime fixtures and exact four original structural inputs. No raw original final/tool payload persisted, no API/model/business execution, original optional/business validation not claimed.",
+  "code_fix_01": {
+    "gate": "fix",
+    "finding": "MiMo code finding 001 (distinct from plan finding MiMo-01)",
+    "recorded_at_utc": "2026-10-10T21:04:08.692561+00:00",
+    "authority": "Controller S1 FIX assignment and docs/gateflow/codex-recovered-stream-errors/code-adjudication.md",
+    "status": "Fix changes and validation complete; independent re-review and finding closure pending with controller",
+    "artifact": "docs/gateflow/codex-recovered-stream-errors/code-fix-01.md",
+    "changed_owned_files": [
+      "tests/test_agent_run_results.py",
+      "docs/gateflow/codex-recovered-stream-errors/implementation.md",
+      "docs/gateflow/codex-recovered-stream-errors/evidence/implementation-validation.json",
+      "docs/gateflow/codex-recovered-stream-errors/plan-adjudication.md",
+      "docs/gateflow/codex-recovered-stream-errors/code-fix-01.md"
+    ],
+    "contract_clarification": "Every parser-accepted thread.started/turn.started dispatched to Collection.codex, including invalid recovery-proof shapes and duplicates. Strict JSON/event/UTF-8 parsing precedes dispatch; parser-rejected rows do not enter start counters or parsed-event ordinals and independently reject the stream. Corrupt streams must NEVER recover.",
+    "production_behavior_changed": false,
+    "generic_parse_or_count_semantics_changed": false,
+    "notice_error_family_expanded": false,
+    "initial_snapshot": {
+      "recorded_at_utc": "2026-10-10T20:31:05.729089+00:00",
+      "implementation_validation_sha256": "458ac40d2e4e5b7afbb3f85b111cf0fb10d96a51ed7976a520d0ec43304f34b8",
+      "archived_initial_evidence": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/initial/docs/gateflow/codex-recovered-stream-errors/evidence/implementation-validation.json",
+      "top_level_commands_and_original_replay_preserved": true,
+      "top_level_changed_product_sha256_role": "Original initial implementation snapshot, not the post-fix hash map",
+      "clarified_claims": [
+        {
+          "original_json_pointer": "/synthetic_controls/malformed_duplicate_starts_counted",
+          "original_value": true,
+          "clarified_json_pointer": "/synthetic_controls/parser_accepted_duplicate_starts_counted",
+          "clarified_value": true,
+          "scope": "Every parser-accepted thread.started/turn.started dispatched to Collection.codex, including invalid recovery-proof shapes and duplicates. Strict JSON/event/UTF-8 parsing precedes dispatch; parser-rejected rows do not enter start counters or parsed-event ordinals and independently reject the stream. Corrupt streams must NEVER recover."
+        },
+        {
+          "original_json_pointer": "/accepted_plan_findings/1/evidence",
+          "original_value": "Supported proof shapes; 17 named extra-field/preamble negatives with paired baseline controls; all start events counted, including malformed duplicate after valid start; no non-proof kind whitelist",
+          "clarified_value": "Supported proof shapes; 17 named extra-field/preamble negatives with paired baseline controls; all parser-accepted start events counted, including invalid-proof-shape duplicates after valid starts; parser-rejected rows independently fatal; no non-proof kind whitelist"
+        }
+      ]
+    },
+    "synthetic_negative_subcases": [
+      {
+        "name": "parser-rejected-duplicate-thread.started-before-final",
+        "start_type": "thread.started",
+        "lone_surrogate_field": "thread_id",
+        "placement": "before-final",
+        "parser_error_stream": "output",
+        "parser_error_line": 4,
+        "notice_line": 3,
+        "notice_failure_reason": "other collector validation errors",
+        "asserted_by_passing_focused_and_full_runs": true
+      },
+      {
+        "name": "parser-rejected-duplicate-thread.started-after-final",
+        "start_type": "thread.started",
+        "lone_surrogate_field": "thread_id",
+        "placement": "after-final",
+        "parser_error_stream": "output",
+        "parser_error_line": 5,
+        "notice_line": 3,
+        "notice_failure_reason": "other collector validation errors",
+        "asserted_by_passing_focused_and_full_runs": true
+      },
+      {
+        "name": "parser-rejected-duplicate-turn.started-before-final",
+        "start_type": "turn.started",
+        "lone_surrogate_field": "metadata",
+        "placement": "before-final",
+        "parser_error_stream": "output",
+        "parser_error_line": 4,
+        "notice_line": 3,
+        "notice_failure_reason": "other collector validation errors",
+        "asserted_by_passing_focused_and_full_runs": true
+      },
+      {
+        "name": "parser-rejected-duplicate-turn.started-after-final",
+        "start_type": "turn.started",
+        "lone_surrogate_field": "metadata",
+        "placement": "after-final",
+        "parser_error_stream": "output",
+        "parser_error_line": 5,
+        "notice_line": 3,
+        "notice_failure_reason": "other collector validation errors",
+        "asserted_by_passing_focused_and_full_runs": true
+      }
+    ],
+    "common_assertions": {
+      "outer_runner_exit_code": 1,
+      "report_runner_exit_code": 1,
+      "validation_status": "rejected",
+      "diagnostic_counts": {
+        "errors": 2,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "parser_error_count": 1,
+      "parser_error_message_contains": "surrogates not allowed",
+      "recovered_notice_warning_absent": true,
+      "parsed_events": 5,
+      "runtime_exit_code": 0,
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "final_answer": "done"
+    },
+    "counter_evidence_basis": "Unchanged strict parser before Collection.codex dispatch; existing parser-accepted duplicate-start cases; added raw duplicate cases assert five parsed events and other collector validation errors, without exposing new public proof fields.",
+    "method_counts": {
+      "baseline": 38,
+      "initial_s1_new": 11,
+      "fix_new_methods": 0,
+      "full": 49,
+      "fix_added_subcases": 4
+    },
+    "commands": [
+      {
+        "label": "focused-fix-01",
+        "argv": [
+          "python3",
+          "-B",
+          "tests/test_agent_run_results.py",
+          "RunnerResults.test_codex_connection_notice_requires_same_execution_completion"
+        ],
+        "command": "python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_connection_notice_requires_same_execution_completion",
+        "cwd": "/Users/leo/workspace/code-is-cheap",
+        "recorder_argv": [
+          "/private/tmp/codex-recovered-code-fix-01-svnmn4da/record_command.py",
+          "focused-fix-01",
+          "python3",
+          "-B",
+          "tests/test_agent_run_results.py",
+          "RunnerResults.test_codex_connection_notice_requires_same_execution_completion"
+        ],
+        "started_at_utc": "2026-10-10T21:02:01.257983+00:00",
+        "ended_at_utc": "2026-10-10T21:02:05.983790+00:00",
+        "exit_code": 0,
+        "measured_duration_seconds": 4.7257225420325994,
+        "unittest_methods_run": 1,
+        "unittest_reported_seconds": 4.68,
+        "unittest_result": "passed",
+        "reported_failures": 0,
+        "reported_errors": 0,
+        "logs": {
+          "stdout": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/focused-fix-01.stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/focused-fix-01.stderr.log",
+            "bytes": 98,
+            "sha256": "7139cab377ad1df537df24aa25fd4386b8d6d2140203c0bf643fc102e245a932"
+          }
+        },
+        "tested_product_sha256": {
+          "tests/test_agent_run_results.py": "a9fa04ed87c4d39faceab429bab4879bc6a3b4de152631e952bffa67fe114152",
+          "scripts/agent-run-result.py": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4"
+        }
+      },
+      {
+        "label": "full-module-fix-01",
+        "argv": [
+          "python3",
+          "-B",
+          "tests/test_agent_run_results.py"
+        ],
+        "command": "python3 -B tests/test_agent_run_results.py",
+        "cwd": "/Users/leo/workspace/code-is-cheap",
+        "recorder_argv": [
+          "/private/tmp/codex-recovered-code-fix-01-svnmn4da/record_command.py",
+          "full-module-fix-01",
+          "python3",
+          "-B",
+          "tests/test_agent_run_results.py"
+        ],
+        "started_at_utc": "2026-10-10T21:02:17.127231+00:00",
+        "ended_at_utc": "2026-10-10T21:02:44.732717+00:00",
+        "exit_code": 0,
+        "measured_duration_seconds": 27.605336750042625,
+        "unittest_methods_run": 49,
+        "unittest_reported_seconds": 27.559,
+        "unittest_result": "passed",
+        "reported_failures": 0,
+        "reported_errors": 0,
+        "logs": {
+          "stdout": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/full-module-fix-01.stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/full-module-fix-01.stderr.log",
+            "bytes": 149,
+            "sha256": "223ec619d69e7c017510ec6fbc8427efc65c1039439fb49aa35d0e98175fd54c"
+          }
+        },
+        "tested_product_sha256": {
+          "tests/test_agent_run_results.py": "a9fa04ed87c4d39faceab429bab4879bc6a3b4de152631e952bffa67fe114152",
+          "scripts/agent-run-result.py": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4"
+        }
+      },
+      {
+        "label": "diff-check-before-evidence",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "command": "git diff --check",
+        "cwd": "/Users/leo/workspace/code-is-cheap",
+        "recorder_argv": [
+          "/private/tmp/codex-recovered-code-fix-01-svnmn4da/record_command.py",
+          "diff-check-before-evidence",
+          "git",
+          "diff",
+          "--check"
+        ],
+        "started_at_utc": "2026-10-10T21:03:06.222780+00:00",
+        "ended_at_utc": "2026-10-10T21:03:06.240949+00:00",
+        "exit_code": 0,
+        "measured_duration_seconds": 0.01809454197064042,
+        "unittest_methods_run": null,
+        "unittest_reported_seconds": null,
+        "unittest_result": null,
+        "reported_failures": 0,
+        "reported_errors": 0,
+        "logs": {
+          "stdout": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/diff-check-before-evidence.stdout.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/diff-check-before-evidence.stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tested_product_sha256": {
+          "tests/test_agent_run_results.py": "a9fa04ed87c4d39faceab429bab4879bc6a3b4de152631e952bffa67fe114152",
+          "scripts/agent-run-result.py": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4"
+        }
+      }
+    ],
+    "post_fix_sha256": {
+      "tests/test_agent_run_results.py": "a9fa04ed87c4d39faceab429bab4879bc6a3b4de152631e952bffa67fe114152",
+      "docs/gateflow/codex-recovered-stream-errors/implementation.md": "fbb59db96c84bcaa0adcc32124a15812db6a0e79ec5c74e657460e5389a529c6",
+      "docs/gateflow/codex-recovered-stream-errors/plan-adjudication.md": "d3d2ebde6f24c355e37b6730c629204eda0477df3c30fa21f433445a6da888b9"
+    },
+    "scope_validation": {
+      "protected_hashes_unchanged": true,
+      "protected_after_sha256": {
+        "scripts/agent-run-result.py": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4",
+        "scripts/codex-agent-run": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+        "scripts/claude-agent-run": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+        "README.md": "5f83449934e007cad048a3eca1a59d557f326bbc85853a2f0750ae44125aaf1c",
+        "README.zh.md": "0f136970389630d3c71bfc5fb1e8953ca75ee79cda0cd06d36fae5d9a059fa98",
+        "skills/sub-agents/SKILL.md": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+        "docs/gateflow/codex-recovered-stream-errors/plan.md": "15973171479f64c0820d82f6b57fc982e7f75fa920f06de45a55660f50e8401d",
+        "docs/gateflow/codex-recovered-stream-errors/goal.md": "7d556d49e47e61e3517a3f3f7e35f1aa9b00c888d053aa44423a70a786aad374",
+        "docs/gateflow/codex-recovered-stream-errors/code-adjudication.md": "f77d15b97eb6c56894f88fc6b360b8526208191b8d56fb722ef63745832170f3",
+        "docs/reviews/code-review-20261011-043241.md": "ab53adf93d90cb0772b42f9cbd553b76b76ca6afb22e9d421601ce14dfd31dc9"
+      },
+      "modified_test_methods": [
+        "test_codex_connection_notice_requires_same_execution_completion"
+      ],
+      "full_method_count": 49,
+      "plan_adjudication_append_only": true
+    },
+    "final_diff_check_record": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/diff-check-final.json",
+    "finalized_evidence_and_all_fix_file_hash_manifest": "/private/tmp/codex-recovered-code-fix-01-svnmn4da/final-snapshot.json",
+    "hash_manifest_note": "External final manifest records the finalized evidence/artifact hashes after writing, avoiding a self-referential embedded evidence hash. Initial snapshot hashes remain separate.",
+    "resolved_or_unresolved_validation_errors": [],
+    "docs_decision": "Clarify implementation/evidence and append controller-authorized plan-adjudication note; frozen plan, README/skill and historical review/original evidence remain unchanged.",
+    "residuals": [
+      {
+        "area": "Start-counter contract/evidence and malformed raw start coverage",
+        "classification": "fixed in current slice",
+        "owner": "S1 fix owner; controller validates by independent re-review",
+        "destination": "S1 independent re-review",
+        "basis": "Clarified parser-accepted contract and four passing bounded raw duplicate subcases; finding closure is not claimed"
+      },
+      {
+        "area": "Unsupported notice/proof variants and generic protocol validation",
+        "classification": "assigned to later work unit",
+        "owner": "Runner/protocol maintainer",
+        "destination": "Separately confirmed evidence-backed protocol or collector validation work unit",
+        "basis": "Production semantics unchanged; conservative recovery fence retained"
+      },
+      {
+        "area": "Original optional checks and business correctness",
+        "classification": "requiring new issue or explicit user decision",
+        "owner": "Caller/controller",
+        "destination": "Original task workflow",
+        "basis": "No caller raw/business read or original replay in this fix; original initial replay remains historical structural evidence"
+      },
+      {
+        "area": "Merge, live deployment and original workflow restoration",
+        "classification": "requiring new issue or explicit user decision",
+        "owner": "User/caller",
+        "destination": "Later authorized controller or original task workflow",
+        "basis": "Outside fix authorization; only private temporary mock sync in full module"
+      }
+    ],
+    "incomplete_controller_items": [
+      "Independent dual re-review and accepted-finding closure",
+      "Controller lifecycle/statistics/adjudication updates and any accepted slice checkpoint"
+    ],
+    "evidence_limits": "Synthetic fixtures only in this fix. No delegation, install/live deploy, model/API/provider probe, caller directory/log access, original raw/business read or workflow operation. No staging, commit or push."
+  }
+}

@@ -1,7 +1,7 @@
 # Gate state: codex-recovered-stream-errors
 
 - Status: active; goal confirmed.
-- Current gate / next entry point: accepted plan commit.
+- Current gate / next entry point: accepted slice commit -> aggregate deepreview.
 - Branch: fix/codex-recovered-stream-errors; baseline 20fc6c37751836329143567c166990bdffa9de3c; original workspace clean.
 - Artifact: goal.md; structural/replay evidence evidence/goal-log-check.json; original logs retained unchanged.
 - Decision: defect reproduced; narrow recovered-connection classification proposed, arbitrary/unrecovered errors remain fatal.
@@ -24,3 +24,13 @@
 - GPT-6 Sol plan fix completed native/runner0; revised SHA256 15973171479f64c0820d82f6b57fc982e7f75fa920f06de45a55660f50e8401d. plan-fix-01.md addresses all five decisions; root verified exact fixtures/contracts/reservation. One recovered private harness failure nonblocking; initial metadata-only broad hashing deviation disclosed, no business/unaccepted conclusion used. Independent re-review now dispatching; gate not yet passed.
 
 - Plan loop accepted: both re-reviews verify all five findings 已修复. DS new candidate rejected with explicit narrow proof-frame clarification; all start events count. MiMo review accepted on direct recovered-notice evidence despite exact known old collector bug (actual native0/runner1 retained), no retry. evidence/plan-rereview-mimo-recovery.json and plan-adjudication.md record proof/decisions. Next: accepted plan checkpoint then S1.
+
+- Accepted-plan checkpoint: 7c37bc6. S1 implementation delegated to GPT-6 Sol next; plan review acceptance is not product validation.
+
+- S1 GPT-6 Sol completed native/runner0; owned file hashes match implementation evidence; actual private command records corroborate focused11/full49 passes and original scoped0/5/1 replay with unchanged hashes. One recovered fixture assertion failure nonblocking; no source scope drift. Independent code review dispatching, no accepted slice yet.
+
+- Both S1 reviewers completed native/runner0. Controller accepted MiMo001 as contract/negative-test clarification, not a request to alter strict parse or counting. DS unreachable reason observation needs no product refactor. GPT-6 Sol fix then independent dual re-review.
+
+- GPT-6 Sol code-fix-01 native/runner0; focused1/full49/diff pass, only assigned test method AST changed; protected collector/runners/docs/goal/plan unchanged, prior evidence preserved. Root inspected actual full-test stderr/scope/final snapshot. Ordinary rg no-match anomaly nonblocking. MiMo001 fix-level complete; independent dual re-review pending.
+
+- S1 dual re-review accepted; MiMo001 accepted/已修复, no new material findings. code-adjudication.md records root evidence and residual owners. No unresolved accepted finding. Product hash map unchanged from frozen re-review. Next accepted slice commit then aggregate deepreview.

@@ -368,6 +368,8 @@ execution claims cannot be distinguished from text alone; inspect relevant evide
 exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
 task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 
+Recognized Codex connection retry notices become warnings only after valid later completion in the same execution and successful selected checks; unknown or unrecovered errors remain fatal.
+
 `session_id` exposes the native Codex thread_id or Claude session_id, or null when unavailable/conflicting.
 Only explicitly persisted sessions can be resumed; an ID does not imply an ephemeral run was saved.
 

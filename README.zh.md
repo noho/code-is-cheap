@@ -345,6 +345,8 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 需要时核对相关证据。无工具记录的工具语法也只作诊断，不能仅凭文本区分示例和执行声明。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
 退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
 
+已识别的 Codex 连接重试通知，只有在同一次执行中随后有效完成且所选检查通过后才列为 warnings；未知或未恢复的错误仍属致命错误。
+
 `session_id` 返回原生 Codex thread_id 或 Claude session_id，缺失/冲突为 null。只有显式持久化的会话才可
 resume；ID 不代表默认一次性运行已保存。
 

@@ -276,6 +276,250 @@
         "anomalies": 2,
         "warnings": 0
       }
+    },
+    {
+      "gate": "implementation S1",
+      "artifact": "docs/gateflow/codex-recovered-stream-errors/implementation.md",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 555.598849,
+      "usage": {
+        "input_tokens": 1785743,
+        "cached_input_tokens": 1677184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 27997,
+        "reasoning_output_tokens": 8258
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1277b-1f35-73b1-9cc3-8b5f0b7f6dfe",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/implementation-s1.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/implementation-s1.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "code review S1",
+      "artifact": "docs/reviews/code-review-20261011-043242.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 365.523381,
+      "usage": {
+        "input_tokens": 108159,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1876736,
+        "output_tokens": 61102,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 363126,
+        "duration_api_ms": 305797,
+        "total_cost_usd": 3.0067130000000004,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 108159,
+            "outputTokens": 61102,
+            "cacheReadInputTokens": 1876736,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 3.0067130000000004,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "968e799a-e642-4b2f-8ff7-6713c81fa4c6",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-review-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "code review S1",
+      "artifact": "docs/reviews/code-review-20261011-043241.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1164.667458,
+      "usage": {
+        "input_tokens": 6171683,
+        "cached_input_tokens": 5961472,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 32572,
+        "reasoning_output_tokens": 21920
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12784-a7f2-7133-8421-1992daf322de",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-review-mimo.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-review-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "fix S1",
+      "artifact": "docs/gateflow/codex-recovered-stream-errors/code-fix-01.md",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 368.421274,
+      "usage": {
+        "input_tokens": 1306334,
+        "cached_input_tokens": 1216896,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 18010,
+        "reasoning_output_tokens": 6463
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1279d-3d4a-7241-9ef3-163027140f36",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-fix-01.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-fix-01.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "code re-review S1",
+      "artifact": "docs/reviews/code-review-20261011-050624.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 342.771711,
+      "usage": {
+        "input_tokens": 107479,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1425920,
+        "output_tokens": 55830,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 340234,
+        "duration_api_ms": 276066,
+        "total_cost_usd": 2.6461050000000004,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 107479,
+            "outputTokens": 55830,
+            "cacheReadInputTokens": 1425920,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 2.6461050000000004,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "4d2b19ab-c68d-426a-8648-bc35fcb0a59e",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-rereview-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "code re-review S1",
+      "artifact": "docs/reviews/code-review-20261011-050623.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 701.013611,
+      "usage": {
+        "input_tokens": 3425168,
+        "cached_input_tokens": 3237120,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 20849,
+        "reasoning_output_tokens": 10636
+      },
+      "runtime_metrics": {},
+      "session_id": "01a127a3-9b8a-7053-b4f5-2d26ed0415c7",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/code-rereview-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
     }
   ]
 }
