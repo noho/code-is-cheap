@@ -8,7 +8,9 @@
 - Code review/fix/re-review: pass; code-fix.md and code-re-review.md. All six accepted source/doc findings 已修复; both external re-review reports and final controller regression recorded.
 - Accepted slice commit: b7ac57d.
 - Aggregate deepreview/fix/re-review: pass; complete PR controller report and aggregate-fix-and-re-review.md. Task-syntax ambiguity fixed and verified.
-- Current gate / next entry point: accepted deepreview commit, then ready-to-open-draft-PR.
+- Accepted deepreview commit: 7101707.
+- Ready-to-open-draft-PR: pass; ready-to-open-draft-pr.md.
+- Current gate / next entry point: push, then reuse #50 as draft and perform PR review.
 - Branch / PR: feat/sub-agent-result-collection / #50 reused.
 - Residual risks: classified in plan and re-review; owners stated.
 - Work unit: in progress. No live sync or merge.
