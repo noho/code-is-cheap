@@ -125,6 +125,26 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                     self.assertEqual(report['runtime_metrics'],{})
                     self.assertTrue(any('finite float' in x['message'] for x in report['errors']))
 
+    def test_lone_surrogates_reject_with_a_report_and_valid_unicode_survives(self):
+        for runtime in ('codex','claude'):
+            for field in ('final','usage','modelUsage','key'):
+                events=getattr(self,runtime)('bad \ud800' if field=='final' else 'done')
+                if field!='final':
+                    events[-1]['usage' if field=='key' else field]=({'\ud800':0} if field=='key' else {'nested':['\ud800']})
+                result=self.run_agent(runtime,events)
+                self.assertEqual(result.returncode,1,result.stderr)
+                self.assertNotIn('Traceback',result.stderr)
+                report=json.loads(result.stdout)
+                self.assertEqual(report['validation_status'],'rejected')
+                self.assertTrue(any('surrogates not allowed' in e['message'] for e in report['errors']))
+            events=getattr(self,runtime)('正常 😀')
+            events[-1]['usage']={'label':'正常 😀','zero':0}
+            result=self.run_agent(runtime,events)
+            self.assertEqual(result.returncode,0,result.stderr)
+            report=json.loads(result.stdout)
+            self.assertEqual(report['final_answer'],'正常 😀')
+            self.assertEqual(report['usage'],events[-1]['usage'])
+
     def test_terminal_statistics_are_verbatim_and_wall_clock_measured(self):
         self.env['RUNTIME_DELAY']='0.15'
         for runtime in ('codex','claude'):

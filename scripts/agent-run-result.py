@@ -31,6 +31,20 @@ def finite_json_float(value):
     return number
 
 
+def validate_event_text(event):
+    # JSON escapes can decode to lone surrogates, which cannot be UTF-8 output.
+    pending = [event]
+    while pending:
+        value = pending.pop()
+        if isinstance(value, dict):
+            pending.extend(value.keys())
+            pending.extend(value.values())
+        elif isinstance(value, list):
+            pending.extend(value)
+        elif isinstance(value, str):
+            value.encode("utf-8")
+
+
 def reported_tokens(lines):
     """Only standalone proof lines outside fenced examples constitute reports."""
     fence = None
@@ -271,6 +285,7 @@ class Collection:
                         event = json.loads(raw, object_pairs_hook=strict_object, parse_constant=invalid_constant, parse_float=finite_json_float)
                         if not isinstance(event, dict) or not isinstance(event.get("type"), str):
                             raise ValueError("expected an event object with type")
+                        validate_event_text(event)
                         if self.terminal is not None and event["type"] not in {"rate_limit_event"}:
                             self.note("errors", "event after runtime terminal", line)
                         self.events += 1
