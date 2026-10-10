@@ -1,0 +1,83 @@
+{
+  "experiment_root": "/private/tmp/dangling-symlink-plan-87_cajj0",
+  "summary": {
+    "status": "pass",
+    "assertions": 63,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "node": "v25.9.0",
+    "srt": "0.0.79",
+    "profiles": [
+      {
+        "profile": "srt-seatbelt.sb",
+        "sha256": "a8de64b49aaaa33789944a5d04427d1c05d5877b27f75f2a3b91586235abb566"
+      },
+      {
+        "profile": "ancestor-srt-seatbelt.sb",
+        "sha256": "baa2710090ef65ba5a9af8415f1bae2ba301e3255b260a716accf6a1755ae364"
+      },
+      {
+        "profile": "srt-directory-seatbelt.sb",
+        "sha256": "d5214ac71796b8616cac2f97dc4e975eee810950e75a1a58828922858742de40"
+      },
+      {
+        "profile": "current-verify-seatbelt.sb",
+        "sha256": "2ba071cc0c8ee66da25bcb34fc0abfa2b18f895a3c7adde2aaf93b7aefd016c5"
+      }
+    ],
+    "source_sha256": "10bc6c27ee8686b200c60ab07789a089189c3632f6a40e3b2f38726ce7320f31"
+  },
+  "raw_evidence": [
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/allow-default-materialization-raw.json",
+      "sha256": "a95318f03548444b21b21af0388bfc8af7748039a0b2c7739a8eaf94911e3221",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/ancestor-srt-materialization-raw.json",
+      "sha256": "f3daf5cb7de0ad9d0dca869c9366bc8c4ecfa190cc2c7148a72189f738642b4f",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/baseline-raw.json",
+      "sha256": "e640d460579c377deb519bdde8a2072b247c1dcc5622d79e4e3b419342243a35",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/current-verify-raw.json",
+      "sha256": "f1bdad37d5ece31479b470b49ce7b4e61447e3829e4bc24c4434821b9d6450cc",
+      "exit_code": 1
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/minimal-raw.json",
+      "sha256": "13f64018abdac59968e1f7f0cfc7ccb3171b56481e41f23351f91538adb3bad3",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/missing-only-materialization-raw.json",
+      "sha256": "1baddbb09f11409ff20b8d3430e6c0ffcf50e385b3a837eb6a468c3e16b25d9b",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/resolution-matrix-raw.json",
+      "sha256": "5b717c7a0ba6583573ea7132597518f7dc80d40275565fac2cd13da78120dd7c",
+      "exit_code": null
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/srt-directory-materialization-raw.json",
+      "sha256": "35244f6bb3821f7e39dcec4b75c01028d402473ceb846bd2738c5706534e79bc",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/srt-raw.json",
+      "sha256": "8b30758ee9055d717ec77c2306942556003b3f360f496ab586dfcfac515583b3",
+      "exit_code": 0
+    },
+    {
+      "file": "/private/tmp/dangling-symlink-plan-87_cajj0/evidence-summary.json",
+      "sha256": "c882b85923ecc443c397390da5b336681434dbc96cd09c66f6b57447dd7f1836",
+      "exit_code": null
+    }
+  ],
+  "controller_check": "Read baseline, real srt, materialization and resolution raw outputs; ENOENT/query=1 ambiguity confirmed. Original caller task not accessed."
+}

@@ -1,0 +1,207 @@
+{
+  "source": "actual managed runner reports; native usage not estimated or stream-summed",
+  "calls": [
+    {
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 942.774718,
+      "usage": {
+        "input_tokens": 1570962,
+        "cached_input_tokens": 1468160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 31460,
+        "reasoning_output_tokens": 13165
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1251d-f9b5-7542-a240-1fdf98ba93ee",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/plan-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/plan-stderr.log",
+        "last_message": null
+      }
+    },
+    {
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1132.974423,
+      "usage": {
+        "input_tokens": 4830825,
+        "cached_input_tokens": 4654976,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 32724,
+        "reasoning_output_tokens": 21376
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1252d-afd4-7380-97be-fc82fab15e7d",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/mimo-plan-review-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/mimo-plan-review-stderr.log",
+        "last_message": null
+      }
+    },
+    {
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 467.407314,
+      "usage": {
+        "input_tokens": 115677,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3138688,
+        "output_tokens": 79849,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 464813,
+        "duration_api_ms": 427981,
+        "total_cost_usd": 4.143953999999999,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 115677,
+            "outputTokens": 79849,
+            "cacheReadInputTokens": 3138688,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 4.143953999999999,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "a4f7ba6d-cb18-463d-b623-7c15d25d8bfd",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/ds-flash-plan-review-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/ds-flash-plan-review-stderr.log",
+        "last_message": null
+      }
+    },
+    {
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 508.076264,
+      "usage": {
+        "input_tokens": 632553,
+        "cached_input_tokens": 551040,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19297,
+        "reasoning_output_tokens": 5174
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12543-1264-7163-889b-b4c65a18c0c5",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/plan-fix-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/plan-fix-stderr.log",
+        "last_message": null
+      }
+    },
+    {
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 682.615264,
+      "usage": {
+        "input_tokens": 4325162,
+        "cached_input_tokens": 4150016,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23962,
+        "reasoning_output_tokens": 14107
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1254c-9066-7d32-9259-4362323996c7",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/mimo-plan-rereview-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/mimo-plan-rereview-stderr.log",
+        "last_message": null
+      }
+    },
+    {
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 308.120841,
+      "usage": {
+        "input_tokens": 98747,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3188736,
+        "output_tokens": 57123,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 305586,
+        "duration_api_ms": 299213,
+        "total_cost_usd": 3.5161779999999996,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 98747,
+            "outputTokens": 57123,
+            "cacheReadInputTokens": 3188736,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 3.5161779999999996,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "3f3f9624-794e-4f0f-9bd9-16333bc57de6",
+      "logs": {
+        "output": "/private/tmp/dangling-gateflow-t4xhxmkt/ds-flash-plan-rereview-output.jsonl",
+        "stderr": "/private/tmp/dangling-gateflow-t4xhxmkt/ds-flash-plan-rereview-stderr.log",
+        "last_message": null
+      }
+    }
+  ]
+}
