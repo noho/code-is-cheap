@@ -12,7 +12,9 @@
 - Ready-to-open-draft-PR: pass; ready-to-open-draft-pr.md.
 - Initial push/draft PR: pass; published head bff4b3f, PR50 draft.
 - PR review: both routes completed; five accepted findings applied and final full native/OS suite passes 140/140. pr-review.md.
-- Current gate / next entry point: publish fix checkpoint, independent focused re-review, then accepted PR-review commit.
+- Fix checkpoint: 959ef73 published.
+- PR re-review: pass; both external routes actually exited0, all five findings 已修复, no new finding; pr-rereview.md.
+- Current gate / next entry point: accepted PR-review commit, then final push.
 - Branch / PR: feat/sub-agent-result-collection / #50 reused.
 - Residual risks: classified in plan and re-review; owners stated.
 - Work unit: in progress. No live sync or merge.

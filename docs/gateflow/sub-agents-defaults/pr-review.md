@@ -41,3 +41,7 @@ Validation after applying all five fixes:
 All five fixes applied with regression evidence; independent focused published re-review remains next. Gate remains in progress; no accepted PR-review commit/final push/pass yet.
 
 No live sync, config/key changes, other-project operations or merge. Risks: runtime future schema/visibility/interruption tracked in final closeout by maintainer; task truth/execution/artifact semantics owned by caller. Kernel gap is accepted blocking fix, not a deferred risk. No unclassified risk or scope question.
+
+## Final disposition
+
+Both focused independent re-reviews completed and passed. All five accepted findings final status 已修复; see pr-rereview.md and its source/actual lifecycle evidence. PR review loop passes; original findings/checkpoint text above is historical.

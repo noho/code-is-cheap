@@ -1,0 +1,136 @@
+[
+  {
+    "stage": "PR review",
+    "runtime": "codex",
+    "provider": "mimo",
+    "wall_clock_seconds": 1683.287715,
+    "usage": {
+      "input_tokens": 7583397,
+      "cached_input_tokens": 7199872,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 38854,
+      "reasoning_output_tokens": 24698
+    },
+    "runtime_metrics": {},
+    "terminal": "turn.completed",
+    "raw_log": "/private/tmp/defaults-pr-5vjhj2kv/codex.jsonl"
+  },
+  {
+    "stage": "PR review",
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "wall_clock_seconds": 721.200442,
+    "usage": {
+      "input_tokens": 154125,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 6459904,
+      "output_tokens": 76958,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 718428,
+      "duration_api_ms": 435863,
+      "total_cost_usd": 5.924526999999999,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 154125,
+          "outputTokens": 76958,
+          "cacheReadInputTokens": 6459904,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 5.924526999999999,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "terminal": "result",
+    "raw_log": "/private/tmp/defaults-pr-5vjhj2kv/claude.jsonl"
+  },
+  {
+    "stage": "PR re-review",
+    "runtime": "codex",
+    "provider": "mimo",
+    "wall_clock_seconds": 992.844838,
+    "usage": {
+      "input_tokens": 6211624,
+      "cached_input_tokens": 6001664,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 29650,
+      "reasoning_output_tokens": 15555
+    },
+    "runtime_metrics": {},
+    "terminal": "turn.completed",
+    "raw_log": "/private/tmp/defaults-pr-rereview-66fjl5x3/codex.jsonl"
+  },
+  {
+    "stage": "PR re-review",
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "wall_clock_seconds": 415.378049,
+    "usage": {
+      "input_tokens": 108117,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3531776,
+      "output_tokens": 57356,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 412587,
+      "duration_api_ms": 307779,
+      "total_cost_usd": 3.740373,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 108117,
+          "outputTokens": 57356,
+          "cacheReadInputTokens": 3531776,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 3.740373,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "terminal": "result",
+    "raw_log": "/private/tmp/defaults-pr-rereview-66fjl5x3/claude.jsonl"
+  }
+]
