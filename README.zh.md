@@ -208,8 +208,18 @@ agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
 # claude-agent-run 使用相同封装。
 ```
 
+有效软链接目标保留 stdlib strict canonicalization。扫描禁读目录发现失效链接时，仅确证 ENOENT 后使用
+`os.path.realpath(strict=os.path.ALLOW_MISSING)`；该分支缺少此能力会带定位 setup failure，不安装或 fallback，
+Python 3.11+ 下限不变。missing-aware canonicalization 可在 `..` 后重入已存在目标，setup 逐条报告并保守禁读该目标，
+不证明原始链接当前可达；后续非 ENOENT 错误带声明、链接及原始 target 上下文失败，不承诺 stdlib 与 kernel open 的错误优先级相同。
+
+最终缺失目标仍保留为禁读/禁写路径，同时递归禁止其最近已存在目录祖先的全部读写。祖先进入相同软链接扩展扫描；
+其中的二级失效链接可级联添加其它子树的祖先，每条扩展报告来源和发现目录。这可能连带禁止 sibling、扩大扫描或与必需输入冲突；
+root 祖先、不可读/不支持目标、扫描失败及输入冲突均停止 setup，不放宽策略。验证先对每个已存在边界 query 并实际确认拒读，
+仅有已实测祖先覆盖的登记缺失目标才可容忍 ENOENT；ENOENT 或 query=1 单独均不是隔离证明。允许 probe 的实际读写仍须成功才启动固定 runner。
+
 封装隐含 `--full-access --no-persist`，启动前固定策略，在 Seatbelt 内确认禁读路径确实被拒绝，再启动 runner。
-不支持的参数、缺失路径、版本不匹配、已有硬链接、无法保留原写边界的配置均明确失败，不退回无隔离运行。
+不支持的参数、直接声明的缺失路径、版本不匹配、已有硬链接、无法保留原写边界的配置均明确失败，不退回无隔离运行。
 写入保留原 runtime 的保守子集：Codex read-only 不开放 cwd 写入；workspace-write 保留 cwd 并保护
 `.git/.codex/.agents/.aws`，不携带额外 writable roots。Claude 保留 cwd 和各设置层中绝对路径或 `~/` 开头的字面 sandbox `denyWrite`。
 仅另加调用方指定的输出**文件**与独立运行状态目录，不开放输出文件的整个父目录。Codex permission profiles、

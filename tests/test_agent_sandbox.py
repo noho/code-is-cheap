@@ -1,16 +1,23 @@
 """Boundary tests. Kernel tests are opt-in and must run outside the parent sandbox.
 AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/path/to/srt python3 -m unittest discover -s tests -p test_agent_sandbox.py
 """
+import contextlib
+import errno
 import hashlib
+import io
 import importlib.machinery
 import importlib.util
 import json
 import os
 from pathlib import Path
 import platform
+import select
 import shutil
+import stat
 import subprocess
+import sys
 import tempfile
+import time
 import unittest
 import unittest.mock
 
@@ -25,6 +32,25 @@ def profile_fields(stderr):
     # The adapter emits before spawn; descendants can forge later duplicates.
     line=next(line for line in stderr.splitlines() if line.startswith('agent-sandbox: seatbelt_profile='))
     return dict(item.split('=',1) for item in line.split() if '=' in item)
+
+
+def retain_kernel_evidence(name, result, policy_root=None):
+    """Optional trusted-parent raw output and policy retention for synthetic tests."""
+    destination=os.getenv('AGENT_SANDBOX_EVIDENCE_DIR')
+    if not destination: return
+    directory=Path(tempfile.mkdtemp(prefix=name.rsplit('.',1)[-1]+'-',dir=destination))
+    (directory/'raw.json').write_text(json.dumps(dict(argv=result.args,exit=result.returncode,
+        stdout=result.stdout,stderr=result.stderr),indent=2))
+    if policy_root is None:
+        line=next((line for line in result.stderr.splitlines() if line.startswith('agent-sandbox: state=')),None)
+        if line: policy_root=Path(line.split('=',1)[1])
+    if policy_root is not None:
+        for name in ('boundary.json','srt.json','seatbelt.sb','seatbelt.source.sb',
+                     'control-srt.json','control-seatbelt.sb','control-seatbelt.source.sb','materialization-probe.py'):
+            source=policy_root/name
+            if source.is_file(): shutil.copyfile(source,directory/name)
+    if 'agent-sandbox: seatbelt_profile=' in result.stderr:
+        (directory/'first-adapter-record.json').write_text(json.dumps(profile_fields(result.stderr),indent=2))
 
 
 class SetupTests(unittest.TestCase):
@@ -49,7 +75,8 @@ class SetupTests(unittest.TestCase):
             (p/'secret').write_text('secret')
             (p/'alias').symlink_to(p/'secret')
             (p/'list').write_text(json.dumps([str(p/'alias')]))
-            denies = sandbox.load_denies(p/'list')
+            denies, missing = sandbox.load_denies(p/'list')
+            self.assertEqual(missing,{})
             self.assertTrue(sandbox.is_denied(p/'secret', denies))
             self.assertTrue(sandbox.is_denied(p/'alias', denies))
 
@@ -189,6 +216,446 @@ class SetupTests(unittest.TestCase):
             self.assertFalse(marker.exists())
 
 
+class DanglingSetupTests(unittest.TestCase):
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory(prefix='dangling-setup-', dir='/private/tmp')
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name).resolve()
+        self.denied = self.root/'denied'; self.denied.mkdir()
+        self.list = self.root/'list.json'
+        self.list.write_text(json.dumps([str(self.denied)]))
+
+    def load(self):
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            result = sandbox.load_denies(self.list)
+        return *result, stderr.getvalue()
+
+    def assert_origin(self, text, link, raw, target=None, ancestor=None):
+        for value in (str(self.denied), str(link), raw):
+            self.assertIn(value, text)
+        if target is not None: self.assertIn(str(target), text)
+        if ancestor is not None: self.assertIn(str(ancestor), text)
+
+    def test_missing_leaf_multiple_ancestors_absolute_relative_and_chain(self):
+        anchor = self.root/'anchor'; anchor.mkdir()
+        (anchor/'sentinel').write_text('readable before isolation')
+        targets = [anchor/'leaf', anchor/'absent/deeper/leaf']
+        links = [('absolute',str(targets[0])), ('relative','../anchor/absent/deeper/leaf'),
+                 ('chain','relative')]
+        for name, raw in links: (self.denied/name).symlink_to(raw)
+        denies, missing, logs = self.load()
+        self.assertEqual(set(missing), set(map(str, targets)))
+        for target in targets:
+            self.assertIn(str(target), denies); self.assertIn(str(anchor), denies)
+            self.assertEqual(missing[str(target)]['ancestor'], str(anchor))
+            self.assertEqual(missing[str(target)]['declared'], str(self.denied))
+        for name, raw in links:
+            self.assert_origin(logs, self.denied/name, raw)
+        self.assertEqual(logs.count("target_state='missing'"),3)
+        self.assertEqual(len(denies),4)
+
+    def test_same_missing_target_keeps_first_origin_but_reports_each_link(self):
+        anchor = self.root/'anchor'; anchor.mkdir()
+        for name in ('one','two'): (self.denied/name).symlink_to('../anchor/absent')
+        denies, missing, logs = self.load()
+        first_link = logs.split("link=",1)[1].split(" raw_target=",1)[0].strip("'")
+        self.assertEqual(missing[str(anchor/'absent')]['link'],first_link)
+        self.assertEqual(denies.count(str(anchor)),1)
+        self.assertEqual(denies.count(str(anchor/'absent')),1)
+        self.assertEqual(logs.count("target_state='missing'"),2)
+
+    def test_internal_target_and_revisited_ancestor_are_exact_and_terminate(self):
+        (self.denied/'link').symlink_to('missing/leaf')
+        denies, missing, logs = self.load()
+        target=self.denied/'missing/leaf'
+        self.assertEqual(set(denies),{str(self.denied),str(target)})
+        self.assertEqual(missing[str(target)],dict(declared=str(self.denied),link=str(self.denied/'link'),
+            raw_target='missing/leaf',ancestor=str(self.denied)))
+        self.assertEqual(logs.count("target_state='missing'"),1)
+
+    def test_strict_success_preserves_A_and_valid_file_directory_chains(self):
+        (self.root/'plain').write_text('plain')
+        good=self.root/'good'; good.mkdir(); (good/'data').write_text('good')
+        external=self.root/'external'; external.mkdir()
+        second=self.root/'second'; second.write_text('second')
+        (external/'secondary').symlink_to(second)
+        for name, raw in [('A','../plain/../good/data'),('dir',str(external)),('chain','A')]:
+            (self.denied/name).symlink_to(raw)
+        original=os.path.realpath
+        def strict_only(path, *, strict=False):
+            self.assertIs(strict,True)
+            return original(path,strict=strict)
+        with unittest.mock.patch.object(os.path,'realpath',side_effect=strict_only):
+            denies, missing, logs=self.load()
+        self.assertEqual(missing,{})
+        self.assertEqual(logs,'')
+        for target in (good/'data',external,second): self.assertIn(str(target),denies)
+
+    def test_B_existing_reentry_is_reported_even_when_already_covered(self):
+        (self.root/'anchor').mkdir(); other=self.root/'otherdir'; other.mkdir()
+        (other/'config').write_text('config')
+        self.list.write_text(json.dumps([str(other),str(self.denied)]))
+        for name in ('one','two'):
+            (self.denied/name).symlink_to('../anchor/missing/../../otherdir/config')
+        denies, missing, logs=self.load()
+        self.assertEqual(missing,{})
+        self.assertTrue(sandbox.is_denied(other/'config',denies))
+        self.assertEqual(logs.count("target_state='existing'"),2)
+        self.assertEqual(logs.count("ancestor='not-applicable'"),2)
+        for name in ('one','two'):
+            self.assert_origin(logs,self.denied/name,'../anchor/missing/../../otherdir/config',other/'config')
+
+    def test_B_directory_reentry_scans_secondary_targets_and_rejects_hardlinks(self):
+        (self.root/'anchor').mkdir(); external=self.root/'external'; external.mkdir()
+        (self.root/'dir-alias').symlink_to(external)
+        second=self.root/'second'; second.write_text('second')
+        (external/'secondary').symlink_to(second)
+        raw='../anchor/missing/../../dir-alias'
+        (self.denied/'B').symlink_to(raw)
+        denies, missing, logs=self.load()
+        self.assertEqual(missing,{})
+        for target in (external,second): self.assertIn(str(target),denies)
+        self.assert_origin(logs,self.denied/'B',raw,external)
+        os.link(second,self.root/'second-hardlink')
+        with self.assertRaisesRegex(ValueError,'hardlinked') as error: self.load()
+        self.assert_origin(str(error.exception),external/'secondary',str(second),second)
+
+    def test_C_missing_then_ENOTDIR_is_located_without_kernel_precedence_claim(self):
+        (self.root/'anchor').mkdir(); (self.root/'plain').write_text('plain')
+        raw='../anchor/missing/../../plain/child'; link=self.denied/'C'; link.symlink_to(raw)
+        with self.assertRaises(ValueError) as error: self.load()
+        text=str(error.exception)
+        self.assert_origin(text,link,raw)
+        self.assertIn('NotADirectoryError',text); self.assertIn('errno=20',text)
+        self.assertIn(str(self.root/'plain/child'),text)
+
+    def test_self_and_two_link_cycles_are_located(self):
+        for two in (False,True):
+            with self.subTest(two=two):
+                link=self.denied/'loop'; link.symlink_to('other' if two else 'loop')
+                if two: (self.denied/'other').symlink_to('loop')
+                with self.assertRaises(ValueError) as error: self.load()
+                text=str(error.exception)
+                discovered=next(path for path in (link,self.denied/'other') if f'link={str(path)!r}' in text)
+                self.assert_origin(text,discovered,os.readlink(discovered))
+                link.unlink()
+                if two: (self.denied/'other').unlink()
+
+    def test_strict_non_ENOENT_errors_never_use_missing_aware(self):
+        target=self.root/'target'; target.write_text('target')
+        link=self.denied/'link'; link.symlink_to(target)
+        original=Path.resolve
+        errors=[OSError(errno.ELOOP,'cycle',str(link)),PermissionError(errno.EACCES,'denied',str(target)),
+                NotADirectoryError(errno.ENOTDIR,'not directory',str(target)),OSError('no errno'),
+                RuntimeError('cycle'),RecursionError('recursion')]
+        for injected in errors:
+            with self.subTest(error=repr(injected)):
+                def resolve(path,*args,**kwargs):
+                    if path==link: raise injected
+                    return original(path,*args,**kwargs)
+                with unittest.mock.patch.object(Path,'resolve',resolve), \
+                     unittest.mock.patch.object(sandbox.os.path,'realpath',wraps=os.path.realpath) as realpath:
+                    with self.assertRaises(ValueError) as error: self.load()
+                self.assert_origin(str(error.exception),link,str(target))
+                self.assertFalse(any(call.kwargs.get('strict') is os.path.ALLOW_MISSING for call in realpath.call_args_list))
+
+    def test_missing_aware_non_ENOENT_errors_are_located(self):
+        anchor=self.root/'anchor'; anchor.mkdir()
+        link=self.denied/'link'; link.symlink_to('../anchor/absent')
+        original=os.path.realpath
+        for number in (errno.ELOOP,errno.EACCES,errno.ENOTDIR):
+            with self.subTest(errno=number):
+                def realpath(path,*,strict=False):
+                    if strict is os.path.ALLOW_MISSING: raise OSError(number,'injected',str(anchor/'failure'))
+                    return original(path,strict=strict)
+                with unittest.mock.patch.object(os.path,'realpath',side_effect=realpath):
+                    with self.assertRaises(ValueError) as error: self.load()
+                self.assert_origin(str(error.exception),link,'../anchor/absent',anchor/'failure')
+                self.assertIn(f'errno={number}',str(error.exception))
+
+    def test_missing_then_real_cycle_is_not_swallowed(self):
+        (self.root/'anchor').mkdir(); (self.root/'loop').symlink_to('loop')
+        link=self.denied/'link'; raw='../anchor/absent/../../loop'; link.symlink_to(raw)
+        with self.assertRaises(ValueError) as error: self.load()
+        self.assert_origin(str(error.exception),link,raw)
+        self.assertIn(f'errno={errno.ELOOP}',str(error.exception))
+
+    def test_capability_failure_is_located_but_strict_success_still_works(self):
+        anchor=self.root/'anchor'; anchor.mkdir()
+        link=self.denied/'link'; link.symlink_to('../anchor/absent')
+        original=os.path
+        class WithoutAllowMissing:
+            def __getattr__(self,name):
+                if name=='ALLOW_MISSING': raise AttributeError(name)
+                return getattr(original,name)
+        with unittest.mock.patch.object(sandbox.os,'path',WithoutAllowMissing()):
+            with self.assertRaises(ValueError) as error: self.load()
+            self.assert_origin(str(error.exception),link,'../anchor/absent',anchor/'absent')
+            self.assertIn('os.path.ALLOW_MISSING',str(error.exception))
+            self.assertIn('errno=2',str(error.exception))
+            link.unlink(); (anchor/'exists').write_text('existing'); link.symlink_to(anchor/'exists')
+            denies, missing, logs=self.load()
+            self.assertIn(str(anchor/'exists'),denies); self.assertEqual(missing,{})
+
+    def test_readlink_and_target_lstat_errors_keep_context(self):
+        target=self.root/'target'; target.write_text('target')
+        link=self.denied/'link'; link.symlink_to(target)
+        with unittest.mock.patch.object(os,'readlink',side_effect=PermissionError(errno.EACCES,'readlink',str(link))):
+            with self.assertRaises(ValueError) as error: self.load()
+        self.assertIn(str(link),str(error.exception)); self.assertIn('raw_target=None',str(error.exception))
+        original=Path.lstat
+        for number in (errno.EACCES,errno.ENOENT):
+            with self.subTest(errno=number):
+                def lstat(path,*args,**kwargs):
+                    if path==target: raise OSError(number,'lstat',str(target))
+                    return original(path,*args,**kwargs)
+                with unittest.mock.patch.object(Path,'lstat',lstat):
+                    with self.assertRaises(ValueError) as error: self.load()
+                self.assert_origin(str(error.exception),link,str(target),target)
+                self.assertIn(f'errno={number}',str(error.exception))
+
+    def test_ancestor_cascade_preserves_origins_and_visited_termination(self):
+        one=self.root/'anchor-one'; one.mkdir(); two=self.root/'anchor-two'; two.mkdir()
+        (self.denied/'old-python').symlink_to('../anchor-one/absent/leaf')
+        (one/'secondary').symlink_to('../anchor-two/absent/leaf')
+        (two/'back').symlink_to(self.denied)
+        denies, missing, logs=self.load()
+        self.assertEqual(set(denies),set(map(str,(self.denied,one,one/'absent/leaf',two,two/'absent/leaf'))))
+        for anchor,link,raw in [(one,self.denied/'old-python','../anchor-one/absent/leaf'),
+                                (two,one/'secondary','../anchor-two/absent/leaf')]:
+            self.assertEqual(missing[str(anchor/'absent/leaf')],dict(declared=str(self.denied),link=str(link),
+                raw_target=raw,ancestor=str(anchor)))
+            self.assert_origin(logs,link,raw,anchor/'absent/leaf',anchor)
+        secondary=next(line for line in logs.splitlines() if str(one/'secondary') in line)
+        self.assertIn(f'discovered_in={str(one)!r}',secondary)
+        self.assertEqual(logs.count("target_state='missing'"),2)
+
+    def test_root_ancestor_is_rejected_before_scan(self):
+        raw='/agent-sandbox-nonexistent-'+self.root.name+'/leaf'
+        link=self.denied/'root-link'; link.symlink_to(raw)
+        with self.assertRaisesRegex(ValueError,'non-root') as error: self.load()
+        self.assert_origin(str(error.exception),link,raw,raw,'/')
+
+    def test_ancestor_listdir_walk_and_type_failures_do_not_move_up(self):
+        anchor=self.root/'anchor'; anchor.mkdir(); link=self.denied/'link'; link.symlink_to('../anchor/absent')
+        original_listdir=os.listdir; original_walk=os.walk; original_lstat=Path.lstat
+        for operation in ('listdir','walk','type'):
+            with self.subTest(operation=operation):
+                def listdir(path):
+                    if Path(path)==anchor: raise PermissionError(errno.EACCES,'listdir',str(anchor))
+                    return original_listdir(path)
+                def walk(path,**kwargs):
+                    if Path(path)==anchor: kwargs['onerror'](PermissionError(errno.EACCES,'walk',str(anchor)))
+                    return original_walk(path,**kwargs)
+                def lstat(path,*args,**kwargs):
+                    if path==anchor: return os.stat_result((stat.S_IFREG,0,0,1,0,0,0,0,0,0))
+                    return original_lstat(path,*args,**kwargs)
+                patch=(unittest.mock.patch.object(os,'listdir',listdir) if operation=='listdir' else
+                       unittest.mock.patch.object(os,'walk',walk) if operation=='walk' else
+                       unittest.mock.patch.object(Path,'lstat',lstat))
+                with patch:
+                    with self.assertRaises(ValueError) as error: self.load()
+                self.assert_origin(str(error.exception),link,'../anchor/absent',anchor/'absent',anchor)
+
+    def test_added_ancestor_preserves_hardlink_and_special_target_rejection(self):
+        anchor=self.root/'anchor'; anchor.mkdir()
+        (self.denied/'link').symlink_to('../anchor/absent')
+        file=anchor/'file'; file.write_text('file'); os.link(file,self.root/'other-name')
+        with self.assertRaisesRegex(ValueError,'hardlinked'): self.load()
+        (self.root/'other-name').unlink(); file.unlink()
+        fifo=self.root/'fifo'; os.mkfifo(fifo); (anchor/'pipe-link').symlink_to(fifo)
+        with self.assertRaisesRegex(ValueError,'regular file'): self.load()
+
+    def test_declared_missing_and_cycle_errors_include_original_declaration(self):
+        declared=self.root/'absent-declared'; self.list.write_text(json.dumps([str(declared)]))
+        with self.assertRaises(ValueError) as error: sandbox.load_denies(self.list)
+        self.assertIn(str(declared),str(error.exception)); self.assertIn('errno=2',str(error.exception))
+        declared.symlink_to(declared)
+        with self.assertRaises(ValueError) as error: sandbox.load_denies(self.list)
+        self.assertIn(str(declared),str(error.exception)); self.assertIn('RuntimeError',str(error.exception))
+
+    def test_missing_target_is_not_preread_and_lstat_errors_are_not_absence(self):
+        anchor=self.root/'anchor'; anchor.mkdir()
+        target=anchor/'missing/leaf'; link=self.denied/'link'; link.symlink_to('../anchor/missing/leaf')
+        original_open=Path.open; original_lstat=Path.lstat
+        def no_missing_open(path,*args,**kwargs):
+            if path==target: raise AssertionError('a missing target must not be pre-read')
+            return original_open(path,*args,**kwargs)
+        with unittest.mock.patch.object(Path,'open',no_missing_open):
+            denies,missing,_=self.load()
+        self.assertIn(str(target),denies);self.assertIn(str(target),missing)
+        for failure in (target,anchor):
+            with self.subTest(failure=failure):
+                def lstat(path,*args,**kwargs):
+                    if path==failure: raise PermissionError(errno.EACCES,'classification denied',str(path))
+                    return original_lstat(path,*args,**kwargs)
+                with unittest.mock.patch.object(Path,'lstat',lstat):
+                    with self.assertRaises(ValueError) as error: self.load()
+                self.assert_origin(str(error.exception),link,'../anchor/missing/leaf',failure)
+                self.assertIn(f'errno={errno.EACCES}',str(error.exception))
+
+    @unittest.skipUnless(platform.system()=='Darwin','macOS setup entry')
+    def test_multi_link_required_input_conflict_has_each_origin_before_specific_path(self):
+        p=self.root
+        for name in ('safe-anchor','input-anchor','home/.codex','home/.config/agent-tools','bin','work'):
+            (p/name).mkdir(parents=True)
+        prompt=p/'input-anchor/task.md'; prompt.write_text('synthetic task')
+        (p/'home/.codex/config.toml').write_text('sandbox_mode = "workspace-write"\n')
+        (p/'home/.config/agent-tools/endpoints.json').write_text('{"synthetic_key":"fixture-only"}')
+        marker=p/'must-not-start'
+        for name in ('codex-agent-run','srt'):
+            runner=p/'bin'/name; runner.write_text(f'#!/bin/sh\ntouch "{marker}"\n'); runner.chmod(0o755)
+        for name,anchor in [('safe-link','safe-anchor'),('input-link','input-anchor')]:
+            (self.denied/name).symlink_to('../'+anchor+'/absent/leaf')
+        env={**os.environ,'HOME':str(p/'home'),'PATH':str(p/'bin')+':'+os.environ['PATH'],
+             'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
+        for check in (True,False):
+            with self.subTest(check=check):
+                cmd=[str(ROOT/'scripts/agent-sandbox'),*(['--check'] if check else []),'--cwd',str(p/'work'),
+                    '--deny-list',str(self.list),'--','codex-agent-run','--provider','mimo','--prompt-file',str(prompt)]
+                result=subprocess.run(cmd,env=env,capture_output=True,text=True,timeout=20)
+                self.assertEqual(result.returncode,1,result.stderr)
+                lines=result.stderr.splitlines()
+                self.assertEqual(sum('deny expansion' in line for line in lines),2)
+                for name,anchor in [('safe-link','safe-anchor'),('input-link','input-anchor')]:
+                    line=next(line for line in lines if str(self.denied/name) in line)
+                    self.assert_origin(line,self.denied/name,'../'+anchor+'/absent/leaf',p/anchor/'absent/leaf',p/anchor)
+                self.assertIn('required setup input is denied: '+str(prompt),lines[-1])
+                self.assertFalse(marker.exists()); self.assertNotIn('agent-sandbox: state=',result.stderr)
+
+
+class VerifyTests(unittest.TestCase):
+    def setUp(self):
+        temp=tempfile.TemporaryDirectory(prefix='dangling-verify-',dir='/private/tmp')
+        self.addCleanup(temp.cleanup)
+        self.root=Path(temp.name).resolve()
+        self.ancestor=self.root/'anchor'; self.ancestor.mkdir()
+        self.target=self.ancestor/'absent/leaf'
+        self.probe=self.root/'probe'; self.probe.write_bytes(b'agent-sandbox-probe')
+        self.command=[str(self.root/'codex-agent-run'),'--prompt-file','fixture']
+        self.manifest=self.root/'boundary.json'
+        self.source=dict(declared=str(self.root/'declared'),link=str(self.root/'declared/link'),
+                         raw_target='../anchor/absent/leaf',ancestor=str(self.ancestor))
+        # Deliberately list the missing target before its ancestor.
+        self.doc=dict(denies=[str(self.target),str(self.ancestor)],probe=str(self.probe),command=self.command,
+                      missing_targets={str(self.target):dict(self.source)})
+
+    def run_verify(self, *, ancestor_query=True, target_query=True, ancestor_error=None,
+                   target_error=None, ancestor_read=False, target_read=False, success=False):
+        self.manifest.write_text(json.dumps(self.doc))
+        events=[]
+        original_open=open; original_listdir=os.listdir
+        def query(path):
+            events.append(('query',path))
+            result=ancestor_query if path==str(self.ancestor) else target_query
+            if isinstance(result,Exception): raise result
+            return result
+        def listdir(path):
+            if Path(path)==self.ancestor:
+                events.append(('read',str(path)))
+                if ancestor_read: return original_listdir(path)
+                raise ancestor_error or PermissionError(errno.EPERM,'fixture denial',str(path))
+            return original_listdir(path)
+        def denied_open(path,*args,**kwargs):
+            if str(path)==str(self.target):
+                events.append(('read',str(path)))
+                if target_read: return io.BytesIO(b'read succeeded')
+                raise target_error or FileNotFoundError(errno.ENOENT,'fixture absence',str(path))
+            return original_open(path,*args,**kwargs)
+        with unittest.mock.patch.object(sandbox,'kernel_denies_read',side_effect=query), \
+             unittest.mock.patch.object(os,'listdir',side_effect=listdir), \
+             unittest.mock.patch('builtins.open',side_effect=denied_open), \
+             unittest.mock.patch.object(os,'execvpe') as execute, contextlib.redirect_stderr(io.StringIO()):
+            if success:
+                sandbox.verify_and_exec(self.manifest,self.command)
+                execute.assert_called_once_with(self.command[0],self.command,os.environ)
+                text=''
+            else:
+                with self.assertRaises((ValueError,OSError)) as error:
+                    sandbox.verify_and_exec(self.manifest,self.command)
+                execute.assert_not_called(); text=str(error.exception)
+        return events,text
+
+    def test_verified_ancestor_then_registered_ENOENT_then_allowed_probe_and_one_exec(self):
+        events,_=self.run_verify(success=True)
+        self.assertEqual(events,[('query',str(self.ancestor)),('read',str(self.ancestor)),
+                                 ('query',str(self.target)),('read',str(self.target))])
+        self.assertEqual(self.probe.read_bytes(),b'agent-sandbox-probe')
+        self.run_verify(target_error=PermissionError(errno.EPERM,'denied'),success=True)
+
+    def test_unregistered_ENOENT_and_existing_entry_disappearance_never_exec(self):
+        self.doc.pop('missing_targets')
+        events,text=self.run_verify()
+        self.assertIn(str(self.target),text); self.assertIn('errno=2',text)
+        self.assertEqual(events,[('query',str(self.target)),('read',str(self.target))])
+
+    def test_ancestor_query_denial_is_not_enough_without_actual_PermissionError(self):
+        for options in [dict(ancestor_query=False),dict(ancestor_query=ValueError('indeterminate query')),
+                        dict(ancestor_query=OSError(errno.EIO,'query error')),dict(ancestor_read=True),
+                        dict(ancestor_error=FileNotFoundError(errno.ENOENT,'deleted ancestor')),
+                        dict(ancestor_error=OSError(errno.ENOTDIR,'changed ancestor')),
+                        dict(ancestor_error=OSError(errno.ELOOP,'changed ancestor'))]:
+            with self.subTest(options=options):
+                events,text=self.run_verify(**options)
+                self.assertNotIn(('query',str(self.target)),events)
+                self.assertIn(str(self.ancestor),text)
+                for value in self.source.values(): self.assertIn(value,text)
+
+    def test_target_requires_query_and_only_PermissionError_or_registered_ENOENT(self):
+        options=[dict(target_query=False),dict(target_query=ValueError('query indeterminate')),
+                 dict(target_read=True)]
+        options += [dict(target_error=OSError(number,'target error',str(self.target)))
+                    for number in (errno.ENOTDIR,errno.ELOOP,errno.EIO)]
+        for option in options:
+            with self.subTest(option=option):
+                _,text=self.run_verify(**option)
+                for value in [str(self.target),*self.source.values()]: self.assertIn(value,text)
+
+    def test_invalid_metadata_and_component_coverage_fail_before_query(self):
+        import copy
+        mutations=[lambda d: d.update(missing_targets=[]),
+                   lambda d: d['missing_targets'].update({str(self.target):{}}),
+                   lambda d: d['missing_targets'][str(self.target)].update(raw_target=None),
+                   lambda d: d['missing_targets'][str(self.target)].update(ancestor=str(self.root/'anchor-other')),
+                   lambda d: d['missing_targets'][str(self.target)].update(ancestor=str(self.target)),
+                   lambda d: d['denies'].remove(str(self.ancestor)),
+                   lambda d: d['denies'].remove(str(self.target)),
+                   lambda d: d['missing_targets'].update({str(self.ancestor):dict(self.source)}),
+                   lambda d: d['missing_targets'][str(self.target)].update(ancestor='//anchor'),
+                   lambda d: d['missing_targets'][str(self.target)].update(ancestor=str(self.ancestor)+'/../anchor'),
+                   lambda d: d['missing_targets'][str(self.target)].update(ancestor='/anchor\0'),
+                   lambda d: d['missing_targets'].update({'//invalid/target':dict(self.source)}),
+                   lambda d: d['missing_targets'].update({'/anchor/../target':dict(self.source)}),
+                   lambda d: d['missing_targets'].update({'relative':dict(self.source)})]
+        original=copy.deepcopy(self.doc)
+        for mutate in mutations:
+            with self.subTest(mutate=mutate):
+                self.doc=copy.deepcopy(original); mutate(self.doc)
+                events,_=self.run_verify(); self.assertEqual(events,[])
+        # A similarly spelled sibling is not in this ancestor's component subtree.
+        self.target=self.root/'anchor-other/leaf'
+        self.doc=copy.deepcopy(original)
+        self.doc['denies']=[str(self.target),str(self.ancestor)]
+        self.doc['missing_targets']={str(self.target):dict(self.source)}
+        events,_=self.run_verify(); self.assertEqual(events,[])
+
+    def test_allowed_probe_must_really_read_and_write_before_exec(self):
+        self.probe.write_bytes(b'wrong content')
+        self.run_verify()
+        self.probe.write_bytes(b'agent-sandbox-probe')
+        with unittest.mock.patch.object(Path,'write_bytes',side_effect=PermissionError(errno.EPERM,'probe write')):
+            self.run_verify()
+        with unittest.mock.patch.object(Path,'read_bytes',side_effect=PermissionError(errno.EPERM,'probe read')):
+            self.run_verify()
+
+    def test_no_missing_metadata_existing_boundary_still_requires_kernel_query(self):
+        self.doc['denies']=[str(self.ancestor)]; self.doc.pop('missing_targets')
+        self.run_verify(success=True)
+        events,text=self.run_verify(ancestor_query=False)
+        self.assertEqual(events,[('query',str(self.ancestor))]); self.assertIn('effective Seatbelt policy',text)
+
+
 @unittest.skipUnless(platform.system() == 'Darwin' and os.getenv('AGENT_SANDBOX_KERNEL_TESTS') == '1',
                      'requires macOS and explicit outer-sandbox test opt-in')
 class KernelTests(unittest.TestCase):
@@ -263,9 +730,11 @@ print(json.dumps(r))
 
     def launch(self):
         p = self.root
-        return subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
+        result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
             '--prompt','test','--detail','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
+        retain_kernel_evidence(self.id(),result)
+        return result
 
     def test_kernel_boundary_and_write_preservation(self):
         result = self.launch()
@@ -285,6 +754,155 @@ print(json.dumps(r))
         self.assertEqual(r['heredoc_stdout'],'ALLOW_HEREDOC_MARKER\n',r)
         for name in ('protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
             self.assertEqual(r[name],'PermissionError',r)
+
+    def test_dangling_targets_with_verified_ancestor_boundary(self):
+        p=self.root
+        anchor=p/'anchor'; anchor.mkdir(); (anchor/'sentinel').write_text('FORBIDDEN_ANCESTOR_MARKER')
+        target=anchor/'missing-framework/Versions/old/bin/python'
+        for name,raw in [('old-python',str(target)),('relative-python','../../anchor/missing-framework/Versions/old/bin/python'),
+                         ('chain-python','relative-python')]:
+            (p/'work/denied'/name).symlink_to(raw)
+        external=p/'external'; (external/'nested').mkdir(parents=True)
+        (external/'nested/data').write_text('FORBIDDEN_EXTERNAL_MARKER')
+        secondary=p/'secondary'; secondary.write_text('FORBIDDEN_SECONDARY_MARKER')
+        (external/'secondary-link').symlink_to(secondary)
+        (p/'work/denied/external-link').symlink_to(external)
+        valid=p/'valid-file'; valid.write_text('FORBIDDEN_VALID_TARGET_MARKER')
+        (p/'work/denied/valid-link').symlink_to(valid)
+        runner=p/'bin/codex-agent-run'
+        extra=r'''
+import ctypes
+library=ctypes.CDLL('/usr/lib/libSystem.B.dylib',use_errno=True)
+check=library.sandbox_check
+check.argtypes=[ctypes.c_int,ctypes.c_char_p,ctypes.c_int];check.restype=ctypes.c_int
+for name,path in [('ancestor',p/'anchor'),('sentinel',p/'anchor/sentinel'),('external',p/'external/nested/data')]:
+    r[name+'_query']=check(os.getpid(),b'file-read-data',1,ctypes.c_char_p(os.fsencode(path)))
+try: os.listdir(p/'anchor'); r['ancestor_listdir']='allowed'
+except OSError as e: r['ancestor_listdir']=type(e).__name__
+for name,path in [('sentinel_read',p/'anchor/sentinel'),('missing_direct',p/'anchor/missing-framework/Versions/old/bin/python'),
+                  ('dangling_alias',p/'work/denied/old-python'),('external_direct',p/'external/nested/data'),
+                  ('secondary_direct',p/'secondary'),('valid_direct',p/'valid-file')]: read(name,path)
+write('ancestor_sentinel_write',p/'anchor/sentinel')
+write('ancestor_create',p/'anchor/new-entry')
+print('SYNTHETIC_DANGLING_RUNNER_STARTED',file=sys.stderr)
+'''
+        runner.write_text(runner.read_text().replace('print(json.dumps(r))',extra+'\nprint(json.dumps(r))'))
+        result=self.launch()
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertLess(result.stderr.index('read boundary verified; starting runner'),
+                        result.stderr.index('SYNTHETIC_DANGLING_RUNNER_STARTED'))
+        state=Path(next(line.split('=',1)[1] for line in result.stderr.splitlines()
+                        if line.startswith('agent-sandbox: state=')))
+        manifest=json.loads((state/'boundary.json').read_text())
+        for path in (p/'work/denied',p/'work/history.jsonl',target,anchor,external,secondary,valid):
+            self.assertIn(str(path),manifest['denies'])
+        self.assertEqual(set(manifest['missing_targets']),{str(target)})
+        metadata=manifest['missing_targets'][str(target)]
+        self.assertEqual(metadata['ancestor'],str(anchor)); self.assertEqual(metadata['declared'],str(p/'work/denied'))
+        self.assertEqual(os.readlink(metadata['link']),metadata['raw_target'])
+        self.assertEqual(result.stderr.count("target_state='missing'"),3)
+        settings=json.loads((state/'srt.json').read_text())['filesystem']
+        for key in ('denyRead','denyWrite'):
+            for value in manifest['denies']: self.assertIn(dict(path=value,literal=True),settings[key])
+        fields=profile_fields(result.stderr)
+        for name,key in (('seatbelt.sb','profile_sha256'),('seatbelt.source.sb','source_sha256')):
+            retained=state/name
+            if not retained.exists():
+                # No compaction: the launcher retains only the effective profile.
+                self.assertEqual(fields['source_sha256'],fields['profile_sha256'])
+                retained=state/'seatbelt.sb'
+            self.assertEqual(hashlib.sha256(retained.read_bytes()).hexdigest(),fields[key])
+            for value in manifest['denies']: self.assertIn(value,retained.read_text())
+        r=json.loads(result.stdout)
+        for name in ('ancestor_query','sentinel_query','external_query'): self.assertEqual(r[name],1,r)
+        for name in ('ancestor_listdir','sentinel_read','dangling_alias','external_direct','secondary_direct','valid_direct',
+                     'ancestor_sentinel_write','ancestor_create','direct','symlink','dir_alias','dotdot','history',
+                     'data_alias','tmp_alias','hardlink','protected_write','outside_write','sink_neighbor','prompt_write','profile_write'):
+            self.assertEqual(r[name],'PermissionError',r)
+        self.assertIn(r['missing_direct'],('FileNotFoundError','PermissionError'),r)  # Never the boundary proof.
+        self.assertEqual(r['allowed'],'ALLOW_INPUT'); self.assertEqual(r['cwd_write'],'allowed')
+        self.assertEqual(r['sink_write'],'allowed'); self.assertNotIn('FORBIDDEN_',r['recursive_stdout'])
+        self.assertNotEqual(r['nested_code'],0); self.assertNotIn('FORBIDDEN_',r['nested_stdout'])
+
+    def missing_materialization_control(self, deny_ancestor):
+        p=self.root
+        anchor=p/'control-anchor'; anchor.mkdir(); (anchor/'sentinel').write_text('sentinel')
+        probe=p/'materialization-probe.py'
+        probe.write_text(r'''
+import ctypes,json,os,sys
+from pathlib import Path
+p=Path(sys.argv[1]);anchor=p/'control-anchor';target=anchor/'missing/leaf'
+lib=ctypes.CDLL('/usr/lib/libSystem.B.dylib',use_errno=True);check=lib.sandbox_check
+check.argtypes=[ctypes.c_int,ctypes.c_char_p,ctypes.c_int];check.restype=ctypes.c_int
+def snapshot():
+    r={}
+    for name,path,kind in [('ancestor',anchor,'dir'),('sentinel',anchor/'sentinel','file'),
+                           ('missing_dir',target.parent,'dir'),('missing_file',target,'file')]:
+        r[name+'_query']=check(os.getpid(),b'file-read-data',1,ctypes.c_char_p(os.fsencode(path)))
+        try: r[name+'_read']=os.listdir(path) if kind=='dir' else path.read_text()
+        except OSError as e: r[name+'_read']={'error':type(e).__name__,'errno':e.errno}
+    r['allowed_read']=(p/'work/allowed').read_text()
+    (p/'work/control-write').write_text('allowed write');r['allowed_write']='allowed'
+    return r
+print(json.dumps(snapshot()),flush=True)
+if sys.stdin.readline()!='materialized\n': raise RuntimeError('missing fixture handshake')
+print(json.dumps(snapshot()),flush=True)
+''')
+        settings=p/'control-srt.json'
+        rules=[dict(path=str(anchor),literal=True)] if deny_ancestor else []
+        settings.write_text(json.dumps(dict(filesystem=dict(denyRead=rules,allowRead=[],
+            allowWrite=[dict(path=str(p/'work'),literal=True)],denyWrite=rules),
+            network=dict(allowedDomains=[],deniedDomains=[],strictAllowlist=True,allowLocalBinding=False,
+                         allowAllUnixSockets=False,allowUnixSockets=[]),allowAppleEvents=False,
+            enableWeakerNestedSandbox=False,enableWeakerNetworkIsolation=False)))
+        profile=p/'control-seatbelt.sb'
+        cmd=[shutil.which('node'),str(ROOT/'scripts/agent-sandbox-launch.mjs'),str(p/'bin/srt'),str(profile),
+             '--settings',str(settings),'--',sys.executable,str(probe),str(p)]
+        deadline=time.monotonic()+45
+        process=subprocess.Popen(cmd,env=self.env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+        try:
+            ready,_,_=select.select([process.stdout],[],[],max(0,deadline-time.monotonic()))
+            self.assertTrue(ready,'materialization fixture handshake timed out')
+            first=process.stdout.readline()
+            self.assertTrue(first,'fixture did not reach pre-materialization snapshot')
+            before=json.loads(first)
+            target=anchor/'missing/leaf'; target.parent.mkdir();target.write_text('materialized fixture')
+            stdout,stderr=process.communicate('materialized\n',timeout=max(.1,deadline-time.monotonic()))
+            result=subprocess.CompletedProcess(cmd,process.returncode,first+stdout,stderr)
+            retain_kernel_evidence(self.id(),result,policy_root=p)
+            self.assertEqual(result.returncode,0,stderr)
+            after=json.loads(stdout)
+        finally:
+            if process.poll() is None:
+                process.kill();process.communicate(timeout=5)
+        self.assertEqual(before['missing_file_query'],1)
+        self.assertEqual(before['missing_file_read'],dict(error='FileNotFoundError',errno=errno.ENOENT))
+        self.assertEqual(before['missing_dir_query'],1)
+        self.assertEqual(before['missing_dir_read'],dict(error='FileNotFoundError',errno=errno.ENOENT))
+        for result in (before,after):
+            self.assertEqual(result['allowed_read'],'ALLOW_INPUT');self.assertEqual(result['allowed_write'],'allowed')
+        fields=profile_fields(stderr)
+        self.assertEqual(fields['profile_sha256'],hashlib.sha256(profile.read_bytes()).hexdigest())
+        source=p/'seatbelt.source.sb'
+        self.assertEqual(fields['source_sha256'],hashlib.sha256((source if source.exists() else profile).read_bytes()).hexdigest())
+        if deny_ancestor:
+            for snapshot in (before,after):
+                for name in ('ancestor','sentinel'):
+                    self.assertEqual(snapshot[name+'_query'],1)
+                    self.assertEqual(snapshot[name+'_read']['error'],'PermissionError')
+            for name in ('missing_dir','missing_file'):
+                self.assertEqual(after[name+'_query'],1);self.assertEqual(after[name+'_read']['error'],'PermissionError')
+            self.assertIn(str(anchor),profile.read_text())
+        else:
+            self.assertEqual(before['ancestor_query'],0);self.assertIsInstance(before['ancestor_read'],list)
+            self.assertEqual(after['missing_file_query'],0);self.assertEqual(after['missing_file_read'],'materialized fixture')
+            self.assertEqual(after['missing_dir_query'],0);self.assertEqual(after['missing_dir_read'],['leaf'])
+
+    def test_missing_query_and_ENOENT_are_ambiguous_under_allow_default(self):
+        self.missing_materialization_control(False)
+
+    def test_verified_ancestor_policy_denies_after_fixture_materialization(self):
+        self.missing_materialization_control(True)
 
     def test_profile_hardlink_changes_detected_by_prespawn_hashes(self):
         p=self.root
@@ -342,6 +960,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
             '--prompt','test','--detail','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=300)
+        retain_kernel_evidence(self.id(),result)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertIn('read boundary verified; starting runner',result.stderr)
         self.assertIn('file-backed',result.stderr)
@@ -379,6 +998,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
             '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
             '--prompt','test','--detail','--instance','claude-write-boundary','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=45)
+        retain_kernel_evidence(self.id(),result)
         self.assertEqual(result.returncode,0,result.stderr)
         r = json.loads(result.stdout)
         self.assertEqual(r['original_blocked_write'],'PermissionError',r)

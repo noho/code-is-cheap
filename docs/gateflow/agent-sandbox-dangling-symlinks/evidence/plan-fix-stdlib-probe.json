@@ -1,0 +1,120 @@
+{
+  "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "allow_missing_available": true,
+  "assertions": 12,
+  "rows": {
+    "A": {
+      "link": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/A",
+      "raw_target": "../plain/../good/data",
+      "strict": {
+        "status": "ok",
+        "value": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/good/data"
+      },
+      "allow_missing": {
+        "status": "ok",
+        "value": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/good/data"
+      },
+      "open": {
+        "status": "error",
+        "type": "NotADirectoryError",
+        "errno": 20,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/A",
+        "message": "[Errno 20] Not a directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/A'"
+      }
+    },
+    "B": {
+      "link": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/B",
+      "raw_target": "../anchor/missing/../../otherdir/config",
+      "strict": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing'"
+      },
+      "allow_missing": {
+        "status": "ok",
+        "value": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/otherdir/config"
+      },
+      "open": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/B",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/B'"
+      }
+    },
+    "C": {
+      "link": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/C",
+      "raw_target": "../anchor/missing/../../plain/child",
+      "strict": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing'"
+      },
+      "allow_missing": {
+        "status": "error",
+        "type": "NotADirectoryError",
+        "errno": 20,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/plain/child",
+        "message": "[Errno 20] Not a directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/plain/child'"
+      },
+      "open": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/C",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/C'"
+      }
+    },
+    "missing": {
+      "link": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/missing",
+      "raw_target": "../anchor/missing/leaf",
+      "strict": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing'"
+      },
+      "allow_missing": {
+        "status": "ok",
+        "value": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing/leaf"
+      },
+      "open": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/missing",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/missing'"
+      }
+    },
+    "post_missing_loop": {
+      "link": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/post_missing_loop",
+      "raw_target": "../anchor/missing/../../loop",
+      "strict": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/anchor/missing'"
+      },
+      "allow_missing": {
+        "status": "error",
+        "type": "OSError",
+        "errno": 62,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/loop",
+        "message": "[Errno 62] Too many levels of symbolic links: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/loop'"
+      },
+      "open": {
+        "status": "error",
+        "type": "FileNotFoundError",
+        "errno": 2,
+        "filename": "/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/post_missing_loop",
+        "message": "[Errno 2] No such file or directory: '/private/tmp/dangling-plan-fix-0c4fzu_t/stdlib-fixture/denied/post_missing_loop'"
+      }
+    }
+  }
+}

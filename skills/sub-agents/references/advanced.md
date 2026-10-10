@@ -53,6 +53,17 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace \
 `--cwd` 只决定工作目录；获准来源、Python 依赖和 canary 仍可按原路径读取，禁读名单之外没有读取白名单。
 启动后在外层 Seatbelt 内验证禁读路径确实被拒绝，再启动 Agent；setup 通过本身不是隔离证据。
 
+直接声明的 deny 路径仍必须存在。有效链接保留 stdlib strict canonicalization；仅 strict 确证 ENOENT 后用
+`os.path.realpath(strict=os.path.ALLOW_MISSING)`，缺少该能力时带来源失败，不安装、不用非严格/版本 fallback，Python 3.11+ 下限不变。
+missing-aware canonicalization 可能经 `..` 重入已有目标，仍逐条报告并保守扩展 deny，不证明 raw link 当前可达；
+后续 ENOTDIR、循环或权限等错误带 declared/link/raw-target 上下文失败，不承诺 resolver 与 syscall 错误优先级相同。
+最终 missing target 与最近 existing directory ancestor 都保留为递归 denyRead/denyWrite。祖先进入相同 pending/visited 扫描，
+二级 dangling link 继续级联，每条报告 target/ancestor/origin/discovered_in；这可能连带禁止 sibling、扩大扫描或造成必需输入冲突。
+扩展日志和随后具体 conflict path 可定位来源；root 祖先、扫描失败或输入冲突直接停止，不上移祖先、不删规则、不放宽 fallback。
+先对全部 existing 条目 query 并实际确认拒读，只有已实测 ancestor 覆盖的登记 missing target 才容忍 ENOENT；
+ENOENT/query=1 单独不是证明。允许 probe 实际读写成功后才 exec 固定 runner，不保证任意目录都可启动。
+
+
 封装必须从总控沙箱外启动：Codex 总控仍使用独立 `exec_command(require_escalated)`；Claude 总控须将
 `agent-sandbox` 加入自己的 `sandbox.excludedCommands`，并以独立裸命令派发。内层 Full Access 无法解除
 外层 Seatbelt。保留生命周期和调用方显式选择的结果检查；权限错误应报告具体缺项，不自动移除禁读项或放宽权限。

@@ -3,6 +3,7 @@
 
 import argparse
 import ctypes
+import errno
 import importlib.util
 import json
 import os
@@ -10,6 +11,7 @@ import platform
 from pathlib import Path
 import shutil
 import socket
+import stat
 import subprocess
 import sys
 import tempfile
@@ -35,53 +37,124 @@ def absolute(path, base=None):
     return (p if p.is_absolute() else (base or Path.cwd()) / p).resolve()
 
 
+def _resolve_deny_target(entry):
+    """Keep strict canonicalization; only confirmed absence needs ALLOW_MISSING."""
+    try:
+        return entry.resolve(strict=True), False
+    except OSError as error:
+        if error.errno != errno.ENOENT:
+            raise
+        if not hasattr(os.path, "ALLOW_MISSING"):
+            raise RuntimeError(
+                "os.path.ALLOW_MISSING is required for dangling denied symlinks; "
+                f"strict cause={type(error).__name__}(errno={error.errno}, path={error.filename!r})"
+            ) from error
+        return Path(os.path.realpath(entry, strict=os.path.ALLOW_MISSING)), True
+
+
+def _deny_context(context):
+    return " ".join(f"{key}={value!r}" for key, value in context.items())
+
+
+def _deny_failure(message, context, error=None):
+    cause = ""
+    if error is not None:
+        cause = (f" cause={type(error).__name__}(errno={getattr(error, 'errno', None)}, "
+                 f"path={getattr(error, 'filename', None)!r}, detail={str(error)!r})")
+    return ValueError(f"{message}: {_deny_context(context)}{cause}")
+
+
 def load_denies(path):
     values = json.loads(Path(path).read_text())
     if not isinstance(values, list) or not values:
         raise ValueError("--deny-list must be a nonempty JSON array of absolute existing paths")
-    result = []
+    result, pending, missing_targets = [], [], {}
     for value in values:
         if not isinstance(value, str) or not value or not Path(value).is_absolute() or "\0" in value:
             raise ValueError("deny entries must be absolute paths, not globs or relative paths")
-        # Literal paths also work when a real filename contains glob characters.
-        p = absolute(value)
-        if not p.exists():
-            raise ValueError(f"deny entry does not exist: {value}")
-        if not p.is_file() and not p.is_dir():
-            raise ValueError(f"deny entry must be a regular file or directory: {value}")
+        context = dict(declared=value, link=None, raw_target=None, canonical_target=None, ancestor=None)
+        try:
+            # Literal paths also work when a real filename contains glob characters.
+            p = Path(value).resolve(strict=True)
+            context["canonical_target"] = str(p)
+            mode = p.lstat().st_mode
+            if not stat.S_ISREG(mode) and not stat.S_ISDIR(mode):
+                raise _deny_failure("deny entry must be a regular file or directory", context)
+        except (OSError, RuntimeError) as error:
+            raise _deny_failure("cannot resolve declared deny entry", context, error) from error
         if str(p) not in result:
             result.append(str(p))
-    # Seatbelt checks resolved paths, not inode identities. Refuse pre-existing
-    # hardlinks rather than pretending one path denies every name for the inode.
-    # Also deny targets of symlinks already inside a denied directory.
-    pending = list(result)
+            pending.append((p, context))
+    # Seatbelt checks paths, not inode identities. Preserve the existing graph
+    # scan, including targets and newly added missing-target ancestors.
     visited = set()
     while pending:
-        p = Path(pending.pop())
+        p, origin = pending.pop()
         if str(p) in visited:
             continue
         visited.add(str(p))
-        if not p.is_file() and not p.is_dir():
-            raise ValueError(f"deny target must be a regular file or directory: {p}")
-        if p.is_dir():
-            os.listdir(p)  # Must be readable BEFORE sandboxing: no false proof.
-            def walk_error(error):
-                raise error
-            entries = (Path(root)/name for root, dirs, files in os.walk(p, onerror=walk_error)
-                       for name in dirs + files)
-        else:
-            with p.open("rb") as stream:
-                stream.read(1)
-            entries = [p]
-        for entry in entries:
-            if entry.is_symlink():
-                target = entry.resolve(strict=True)
-                if not any(target == Path(d) or Path(d) in target.parents for d in result):
-                    result.append(str(target))
-                    pending.append(str(target))
-            elif entry.is_file() and entry.stat().st_nlink > 1:
-                raise ValueError(f"cannot enforce path-based denial for a hardlinked file: {entry}")
-    return result
+        context = dict(origin, entry=str(p))
+        try:
+            mode = p.lstat().st_mode
+            if not stat.S_ISREG(mode) and not stat.S_ISDIR(mode):
+                raise _deny_failure("deny target must be a regular file or directory", context)
+            if stat.S_ISDIR(mode):
+                os.listdir(p)  # Must be readable BEFORE sandboxing: no false proof.
+                def walk_error(error):
+                    raise error
+                entries = (Path(root)/name for root, dirs, files in os.walk(p, onerror=walk_error)
+                           for name in dirs + files)
+            else:
+                with p.open("rb") as stream:
+                    stream.read(1)
+                entries = [p]
+            for entry in entries:
+                context = dict(origin, entry=str(entry), discovered_in=str(p))
+                info = entry.lstat()
+                if stat.S_ISLNK(info.st_mode):
+                    context.update(link=str(entry), raw_target=None, canonical_target=None, ancestor=None)
+                    context["raw_target"] = os.readlink(entry)
+                    target, missing_aware = _resolve_deny_target(entry)
+                    context["canonical_target"] = str(target)
+                    try:
+                        target.lstat()
+                    except OSError as error:
+                        if not missing_aware or error.errno != errno.ENOENT:
+                            raise
+                        ancestor = target.parent
+                        while True:
+                            try:
+                                ancestor_info = ancestor.lstat()
+                                break
+                            except OSError as ancestor_error:
+                                if ancestor_error.errno != errno.ENOENT:
+                                    raise
+                                ancestor = ancestor.parent
+                        context["ancestor"] = str(ancestor)
+                        if ancestor == Path("/") or not stat.S_ISDIR(ancestor_info.st_mode):
+                            raise _deny_failure("missing target needs a non-root existing directory ancestor", context)
+                        print("agent-sandbox: deny expansion " + _deny_context(dict(
+                            context, resolution="missing-aware", target_state="missing")), file=sys.stderr)
+                        missing_targets.setdefault(str(target), {key: context[key] for key in
+                            ("declared", "link", "raw_target", "ancestor")})
+                        # Retain these exact paths even under an already denied directory.
+                        for retained in (target, ancestor):
+                            if str(retained) not in result:
+                                result.append(str(retained))
+                        pending.append((ancestor, dict(context)))
+                        continue
+                    if missing_aware:
+                        context["ancestor"] = "not-applicable"
+                        print("agent-sandbox: deny expansion " + _deny_context(dict(
+                            context, resolution="missing-aware", target_state="existing")), file=sys.stderr)
+                    if not any(target == Path(d) or Path(d) in target.parents for d in result):
+                        result.append(str(target))
+                        pending.append((target, dict(context)))
+                elif stat.S_ISREG(info.st_mode) and info.st_nlink > 1:
+                    raise _deny_failure("cannot enforce path-based denial for a hardlinked file", context)
+        except (OSError, RuntimeError) as error:
+            raise _deny_failure("cannot inspect denied path or resolve denied symlink", context, error) from error
+    return result, missing_targets
 
 
 def is_denied(path, denies):
@@ -342,18 +415,57 @@ def verify_and_exec(manifest_path, command):
         raise ValueError("internal entry requires a fixed nonempty boundary and runner")
     if command != manifest["command"] or Path(command[0]).name not in {"codex-agent-run", "claude-agent-run"}:
         raise ValueError("internal entry does not match the fixed runner invocation")
-    for value in manifest["denies"]:
-        if not kernel_denies_read(value):
-            raise ValueError(f"effective Seatbelt policy does not deny {value}; refusing to start Agent")
+    missing = manifest.get("missing_targets", {})
+    if not isinstance(missing, dict):
+        raise ValueError("invalid missing-target metadata")
+    def canonical_spelling(value):
+        return (isinstance(value, str) and value.startswith("/") and not value.startswith("//")
+                and "\0" not in value and os.path.normpath(value) == value)
+    for target, metadata in missing.items():
+        context = dict(target=target, metadata=metadata)
+        if (not canonical_spelling(target) or not isinstance(metadata, dict)
+                or any(not isinstance(metadata.get(key), str) for key in
+                       ("declared", "link", "raw_target", "ancestor"))):
+            raise _deny_failure("invalid missing-target metadata", context)
+        ancestor = metadata["ancestor"]
+        if (not canonical_spelling(ancestor) or target not in manifest["denies"]
+                or ancestor not in manifest["denies"] or ancestor in missing
+                or Path(ancestor) not in Path(target).parents):
+            raise _deny_failure("invalid missing-target ancestor coverage", context)
+    verified_existing = set()
+    # Existing boundaries must be proved first, independently of deny-list order.
+    for value in [v for v in manifest["denies"] if v not in missing] + list(missing):
+        metadata = missing.get(value)
+        sources = metadata or next((m for m in missing.values() if m["ancestor"] == value), {})
+        context = dict(sources, target=value)
+        if metadata and metadata["ancestor"] not in verified_existing:
+            raise _deny_failure("missing target has no actually verified ancestor", context)
         try:
-            if Path(value).is_dir():
-                os.listdir(value)
+            denied = kernel_denies_read(value)
+        except (OSError, ValueError, RuntimeError) as error:
+            raise _deny_failure("cannot query effective Seatbelt policy; refusing to start Agent", context, error) from error
+        if not denied:
+            raise _deny_failure("effective Seatbelt policy does not deny path; refusing to start Agent", context)
+        try:
+            try:
+                if Path(value).is_dir():
+                    os.listdir(value)
+                else:
+                    with open(value, "rb") as stream:
+                        stream.read(1)
+            except PermissionError:
+                pass
+            except OSError as error:
+                if not metadata or error.errno != errno.ENOENT:
+                    raise
+                # Absence alone is not proof: this exact ancestor has already
+                # passed both the effective-policy query and actual read denial.
             else:
-                with open(value, "rb") as stream:
-                    stream.read(1)
-        except PermissionError:
-            continue
-        raise ValueError(f"read boundary did not deny {value}; refusing to start Agent")
+                raise _deny_failure("read boundary did not deny path; refusing to start Agent", context)
+        except (OSError, RuntimeError) as error:
+            raise _deny_failure("cannot verify read boundary; refusing to start Agent", context, error) from error
+        if not metadata:
+            verified_existing.add(value)
     # An allowed probe distinguishes successful sandbox setup from blanket failure.
     probe = Path(manifest["probe"])
     if probe.read_bytes() != b"agent-sandbox-probe":
@@ -380,7 +492,7 @@ def main():
     cwd = absolute(args.cwd)
     if not cwd.is_dir():
         raise ValueError(f"cwd is not a directory: {cwd}")
-    denies = load_denies(absolute(args.deny_list))
+    denies, missing_targets = load_denies(absolute(args.deny_list))
     runtime, options, command = parse_runner(command, cwd)
     for path in [command[0], __file__, shutil.which("python3"), os.environ.get("AGENT_TOOLS_FILE", str(Path.home()/".config/zsh/agent-tools.zsh"))]:
         if path:
@@ -487,7 +599,7 @@ def main():
     (state / "srt.json").write_text(json.dumps(settings, indent=2) + "\n")
     probe = state / "tmp/probe"
     probe.write_bytes(b"agent-sandbox-probe")
-    (state / "boundary.json").write_text(json.dumps({"denies": denies, "probe": str(probe), "command": command}) + "\n")
+    (state / "boundary.json").write_text(json.dumps({"denies": denies, "missing_targets": missing_targets, "probe": str(probe), "command": command}) + "\n")
     env["CLAUDE_CODE_TMPDIR"] = str(state / "tmp")
     env["TMPDIR"] = str(state / "tmp") + "/"
     env["TMPPREFIX"] = str(state / "tmp" / "zsh")

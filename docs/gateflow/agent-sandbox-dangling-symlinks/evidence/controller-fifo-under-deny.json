@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "sandbox-exec",
+    "-f",
+    "/private/tmp/dangling-controller-proof-5dj33yor/deny.sb"
+  ],
+  "returncode": 0,
+  "stdout": "{\"sandbox_check\": 1, \"open\": \"PermissionError\", \"errno\": 1}\n",
+  "stderr": ""
+}
