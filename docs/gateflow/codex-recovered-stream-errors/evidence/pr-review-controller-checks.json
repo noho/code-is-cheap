@@ -1,0 +1,18 @@
+{
+  "reviewed_base": "20fc6c37751836329143567c166990bdffa9de3c",
+  "reviewed_head": "9c7bfe12ffbcdcbbcf65769208f1e0d0ca3de657",
+  "product_hashes_unchanged": true,
+  "mimo_actual_tests": "Ran 49 tests in 28.125s OK",
+  "ds_actual_tests": "Ran 49 tests in 28.122s OK",
+  "ds_actual_probe": "TOTAL FAILURES: 0; 24 assertions",
+  "ds_resolved_diagnostics": [
+    "Initial gh certificate request failed then subsequent before/after facts succeeded",
+    "Private zsh substitution mistake corrected",
+    "wc attempted directory after successful frozen file hashes; harmless to source identity"
+  ],
+  "ci": [],
+  "raw_log_sha256": {
+    "pr-review-mimo": "36d9452002237555a2cb08dab591fea4e4eb59e9eca1db22788e1f0ed42cc206",
+    "pr-review-ds-flash": "d827bf6fa5e83335a70d30cdff2dbfbc82443faf6662860915a55642d1c33478"
+  }
+}

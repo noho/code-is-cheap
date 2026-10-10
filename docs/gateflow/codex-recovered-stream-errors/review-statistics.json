@@ -613,6 +613,99 @@
         "anomalies": 0,
         "warnings": 0
       }
+    },
+    {
+      "gate": "PR-review",
+      "artifact": "docs/reviews/pr-52-review-20261011-054942.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 429.32515,
+      "usage": {
+        "input_tokens": 137991,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3720320,
+        "output_tokens": 83231,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 426789,
+        "duration_api_ms": 395348,
+        "total_cost_usd": 4.63089,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 137991,
+            "outputTokens": 83231,
+            "cacheReadInputTokens": 3720320,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 4.63089,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "e818654d-5c10-4703-ae8b-0c4ddcc59c28",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/pr-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/pr-review-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 3,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "PR-review",
+      "artifact": "docs/reviews/pr-52-review-20261011-054941.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 552.860925,
+      "usage": {
+        "input_tokens": 4534053,
+        "cached_input_tokens": 4382848,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 22674,
+        "reasoning_output_tokens": 10164
+      },
+      "runtime_metrics": {},
+      "session_id": "01a127cb-3b91-7740-b2f9-a603789414df",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/pr-review-mimo.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/pr-review-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      }
     }
   ]
 }

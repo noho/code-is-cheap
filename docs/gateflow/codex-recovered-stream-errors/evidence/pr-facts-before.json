@@ -1,0 +1,21 @@
+{
+  "author": {
+    "id": "MDQ6VXNlcjE0MTU4MzY3",
+    "is_bot": false,
+    "login": "noho",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "baseRefOid": "20fc6c37751836329143567c166990bdffa9de3c",
+  "headRefName": "fix/codex-recovered-stream-errors",
+  "headRefOid": "9c7bfe12ffbcdcbbcf65769208f1e0d0ca3de657",
+  "headRepository": {
+    "id": "R_kgDOSd8g6w",
+    "name": "code-is-cheap",
+    "nameWithOwner": "noho/code-is-cheap"
+  },
+  "isDraft": true,
+  "statusCheckRollup": [],
+  "title": "fix: accept proven recovered Codex stream disconnects",
+  "url": "https://github.com/noho/code-is-cheap/pull/52"
+}

@@ -1,14 +1,14 @@
 # Gate state: codex-recovered-stream-errors
 
 - Status: active; goal confirmed.
-- Current gate / next entry point: accepted deepreview commit, then ready-to-open-draft-PR.
+- Current gate / next entry point: accepted PR review commit and final push, then draft-PR-pass.
 - Branch: fix/codex-recovered-stream-errors; baseline 20fc6c37751836329143567c166990bdffa9de3c; original workspace clean.
 - Artifact: goal.md; structural/replay evidence evidence/goal-log-check.json; original logs retained unchanged.
 - Decision: defect reproduced; narrow recovered-connection classification proposed, arbitrary/unrecovered errors remain fatal.
 - Validation: native unique completed terminal, post-error activity/final, last-message/summary agreement; actual baseline collector replay reproduces line193-only fatal classification. Original optional checks not rerun; recorded summary values distinguished.
 - Routes: gpt-6-sol plan/implement/fix; parallel MiMo/Codex and DS Flash/Claude planreview/deepreview; controller adjudication.
 - Scope boundaries: named caller evidence only, no business task/file/clear operations; no merge/live sync.
-- PR: new draft PR pending; not #51.
+- PR: new draft https://github.com/noho/code-is-cheap/pull/52; not #51.
 - Risks: classification proof is current work; unknown protocol formats later maintainer work; merge/deployment need explicit user decision; goal confirmation received.
 
 - Confirmation: user/caller explicitly authorized plan and automatic remaining gates through final closeout; no waiting for further periodic inspection. Authorization recorded in goal.md.
@@ -38,3 +38,7 @@
 - Accepted slice checkpoint: 8947d3e2949d9ae2b31a37457f93ec4a77f2d1e2. All five product files accepted; aggregate dual review now dispatching against immutable full branch range.
 
 - Aggregate adjudication PASS: both completed analyses accepted on source/native evidence; MiMo unsupported idle-SSE remains actual runner1/rejected and is not product-supported. DS incidental prior S1 snippets and direct-collector exit claim qualified. See aggregate-adjudication.md and evidence/aggregate-*-controls.json. No accepted product finding; source hashes unchanged.
+
+- Accepted aggregate checkpoint 9c7bfe1; readiness verified: clean branch, only three intended task checkpoints, full49 tests and docs/residual decisions complete, no assigned issue number. Initial push successful; new draft #52 created. PR review required before draft-PR-pass, no merge/live authorization.
+
+- Both PR reviews native/runner0, no material findings; controller PR-review PASS in pr-adjudication.md, actual full49 source/native evidence and stable GitHub pair verified. DS ordinary resolved diagnostics retained. No source fix; five product hashes unchanged. Next accepted PR-review commit/final push, not completed yet.

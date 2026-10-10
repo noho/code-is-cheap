@@ -1,0 +1,155 @@
+{
+  "pr": "52",
+  "url": "https://github.com/noho/code-is-cheap/pull/52",
+  "base": "20fc6c37751836329143567c166990bdffa9de3c",
+  "head": "9c7bfe12ffbcdcbbcf65769208f1e0d0ca3de657",
+  "immutable_endpoint": "repos/noho/code-is-cheap/compare/20fc6c37751836329143567c166990bdffa9de3c...9c7bfe12ffbcdcbbcf65769208f1e0d0ca3de657",
+  "files": 35,
+  "complete_manifest_and_line_counts": true,
+  "file_manifest": {
+    "README.md": [
+      2,
+      0
+    ],
+    "README.zh.md": [
+      2,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/aggregate-adjudication.md": [
+      30,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/code-adjudication.md": [
+      28,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/code-fix-01.md": [
+      74,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/aggregate-ds-flash-controls.json": [
+      18,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/aggregate-mimo-controls.json": [
+      76,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/controller-diagnostic-cap-check.json": [
+      15,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/goal-log-check.json": [
+      229,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/implementation-validation.json": [
+      796,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/plan-fix-feasibility.json": [
+      302,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/plan-prototype-checks.json": [
+      2934,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/plan-rereview-mimo-recovery.json": [
+      83,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/evidence/plan-review-mimo-attempt-1.json": [
+      29,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/goal.md": [
+      52,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/implementation.md": [
+      103,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/plan-adjudication.md": [
+      55,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/plan-fix-01.md": [
+      90,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/plan.md": [
+      351,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/review-statistics.json": [
+      618,
+      0
+    ],
+    "docs/gateflow/codex-recovered-stream-errors/state.md": [
+      40,
+      0
+    ],
+    "docs/reviews/code-review-20261011-043241.md": [
+      78,
+      0
+    ],
+    "docs/reviews/code-review-20261011-043242.md": [
+      101,
+      0
+    ],
+    "docs/reviews/code-review-20261011-050623.md": [
+      133,
+      0
+    ],
+    "docs/reviews/code-review-20261011-050624.md": [
+      88,
+      0
+    ],
+    "docs/reviews/code-review-20261011-051845.md": [
+      86,
+      0
+    ],
+    "docs/reviews/code-review-20261011-051846.md": [
+      89,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-033015.md": [
+      134,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-033016.md": [
+      202,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-034538.md": [
+      139,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-040832.md": [
+      147,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-040833.md": [
+      115,
+      0
+    ],
+    "scripts/agent-run-result.py": [
+      83,
+      1
+    ],
+    "skills/sub-agents/SKILL.md": [
+      1,
+      0
+    ],
+    "tests/test_agent_run_results.py": [
+      444,
+      0
+    ]
+  },
+  "diff_sha256": "7ecaef081f6dc09f19dca14dca8dcb8d0211e8c2f25e76c2689ba92de199df62",
+  "facts_stable_before_after": true,
+  "isDraft": true,
+  "statusCheckRollup": []
+}
