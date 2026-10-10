@@ -2,6 +2,7 @@
 """Internal runner result adapter. Logs remain the source for controller adjudication."""
 import argparse
 import json
+import math
 import re
 import shlex
 from pathlib import Path
@@ -97,6 +98,8 @@ class Collection:
         self.final = ""
         self.final_line = None
         self.terminal = None
+        self.usage = None
+        self.runtime_metrics = {}
         self.events = self.tools = 0
         self.pending = {}
         self.read_visible = False
@@ -135,6 +138,20 @@ class Collection:
         if self.token and self.mentions_canary(command) and self.token in str(output):
             self.read_visible = True
 
+    def terminal_metrics(self, event):
+        # Streaming updates are not totals. Keep only one unambiguous terminal.
+        if self.terminal == "conflicting":
+            self.usage, self.runtime_metrics = None, {}
+            return
+        self.usage = event.get("usage") if isinstance(event.get("usage"), dict) else None
+        if self.args.runtime == "claude":
+            for key in ("duration_ms", "duration_api_ms", "total_cost_usd"):
+                value = event.get(key)
+                if type(value) in (int, float) and value >= 0 and (type(value) is int or math.isfinite(value)):
+                    self.runtime_metrics[key] = value
+            if isinstance(event.get("modelUsage"), dict):
+                self.runtime_metrics["modelUsage"] = event["modelUsage"]
+
     def codex(self, event, line):
         kind = event.get("type")
         if kind in {"turn.completed", "turn.failed"}:
@@ -143,6 +160,7 @@ class Collection:
                 self.terminal = "conflicting"
             else:
                 self.terminal = kind
+            self.terminal_metrics(event)
             if kind == "turn.failed":
                 self.note("errors", event, line)
         elif kind == "error":
@@ -187,6 +205,7 @@ class Collection:
                 self.terminal = "conflicting"
             else:
                 self.terminal = "success" if event.get("subtype") == "success" and event.get("is_error") is False else "failed"
+            self.terminal_metrics(event)
             if self.terminal != "success":
                 self.note("errors", event, line)
             if isinstance(event.get("result"), str):
@@ -327,11 +346,20 @@ class Collection:
                     agent_status="completed" if a.runner_exit_code == 0 and self.terminal in {"success", "turn.completed"} else "failed",
                     validation_status=validation, result_status="not_assessed", final_answer=self.final[:DISPLAY_LIMIT],
                     final_answer_truncated=len(self.final) > DISPLAY_LIMIT, final_answer_chars=len(self.final),
+                    wall_clock_seconds=elapsed_seconds(a.wall_clock_seconds), usage=self.usage, runtime_metrics=self.runtime_metrics,
                     terminal=self.terminal, tool_evidence_scope="recorded_events_only", tool_results=self.tools, events=self.events,
                     canary_status=self.canary_status, canary_read_candidate=self.read_visible,
                     errors=self.errors, anomalies=self.anomalies, warnings=self.warnings,
                     diagnostic_counts=self.counts, diagnostics_truncated=self.text_truncated or any(v > DIAGNOSTIC_LIMIT for v in self.counts.values()),
                     artifacts=self.artifacts, logs=dict(output=a.output, stderr=a.stderr, last_message=a.last_message))
+
+
+def elapsed_seconds(value):
+    try:
+        seconds = float(value)
+        return seconds if math.isfinite(seconds) and seconds >= 0 else None
+    except (ValueError, TypeError, OverflowError):
+        return None
 
 
 def main():
@@ -342,6 +370,7 @@ def main():
     parser.add_argument("--stderr", required=True)
     parser.add_argument("--exit-code", required=True, type=int)
     parser.add_argument("--runner-exit-code", required=True, type=int)
+    parser.add_argument("--wall-clock-seconds")
     parser.add_argument("--last-message")
     parser.add_argument("--canary-file")
     parser.add_argument("--canary-expected")

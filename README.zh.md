@@ -224,7 +224,7 @@ agent-sandbox --cwd /path/to/workspace --deny-list /path/to/denied.json -- \
 
 preflight 可加 `--deny-list /absolute/denied.json` 生成完整封装命令；`--check` 仅预检，不证明内核隔离。
 封装必须从**总控**沙箱外派发：Codex 用 `exec_command(require_escalated)`；Claude 在自己的
-`sandbox.excludedCommands` 加入 `agent-sandbox`，以独立裸命令调用。生命周期、canary、结果验收仍按现有协议。
+`sandbox.excludedCommands` 加入 `agent-sandbox`，以独立裸命令调用。保留生命周期及调用方显式选择的结果检查。
 一次隔离调用不支持 resume、动态投递或原生参数透传。必须恰好一个非空 `--prompt` 或普通 `--prompt-file`；
 关闭 stdin，并将准备好的 prompt 复制到受写保护的运行状态。验证同时查询 Seatbelt 权限和实际文件读取；普通 Unix 权限错误不足以证明隔离。
 
@@ -301,42 +301,54 @@ runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 pro
 以及 provider-specific passthrough arguments。完整接口使用 `--help` 查看。总控必须显式传入 `--cwd`，避免子 Agent
 意外继承总控的 workspace。
 
-派发前用 `sub-agent-preflight` 执行 `$sub-agents` 的预检（workspace、git 条件、provider 与 launcher 部署状态、
-输出路径是否全新），并生成 run dir、canary 文件与**完整 prompt**（任务正文 + 固定报告协议）：
+普通任务直接调用 runner。它自动生成私有日志和 Claude instance；不要求单独预检、label、固定 prompt 标题、
+子 Agent 自报 runtime/provider/model、canary 或额外报告。任务须交接必要上下文：子 Agent 不继承总控对话。
+要求交付文件时，让最终答复给出路径，按任务需要使用/核对文件；修改既有源码无需另写一份描述修改的报告。
+
+`sub-agent-preflight` 是可选的提前 setup 检查和命令生成器：
 
 ```bash
-sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspace --label review-sol-01 --task-file task.md
+sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspace --task-file task.md
 ```
 
-它输出 `key=value` 报告和可直接执行的完整命令（`setup_status=ok` 才可派发）。派发必须有真实任务：给 `--task` /
-`--task-file` 由脚本拼出 prompt，或给 `--prompt-file` 提供完整 prompt；三者必须且只能给一个，否则预检失败且不输出
-命令。prompt 还必须带 Dispatch Contract 的三节 —— `目标` / `非目标` / `停止条件`（每节单独一行、行首写节名，
-英文 `Goal` / `Non-goals` / `Stop condition` 等价），预检会校验。canary token 不会打印、也不会进入 prompt ——
-子 Agent 自己从生成的文件读取。
+只检查所选 runner/provider/launcher/profile，生成私有目录及自动 label，复制任务并追加简短的最终答复要求。
+`--task` / `--task-file` / `--prompt-file` 必须且只能给一种非空白任务，不要求固定小节。成功输出 `key=value` 和
+已 quoting 的命令，失败不输出命令。`--label` 可选；仅需要文件读取证明时加 `--canary`，默认不创建 proof 文件或参数。
+token 不打印，也不写入 prompt。
 
 ### Runner 结果
 
-默认每个 runner 在执行结束后向 stdout 返回一个 JSON 汇总：状态、最终答复、异常摘要、必需产物路径和完整日志路径。
-`--output` 与 `--stderr` 保存**原始日志**，不是汇总；未指定日志路径时自动创建私有临时文件。Claude 内部使用
-`stream-json`。向 preflight（或 runner）重复传入 `--artifact /path/to/report.md` 声明必需的**本轮新建普通文件**；已存在文件或目录在派发前拒绝。
+实际 runtime 退出后，runner stdout 返回一个 JSON 汇总：状态、`final_answer`、诊断、完整日志路径和统计。
+`--output` / `--stderr` 保存原始日志，即使 stdout 返回汇总也保留；未指定时创建私有文件。Claude 内部用 stream-json。
+等待托管进程句柄返回退出码，再使用最终答复和任务产物；没有增加中途指令通道或自动完成通知。
 
 ```bash
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
 claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task.md
-# 原始 runtime 输出与原有重定向行为：
+# 原始输出和原有重定向行为：
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
 ```
 
-`validation_status` 为 `passed`、`needs_review` 或 `rejected`；`result_status` 始终为 `not_assessed`，留给总控裁决。
-普通工具失败列为待裁决，不自动判 Agent 失败。runtime 失败保留原始非零退出码；否则机械拒收返回 1，
-`needs_review` 返回 0。汇总单独记录 `runtime_exit_code` 和 `runner_exit_code`。完成仍通过托管进程句柄收取，没有增加中途指令通道。
+`validation_status` 为 `passed`、`needs_review` 或 `rejected`，`result_status` 始终是 `not_assessed`。
+普通工具错误留在 `anomalies`，不自动判 Agent 失败，也不要求逐事件裁决报告；按它是否留下影响任务的未解决问题判断，
+需要时核对相关证据。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
+退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
 
-最终答复最多展示 12000 字符并显式标记截断；每类诊断最多 20 条、每条 2000 字符，保留完整计数。截断时查看留存日志。
-preflight 自动传入成对的 `--canary-file` / `--canary-expected`；手工构造验证调用也须传入。canary 匹配与候选读取轨迹
-不能代替任务必需证据的独立复核。证明须单独、不缩进的一行 `CANARY=<token>`、不放代码块；行内示例不作为证明。
-`tool_evidence_scope=recorded_events_only` 不保证所有工具通道的轨迹完整。完整取证应写入任务产物。
-`agent-sandbox` 下产物必须位于既有写范围，canary 必须可读；setup 拒绝冲突，不扩大写权限。`--detail` 跳过自动收集，由总控完成所有检查；
-`text` 输出和 Claude `json` 可在此模式使用。汇总和 Agent 答复均不构成用户授权。
+`wall_clock_seconds` 是 runner 启动至调用收集器的实测秒数，包含 setup/runtime/最终消息处理，不含收集器序列化和
+调用方预检、等待开销。`usage` 原样复制单一终态用量对象，不归一化、不累计流式片段。
+`runtime_metrics` 保留 Claude 实际报告的 `duration_ms`、`duration_api_ms`、`total_cost_usd` 和 `modelUsage`。
+缺失用量/时间为 null、缺失 metrics 为空对象，真实零值仍为零；失败终态可保留真实统计，缺失/冲突终态不提供可信用量。
+完整原始统计仍在日志。新增字段保持 schema_version=1。
+
+最终答复最多展示 12000 字符并标记截断；每类诊断最多展示 20 条、每条 2000 字符，保留完整计数和来源位置。
+截断或必要取证时查看留存日志；`tool_evidence_scope=recorded_events_only` 不保证每个工具通道都有轨迹。
+
+可选的重复 `--artifact /path/to/new-file` 检查本轮新建普通文件；既有文件/目录/符号链接在派发前拒绝。
+不声明就不自动抽取 final answer 中的路径，也不要求额外报告。可选的成对 runner `--canary-file` / `--canary-expected`
+检查读取证明，preflight `--canary` 会设置它们。证明为独立、不缩进、不放代码块的一行 `CANARY=<token>`；
+其它 token 示例须放围栏/缩进代码块或行内，避免成为冲突证明。匹配及候选读取轨迹不证明整项任务正确。
+`agent-sandbox` 下检查仍在既有写/读边界内。`--detail` 恢复原始输出，跳过自动收集/canary/产物检查；
+此时可用 text 和 Claude json，不额外增加审计仪式。选择这些能力时参阅[高级调用参考](skills/sub-agents/references/advanced.md)。
 
 ## Codex Agent 配置（xx_codex）
 
@@ -605,8 +617,8 @@ Agent-to-agent chat 使用 `tmux-cli send` + `wait_idle` + `capture`。`tmux-cli
 
 ### Sub Agents
 
-总控需要通过已安装的 runner 启动外部 Claude Code 或 Codex 子进程时，使用 `sub-agents`。该 skill 定义 workspace
-隔离、边界明确的 prompt、并行执行、输出校验、重试上限、session 延续和总控裁决。
+总控需要通过已安装的 runner 启动外部 Claude Code 或 Codex 子进程时，使用 `sub-agents`。该 skill 说明独立 prompt
+上下文、显式 workspace、托管并行执行、最终答复收取、重试上限及可选检查/隔离；具体任务的验证由调用方决定。
 
 Codex:
 
@@ -627,7 +639,7 @@ claude-agent-run --provider <provider> --cwd <absolute-workspace> ...
 codex-agent-run --provider <provider> --cwd <absolute-workspace> ...
 ```
 
-写入范围不重叠的独立任务可以并发。runner 收集执行证据，总控裁决异常并独立核对任务证据后才能采纳结果。
+写入范围不重叠的独立任务可以并发。runner 收集执行证据，总控使用最终答复，按任务要求核对未解决问题和产物。
 
 ## 仓库结构
 

@@ -6,6 +6,7 @@
 emulate -LR zsh
 setopt no_unset pipe_fail noclobber
 umask 077
+typeset -F 6 SECONDS
 
 readonly PROGRAM_NAME="${0:t}"
 readonly DEFAULT_AGENT_TOOLS_FILE="$HOME/.config/zsh/agent-tools.zsh"
@@ -31,8 +32,8 @@ Run options:
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or stream-json. Defaults to stream-json (json with --detail).
   --detail                   Return raw runtime output instead of the collected result.
-  --artifact <path>          NEW regular task file; repeatable. Checked after execution.
-  --canary-file <path>       Canary input path (paired with --canary-expected).
+  --artifact <path>          Optional NEW regular task file; repeatable. Checked after execution.
+  --canary-file <path>       Optional canary input path (paired with --canary-expected).
   --canary-expected <path>   Controller's expected token file; never sent in the prompt.
   --output <path>            Save raw runtime output to a NEW private file.
   --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
@@ -325,7 +326,7 @@ if [[ -n "$prompt_file" ]]; then
   if [[ "$prompt_file" == "-" ]]; then
     prompt_text="$(<&0)"
   else
-    [[ -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
+    [[ -f "$prompt_file" && -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
     prompt_text="$(<"$prompt_file")"
   fi
 elif [[ "$explicit_prompt" == false ]]; then
@@ -333,7 +334,7 @@ elif [[ "$explicit_prompt" == false ]]; then
   prompt_text="$(<&0)"
 fi
 
-[[ -n "$prompt_text" ]] || die "prompt is empty"
+[[ -n "${prompt_text//[[:space:]]/}" ]] || die "prompt is empty or whitespace-only"
 
 run_uuid="$(new_uuid)"
 [[ -n "$instance" ]] || instance="${provider}-${run_uuid[1,8]}"
@@ -437,6 +438,7 @@ if [[ "$detail" == false ]]; then
   typeset -a collect_args=(--runtime claude --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$run_exit" --runner-exit-code "$run_exit")
   [[ -z "$canary_file" ]] || collect_args+=(--canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}")
   for artifact in "${artifacts[@]}"; do collect_args+=(--artifact "${artifact:A}"); done
+  collect_args+=(--wall-clock-seconds "$SECONDS")
   python3 "$result_adapter" "${collect_args[@]}"
   collect_exit=$?
   (( run_exit != 0 )) || run_exit=$collect_exit

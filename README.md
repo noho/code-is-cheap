@@ -239,7 +239,7 @@ content elsewhere or isolate information already supplied in prompts. A runtime 
 
 Preflight supports `--deny-list /absolute/denied.json` and prints the wrapped command; `--check` validates setup only, not kernel enforcement.
 Launch the envelope outside the **controller's** sandbox: Codex uses `exec_command` with `require_escalated`; Claude must add
-`agent-sandbox` to its own `sandbox.excludedCommands` and invoke it as a standalone bare command. Existing canary, lifecycle and result validation still apply.
+`agent-sandbox` to its own `sandbox.excludedCommands` and invoke it as a standalone bare command. Lifecycle and explicitly selected result checks still apply.
 There is no resume, dynamic input delivery or native argument passthrough in an isolated invocation. Exactly one nonempty `--prompt` or regular `--prompt-file` is required; stdin is closed and the prepared prompt is copied to protected per-run state. Verification queries Seatbelt itself as well as actual file opens; ordinary Unix permission errors are insufficient proof.
 
 ## Prepare Agent Environment
@@ -314,49 +314,62 @@ ephemeral or persistent sessions, and provider-specific passthrough arguments. R
 complete interface. Orchestrators must always pass `--cwd` explicitly so child agents do not accidentally inherit the
 controller's workspace.
 
-Before dispatching, `sub-agent-preflight` runs the `$sub-agents` preflight checks (workspace, git condition, provider and
-launcher deployment, fresh output paths) and creates the run directory, canary files, and the full prompt — the task body
-plus the fixed report protocol:
+Direct runner calls are the ordinary path. Private logs and a Claude instance identity are generated automatically;
+no separate preflight, label, fixed prompt headings, runtime/provider/model self-report, canary or extra report is required.
+Provide sufficient task context: child agents do not inherit the controller conversation. For file deliverables, ask for
+paths in the final answer and use/verify the files according to the task. Existing source edits need no separate artifact report.
+
+`sub-agent-preflight` is an optional early setup check and command generator:
 
 ```bash
-sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspace --label review-sol-01 --task-file task.md
+sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspace --task-file task.md
 ```
 
-It prints a `key=value` report plus the exact runnable command (`setup_status=ok` means the dispatch may proceed). A
-dispatch needs a real task: pass `--task` / `--task-file` and the script composes the prompt, or `--prompt-file` with a
-complete prompt; without exactly one of them the preflight fails and prints no command. The prompt must also carry the
-dispatch-contract sections — `Goal` / `Non-goals` / `Stop condition`, one per line with the section name first (the
-Chinese equivalents are accepted) — and the preflight checks those. The canary token is never printed and never placed
-in the prompt — the child reads it from the generated file.
+It checks only the selected runner/provider/launcher/profile, creates a private run directory and auto label, copies the
+task and appends a brief final-answer instruction. Exactly one non-whitespace `--task`, `--task-file` or `--prompt-file`
+is required; no headings are prescribed. It prints `key=value` and a quoted runnable command on success, no command on
+failure. `--label` is optional. Add `--canary` only when a file-read proof is needed; by default no proof files or arguments
+are created. The token is never printed or embedded in the prompt.
 
 ### Runner results
 
-By default, each runner returns one JSON report on stdout after execution: status, final answer, anomaly summary,
-expected artifact paths, and full log paths. `--output` and `--stderr` save **raw logs**, not the report; missing
-log destinations get private temporary files. Claude uses `stream-json` internally. Add repeatable
-`--artifact /path/to/report.md` to preflight (or the runner) to declare required **new regular files**. Existing files/directories are rejected before dispatch.
+After actual runtime exit, the runner returns one JSON report on stdout with status, `final_answer`, diagnostics, full log
+paths and statistics. `--output` / `--stderr` retain raw logs, even when stdout returns the summary; omitted destinations
+get private files. Claude uses stream-json internally. Wait for the managed process handle's exit, then consume the final
+answer and task artifacts. This adds no mid-run channel or automatic completion notification.
 
 ```bash
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
 claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task.md
-# Raw runtime output and original redirection behavior:
+# Raw output and original redirection behavior:
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
 ```
 
-`validation_status` is `passed`, `needs_review`, or `rejected`; `result_status` remains `not_assessed` for controller
-adjudication. Ordinary tool failures need review and do not automatically fail the Agent. Runtime failures keep their
-original nonzero exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. The report records
-`runtime_exit_code` and `runner_exit_code` separately. Completion still comes from the managed process handle; this adds no mid-run channel.
+`validation_status` is `passed`, `needs_review` or `rejected`; `result_status` is always `not_assessed`. Ordinary tool errors
+are recorded in `anomalies` and do not automatically fail the Agent or require a per-event adjudication report. Judge
+unresolved issues by their impact on the task; inspect relevant evidence when needed. Runtime failure retains its nonzero
+exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
+task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 
-The final answer is capped at 12,000 characters with an explicit truncation flag; each diagnostic category displays at
-most 20 entries of 2,000 characters, with full counts. Inspect retained logs when truncated. Preflight passes paired
-`--canary-file` / `--canary-expected` automatically; hand-built validation calls must pass them too. A canary match and
-candidate read trace do not replace independent verification of required task evidence. Write the proof as a standalone,
-unindented `CANARY=<token>` line outside code blocks; inline examples are not proof.
-`tool_evidence_scope=recorded_events_only` does not certify complete tool visibility. Full evidence belongs in the
-task artifact. Under `agent-sandbox`, declared artifacts must fit existing write roots and canary inputs must be
-readable; setup rejects conflicts and never grants extra write access. `--detail` skips collection and requires the controller to perform all checks; `text` output and Claude
-`json` are available in that mode. Neither reports nor Agent messages grant user authorization.
+`wall_clock_seconds` measures runner startup through collection invocation, including setup/runtime/final-message handling;
+it excludes adapter serialization and caller preflight/wait overhead. `usage` copies the single terminal runtime object,
+without normalizing or summing streaming fragments. `runtime_metrics` retains Claude's reported `duration_ms`,
+`duration_api_ms`, `total_cost_usd` and `modelUsage` when available. Missing usage/time is null, missing metrics an empty
+object, and genuine zero values remain zero. Failed terminals can retain reported statistics; absent/conflicting terminals
+supply no trusted usage. Full raw statistics remain in logs. The additive report fields keep schema_version=1.
+
+Final answers display up to 12,000 characters with a truncation flag; diagnostic categories display at most 20 entries of
+2,000 characters, with full counts and source locations. Consult retained logs for truncated content or necessary evidence.
+`tool_evidence_scope=recorded_events_only` does not guarantee every tool channel has a trace.
+
+Optional repeatable `--artifact /path/to/new-file` checks new regular task files; existing files/directories/symlinks are
+rejected before dispatch. Without it, no final-answer path extraction or extra report is required. Optional paired runner
+`--canary-file` / `--canary-expected` check a reported proof; preflight `--canary` supplies the pair. Proofs are standalone,
+unindented `CANARY=<token>` lines outside code blocks; unrelated proof examples must be fenced/indented or inline to avoid
+conflicting proofs. A match and candidate read trace do not prove the whole task. Under `agent-sandbox`, checks stay within
+existing write/read boundaries. `--detail` restores raw output and skips automatic collection/canary/artifact checks;
+`text` output and Claude `json` are available there. It does not impose extra audit ceremony.
+See [advanced sub-agent calls](skills/sub-agents/references/advanced.md) when selecting these capabilities.
 
 ## Codex Agent Profiles
 
@@ -640,8 +653,8 @@ It uses `tmux-cli send` + `wait_idle` + `capture` for agent-to-agent chat. `tmux
 ### Sub Agents
 
 Use `sub-agents` when the controller should launch external Claude Code or Codex child processes through the installed
-runners. The skill defines workspace isolation, bounded prompts, parallel execution, output validation, retry limits,
-session continuation, and controller adjudication.
+runners. The skill covers independent prompt context, explicit workspace, managed parallel execution, final-answer collection,
+bounded retries and optional checks/isolation. Task-specific verification remains with the caller.
 
 Codex:
 
@@ -663,7 +676,7 @@ codex-agent-run --provider <provider> --cwd <absolute-workspace> ...
 ```
 
 Independent tasks may run concurrently when their write ownership does not overlap. Runners collect execution evidence;
-the controller adjudicates anomalies and independently verifies task evidence before accepting results.
+the controller consumes final answers and verifies unresolved issues and deliverables according to task requirements.
 
 ## Repository Layout
 

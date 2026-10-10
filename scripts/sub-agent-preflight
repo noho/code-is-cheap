@@ -1,63 +1,44 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 派发前的机器化预检。sub-agents SKILL 里的约束（显式 --cwd、非 git workspace 的
-# --skip-git-repo-check、唯一 label、全新输出路径、canary 探针、prompt 不得泄露 token）
-# 靠"记得"执行会漏；本脚本把它们变成一次命令即可完成的步骤，并生成 run_dir、canary、
-# 完整 prompt（任务正文 + 固定报告协议）与可直接执行的完整调用。
-# 没有任务正文就没有完整 prompt，此时预检失败且不输出命令——不存在占位 prompt 的中间状态。
-#
-# stdout 是 key=value 报告（含 setup_status 与 command），stderr 是人读说明。
-# 退出码 0 = setup_status=ok；1 = 预检失败（逐条 failure=… 列出）；2 = 用法错误。
+# Optional setup helper: validates the selected runtime and prepares a runnable
+# command. Plain task input is sufficient; canary/artifact checks are opt-in.
+# stdout is key=value; setup failure never emits a dispatch command.
 
 PROGRAM_NAME="$(basename -- "$0")"
 
 usage() {
   cat <<'EOF'
 Usage:
-  sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd <dir> --label <label>
-                      [--prompt-file <path>]
+  sub-agent-preflight --runtime <claude|codex> --provider <name> --cwd <dir>
+                      <--task <text>|--task-file <path>|--prompt-file <path>> [options]
 
 Required:
-  --runtime <claude|codex>   Which runtime will run the child agent.
-  --provider <name>          Provider accepted by that runner (see --list-providers).
-  --cwd <dir>                Child workspace; must exist. Always resolved to an absolute path.
-  --label <label>            Unique task label; used for instance name and artifact names. Must not
-                             have been used for an earlier dispatch on this machine (best-effort
-                             check of recent run directories).
+  --runtime <claude|codex>   Selected runtime only; the other runtime is not required.
+  --provider <name>         Canonical ID from the selected runner's --list-providers.
+  --cwd <dir>               Existing workspace, resolved to an absolute path.
 
-Prompt (give exactly one):
-  --task <text>              Task body. The script composes the full prompt from it plus the
-  --task-file <path>         fixed report protocol (runtime/provider/model line, canary read,
-                             stop condition). The body must carry the Dispatch Contract
-                             sections, one per line, starting with the section name:
-                             `目标` / `非目标` / `停止条件` (or `Goal` / `Non-goals` /
-                             `Stop condition`). All three input forms must be clean task bodies:
-                             recognizable stale canary values, `canary.txt` or `canary.expected`
-                             filenames (bare or in paths), provider-shaped tokens, and fixed
-                             report markers fail. These mechanical checks cannot prove that
-                             natural-language old report instructions are absent;
-                             the controller must review their meaning before dispatch.
+Task (exactly one, with non-whitespace content):
+  --task <text>             Natural-language task; no fixed headings required.
+  --task-file <path>        Read a task from a regular readable file.
+  --prompt-file <path>      Copy the complete prompt without changing the original.
+                            A short final-answer instruction is appended to the private copy.
 
-Optional result contract:
-  --artifact <path>         NEW regular task file; repeatable. Checked by the runner after exit.
+Optional:
+  --label <label>           Safe filename component; defaults to task-<fresh run suffix>.
+  --canary                  Create fresh proof files and request/check a file-read proof.
+                            No canary files, arguments or instructions by default.
+  --artifact <path>         NEW regular task file; repeatable. Checked by runner after exit.
+  --full-access             Disable runtime inner sandbox and approvals (opt-in).
+  --deny-list <json>        Prefix with agent-sandbox; implies --full-access.
+                            macOS/srt required. Setup validation is not a kernel test.
 
-Optional access mode (defaults remain unchanged):
-  --full-access             Disable the runtime's inner sandbox and tool approvals.
-  --deny-list <json>        Prefix the command with agent-sandbox; implies --full-access.
-                             macOS/srt required. Setup validation is not a kernel test.
-  --prompt-file <path>       Use this complete task prompt as input. The script copies it into
-                             run_dir and appends this run's fixed report protocol; the original
-                             file stays unchanged. The same section and clean-body checks apply.
-
-On success prints (stdout, key=value):
-  setup_status, runtime, provider, runner, launcher, workspace, git_repo,
-  skip_git_repo_check, profile_home, run_dir, canary_file, canary_expected,
-  prompt_file, prompt_source, output, stderr, last_message, command
-
-The canary token itself is never printed and never embedded in the prompt: the child reads it
-from canary_file, and the controller compares against canary_expected (both whitespace-free,
-no trailing newline).
+On success stdout contains setup_status, runtime, provider, runner, launcher, workspace,
+git_repo, skip_git_repo_check, profile_home, run_dir, label, canary_file, canary_expected,
+prompt_file, prompt_source, output, stderr, last_message, command.
+Only the selected runner/catalog/launcher/profile is checked. The canary token is never
+printed or embedded in the prompt. With --canary, unrelated CANARY examples in the final
+answer/artifact must be fenced or indented, so they are not interpreted as current proofs.
 EOF
 }
 
@@ -74,6 +55,8 @@ task_file=""
 full_access=false
 deny_list=""
 artifacts=()
+canary=false
+prompt_arg_count=0
 
 while (( $# > 0 )); do
   case "$1" in
@@ -81,10 +64,11 @@ while (( $# > 0 )); do
     --provider)    [[ $# -ge 2 ]] || die_usage "--provider needs a value";    provider="$2"; shift 2 ;;
     --cwd)         [[ $# -ge 2 ]] || die_usage "--cwd needs a value";         cwd="$2"; shift 2 ;;
     --label)       [[ $# -ge 2 ]] || die_usage "--label needs a value";       label="$2"; shift 2 ;;
-    --prompt-file) [[ $# -ge 2 ]] || die_usage "--prompt-file needs a value"; prompt_file="$2"; shift 2 ;;
-    --task)        [[ $# -ge 2 ]] || die_usage "--task needs a value";        task_text="$2"; shift 2 ;;
-    --task-file)   [[ $# -ge 2 ]] || die_usage "--task-file needs a value";   task_file="$2"; shift 2 ;;
+    --prompt-file) [[ $# -ge 2 ]] || die_usage "--prompt-file needs a value"; prompt_file="$2"; prompt_arg_count=$((prompt_arg_count + 1)); shift 2 ;;
+    --task)        [[ $# -ge 2 ]] || die_usage "--task needs a value";        task_text="$2"; prompt_arg_count=$((prompt_arg_count + 1)); shift 2 ;;
+    --task-file)   [[ $# -ge 2 ]] || die_usage "--task-file needs a value";   task_file="$2"; prompt_arg_count=$((prompt_arg_count + 1)); shift 2 ;;
     --artifact) [[ $# -ge 2 ]] || die_usage "--artifact needs a value"; artifacts+=("$2"); shift 2 ;;
+    --canary) canary=true; shift ;;
     --full-access) full_access=true; shift ;;
     --deny-list) [[ $# -ge 2 ]] || die_usage "--deny-list needs a value"; deny_list="$2"; full_access=true; shift 2 ;;
     -h|--help)     usage; exit 0 ;;
@@ -95,7 +79,7 @@ done
 [[ -n "$runtime" ]] || die_usage "--runtime is required"
 [[ -n "$provider" ]] || die_usage "--provider is required"
 [[ -n "$cwd" ]] || die_usage "--cwd is required"
-[[ -n "$label" ]] || die_usage "--label is required"
+
 
 case "$runtime" in
   claude|codex) ;;
@@ -108,47 +92,17 @@ skip_git_repo_check=""
 workspace=""
 profile_home=""
 
-# --- runner / provider catalogs ---------------------------------------------
-runner="${runtime}-agent-run"          # claude-agent-run / codex-agent-run
-# Keep these baselines aligned with the runners' --list-providers contract.
-# A successful but truncated catalog must not narrow the stale-token check.
-codex_required='ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business'
-claude_required='ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy'
-token_prefixes=""
-for catalog_runner in codex-agent-run claude-agent-run; do
-  if ! command -v "$catalog_runner" >/dev/null 2>&1; then
-    failures+=("runner 不在 PATH: $catalog_runner（无法核对 provider catalog）")
-    continue
-  fi
-  if catalog_output="$("$catalog_runner" --list-providers 2>/dev/null)"; then
-    :
-  else
-    failures+=("$catalog_runner --list-providers 失败（provider catalog 不可信）")
-    continue
-  fi
-  if [[ "$catalog_runner" == codex-agent-run ]]; then
-    required_providers="$codex_required"
-  else
-    required_providers="$claude_required"
-  fi
-  missing_providers=""
-  for required_provider in $required_providers; do
-    if ! grep -qxF -- "$required_provider" <<< "$catalog_output"; then
-      missing_providers="${missing_providers:+$missing_providers }$required_provider"
-    fi
-  done
-  if [[ -n "$missing_providers" ]]; then
-    failures+=("$catalog_runner --list-providers 输出不完整，缺少: $missing_providers")
-  fi
-  if [[ "$catalog_runner" == "$runner" ]] &&
-     ! grep -qxF -- "$provider" <<< "$catalog_output"; then
+# --- selected runner / provider catalog -------------------------------------
+runner="${runtime}-agent-run"
+if ! command -v "$runner" >/dev/null 2>&1; then
+  failures+=("runner 不在 PATH: $runner")
+elif catalog_output="$("$runner" --list-providers 2>/dev/null)"; then
+  if ! grep -qxF -- "$provider" <<< "$catalog_output"; then
     failures+=("provider '$provider' 不在 $runner --list-providers 中")
   fi
-  while IFS= read -r catalog_provider; do
-    [[ "$catalog_provider" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || continue
-    token_prefixes="${token_prefixes:+$token_prefixes|}$catalog_provider"
-  done <<< "$catalog_output"
-done
+else
+  failures+=("$runner --list-providers 失败（provider catalog 不可信）")
+fi
 
 # --- workspace --------------------------------------------------------------
 if [[ -d "$cwd" ]]; then
@@ -204,29 +158,26 @@ if [[ -n "$workspace" ]] && (( ${#artifacts[@]} > 0 )); then
   done
 fi
 
-# --- label 唯一性（best-effort）---------------------------------------------
-# 只查本机同一 TMPDIR 下历史 run_dir 里的同名 artifact；已清理的 run_dir 与其它机器查不到，
-# 所以这是护栏而非全局保证。修复性重试本来就必须用新 label。
-if compgen -G "${TMPDIR:-/tmp}/sub-agents.*/${label}.*" >/dev/null 2>&1; then
-  failures+=("label '$label' 已在本机历史 run_dir 用过（修复性重试必须用新 label）")
-fi
-
-# --- prompt 来源 + token 泄露自检 -------------------------------------------
+# --- private task identity / optional canary --------------------------------
+umask 077
 run_dir="$(cd -- "$(mktemp -d "${TMPDIR:-/tmp}/sub-agents.XXXXXX")" && pwd -P)"
-token="$provider-$(openssl rand -hex 4)"
-canary_file="$run_dir/canary.txt"
-canary_expected="$run_dir/canary.expected"
-# 无尾换行：消除"逐字比较"在结尾空白上的歧义。
-printf '%s' "$token" > "$canary_file"
-printf '%s' "$token" > "$canary_expected"
-
+[[ -n "$label" ]] || label="task-${run_dir##*.}"
+if [[ ! "$label" =~ ^[a-zA-Z0-9_.-]+$ || "$label" == . || "$label" == .. ]]; then
+  failures+=("label 必须为安全的文件名组件: $label")
+  label="task-${run_dir##*.}"
+fi
+canary_file=""
+canary_expected=""
+token=""
+if [[ "$canary" == true ]]; then
+  token="$provider-$(openssl rand -hex 4)"
+  canary_file="$run_dir/canary.txt"
+  canary_expected="$run_dir/canary.expected"
+  printf '%s' "$token" > "$canary_file"
+  printf '%s' "$token" > "$canary_expected"
+fi
 prompt_used=""
 prompt_source=""
-
-prompt_arg_count=0
-[[ -z "$prompt_file" ]] || prompt_arg_count=$((prompt_arg_count + 1))
-[[ -z "$task_text" ]] || prompt_arg_count=$((prompt_arg_count + 1))
-[[ -z "$task_file" ]] || prompt_arg_count=$((prompt_arg_count + 1))
 [[ "$prompt_arg_count" -eq 1 ]] \
   || failures+=("--prompt-file / --task / --task-file 必须且只能给一个（当前给了 $prompt_arg_count 个）")
 
@@ -240,7 +191,9 @@ if [[ -n "$prompt_file" ]]; then
   fi
 elif [[ -n "$task_file" && -z "$task_text" ]]; then
   if [[ -f "$task_file" && -r "$task_file" && -s "$task_file" ]]; then
-    task_text="$(cat -- "$task_file")"
+    prompt_used="$run_dir/prompt.txt"
+    cat -- "$task_file" > "$prompt_used"
+    prompt_source="composed"
   else
     failures+=("--task-file 不可读或为空: $task_file")
   fi
@@ -255,60 +208,25 @@ if [[ -z "$prompt_used" && -n "$task_text" ]]; then
 fi
 
 if [[ -n "$prompt_used" ]]; then
-  # The same check runs on the task body from --task, --task-file, or
-  # --prompt-file, before this run's report protocol is appended. Provider
-  # names come from captured runner catalogs; unreadable or incomplete catalogs
-  # fail setup. A canary-named prefix covers labeled samples independently.
-  stale_prompt=false
-  if grep -qiE '(^|[^[:alnum:]_])CANARY[[:space:]]*[:=][[:space:]]*[^[:space:]<]' "$prompt_used"; then
-    failures+=("任务正文含 CANARY 值；请移除旧轮次值后重试")
-    stale_prompt=true
-  fi
-  if grep -qiE '(^|[^[:alnum:]_.-])canary\.(txt|expected)($|[^[:alnum:]_.-]|[.]($|[^[:alnum:]_.-]))' "$prompt_used"; then
-    failures+=("任务正文含 canary 文件路径；请移除旧轮次路径后重试")
-    stale_prompt=true
-  fi
-  if { [[ -n "$token_prefixes" ]] &&
-       grep -qiE "(^|[^[:alnum:]_-])(${token_prefixes})-[[:xdigit:]]{8}($|[^[:alnum:]_-])" "$prompt_used"; } ||
-     grep -qiE '(^|[^[:alnum:]_-])[[:alnum:]_-]*canary[[:alnum:]_-]*-[[:xdigit:]]{8}($|[^[:alnum:]_-])' "$prompt_used"; then
-    failures+=("任务正文含 canary token；请移除旧轮次 token 后重试")
-    stale_prompt=true
-  fi
-  if grep -qiE 'RUNTIME/PROVIDER/MODEL[[:space:]]*:|报告要求[（(]必须遵守|(输出|报告|写成|print|report).*CANARY[[:space:]]*[:=]|用工具读取.*CANARY[[:space:]]*[:=]' "$prompt_used"; then
-    failures+=("任务正文含固定报告协议；请只提供干净任务正文")
-    stale_prompt=true
-  fi
-  if [[ "$stale_prompt" == true ]]; then
+  # Check the original body before appended instructions could manufacture a task.
+  if ! LC_ALL=C grep -q '[^[:space:]]' "$prompt_used"; then
+    failures+=("任务正文为空或仅含空白")
     rm -- "$prompt_used"
     prompt_used=""
     prompt_source="none"
-  fi
-fi
-
-if [[ -n "$prompt_used" ]]; then
-  # 两种来源均在本轮 run_dir 中生成最终副本；只有这个路径进入 runner 命令。
-  # 旧 prompt 中的 canary 路径不能替代本轮读取与比对。
-  {
-    printf '\n报告要求（必须遵守，以本轮以下协议为准）：\n'
-    printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
-    printf -- '- 用工具读取本轮 %s 并把内容逐字写成 CANARY=<内容>（单独、不缩进的一行，不附说明、不放代码块；不要猜、不要改写；旧轮次 CANARY 不作为本轮证明）\n' "$canary_file"
-    printf -- '- 最终答复保持简短：结论、未完成事项和产物路径；完整证据写入任务指定的 artifact\n'
-    if (( ${#artifacts[@]} > 0 )); then
-      printf -- '- 必需产物（本轮新建的普通文件，完成前必须写入）：\n'
-      for artifact in "${artifacts[@]}"; do printf -- '  %s\n' "$artifact"; done
-    fi
-    printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
-  } >> "$prompt_used"
-  grep -qF -- "$token" "$prompt_used" \
-    && failures+=("prompt 包含 canary token（必须让子 Agent 自己读文件）")
-  # Dispatch Contract 要求 prompt 说明目标、非目标与停止条件；按下表逐节校验结构，
-  # 每节单独一行、行首写节名（中英皆可）。内容质量仍由总控负责。
-  missing_sections=()
-  for section in '目标|goal' '非目标|non-goal' '停止条件|stop[[:space:]]*condition'; do
-    grep -qiE "^[[:space:]]*(${section})" "$prompt_used" || missing_sections+=("${section%%|*}")
-  done
-  if (( ${#missing_sections[@]} > 0 )); then
-    failures+=("prompt 缺少小节（每节单独一行、行首写节名）：${missing_sections[*]}；见 Dispatch Contract")
+  elif [[ "$canary" == true ]] && grep -qF -- "$token" "$prompt_used"; then
+    failures+=("prompt 包含 canary token（必须让子 Agent 自己读文件）")
+  else
+    {
+      printf '\n最终答复请给出结论、影响结果的未解决问题或未完成事项，以及产物路径（如有）。\n'
+      if [[ "$canary" == true ]]; then
+        printf '用工具读取 %s；将内容逐字报告为单独、不缩进、不加说明的一行 CANARY=<内容>，不要放代码块。其它 CANARY 示例须放代码块或缩进。\n' "$canary_file"
+      fi
+      if (( ${#artifacts[@]} > 0 )); then
+        printf '必需产物（本轮新建的普通文件）：\n'
+        for artifact in "${artifacts[@]}"; do printf '  %s\n' "$artifact"; done
+      fi
+    } >> "$prompt_used"
   fi
 fi
 
@@ -332,7 +250,8 @@ if [[ "$status" == ok ]]; then
   [[ "$runtime" != claude ]] || format=stream-json
   dispatch_args=("$runner" --provider "$provider" --cwd "$workspace" --no-persist
     --output-format "$format" --output "$out_file" --stderr "$stderr_file"
-    --prompt-file "$prompt_used" --canary-file "$canary_file" --canary-expected "$canary_expected")
+    --prompt-file "$prompt_used")
+  [[ "$canary" != true ]] || dispatch_args+=(--canary-file "$canary_file" --canary-expected "$canary_expected")
   if [[ "$runtime" == codex ]]; then
     dispatch_args+=(--last-message "$last_message_file")
   else
@@ -372,6 +291,7 @@ printf 'git_repo=%s\n' "$git_repo"
 printf 'skip_git_repo_check=%s\n' "$skip_git_repo_check"
 printf 'profile_home=%s\n' "${profile_home:-n/a}"
 printf 'run_dir=%s\n' "$run_dir"
+printf 'label=%s\n' "$label"
 printf 'canary_file=%s\n' "$canary_file"
 printf 'canary_expected=%s\n' "$canary_expected"
 printf 'prompt_file=%s\n' "${prompt_used:-}"
@@ -385,7 +305,7 @@ for failure in "${failures[@]:-}"; do
 done
 
 if [[ "$status" == ok ]]; then
-  note "预检通过。runner 退出后返回汇总结果；总控裁决 anomalies 并独立验收任务证据。"
+  note "预检通过。runner 退出后返回汇总结果；按任务需要使用最终答复和产物。"
   exit 0
 else
   note "预检失败 ${#failures[@]} 项，按上面的 failure= 修好后重跑（不要带着 setup 错误派发）。"
