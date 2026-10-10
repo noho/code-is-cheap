@@ -1,7 +1,7 @@
 # Gate state: codex-recovered-stream-errors
 
-- Status: active; goal confirmed.
-- Current gate / next entry point: accepted PR review commit and final push, then draft-PR-pass.
+- Status: completed; final closeout PASS, draft PR awaiting user merge.
+- Current gate / next entry point: user manual merge #52; separately authorized live deployment and caller verification/restoration.
 - Branch: fix/codex-recovered-stream-errors; baseline 20fc6c37751836329143567c166990bdffa9de3c; original workspace clean.
 - Artifact: goal.md; structural/replay evidence evidence/goal-log-check.json; original logs retained unchanged.
 - Decision: defect reproduced; narrow recovered-connection classification proposed, arbitrary/unrecovered errors remain fatal.
@@ -42,3 +42,5 @@
 - Accepted aggregate checkpoint 9c7bfe1; readiness verified: clean branch, only three intended task checkpoints, full49 tests and docs/residual decisions complete, no assigned issue number. Initial push successful; new draft #52 created. PR review required before draft-PR-pass, no merge/live authorization.
 
 - Both PR reviews native/runner0, no material findings; controller PR-review PASS in pr-adjudication.md, actual full49 source/native evidence and stable GitHub pair verified. DS ordinary resolved diagnostics retained. No source fix; five product hashes unchanged. Next accepted PR-review commit/final push, not completed yet.
+
+- Accepted PR-review checkpoint f637c5159c44e793b9835ea902f0bc3dd232f233 pushed and remote draft head verified equal; draft-PR-pass entered. final-closeout.md records PASS, completed status and residual owners. Closeout metadata only; no product changes or live sync.
