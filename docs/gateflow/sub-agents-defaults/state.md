@@ -14,7 +14,11 @@
 - PR review: both routes completed; five accepted findings applied and final full native/OS suite passes 140/140. pr-review.md.
 - Fix checkpoint: 959ef73 published.
 - PR re-review: pass; both external routes actually exited0, all five findings 已修复, no new finding; pr-rereview.md.
-- Current gate / next entry point: accepted PR-review commit, then final push.
+- Accepted PR-review commit: eaefaf896640fd376212d747217058c713e040ab.
+- Final review push: verified local/origin/GitHub head eaefaf8; PR50 OPEN/draft.
+- draft-PR-pass: pass; required reviews/fixes/accepted commit/final push complete.
+- Final closeout: pass; final-closeout.md. Closing documentation checkpoint to be pushed and remotely verified.
+- Current gate / next entry point: user manual ready/merge; live sync only on explicit instruction.
 - Branch / PR: feat/sub-agent-result-collection / #50 reused.
 - Residual risks: classified in plan and re-review; owners stated.
-- Work unit: in progress. No live sync or merge.
+- Work unit: completed. No live sync or merge.
