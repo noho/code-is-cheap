@@ -319,7 +319,8 @@ token 不打印，也不写入 prompt。
 ### Runner 结果
 
 实际 runtime 退出后，runner stdout 返回一个 JSON 汇总：状态、`final_answer`、诊断、完整日志路径和统计。
-`--output` / `--stderr` 保存原始日志，即使 stdout 返回汇总也保留；未指定时创建私有文件。Claude 内部用 stream-json。
+`--output` / `--stderr` 保存原始日志，即使 stdout 返回汇总也保留；未指定时创建私有文件。显式 `-` 目标（`--output` / `--stderr` / Codex `--last-message`）
+需要 `--detail`，汇总模式明确拒绝，不静默替换。Claude 内部用 stream-json。
 等待托管进程句柄返回退出码，再使用最终答复和任务产物；没有增加中途指令通道或自动完成通知。
 
 ```bash
@@ -334,6 +335,9 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 需要时核对相关证据。无工具记录的工具语法也只作诊断，不能仅凭文本区分示例和执行声明。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
 退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
 
+`session_id` 返回原生 Codex thread_id 或 Claude session_id，缺失/冲突为 null。只有显式持久化的会话才可
+resume；ID 不代表默认一次性运行已保存。
+
 `wall_clock_seconds` 是 runner 启动至调用收集器的实测秒数，包含 setup/runtime/最终消息处理，不含收集器序列化和
 调用方预检、等待开销。`usage` 原样复制单一终态用量对象，不归一化、不累计流式片段。
 `runtime_metrics` 保留 Claude 实际报告的 `duration_ms`、`duration_api_ms`、`total_cost_usd` 和 `modelUsage`。
@@ -344,8 +348,9 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 截断或必要取证时查看留存日志；`tool_evidence_scope=recorded_events_only` 不保证每个工具通道都有轨迹。
 
 可选的重复 `--artifact /path/to/new-file` 检查本轮新建普通文件；既有文件/目录/符号链接在派发前拒绝。
+收尾拒绝硬链接/日志别名；新路径不证明 inode 来源或内容正确。
 不声明就不自动抽取 final answer 中的路径，也不要求额外报告。可选的成对 runner `--canary-file` / `--canary-expected`
-检查读取证明，preflight `--canary` 会设置它们。证明为独立、不缩进、不放代码块的一行 `CANARY=<token>`；
+启动前校验可读、非空普通输入与有效 expected token，运行后检查读取证明；preflight `--canary` 会设置它们。证明为独立、不缩进、不放代码块的一行 `CANARY=<token>`；
 其它 token 示例须放围栏/缩进代码块或行内，避免成为冲突证明。匹配及候选读取轨迹不证明整项任务正确。
 `agent-sandbox` 下检查仍在既有写/读边界内。`--detail` 恢复原始输出，跳过自动收集/canary/产物检查；
 此时可用 text 和 Claude json，不额外增加审计仪式。选择这些能力时参阅[高级调用参考](skills/sub-agents/references/advanced.md)。

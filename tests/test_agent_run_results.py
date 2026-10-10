@@ -28,6 +28,8 @@ if os.environ.get('CAPTURE_ARGS'): Path(os.environ['CAPTURE_ARGS']).write_text(j
 time.sleep(float(os.environ.get('RUNTIME_DELAY','0')))
 for path, content in json.loads(os.environ.get('ARTIFACT_CONTENTS','{}')).items():
  Path(path).write_text(content)
+for path, source in json.loads(os.environ.get('ARTIFACT_LINKS','{}')).items():
+ os.link(source,path)
 if '--output-last-message' in args and not os.environ.get('SKIP_LAST_MESSAGE'):
  Path(args[args.index('--output-last-message')+1]).write_text(os.environ['FINAL'])
 if os.environ.get('OCCUPY_LAST_MESSAGE'):
@@ -60,6 +62,97 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
 
     def claude(self, text='done'):
         return [{'type':'system','subtype':'init','model':'fixture'}, {'type':'result','subtype':'success','is_error':False,'result':text}]
+
+    def test_invalid_canary_setup_never_invokes_runtime(self):
+        capture=self.root/'capture';self.env['CAPTURE_ARGS']=str(capture)
+        empty=self.root/'empty';empty.write_text('')
+        whitespace=self.root/'whitespace';whitespace.write_text('bad token')
+        unreadable=self.root/'unreadable';unreadable.write_text('unreadable');unreadable.chmod(0)
+        missing=self.root/'missing'
+        cases=[(missing,self.expected),(self.canary,missing),(self.root,self.expected),
+               (self.canary,self.root),(empty,self.expected),(self.canary,empty),
+               (self.canary,whitespace),(unreadable,self.expected),(self.canary,unreadable)]
+        try:
+            for runtime in ('codex','claude'):
+                for canary,expected in cases:
+                    result=self.run_agent(runtime,getattr(self,runtime)(),
+                        '--canary-file',str(canary),'--canary-expected',str(expected))
+                    self.assertEqual(result.returncode,2,result.stderr)
+                    self.assertIn('invalid canary setup; runtime was not started',result.stderr)
+                    self.assertFalse(capture.exists())
+        finally:unreadable.chmod(0o600)
+
+    def test_runtime_created_artifact_hard_links_are_rejected(self):
+        original=self.root/'existing-source';original.write_text('existing content')
+        for runtime in ('codex','claude'):
+            for source_kind in ('output','stderr','existing'):
+                output=self.root/f'{runtime}-{source_kind}.jsonl'
+                stderr=self.root/f'{runtime}-{source_kind}.stderr'
+                artifact=self.root/f'{runtime}-{source_kind}.artifact'
+                source={'output':output,'stderr':stderr,'existing':original}[source_kind]
+                self.env['ARTIFACT_LINKS']=json.dumps({str(artifact):str(source)})
+                result=self.run_agent(runtime,getattr(self,runtime)(),
+                    '--output',str(output),'--stderr',str(stderr),'--artifact',str(artifact))
+                report=json.loads(result.stdout)
+                self.assertEqual(result.returncode,1,result.stderr)
+                self.assertEqual(report['runtime_exit_code'],0)
+                self.assertEqual(report['validation_status'],'rejected')
+                self.assertTrue(any('hard-linked or aliases a runner log' in e['message'] for e in report['errors']))
+            self.env.pop('ARTIFACT_LINKS')
+
+    def test_dash_destinations_require_detail_before_launch(self):
+        capture=self.root/'capture';self.env['CAPTURE_ARGS']=str(capture)
+        for runtime in ('codex','claude'):
+            options=['--output','--stderr']+(['--last-message'] if runtime=='codex' else [])
+            for option in options:
+                result=self.run_agent(runtime,getattr(self,runtime)(),option,'-')
+                self.assertEqual(result.returncode,2,result.stderr)
+                self.assertIn(f'{option} - requires --detail',result.stderr)
+                self.assertFalse(capture.exists())
+                raw=self.run_agent(runtime,getattr(self,runtime)(),'--detail',option,'-')
+                self.assertEqual(raw.returncode,0,raw.stderr)
+                self.assertEqual(json.loads(raw.stdout.splitlines()[-1])['type'],
+                                 'turn.completed' if runtime=='codex' else 'result')
+                capture.unlink()
+
+    def test_persist_and_resume_return_native_session_identity(self):
+        capture=self.root/'capture';self.env['CAPTURE_ARGS']=str(capture)
+        for runtime in ('codex','claude'):
+            sid='native-session-id'
+            events=getattr(self,runtime)()
+            if runtime=='codex':events[0]['thread_id']=sid
+            else:
+                events[0]['session_id']=sid;events[-1]['session_id']=sid
+            first=json.loads(self.run_agent(runtime,events,'--persist').stdout)
+            self.assertEqual(first['session_id'],sid)
+            args=json.loads(capture.read_text())
+            self.assertNotIn('--ephemeral' if runtime=='codex' else '--no-session-persistence',args)
+            resumed=self.run_agent(runtime,events,'--resume',first['session_id'])
+            self.assertEqual(resumed.returncode,0,resumed.stderr)
+            self.assertEqual(json.loads(resumed.stdout)['session_id'],sid)
+            args=json.loads(capture.read_text())
+            self.assertIn(sid,args)
+            self.assertIn('resume' if runtime=='codex' else '--resume',args)
+
+    def test_session_identity_missing_invalid_or_conflicting_stays_unavailable(self):
+        for runtime in ('codex','claude'):
+            for value in (None,42,[],{},'', '  '):
+                events=getattr(self,runtime)()
+                if runtime=='codex':events[0]['thread_id']=value
+                else:
+                    events[0]['session_id']=value;events[-1]['session_id']=value
+                report=json.loads(self.run_agent(runtime,events).stdout)
+                self.assertIsNone(report['session_id'])
+                self.assertEqual(report['validation_status'],'passed')
+            events=getattr(self,runtime)()
+            if runtime=='codex':events.insert(1,{'type':'thread.started','thread_id':'other'})
+            else:
+                events[0]['session_id']='first';events[-1]['session_id']='other'
+            result=self.run_agent(runtime,events);report=json.loads(result.stdout)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertIsNone(report['session_id'])
+            self.assertEqual(report['validation_status'],'needs_review')
+            self.assertTrue(any('conflicting runtime session' in a['message'] for a in report['anomalies']))
 
     def test_defaults_return_one_result_and_retain_private_raw_logs(self):
         for runtime in ('codex','claude'):

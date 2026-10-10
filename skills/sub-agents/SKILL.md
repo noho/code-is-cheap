@@ -25,7 +25,7 @@ claude-agent-run --provider ds-flash --cwd /absolute/workspace --prompt "检查 
 runner 自动检查所选 provider、workspace、任务输入、launcher 及输出路径；非 Git workspace 的 Codex 自动追加
 `--skip-git-repo-check`。默认一次性运行，不持久化 session。默认自动分配私有日志目录和 Claude instance；
 调用方无需提供 label、instance、日志路径或单独运行预检。需要指定日志位置时使用 `--output` / `--stderr` /
-Codex `--last-message`，这些必须是新文件。
+Codex `--last-message`，这些必须是新文件；显式 `-` 仅用于 `--detail`，汇总模式明确拒绝。
 
 ## 独立上下文交接
 
@@ -71,6 +71,8 @@ Claude 原始 stream-json、Codex JSONL 和 stderr 保留，路径在 `logs` 中
 汇总还包含：
 
 - `runtime_exit_code` / `runner_exit_code` / `terminal`：进程与结构化终态。
+- `session_id`：原生事件中的会话 ID（Codex thread_id / Claude session_id）；缺失或冲突为 null。
+  只有显式持久化的会话才可续接；ID 不证明默认一次性会话已保存。
 - `validation_status`：`passed` 是机械检查通过；`needs_review` 提醒存在工具异常或可见性缺项；
   `rejected` 是结构损坏、终态/最终答复缺失、进程失败或显式检查未满足。runtime 非零保留原码，否则机械拒收返回 1。
 - `errors` / `anomalies` / `warnings`：最多每类 20 条、每条 2000 字符，附计数、截断和日志位置。

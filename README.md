@@ -335,7 +335,8 @@ are created. The token is never printed or embedded in the prompt.
 
 After actual runtime exit, the runner returns one JSON report on stdout with status, `final_answer`, diagnostics, full log
 paths and statistics. `--output` / `--stderr` retain raw logs, even when stdout returns the summary; omitted destinations
-get private files. Claude uses stream-json internally. Wait for the managed process handle's exit, then consume the final
+get private files. Explicit `-` destinations (`--output`, `--stderr`, Codex `--last-message`) require `--detail`;
+collected mode rejects them instead of silently replacing them. Claude uses stream-json internally. Wait for the managed process handle's exit, then consume the final
 answer and task artifacts. This adds no mid-run channel or automatic completion notification.
 
 ```bash
@@ -352,6 +353,9 @@ execution claims cannot be distinguished from text alone; inspect relevant evide
 exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
 task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 
+`session_id` exposes the native Codex thread_id or Claude session_id, or null when unavailable/conflicting.
+Only explicitly persisted sessions can be resumed; an ID does not imply an ephemeral run was saved.
+
 `wall_clock_seconds` measures runner startup through collection invocation, including setup/runtime/final-message handling;
 it excludes adapter serialization and caller preflight/wait overhead. `usage` copies the single terminal runtime object,
 without normalizing or summing streaming fragments. `runtime_metrics` retains Claude's reported `duration_ms`,
@@ -364,8 +368,10 @@ Final answers display up to 12,000 characters with a truncation flag; diagnostic
 `tool_evidence_scope=recorded_events_only` does not guarantee every tool channel has a trace.
 
 Optional repeatable `--artifact /path/to/new-file` checks new regular task files; existing files/directories/symlinks are
-rejected before dispatch. Without it, no final-answer path extraction or extra report is required. Optional paired runner
-`--canary-file` / `--canary-expected` check a reported proof; preflight `--canary` supplies the pair. Proofs are standalone,
+rejected before dispatch. Post-run checks reject hard links/log aliases; a new pathname does not prove inode provenance
+or correct content. Without it, no final-answer path extraction or extra report is required. Optional paired runner
+`--canary-file` / `--canary-expected` validate readable, nonempty regular inputs and a valid expected token before launch,
+then check a reported proof; preflight `--canary` supplies the pair. Proofs are standalone,
 unindented `CANARY=<token>` lines outside code blocks; unrelated proof examples must be fenced/indented or inline to avoid
 conflicting proofs. A match and candidate read trace do not prove the whole task. Under `agent-sandbox`, checks stay within
 existing write/read boundaries. `--detail` restores raw output and skips automatic collection/canary/artifact checks;

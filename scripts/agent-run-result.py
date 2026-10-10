@@ -5,6 +5,7 @@ import json
 import math
 import re
 import shlex
+import sys
 from pathlib import Path
 
 DISPLAY_LIMIT = 12000
@@ -111,6 +112,18 @@ def contains_tool_syntax(text):
     return False
 
 
+def validate_canary_inputs(canary_file, expected_file):
+    for value in (canary_file, expected_file):
+        if not Path(value).is_file():
+            raise ValueError(f"canary input is not a regular file: {value}")
+    with Path(canary_file).open("rb") as stream:
+        if not stream.read(1):
+            raise ValueError(f"canary input is empty: {canary_file}")
+    token = Path(expected_file).read_text(encoding="utf-8").strip()
+    if not token or re.search(r"\s", token):
+        raise ValueError("invalid canary expected token")
+
+
 class Collection:
     def __init__(self, args):
         self.args = args
@@ -119,6 +132,7 @@ class Collection:
         self.final = ""
         self.final_line = None
         self.terminal = None
+        self.session_ids = set()
         self.usage = None
         self.runtime_metrics = {}
         self.events = self.tools = 0
@@ -159,6 +173,10 @@ class Collection:
         if self.token and self.mentions_canary(command) and self.token in str(output):
             self.read_visible = True
 
+    def session_identity(self, value):
+        if isinstance(value, str) and value.strip():
+            self.session_ids.add(value)
+
     def terminal_metrics(self, event):
         # Streaming updates are not totals. Keep only one unambiguous terminal.
         if self.terminal == "conflicting":
@@ -175,7 +193,9 @@ class Collection:
 
     def codex(self, event, line):
         kind = event.get("type")
-        if kind in {"turn.completed", "turn.failed"}:
+        if kind == "thread.started":
+            self.session_identity(event.get("thread_id"))
+        elif kind in {"turn.completed", "turn.failed"}:
             if self.terminal is not None:
                 self.note("errors", "multiple turn terminals", line)
                 self.terminal = "conflicting"
@@ -220,7 +240,10 @@ class Collection:
 
     def claude(self, event, line):
         kind = event.get("type")
-        if kind == "result":
+        if kind == "system" and event.get("subtype") == "init":
+            self.session_identity(event.get("session_id"))
+        elif kind == "result":
+            self.session_identity(event.get("session_id"))
             if self.terminal is not None:
                 self.note("errors", "multiple result terminals", line)
                 self.terminal = "conflicting"
@@ -331,6 +354,11 @@ class Collection:
                 self.note("errors", f"required artifact is not a regular file: {target}")
             else:
                 try:
+                    logs = (a.output, a.stderr, a.last_message)
+                    if target.stat().st_nlink != 1 or any(
+                            value and Path(value).exists() and target.samefile(value) for value in logs):
+                        self.note("errors", f"required artifact is hard-linked or aliases a runner log: {target}")
+                        continue
                     with target.open(encoding="utf-8") as stream:
                         check_proofs(stream, "artifact", target)
                 except UnicodeError:
@@ -364,6 +392,9 @@ class Collection:
             self.note("errors", f"runtime process exited {a.exit_code}")
         if a.runner_exit_code != 0 and a.runner_exit_code != a.exit_code:
             self.note("errors", f"runner postprocessing failed: {a.runner_exit_code}")
+        if len(self.session_ids) > 1:
+            self.stream = "output"
+            self.note("anomalies", "conflicting runtime session identifiers; session_id unavailable")
         validation = "rejected" if self.counts["errors"] else "needs_review" if self.counts["anomalies"] else "passed"
         return dict(schema_version=1, source="subagent_report", runtime=a.runtime, provider=a.provider,
                     runtime_exit_code=a.exit_code, runner_exit_code=a.runner_exit_code or (1 if validation == "rejected" else 0),
@@ -371,6 +402,7 @@ class Collection:
                     validation_status=validation, result_status="not_assessed", final_answer=self.final[:DISPLAY_LIMIT],
                     final_answer_truncated=len(self.final) > DISPLAY_LIMIT, final_answer_chars=len(self.final),
                     wall_clock_seconds=elapsed_seconds(a.wall_clock_seconds), usage=self.usage, runtime_metrics=self.runtime_metrics,
+                    session_id=next(iter(self.session_ids)) if len(self.session_ids) == 1 else None,
                     terminal=self.terminal, tool_evidence_scope="recorded_events_only", tool_results=self.tools, events=self.events,
                     canary_status=self.canary_status, canary_read_candidate=self.read_visible,
                     errors=self.errors, anomalies=self.anomalies, warnings=self.warnings,
@@ -387,6 +419,17 @@ def elapsed_seconds(value):
 
 
 def main():
+    if sys.argv[1:2] == ["--validate-canary-inputs"]:
+        check = argparse.ArgumentParser(description="Internal canary setup validation")
+        check.add_argument("--validate-canary-inputs", action="store_true")
+        check.add_argument("--canary-file", required=True)
+        check.add_argument("--canary-expected", required=True)
+        args = check.parse_args()
+        try:
+            validate_canary_inputs(args.canary_file, args.canary_expected)
+        except (OSError, ValueError, UnicodeError) as exc:
+            check.error(str(exc))
+        return 0
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runtime", required=True, choices=("codex", "claude"))
     parser.add_argument("--provider", required=True)

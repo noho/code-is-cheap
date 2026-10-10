@@ -36,9 +36,9 @@ Run options:
   --artifact <path>          Optional NEW regular task file; repeatable. Checked after execution.
   --canary-file <path>       Optional canary input path (paired with --canary-expected).
   --canary-expected <path>   Controller's expected token file; never sent in the prompt.
-  --output <path>            Save raw runtime output to a NEW private file.
-  --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
-  --last-message <path>      Save final message to a NEW file after the run completes.
+  --output <path>            Save raw runtime output to a NEW private file; - requires --detail.
+  --stderr <path>            Write stderr to a NEW private file; - requires --detail.
+  --last-message <path>      Save final message to a NEW file; - requires --detail.
   --sandbox <mode>           read-only, workspace-write, or danger-full-access.
   --full-access              Disable the runtime sandbox and skip approvals (opt-in).
   --thread-source <source>   Pass a Codex thread source classification.
@@ -381,6 +381,12 @@ command -v codex >/dev/null 2>&1 || die "codex command not found"
 
 cd -- "$workdir" || die "cannot enter working directory: $workdir"
 
+if [[ "$detail" == false ]]; then
+  [[ "$output_file" != "-" ]] || die "--output - requires --detail"
+  [[ "$stderr_file" != "-" ]] || die "--stderr - requires --detail"
+  [[ "$last_message_file" != "-" ]] || die "--last-message - requires --detail"
+fi
+
 if [[ "$output_file" == "-" ]]; then
   output_file=""
 elif [[ -n "$output_file" ]]; then
@@ -409,6 +415,10 @@ if [[ "$detail" == false ]]; then
   result_adapter="$agent_run_script_dir/agent-run-result.py"
   [[ -r "$result_adapter" ]] || die "result adapter missing: $result_adapter"
   command -v python3 >/dev/null 2>&1 || die "python3 is required for result collection"
+  if [[ -n "$canary_file" ]]; then
+    python3 "$result_adapter" --validate-canary-inputs --canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}" \
+      || die "invalid canary setup; runtime was not started"
+  fi
   if [[ -z "$output_file" || -z "$stderr_file" ]]; then
     log_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-run.XXXXXXXX")" || die "cannot create log directory"
     [[ -n "$output_file" ]] || output_file="$log_dir/output.jsonl"

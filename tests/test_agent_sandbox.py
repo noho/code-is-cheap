@@ -265,7 +265,7 @@ print(json.dumps(r))
         p = self.root
         return subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
+            '--prompt','test','--detail','--output',str(p/'sinks/result')],env=self.env,capture_output=True,text=True,timeout=45)
 
     def test_kernel_boundary_and_write_preservation(self):
         result = self.launch()
@@ -340,7 +340,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
         (p/'denies.json').write_text(json.dumps(entries))
         result = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','codex-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'sinks/result')],
+            '--prompt','test','--detail','--output',str(p/'sinks/result')],
             env=self.env,capture_output=True,text=True,timeout=300)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertIn('read boundary verified; starting runner',result.stderr)
@@ -371,7 +371,7 @@ print(f'agent-sandbox: seatbelt_profile={state}/seatbelt.sb profile_sha256={forg
         (p/'bin/claude-agent-run').symlink_to(p/'bin/codex-agent-run')
         check = subprocess.run([str(ROOT/'scripts/agent-sandbox'),'--check','--cwd',str(p/'work'),
             '--deny-list',str(p/'denies.json'),'--','claude-agent-run','--provider','mimo',
-            '--prompt','test','--output',str(p/'work/original-blocked')],
+            '--prompt','test','--detail','--output',str(p/'work/original-blocked')],
             env=self.env,capture_output=True,text=True,timeout=45)
         self.assertNotEqual(check.returncode,0)
         self.assertIn('output conflicts with original write denial',check.stderr)

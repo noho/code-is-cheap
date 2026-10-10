@@ -25,10 +25,13 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace --
 或显式 --artifact 文本文件中。比较只剥离常见成对引号/句末排版标点，token 仍严格比较。
 显式启用 canary 后，讨论旧 token 的示例须放围栏/缩进代码块或行内示例中；其它独立 CANARY 行会被当作
 当前证明并可能造成冲突拒收。普通任务正文可以讨论 canary，不再按宽泛 regex 拒绝。
-匹配只证明指定 token 被报告；candidate read 是路径和工具输出的候选记录，不能证明其它输入或整个任务正确。
+直接 runner 在启动前检查成对输入是可读、非空普通文件，expected token 非空且内部无空白；不满足时不启动 runtime。
+运行后仍核对证明。匹配只证明指定 token 被报告；candidate read 是路径和工具输出的候选记录，不能证明其它输入或整个任务正确。
 
 需要机械检查交付文件时，重复传 --artifact /absolute/new-file。文件必须是本轮新建普通文件，不是既有源码、
 目录、符号链接或日志路径别名。预检把路径加入任务并传给 runner；收尾检查不存在/非普通文件时拒收。
+收尾拒绝多硬链接及 retained log 的文件别名；“新建”只检查调用前该路径不存在，不证明 inode 来源或文件内容。
+需要硬链接产物的任务可不声明 --artifact，由调用方按任务核对。
 不声明时 runner 不从 final answer 自动抽取路径，调用方按任务需要直接使用其中的文件。
 --detail 不进行这些自动收尾检查。所选显式检查未满足不能悄悄视为通过。
 
