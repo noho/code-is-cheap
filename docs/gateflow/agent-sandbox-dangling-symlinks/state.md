@@ -1,7 +1,7 @@
 # Gate state: agent-sandbox-dangling-symlinks
 
 - Status: active; goal confirmed by user delegation.
-- Current gate / next entry point: accepted slice commit (S1).
+- Current gate / next entry point: accepted deepreview commit.
 - Branch: fix/agent-sandbox-dangling-symlinks; base: main d51765b.
 - Artifact: goal.md (confirmed).
 - Decision: dispatch gpt-6-sol for plan only; controller adjudicates and advances remaining gates automatically.
@@ -24,3 +24,7 @@
 - S1 implemented by gpt-6-sol: actual exit=0, 956.865878s; implementation.md and retained raw evidence. Kernel 52/52, zero skips; initial fixture failures recovered and retained, not mechanical Agent rejection. Parallel independent code review next.
 
 - S1 code review PASS: code-review.md; both reviewers actual exit=0, no material findings; fix/re-review no-op, residuals classified.
+
+- Accepted S1 commit: a6124c1e52280c94f8221cd0c030492b2954398f; approved single slice complete.
+
+- Aggregate deepreview PASS: aggregate-deepreview.md; both actual exits=0, no material finding, fix/re-review no-op and residuals classified.
