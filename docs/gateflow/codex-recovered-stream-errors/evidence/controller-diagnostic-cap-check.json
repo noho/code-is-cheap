@@ -1,0 +1,15 @@
+{
+  "command": "controller synthetic prototype check (AST prefix only; no original log replay)",
+  "fixture": "/private/tmp/codex-recovery-controller-check-ddyeonjx/events.jsonl",
+  "events": 49,
+  "validation_status": "passed",
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 0,
+    "warnings": 45
+  },
+  "displayed_warning_count": 20,
+  "displayed_recovered_notice_count": 0,
+  "diagnostics_truncated": true,
+  "prototype_only": true
+}

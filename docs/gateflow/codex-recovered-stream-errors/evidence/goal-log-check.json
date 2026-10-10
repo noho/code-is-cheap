@@ -1,0 +1,229 @@
+{
+  "scope": "Only named raw JSONL/stderr/last.md and runner-summary.json; no business artifact/canary/expected file read",
+  "baseline": "/Users/leo/workspace/code-is-cheap",
+  "source_files": [
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.jsonl",
+      "bytes": 1778012,
+      "sha256": "2aa7a70c47b2aa2d07a9187992601e814b94d02542d976fb7be63cba8d1292f5"
+    },
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.stderr",
+      "bytes": 253,
+      "sha256": "64a473f3c344324da66ffe966582c3e49f01f545056b99b95489d39bd12d0385"
+    },
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.last.md",
+      "bytes": 669,
+      "sha256": "864edc0711a20123b9bceeebc2e81b72f40e33e151a9ceca9eb4420bd7bdee59"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261010-0700-01/g1-location-code-review-b-02-evidence/runner-summary.json",
+      "bytes": 7327,
+      "sha256": "4bed59c852d001b1c9fd3bcdb2c97a06f8e597f59679cd9a230917af01dc5bde"
+    }
+  ],
+  "structural_sequence": [
+    {
+      "line": 1,
+      "event": {
+        "type": "thread.started",
+        "thread_id": "01a12720-93ba-7a10-bfa8-d93512089b62"
+      }
+    },
+    {
+      "line": 2,
+      "event": {
+        "type": "turn.started"
+      }
+    },
+    {
+      "line": 193,
+      "event": {
+        "type": "error",
+        "message": "Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)"
+      }
+    },
+    {
+      "line": 194,
+      "type": "item.started",
+      "item_id": "item_97",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 195,
+      "type": "item.completed",
+      "item_id": "item_97",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 196,
+      "type": "item.started",
+      "item_id": "item_98",
+      "item_type": "file_change"
+    },
+    {
+      "line": 197,
+      "type": "item.completed",
+      "item_id": "item_98",
+      "item_type": "file_change"
+    },
+    {
+      "line": 198,
+      "type": "item.started",
+      "item_id": "item_99",
+      "item_type": "file_change"
+    },
+    {
+      "line": 199,
+      "type": "item.completed",
+      "item_id": "item_99",
+      "item_type": "file_change"
+    },
+    {
+      "line": 200,
+      "type": "item.started",
+      "item_id": "item_100",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 201,
+      "type": "item.completed",
+      "item_id": "item_100",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 202,
+      "type": "item.started",
+      "item_id": "item_101",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 203,
+      "type": "item.completed",
+      "item_id": "item_101",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 204,
+      "type": "item.started",
+      "item_id": "item_102",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 205,
+      "type": "item.started",
+      "item_id": "item_103",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 206,
+      "type": "item.started",
+      "item_id": "item_104",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 207,
+      "type": "item.completed",
+      "item_id": "item_102",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 208,
+      "type": "item.completed",
+      "item_id": "item_103",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 209,
+      "type": "item.completed",
+      "item_id": "item_104",
+      "item_type": "command_execution"
+    },
+    {
+      "line": 210,
+      "type": "item.completed",
+      "item_id": "item_105",
+      "item_type": "agent_message"
+    },
+    {
+      "line": 211,
+      "event": {
+        "type": "turn.completed",
+        "usage": {
+          "input_tokens": 8230600,
+          "cached_input_tokens": 7751168,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 42686,
+          "reasoning_output_tokens": 19732
+        }
+      }
+    }
+  ],
+  "parsed_events": 211,
+  "error_count": 1,
+  "turn_started_count": 1,
+  "turn_failed_count": 0,
+  "turn_completed_count": 1,
+  "last_message_matches_final": true,
+  "summary_final_matches_event": true,
+  "native_summary": {
+    "runtime_exit_code": 0,
+    "runner_exit_code": 1,
+    "validation_status": "rejected",
+    "agent_status": "completed",
+    "terminal": "turn.completed",
+    "canary_status": "match",
+    "wall_clock_seconds": 1271.418953,
+    "usage": {
+      "input_tokens": 8230600,
+      "cached_input_tokens": 7751168,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 42686,
+      "reasoning_output_tokens": 19732
+    },
+    "diagnostic_counts": {
+      "errors": 1,
+      "anomalies": 5,
+      "warnings": 0
+    }
+  },
+  "summary_artifact_metadata": [
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261010-0700-01/g1-location-code-review-b-02-evidence/report.md",
+      "exists": true,
+      "regular_file": true
+    }
+  ],
+  "offline_replay": {
+    "runtime_exit_code": 0,
+    "runner_exit_code": 1,
+    "validation_status": "rejected",
+    "agent_status": "completed",
+    "terminal": "turn.completed",
+    "usage": {
+      "input_tokens": 8230600,
+      "cached_input_tokens": 7751168,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 42686,
+      "reasoning_output_tokens": 19732
+    },
+    "diagnostic_counts": {
+      "errors": 1,
+      "anomalies": 5,
+      "warnings": 0
+    },
+    "errors": [
+      {
+        "stream": "output",
+        "line": 193,
+        "message": "{'type': 'error', 'message': 'Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)'}",
+        "message_chars": 132,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ]
+  },
+  "offline_check_scope": "Full real JSONL/stderr/last-message parsed by baseline collector, precollection runner exit=0; explicit canary/artifact checks omitted because original inputs are not in authorized read scope. Their match/existence values above are original summary evidence, not a replay."
+}

@@ -1,0 +1,302 @@
+{
+  "scope": "private synthetic specification checks; unmodified collector",
+  "diagnostic_cases": [
+    {
+      "name": "unsaturated-success-25",
+      "category": "warnings",
+      "old_count": 0,
+      "candidates": 25,
+      "final_count": 25,
+      "displayed": 20,
+      "first_notice_line": 3,
+      "preserved_old": 0,
+      "evictions": 0,
+      "proof_observed_errors": 0,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "unsaturated-failure-25",
+      "category": "errors",
+      "old_count": 0,
+      "candidates": 25,
+      "final_count": 25,
+      "displayed": 20,
+      "first_notice_line": 3,
+      "preserved_old": 0,
+      "evictions": 0,
+      "proof_observed_errors": 0,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "saturated-success-20-old-25-notices",
+      "category": "warnings",
+      "old_count": 20,
+      "candidates": 25,
+      "final_count": 45,
+      "displayed": 20,
+      "first_notice_line": 23,
+      "preserved_old": 19,
+      "evictions": 1,
+      "proof_observed_errors": 0,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "saturated-failure-20-old-25-notices",
+      "category": "errors",
+      "old_count": 20,
+      "candidates": 25,
+      "final_count": 45,
+      "displayed": 20,
+      "first_notice_line": 23,
+      "preserved_old": 19,
+      "evictions": 1,
+      "proof_observed_errors": 20,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "overflowed-failure-23-old-25-notices",
+      "category": "errors",
+      "old_count": 23,
+      "candidates": 25,
+      "final_count": 48,
+      "displayed": 20,
+      "first_notice_line": 26,
+      "preserved_old": 19,
+      "evictions": 1,
+      "proof_observed_errors": 23,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "one-slot-success-19-old-25-notices",
+      "category": "warnings",
+      "old_count": 19,
+      "candidates": 25,
+      "final_count": 44,
+      "displayed": 20,
+      "first_notice_line": 22,
+      "preserved_old": 19,
+      "evictions": 0,
+      "proof_observed_errors": 0,
+      "text_truncated": false,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "evicted-long-warning-keeps-text-truncation",
+      "category": "warnings",
+      "old_count": 20,
+      "candidates": 1,
+      "final_count": 21,
+      "displayed": 20,
+      "first_notice_line": 23,
+      "preserved_old": 19,
+      "evictions": 1,
+      "proof_observed_errors": 0,
+      "text_truncated": true,
+      "diagnostics_truncated": true
+    },
+    {
+      "name": "evicted-long-error-keeps-text-truncation",
+      "category": "errors",
+      "old_count": 20,
+      "candidates": 1,
+      "final_count": 21,
+      "displayed": 20,
+      "first_notice_line": 23,
+      "preserved_old": 19,
+      "evictions": 1,
+      "proof_observed_errors": 20,
+      "text_truncated": true,
+      "diagnostics_truncated": true
+    }
+  ],
+  "contract_controls": [
+    {
+      "name": "codex-clean",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "codex-anomaly",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "needs_review",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "codex-baseline-known-notice",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "rejected",
+      "runner_exit_code": 1
+    },
+    {
+      "name": "codex-baseline-mixed-order",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "rejected",
+      "runner_exit_code": 1
+    },
+    {
+      "name": "claude-clean",
+      "runtime": "claude",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "claude-error",
+      "runtime": "claude",
+      "key_count": 29,
+      "validation_status": "rejected",
+      "runner_exit_code": 1
+    }
+  ],
+  "ordinary_shape_controls": [
+    {
+      "name": "thread-start-extra-field-metadata",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "thread-start-extra-field-status",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "thread-start-extra-field-error",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "turn-start-extra-field-metadata",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "turn-start-extra-field-status",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "turn-start-extra-field-error",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "terminal-extra-field-metadata",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "terminal-extra-field-status",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "terminal-extra-field-error",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-envelope-extra-field-metadata",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-envelope-extra-field-status",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-envelope-extra-field-error",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-item-extra-field-metadata",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-item-extra-field-status",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "final-item-extra-field-error",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "preamble-before-thread-start",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    },
+    {
+      "name": "item-between-starts",
+      "runtime": "codex",
+      "key_count": 29,
+      "validation_status": "passed",
+      "runner_exit_code": 0
+    }
+  ],
+  "grammar_checks": {
+    "accepted_ascii_attempts": 5,
+    "rejected_lookalikes": 10,
+    "observed_attempt": "1/5",
+    "other_attempts": "synthetic only"
+  },
+  "mixed_order_specification": {
+    "first_notice": 3,
+    "selected_final": 4,
+    "last_notice": 5,
+    "terminal": 6,
+    "proof": false,
+    "late_notice_required_error_line": 5
+  },
+  "static_validation": {
+    "baseline_test_methods": 38,
+    "required_full_file_command": true,
+    "literal_report_key_count": 29
+  },
+  "all_assertions_passed": true
+}

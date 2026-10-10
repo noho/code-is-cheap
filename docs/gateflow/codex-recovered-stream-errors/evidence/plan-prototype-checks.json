@@ -1,0 +1,2934 @@
+{
+  "status": "all assertions passed",
+  "cases": 58,
+  "records": [
+    {
+      "case": "authorized-original-scoped-replay",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 211,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 5,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 8230600,
+          "cached_input_tokens": 7751168,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 42686,
+          "reasoning_output_tokens": 19732
+        },
+        "wall_clock_seconds": 1271.418953
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "terminal": "turn.completed",
+        "events": 211,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 5,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 8230600,
+          "cached_input_tokens": 7751168,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 42686,
+          "reasoning_output_tokens": 19732
+        },
+        "wall_clock_seconds": 1271.418953
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 193
+        }
+      ],
+      "original_optional_checks_rerun": false
+    },
+    {
+      "case": "recovered-clean",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-2",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-3",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-4",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-5",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "bounded-25-notices",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 29,
+        "diagnostic_counts": {
+          "errors": 25,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 29,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 25
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        },
+        {
+          "stream": "output",
+          "line": 4
+        },
+        {
+          "stream": "output",
+          "line": 5
+        },
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": 7
+        },
+        {
+          "stream": "output",
+          "line": 8
+        },
+        {
+          "stream": "output",
+          "line": 9
+        },
+        {
+          "stream": "output",
+          "line": 10
+        },
+        {
+          "stream": "output",
+          "line": 11
+        },
+        {
+          "stream": "output",
+          "line": 12
+        },
+        {
+          "stream": "output",
+          "line": 13
+        },
+        {
+          "stream": "output",
+          "line": 14
+        },
+        {
+          "stream": "output",
+          "line": 15
+        },
+        {
+          "stream": "output",
+          "line": 16
+        },
+        {
+          "stream": "output",
+          "line": 17
+        },
+        {
+          "stream": "output",
+          "line": 18
+        },
+        {
+          "stream": "output",
+          "line": 19
+        },
+        {
+          "stream": "output",
+          "line": 20
+        },
+        {
+          "stream": "output",
+          "line": 21
+        },
+        {
+          "stream": "output",
+          "line": 22
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "intermediate-final-allowed",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "missing-usage-does-not-block",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "arbitrary-error",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "prefix-lookalike",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "suffix-lookalike",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "newline-lookalike",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "other-transport",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-zero",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "attempt-six",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "other-budget",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "unicode-attempt",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "nonstring-message",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "extra-error-field",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "missing-thread",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 2
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "missing-turn",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 2
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "notice-before-turn",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 2
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "orphan-prefix-item",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "item-between-starts",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "two-turns",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "two-threads-same-id",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "two-threads-conflicting",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "final-before-notice-only",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "notice-after-terminal",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": 3
+        },
+        {
+          "stream": "output",
+          "line": 6
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "missing-terminal",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": null,
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": null,
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "duplicate-terminal",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "conflicting",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 4,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "conflicting",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 4,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "failed-then-completed",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "conflicting",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 5,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "conflicting",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 5,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 5
+        },
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": 6
+        },
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "missing-final",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 4,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "malformed-json",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "duplicate-json-key",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "unknown-plus-known-error",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "invalid-thread-id",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "unknown-start-shape",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "unknown-terminal-shape",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "blank-final",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "nonstring-final",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 4
+        },
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "failed-final-shape",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "native-nonzero",
+      "baseline": {
+        "runtime_exit_code": 7,
+        "runner_exit_code": 7,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 7,
+        "runner_exit_code": 7,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "stderr",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "postprocessing-nonzero",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "stderr",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "last-message-mismatch",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "stderr-anomaly-remains",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "allowed-rate-limit-after-terminal",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "selected-checks-pass",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "match",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "canary_status": "match",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "selected-canary-mismatch",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "artifact",
+          "line": 1
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "selected-canary-missing-proof",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "collection",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "selected-artifact-missing",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "artifact",
+          "line": null
+        },
+        {
+          "stream": "collection",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "selected-artifact-directory",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 6,
+        "diagnostic_counts": {
+          "errors": 3,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "mismatch",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "artifact",
+          "line": null
+        },
+        {
+          "stream": "collection",
+          "line": null
+        },
+        {
+          "stream": "output",
+          "line": 3
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "claude-error-unchanged",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "success",
+        "events": 3,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "success",
+        "events": 3,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [
+        {
+          "stream": "output",
+          "line": 2
+        }
+      ],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "claude-clean-unchanged",
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "success",
+        "events": 2,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "prototype": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "terminal": "success",
+        "events": 2,
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": null,
+        "wall_clock_seconds": 0.0
+      },
+      "preservation_assertions_pass": true,
+      "source_diagnostics": [],
+      "original_optional_checks_rerun": null
+    },
+    {
+      "case": "baseline-shell-known-notice",
+      "outer_exit": 1,
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.05315
+      }
+    },
+    {
+      "case": "baseline-shell-native-code",
+      "outer_exit": 7,
+      "baseline": {
+        "runtime_exit_code": 7,
+        "runner_exit_code": 7,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.052492
+      }
+    },
+    {
+      "case": "baseline-shell-last-mismatch",
+      "outer_exit": 1,
+      "baseline": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "terminal": "turn.completed",
+        "events": 5,
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "canary_status": "not_run",
+        "usage": {
+          "input_tokens": 7,
+          "output_tokens": 0
+        },
+        "wall_clock_seconds": 0.061633
+      }
+    }
+  ],
+  "original_hashes_after": [
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.jsonl",
+      "sha256_match": true
+    },
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.stderr",
+      "sha256_match": true
+    },
+    {
+      "path": "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/sub-agents.WY1mqF/tencent-g1-location-code-review-b-02.last.md",
+      "sha256_match": true
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261010-0700-01/g1-location-code-review-b-02-evidence/runner-summary.json",
+      "sha256_match": true
+    }
+  ],
+  "limitation": "Private prototype is planning evidence, not production implementation. Original optional checks omitted. Original wall value supplied from archive; synthetic collector wall=0 is a literal fixture, shell time is separate offline time."
+}

@@ -1,0 +1,29 @@
+{
+  "gate": "plan review",
+  "provider": "mimo",
+  "runtime": "codex",
+  "attempt": 1,
+  "repair_retry": 0,
+  "managed_exit_code": 130,
+  "native_runtime_exit_code": null,
+  "wall_clock_seconds": null,
+  "usage": null,
+  "reason": "User-authorized targeted interruption after repeated malformed write_stdin/router errors, no native terminal; partial report unaccepted. Only managed session 76579 interrupted.",
+  "authorization": "User message authorizing one same-route retry; external decision artifact path supplied but not read (caller business scope unchanged).",
+  "logs": {
+    "plan-review-mimo.jsonl": {
+      "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo.jsonl",
+      "bytes": 385484,
+      "sha256": "d48d0feba275b369f8df66276ce05cc54126f1bb9b4aa5a94d85498b2192fa56"
+    },
+    "plan-review-mimo.stderr": {
+      "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo.stderr",
+      "bytes": 1937,
+      "sha256": "3d7cdc698f3002c2211f19fcf79bab32b86a2aecffd90b9954f07f5f9cf68fc0"
+    }
+  },
+  "events": 124,
+  "terminals": [],
+  "router_parse_failure_count": 13,
+  "partial_report": "docs/reviews/plan-review-20261011-033015.md"
+}

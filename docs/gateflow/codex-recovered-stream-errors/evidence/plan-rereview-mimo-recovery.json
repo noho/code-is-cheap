@@ -1,0 +1,83 @@
+{
+  "gate": "plan re-review",
+  "actual_managed_exit": 1,
+  "actual_native_exit": 0,
+  "actual_runner_exit": 1,
+  "actual_counts": {
+    "errors": 1,
+    "anomalies": 2,
+    "warnings": 0
+  },
+  "structural_events": [
+    {
+      "line": 1,
+      "type": "thread.started",
+      "keys": [
+        "thread_id",
+        "type"
+      ]
+    },
+    {
+      "line": 2,
+      "type": "turn.started",
+      "keys": [
+        "type"
+      ]
+    },
+    {
+      "line": 69,
+      "type": "error",
+      "keys": [
+        "message",
+        "type"
+      ],
+      "message": "Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)"
+    },
+    {
+      "line": 82,
+      "type": "turn.completed",
+      "keys": [
+        "type",
+        "usage"
+      ]
+    }
+  ],
+  "selected_final_line": 81,
+  "final_matches_report": true,
+  "peer_current_review_information_seen_in_recorded_outputs": false,
+  "private_supported_proof_replay": {
+    "prototype_only": true,
+    "precollection_exit_source": "actual agent_status completed plus runner call chain; not archived synthesized runner1",
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 2,
+      "warnings": 1
+    },
+    "validation_status": "needs_review",
+    "runner_exit_code": 0,
+    "preserved_keys": [
+      "final_answer",
+      "usage",
+      "runtime_metrics",
+      "wall_clock_seconds",
+      "terminal",
+      "session_id",
+      "logs",
+      "tool_results",
+      "events"
+    ]
+  },
+  "decision": "Review accepted by controller: sole hard error is proven recovered known notification; actual failure flags retained. No retry. MCP/stderr and recovered wc path failures adjudicated nonblocking for bounded local review.",
+  "raw_logs": {
+    "plan-rereview-mimo.jsonl": {
+      "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-mimo.jsonl",
+      "bytes": 344564,
+      "sha256": "afff2181e9f06a0f02b9fc1ed7932726de7b2ba1bb89f0fa3f02becc29f7eb63"
+    },
+    "plan-rereview-mimo.stderr": {
+      "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-mimo.stderr",
+      "bytes": 319,
+      "sha256": "09bb75ecc8c4c13f07032616faf6885a164ca18710fa4d59d8e85df7df4d2812"
+    }
+  }
+}

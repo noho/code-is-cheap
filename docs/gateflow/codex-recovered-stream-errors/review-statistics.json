@@ -1,0 +1,281 @@
+{
+  "work_unit": "codex-recovered-stream-errors",
+  "calls": [
+    {
+      "gate": "plan",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 587.281336,
+      "usage": {
+        "input_tokens": 834621,
+        "cached_input_tokens": 755200,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 24995,
+        "reasoning_output_tokens": 8866
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12740-be6b-7a01-b23b-93cc5f29af09",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-output.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-stderr.log",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "plan review",
+      "artifact": "docs/reviews/plan-review-20261011-033016.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 344.711112,
+      "usage": {
+        "input_tokens": 103081,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1433856,
+        "output_tokens": 69288,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 342268,
+        "duration_api_ms": 338772,
+        "total_cost_usd": 2.9645330000000003,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 103081,
+            "outputTokens": 69288,
+            "cacheReadInputTokens": 1433856,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 2.9645330000000003,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "0a2e1ce4-c431-4cd6-81dc-069a9c6a4bdd",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "plan review",
+      "provider": "mimo",
+      "runtime": "codex",
+      "attempt": 1,
+      "repair_retry": 0,
+      "managed_exit_code": 130,
+      "native_runtime_exit_code": null,
+      "wall_clock_seconds": null,
+      "usage": null,
+      "reason": "User-authorized targeted interruption after repeated malformed write_stdin/router errors, no native terminal; partial report unaccepted. Only managed session 76579 interrupted.",
+      "authorization": "User message authorizing one same-route retry; external decision artifact path supplied but not read (caller business scope unchanged).",
+      "logs": {
+        "plan-review-mimo.jsonl": {
+          "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo.jsonl",
+          "bytes": 385484,
+          "sha256": "d48d0feba275b369f8df66276ce05cc54126f1bb9b4aa5a94d85498b2192fa56"
+        },
+        "plan-review-mimo.stderr": {
+          "path": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo.stderr",
+          "bytes": 1937,
+          "sha256": "3d7cdc698f3002c2211f19fcf79bab32b86a2aecffd90b9954f07f5f9cf68fc0"
+        }
+      },
+      "events": 124,
+      "terminals": [],
+      "router_parse_failure_count": 13,
+      "partial_report": "docs/reviews/plan-review-20261011-033015.md"
+    },
+    {
+      "gate": "plan review",
+      "attempt": 2,
+      "repair_retry": 1,
+      "artifact": "docs/reviews/plan-review-20261011-034538.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 752.571508,
+      "usage": {
+        "input_tokens": 3060804,
+        "cached_input_tokens": 2783744,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 28280,
+        "reasoning_output_tokens": 19177
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12759-8a6f-78c3-9fac-4369b075c21c",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo-retry-1.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-review-mimo-retry-1.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "plan fix",
+      "artifact": "docs/gateflow/codex-recovered-stream-errors/plan-fix-01.md",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 505.391238,
+      "usage": {
+        "input_tokens": 1708284,
+        "cached_input_tokens": 1593728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 22713,
+        "reasoning_output_tokens": 5676
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12766-2a60-7490-9d70-e8c0ef30583d",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-fix-01.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-fix-01.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "plan re-review",
+      "artifact": "docs/reviews/plan-review-20261011-040833.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 354.60453,
+      "usage": {
+        "input_tokens": 107358,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1246848,
+        "output_tokens": 72825,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 351694,
+        "duration_api_ms": 341911,
+        "total_cost_usd": 2.980839,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 107358,
+            "outputTokens": 72825,
+            "cacheReadInputTokens": 1246848,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 2.980839,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "ff5aec22-9444-4c03-93ae-cf68c072b9dc",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "plan re-review",
+      "artifact": "docs/reviews/plan-review-20261011-040832.md",
+      "managed_exit_code": 1,
+      "controller_review_acceptance": "accepted after known recovered-notice defect proof; actual runner result preserved",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "wall_clock_seconds": 693.592846,
+      "usage": {
+        "input_tokens": 2628288,
+        "cached_input_tokens": 2373632,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23648,
+        "reasoning_output_tokens": 15160
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1276e-8a2c-7af0-95bd-16957f52bbe5",
+      "logs": {
+        "output": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/codex-recovery-gateflow-tifv8dmb/plan-rereview-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 1,
+        "anomalies": 2,
+        "warnings": 0
+      }
+    }
+  ]
+}
