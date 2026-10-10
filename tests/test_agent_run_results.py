@@ -48,11 +48,11 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.expected = self.root / 'expected.txt'
         self.expected.write_text('fresh-12345678')
 
-    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None, workdir=None):
+    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None, workdir=None, prompt="bounded test"):
         fixture = self.root / 'events'
         fixture.write_text('\n'.join(json.dumps(e) if isinstance(e, dict) else e for e in events)+'\n')
         env = self.env | {'FIXTURE': str(fixture), 'RUNTIME_EXIT': str(exit_code), 'ERR': err, 'FINAL': final}
-        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(workdir or ROOT), '--prompt', 'bounded test', *args], env=env, capture_output=True, text=True)
+        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(workdir or ROOT), '--prompt', prompt, *args], env=env, capture_output=True, text=True)
         return result
 
     def codex(self, text='done'):
@@ -373,25 +373,43 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.assertTrue(report['diagnostics_truncated'])
         self.assertIn('x'*15000,Path(report['logs']['output']).read_text())
 
-    def test_bare_tool_objects_without_execution_are_rejected(self):
+    def test_bare_tool_objects_without_execution_need_task_judgment(self):
         for runtime in ('codex','claude'):
             for claim in ({'type':'tool_use','id':'fake','name':'Bash','input':{'command':'cat proof'}},
                           {'name':'exec_command','arguments':{'cmd':'cat proof'}}):
                 result=self.run_agent(runtime,getattr(self,runtime)(json.dumps(claim)))
-                self.assertEqual(result.returncode,1)
-                self.assertEqual(json.loads(result.stdout)['validation_status'],'rejected')
+                self.assertEqual(result.returncode,0)
+                self.assertEqual(json.loads(result.stdout)['validation_status'],'needs_review')
 
-    def test_wrapped_tool_claims_are_rejected_but_ordinary_json_types_are_data(self):
+    def test_tool_syntax_is_ambiguous_but_ordinary_json_types_are_data(self):
         tool=json.dumps({'type':'tool_use','name':'Bash','input':{'command':'cat proof'}})
         for runtime in ('codex','claude'):
             for text in ('Called '+tool+' just now', '~~~json\n'+tool+'\n~~~', '```json\n'+tool+'\n```\nDone.'):
                 result=self.run_agent(runtime,getattr(self,runtime)(text))
-                self.assertEqual(result.returncode,1)
-                self.assertEqual(json.loads(result.stdout)['validation_status'],'rejected')
+                self.assertEqual(result.returncode,0)
+                self.assertEqual(json.loads(result.stdout)['validation_status'],'needs_review')
             for text in (json.dumps({'type':['a','b'],'answer':'done'}),'['*600+'0'+']'*600):
                 result=self.run_agent(runtime,getattr(self,runtime)(text))
                 self.assertEqual(result.returncode,0,result.stderr)
                 self.assertEqual(json.loads(result.stdout)['validation_status'],'passed')
+
+    def test_legitimate_tool_example_is_delivered_and_cannot_replace_canary(self):
+        text='示例：\n```json\n{"type":"tool_call","name":"read","input":{}}\n```'
+        for runtime in ('codex','claude'):
+            result=self.run_agent(runtime,getattr(self,runtime)(text),
+                prompt='Give a tool-call JSON example; do not execute any tool.')
+            report=json.loads(result.stdout)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual(report['agent_status'],'completed')
+            self.assertEqual(report['final_answer'],text)
+            self.assertEqual(report['validation_status'],'needs_review')
+            self.assertEqual(report['errors'],[])
+            self.assertEqual(report['anomalies'][0]['stream'],'output')
+            self.assertIsNotNone(report['anomalies'][0]['line'])
+            result=self.run_agent(runtime,getattr(self,runtime)(text),
+                '--canary-file',str(self.canary),'--canary-expected',str(self.expected))
+            self.assertEqual(result.returncode,1)
+            self.assertEqual(json.loads(result.stdout)['canary_status'],'mismatch')
 
     def test_runner_postprocessing_errors_and_original_runtime_code_are_retained(self):
         for mode, phrase in (('missing','did not produce'),('raced','destination now exists'),('unwritable','cannot save')):

@@ -83,7 +83,7 @@ def reported_tokens(lines):
         yield number, token
 
 
-def literal_tool_claim(text):
+def contains_tool_syntax(text):
     if re.search(r'<tool_(?:call|result)>|"tool_calls"|"function_call"\s*:|'
                  r'"type"\s*:\s*"(?:tool_use|tool_call|tool_result|function_call)"|'
                  r'"name"\s*:\s*"[^"\n]+"\s*,\s*"(?:arguments|input)"\s*:', text):
@@ -347,8 +347,10 @@ class Collection:
         if self.tools == 0:
             if self.token:
                 self.note("anomalies", "no tool results visible; required evidence needs independent verification")
-            if literal_tool_claim(self.final):
-                self.note("errors", "literal tool syntax without tool execution evidence")
+            if contains_tool_syntax(self.final):
+                self.stream = "output"
+                self.note("anomalies", "tool-like text without recorded tool results; verify task intent and execution",
+                          line=self.final_line, path=a.output)
         self.stream = "stderr"
         try:
             with open(a.stderr, encoding="utf-8") as stream:

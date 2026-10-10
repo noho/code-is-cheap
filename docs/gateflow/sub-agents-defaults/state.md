@@ -6,7 +6,9 @@
 - Accepted plan commit: 1e20493.
 - Implementation: written and verified; implementation.md.
 - Code review/fix/re-review: pass; code-fix.md and code-re-review.md. All six accepted source/doc findings 已修复; both external re-review reports and final controller regression recorded.
-- Current gate / next entry point: accepted slice commit, then aggregate deepreview.
+- Accepted slice commit: b7ac57d.
+- Aggregate deepreview/fix/re-review: pass; complete PR controller report and aggregate-fix-and-re-review.md. Task-syntax ambiguity fixed and verified.
+- Current gate / next entry point: accepted deepreview commit, then ready-to-open-draft-PR.
 - Branch / PR: feat/sub-agent-result-collection / #50 reused.
 - Residual risks: classified in plan and re-review; owners stated.
 - Work unit: in progress. No live sync or merge.

@@ -347,7 +347,8 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 
 `validation_status` is `passed`, `needs_review` or `rejected`; `result_status` is always `not_assessed`. Ordinary tool errors
 are recorded in `anomalies` and do not automatically fail the Agent or require a per-event adjudication report. Judge
-unresolved issues by their impact on the task; inspect relevant evidence when needed. Runtime failure retains its nonzero
+unresolved issues by their impact on the task; tool-like text without recorded tools is an anomaly, since examples and
+execution claims cannot be distinguished from text alone; inspect relevant evidence when needed. Runtime failure retains its nonzero
 exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
 task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 

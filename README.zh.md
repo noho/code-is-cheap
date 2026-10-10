@@ -331,7 +331,7 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 
 `validation_status` 为 `passed`、`needs_review` 或 `rejected`，`result_status` 始终是 `not_assessed`。
 普通工具错误留在 `anomalies`，不自动判 Agent 失败，也不要求逐事件裁决报告；按它是否留下影响任务的未解决问题判断，
-需要时核对相关证据。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
+需要时核对相关证据。无工具记录的工具语法也只作诊断，不能仅凭文本区分示例和执行声明。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
 退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
 
 `wall_clock_seconds` 是 runner 启动至调用收集器的实测秒数，包含 setup/runtime/最终消息处理，不含收集器序列化和
