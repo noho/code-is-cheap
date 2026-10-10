@@ -17,7 +17,7 @@
 - Accepted PR-review commit: eaefaf896640fd376212d747217058c713e040ab.
 - Final review push: verified local/origin/GitHub head eaefaf8; PR50 OPEN/draft.
 - draft-PR-pass: pass; required reviews/fixes/accepted commit/final push complete.
-- Final closeout: pass; final-closeout.md. Closing documentation checkpoint to be pushed and remotely verified.
+- Final closeout: pass; final-closeout.md. Closing documentation97a0a89 published; GitHub head verified OPEN/draft. Publication receipt update contains only evidence.
 - Current gate / next entry point: user manual ready/merge; live sync only on explicit instruction.
 - Branch / PR: feat/sub-agent-result-collection / #50 reused.
 - Residual risks: classified in plan and re-review; owners stated.

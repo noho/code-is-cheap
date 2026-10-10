@@ -18,7 +18,7 @@ Gate: final closeout. Status: pass; work unit completed. Goal/plan confirmed by 
 - Published full-PR dual review: MiMo/Codex and DS Flash/Claude, exact bff4b3f/ebd547f immutable compare. Five accepted source/test/doc findings (four external + native session ID omission), all applied in959ef73.
 - Independent focused published re-review of959ef73: both routes actually exit0, all five final status 已修复, no new material finding/open question/unfinished issue. Evidence and controller dispositions in pr-review.md and pr-rereview.md; original reports preserved unchanged. Recovered tool errors/no-CI exit1 were evaluated by impact, not used as whole-Agent failure.
 - Accepted PR review commit eaefaf896640fd376212d747217058c713e040ab was pushed successfully; GitHub head verified equal, PR OPEN/draft. draft-PR-pass entry criteria satisfied before this final closeout.
-- Production scripts/skills/tests/READMEs/config remain identical to independently reviewed959ef73 (git diff exit0); follow-up commits contain evidence only. This closeout/state checkpoint is to be committed and pushed as final documentation, then remote identity reverified.
+- Production scripts/skills/tests/READMEs/config remain identical to independently reviewed959ef73 (git diff exit0); follow-up commits contain evidence only. Closeout documentation checkpoint97a0a89c320794f35e10e16eba05a94c383e8614 was pushed and GitHub head independently verified equal, OPEN/draft. This publication receipt adds only Gateflow evidence; final source remains unchanged.
 - PR: https://github.com/noho/code-is-cheap/pull/50. User retains manual ready/merge; no live sync, merge, approval, reviewer request, branch deletion, external issue/comment or other-project operation.
 
 ## Verified
