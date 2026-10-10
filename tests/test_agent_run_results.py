@@ -173,7 +173,9 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.assertEqual(result.returncode,2)
 
     def test_unrecognized_failed_item_and_incomplete_calls_require_adjudication(self):
-        for event in ({'type':'item.completed','item':{'id':'w','type':'web_search','status':'failed','error':'unavailable'}},
+        for event in ({'type':'item.started','item':{'id':'w','type':'web_search','status':'failed','error':'unavailable'}},
+                      {'type':'item.updated','item':{'id':'w','type':'web_search','status':'failed','error':'unavailable'}},
+                      {'type':'item.completed','item':{'id':'w','type':'web_search','status':'failed','error':'unavailable'}},
                       {'type':'item.started','item':{'id':'c','type':'command_execution','command':'cat missing','status':'in_progress'}}):
             events=self.codex();events.insert(2,event)
             result=self.run_agent('codex',events)
@@ -196,6 +198,27 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.assertEqual(result.returncode,1)
         self.assertEqual(report['terminal'],'conflicting')
         self.assertEqual(report['agent_status'],'failed')
+
+    def test_indented_nested_fences_and_html_examples_do_not_contaminate_proof(self):
+        for example in ('    CANARY=wrong','        CANARY=wrong','\tCANARY=wrong',
+                        '````text\n```\nCANARY=wrong\n```\n````', '<pre>\nCANARY=wrong\n</pre>',
+                        '```text\n<pre>\n```\nCANARY=fresh-12345678'):
+            for runtime in ('codex','claude'):
+                result=self.run_agent(runtime,getattr(self,runtime)('CANARY=fresh-12345678\n'+example),
+                    '--canary-file',str(self.canary),'--canary-expected',str(self.expected))
+                self.assertEqual(json.loads(result.stdout)['canary_status'],'match',example)
+
+    def test_canary_mismatch_locates_final_event_and_artifact_proof(self):
+        result=self.run_agent('codex',self.codex('CANARY=wrong'),'--canary-file',str(self.canary),'--canary-expected',str(self.expected))
+        error=json.loads(result.stdout)['errors'][0]
+        self.assertEqual((error['stream'],error['line'],error['proof_line']),('output',3,1))
+        good=self.root/'good.md';bad=self.root/'bad.md'
+        self.env['ARTIFACT_CONTENTS']=json.dumps({str(good):'CANARY=fresh-12345678\n',str(bad):'intro\nCANARY=wrong\n'})
+        result=self.run_agent('claude',self.claude(),'--artifact',str(good),'--artifact',str(bad),
+            '--canary-file',str(self.canary),'--canary-expected',str(self.expected))
+        error=json.loads(result.stdout)['errors'][0]
+        self.assertEqual((error['stream'],error['line'],error['proof_line']),('artifact',2,2))
+        self.assertEqual(Path(error['path']),bad.resolve())
 
     def test_wrong_canary_and_missing_artifact_reject(self):
         result=self.run_agent('codex',self.codex('CANARY=wrong'),'--canary-file',str(self.canary),'--canary-expected',str(self.expected),'--artifact',str(self.root/'missing.md'))
@@ -230,6 +253,18 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                 result=self.run_agent(runtime,getattr(self,runtime)(json.dumps(claim)))
                 self.assertEqual(result.returncode,1)
                 self.assertEqual(json.loads(result.stdout)['validation_status'],'rejected')
+
+    def test_wrapped_tool_claims_are_rejected_but_ordinary_json_types_are_data(self):
+        tool=json.dumps({'type':'tool_use','name':'Bash','input':{'command':'cat proof'}})
+        for runtime in ('codex','claude'):
+            for text in ('Called '+tool+' just now', '~~~json\n'+tool+'\n~~~', '```json\n'+tool+'\n```\nDone.'):
+                result=self.run_agent(runtime,getattr(self,runtime)(text))
+                self.assertEqual(result.returncode,1)
+                self.assertEqual(json.loads(result.stdout)['validation_status'],'rejected')
+            for text in (json.dumps({'type':['a','b'],'answer':'done'}),'['*600+'0'+']'*600):
+                result=self.run_agent(runtime,getattr(self,runtime)(text))
+                self.assertEqual(result.returncode,0,result.stderr)
+                self.assertEqual(json.loads(result.stdout)['validation_status'],'passed')
 
     def test_runner_postprocessing_errors_and_original_runtime_code_are_retained(self):
         for mode, phrase in (('missing','did not produce'),('raced','destination now exists'),('unwritable','cannot save')):

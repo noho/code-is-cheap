@@ -333,7 +333,7 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 
 最终答复最多展示 12000 字符并显式标记截断；每类诊断最多 20 条、每条 2000 字符，保留完整计数。截断时查看留存日志。
 preflight 自动传入成对的 `--canary-file` / `--canary-expected`；手工构造验证调用也须传入。canary 匹配与候选读取轨迹
-不能代替任务必需证据的独立复核。证明须单独一行 `CANARY=<token>`、不放代码块；行内示例不作为证明。
+不能代替任务必需证据的独立复核。证明须单独、不缩进的一行 `CANARY=<token>`、不放代码块；行内示例不作为证明。
 `tool_evidence_scope=recorded_events_only` 不保证所有工具通道的轨迹完整。完整取证应写入任务产物。
 `agent-sandbox` 下产物必须位于既有写范围，canary 必须可读；setup 拒绝冲突，不扩大写权限。`--detail` 跳过自动收集，由总控完成所有检查；
 `text` 输出和 Claude `json` 可在此模式使用。汇总和 Agent 答复均不构成用户授权。

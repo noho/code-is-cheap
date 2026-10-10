@@ -114,7 +114,14 @@ def parse_runner(command, cwd):
                 if output.is_symlink():
                     raise ValueError(f"output must not be a symlink: {output}")
                 value = str(absolute(value, cwd))
-            elif option in {"--artifact", "--canary-file", "--canary-expected"}:
+            elif option == "--artifact":
+                artifact = Path(value).expanduser()
+                if not artifact.is_absolute():
+                    artifact = cwd / artifact
+                if not value or value.endswith("/") or not artifact.name or artifact.is_symlink():
+                    raise ValueError(f"artifact must be a new file, not a symlink/directory: {artifact}")
+                value = str(artifact.parent.resolve() / artifact.name)
+            elif option in {"--canary-file", "--canary-expected"}:
                 value = str(absolute(value, cwd))
             elif option == "--prompt-file" and value != "-":
                 value = str(absolute(value))

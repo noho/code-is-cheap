@@ -26,17 +26,29 @@ def invalid_constant(value):
 def reported_tokens(lines):
     """Only standalone proof lines outside fenced examples constitute reports."""
     fence = None
-    for raw in lines:
+    html = None
+    for number, raw in enumerate(lines, 1):
+        if raw.startswith("    ") or raw.startswith("\t"):
+            continue
         line = raw.strip()
         marker = re.match(r"^(`{3,}|~{3,})", line)
-        if marker:
-            current = marker.group(1)
-            if fence is None:
-                fence = current[0]
-            elif fence == current[0]:
+        if fence:
+            if marker and marker.group(1)[0] == fence[0] and len(marker.group(1)) >= fence[1] and not line[marker.end():].strip():
                 fence = None
             continue
-        if fence:
+        if html:
+            if re.search(r"</" + html + r"\s*>", line, re.I):
+                html = None
+            continue
+        tag = re.match(r"<(pre|code)(?:\s|>)", line, re.I)
+        if tag:
+            name = tag.group(1).lower()
+            if not re.search(r"</" + name + r"\s*>", line, re.I):
+                html = name
+            continue
+        if marker:
+            current = marker.group(1)
+            fence = (current[0], len(current))
             continue
         if len(line) >= 2 and line[0] == line[-1] and line[0] in "`\"'":
             line = line[1:-1].strip()
@@ -46,32 +58,35 @@ def reported_tokens(lines):
         token = match.group(1).strip().rstrip("。.,;；，")
         if len(token) >= 2 and token[0] == token[-1] and token[0] in "`\"'":
             token = token[1:-1]
-        yield token
+        yield number, token
 
 
 def literal_tool_claim(text):
-    if re.search(r"<tool_(?:call|result)>|\"tool_calls\"", text):
+    if re.search(r'<tool_(?:call|result)>|"tool_calls"|"function_call"\s*:|'
+                 r'"type"\s*:\s*"(?:tool_use|tool_call|tool_result|function_call)"|'
+                 r'"name"\s*:\s*"[^"\n]+"\s*,\s*"(?:arguments|input)"\s*:', text):
         return True
     stripped = text.strip()
     if stripped.startswith("```") and stripped.endswith("```"):
         stripped = "\n".join(stripped.splitlines()[1:-1])
     try:
         data = json.loads(stripped)
-    except ValueError:
+    except (ValueError, RecursionError):
         return False
-    def contains(value):
+    pending = [data]
+    while pending:
+        value = pending.pop()
         if isinstance(value, list):
-            return any(contains(v) for v in value)
-        if not isinstance(value, dict):
-            return False
-        if value.get("type") in {"tool_use", "tool_call", "tool_result", "function_call"}:
-            return True
-        if any(key in value for key in ("tool_call", "tool_calls", "tool_use")):
-            return True
-        if "name" in value and ("arguments" in value or "input" in value):
-            return True
-        return any(contains(v) for v in value.values())
-    return contains(data)
+            pending.extend(value)
+        elif isinstance(value, dict):
+            if isinstance(value.get("type"), str) and value["type"] in {"tool_use", "tool_call", "tool_result", "function_call"}:
+                return True
+            if any(key in value for key in ("tool_call", "tool_calls", "tool_use")):
+                return True
+            if "name" in value and ("arguments" in value or "input" in value):
+                return True
+            pending.extend(value.values())
+    return False
 
 
 class Collection:
@@ -80,6 +95,7 @@ class Collection:
         self.errors, self.anomalies, self.warnings = [], [], []
         self.counts = dict(errors=0, anomalies=0, warnings=0)
         self.final = ""
+        self.final_line = None
         self.terminal = None
         self.events = self.tools = 0
         self.pending = {}
@@ -90,13 +106,13 @@ class Collection:
         self.stream = "collection"
         self.text_truncated = False
 
-    def note(self, kind, message, line=None):
+    def note(self, kind, message, line=None, path=None, proof_line=None):
         self.counts[kind] += 1
         target = getattr(self, kind)
         text = str(message)
         self.text_truncated |= len(text) > 2000
         if len(target) < DIAGNOSTIC_LIMIT:
-            target.append({"stream": self.stream, "line": line, "message": text[:2000], "message_chars": len(text), "truncated": len(text) > 2000})
+            target.append({"stream": self.stream, "line": line, "message": text[:2000], "message_chars": len(text), "truncated": len(text) > 2000, "path": path, "proof_line": proof_line})
 
     def mentions_canary(self, value):
         if isinstance(value, dict):
@@ -140,6 +156,8 @@ class Collection:
             if kind == "item.started" and item_kind in {"command_execution", "mcp_tool_call", "file_change"}:
                 self.pending[item.get("id", str(line))] = line
             if kind != "item.completed":
+                if item.get("status") in {"failed", "error"} or item.get("error"):
+                    self.note("anomalies", item, line)
                 return
             self.pending.pop(item.get("id"), None)
             if item_kind == "agent_message":
@@ -147,6 +165,7 @@ class Collection:
                     self.note("errors", "invalid agent message", line)
                 else:
                     self.final = item["text"]
+                    self.final_line = line
             elif item_kind in {"command_execution", "mcp_tool_call", "file_change"}:
                 self.tool(item.get("command", item.get("arguments", "")), item.get("aggregated_output", item.get("result", "")))
                 if item.get("status") == "failed" or item.get("error") or item.get("exit_code") not in (None, 0):
@@ -172,6 +191,7 @@ class Collection:
                 self.note("errors", event, line)
             if isinstance(event.get("result"), str):
                 self.final = event["result"]
+                self.final_line = line
             else:
                 self.note("errors", "missing text result", line)
         elif kind in {"assistant", "user"}:
@@ -184,6 +204,7 @@ class Collection:
                                if isinstance(b, dict) and b.get("type") == "text" and isinstance(b.get("text"), str))
                 if text:
                     self.final = text
+                    self.final_line = line
             for block in message["content"]:
                 if not isinstance(block, dict):
                     self.note("errors", "invalid content block", line)
@@ -228,7 +249,7 @@ class Collection:
                             self.note("errors", "event after runtime terminal", line)
                         self.events += 1
                         (self.codex if a.runtime == "codex" else self.claude)(event, line)
-                    except (ValueError, TypeError, AttributeError) as exc:
+                    except (ValueError, TypeError, AttributeError, RecursionError) as exc:
                         self.note("errors", f"invalid event: {exc}", line)
         except (OSError, UnicodeError) as exc:
             self.note("errors", exc)
@@ -245,7 +266,18 @@ class Collection:
                     self.note("errors", "last-message differs from event final answer")
             except (OSError, UnicodeError) as exc:
                 self.note("errors", exc)
-        reported = list(reported_tokens(self.final.splitlines()))
+        proof_count = mismatches = 0
+        def check_proofs(lines, source, path, event_line=None):
+            nonlocal proof_count, mismatches
+            for proof_line, value in reported_tokens(lines):
+                proof_count += 1
+                if self.token and value != self.token:
+                    mismatches += 1
+                    self.stream = source
+                    self.note("errors", "canary proof does not match expected token",
+                              line=event_line if source == "output" else proof_line,
+                              path=str(path), proof_line=proof_line)
+        check_proofs(self.final.splitlines(), "output", a.output, self.final_line)
         self.stream = "artifact"
         for path in a.artifact:
             target = Path(path)
@@ -259,15 +291,16 @@ class Collection:
             else:
                 try:
                     with target.open(encoding="utf-8") as stream:
-                        reported.extend(reported_tokens(stream))
+                        check_proofs(stream, "artifact", target)
                 except UnicodeError:
                     pass  # Binary artifacts still undergo existence checks.
                 except OSError as exc:
                     self.note("errors", exc)
         if self.token:
-            self.canary_status = "match" if reported and all(value == self.token for value in reported) else "mismatch"
-            if self.canary_status != "match":
-                self.note("errors", "missing or mismatched canary report")
+            self.canary_status = "match" if proof_count and not mismatches else "mismatch"
+            self.stream = "collection"
+            if not proof_count:
+                self.note("errors", "missing standalone canary report")
             if not self.read_visible:
                 self.note("anomalies", "canary read evidence not visible; inspect logs and required evidence")
         if self.tools == 0:

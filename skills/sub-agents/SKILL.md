@@ -207,9 +207,9 @@ Sandbox Process Management 收集真实退出状态和 stdout；这没有增加 
 - `canary_status`、`canary_read_candidate`：报告 token 比对与可定位的候选工具读取证据。
   候选仅表示调用参数提到路径且输出出现 token；总控仍须核对工具真正读取文件，不能当作完整取证证明；
 - `artifacts`、`logs`：调用方通过重复 `--artifact` 声明的产物及完整日志路径。
-  canary 可以报告在最终答复或已声明的文本产物中；证明须单独一行 `CANARY=<token>`，
-  不附说明、不放代码块。行内示例和代码块不作为证明；常见成对引号和句末标点只作为排版剥离，token 仍严格比较。
-  新产物是普通文件也不等于内容正确。
+  canary 可以报告在最终答复或已声明的文本产物中；证明须单独、不缩进的一行 `CANARY=<token>`，
+  不附说明、不放代码块。行内示例、围栏/缩进代码块和 HTML pre/code 块不作为证明；常见成对引号和句末标点只作为排版剥离，token 仍严格比较。
+  新产物是普通文件也不等于内容正确。canary 冲突诊断含实际来源路径、事件/文件行号与证明行号。
 
 `--canary-file` 与 `--canary-expected` 必须成对传入；预检自动设置。手工调用同样传入本轮路径，
 不得把预期 token 写入 prompt。没有 canary 声明的普通 runner 调用不进行 token 验证。

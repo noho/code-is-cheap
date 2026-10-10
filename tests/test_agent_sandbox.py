@@ -150,6 +150,18 @@ class SetupTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'required setup input is denied'):
                     sandbox.validate_result_contract(options,base,[str(work)],[],[str(denied)])
 
+    def test_artifact_leaf_symlinks_are_rejected_before_canonicalization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve();work=root/'work';work.mkdir()
+            existing=work/'existing';existing.write_text('old')
+            for target in (work/'missing', root/'outside', existing):
+                link=work/'artifact';link.symlink_to(target)
+                with unittest.mock.patch.object(shutil,'which',return_value='/bin/codex-agent-run'):
+                    with self.assertRaisesRegex(ValueError,'not a symlink'):
+                        sandbox.parse_runner(['codex-agent-run','--provider','mimo','--prompt','task',
+                            '--artifact',str(link)],work)
+                link.unlink()
+
     def test_raw_native_options_cannot_change_policy(self):
         cwd = Path.cwd()
         with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
