@@ -116,6 +116,16 @@ class SetupTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'relative'):
                     sandbox.write_boundary('claude','mimo',cwd,[])
 
+    def test_collection_arguments_do_not_expand_outputs_or_write_boundary(self):
+        cwd=Path.cwd()
+        with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
+            _,options,command=sandbox.parse_runner(['codex-agent-run','--provider','mimo','--prompt','task',
+                '--canary-file','proof.txt','--canary-expected','expected.txt',
+                '--artifact','review1.md','--artifact','review2.md'],cwd)
+        self.assertEqual(command.count('--artifact'),2)
+        self.assertEqual(options['--canary-file'],str(cwd/'proof.txt'))
+        self.assertFalse({'--output','--stderr','--last-message'} & options.keys())
+
     def test_raw_native_options_cannot_change_policy(self):
         cwd = Path.cwd()
         with unittest.mock.patch.object(shutil, 'which', return_value='/bin/codex-agent-run'):
@@ -368,7 +378,7 @@ class FullAccessTests(unittest.TestCase):
                    'AGENT_TOOLS_FILE':str(ROOT/'scripts/agent-tools.zsh')}
             for runtime,provider in (('codex','gpt-6-sol'),('claude','mimo')):
                 for full in (False,True):
-                    cmd = [str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',provider,'--cwd',str(p),'--prompt','literal --full-access']
+                    cmd = [str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',provider,'--cwd',str(p),'--prompt','literal --full-access','--detail']
                     if full: cmd.append('--full-access')
                     done = subprocess.run(cmd,env=env,capture_output=True,text=True)
                     self.assertEqual(done.returncode,0,done.stderr)

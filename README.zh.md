@@ -314,6 +314,28 @@ sub-agent-preflight --runtime codex --provider gpt-6-sol --cwd /path/to/workspac
 英文 `Goal` / `Non-goals` / `Stop condition` 等价），预检会校验。canary token 不会打印、也不会进入 prompt ——
 子 Agent 自己从生成的文件读取。
 
+### Runner 结果
+
+默认每个 runner 在执行结束后向 stdout 返回一个 JSON 汇总：状态、最终答复、异常摘要、必需产物路径和完整日志路径。
+`--output` 与 `--stderr` 保存**原始日志**，不是汇总；未指定日志路径时自动创建私有临时文件。Claude 内部使用
+`stream-json`。向 preflight（或 runner）重复传入 `--artifact /path/to/report.md` 声明必需产物。
+
+```bash
+codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
+claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task.md
+# 原始 runtime 输出与原有重定向行为：
+codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
+```
+
+`validation_status` 为 `passed`、`needs_review` 或 `rejected`；`result_status` 始终为 `not_assessed`，留给总控裁决。
+普通工具失败列为待裁决，不自动判 Agent 失败。runtime 失败保留原始非零退出码；否则机械拒收返回 1，
+`needs_review` 返回 0。汇总单独记录 `runtime_exit_code` 和 `runner_exit_code`。完成仍通过托管进程句柄收取，没有增加中途指令通道。
+
+最终答复最多展示 12000 字符并显式标记截断；每类诊断最多 20 条、每条 2000 字符，保留完整计数。截断时查看留存日志。
+preflight 自动传入成对的 `--canary-file` / `--canary-expected`；手工构造验证调用也须传入。canary 匹配与候选读取轨迹
+不能代替任务必需证据的独立复核。完整取证应写入任务产物。`--detail` 跳过自动收集，由总控完成所有检查；
+`text` 输出和 Claude `json` 可在此模式使用。汇总和 Agent 答复均不构成用户授权。
+
 ## Codex Agent 配置（xx_codex）
 
 所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
@@ -603,7 +625,7 @@ claude-agent-run --provider <provider> --cwd <absolute-workspace> ...
 codex-agent-run --provider <provider> --cwd <absolute-workspace> ...
 ```
 
-写入范围不重叠的独立任务可以并发。总控采纳任何结果前，必须检查 exit code、stderr 和结构化输出。
+写入范围不重叠的独立任务可以并发。runner 收集执行证据，总控裁决异常并独立核对任务证据后才能采纳结果。
 
 ## 仓库结构
 
@@ -685,6 +707,7 @@ scripts/agent-endpoint.py
 scripts/validate-skill.py
 scripts/agent-tools.zsh
 scripts/claude-agent-run
+scripts/agent-run-result.py
 scripts/codex-agent-run
 scripts/compose-codex-app-config.py
 codex-agent/model-providers.toml

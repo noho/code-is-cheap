@@ -30,7 +30,11 @@ Prompt input (choose one):
 Run options:
   --cwd <directory>          Working directory. Defaults to the current directory.
   --output-format <format>   text, json, or jsonl. Defaults to json (JSONL event stream).
-  --output <path>            Write stdout to a NEW private file; existing paths are rejected.
+  --detail                   Return raw runtime output instead of the collected result.
+  --artifact <path>          Expected task artifact; repeatable. Checked after execution.
+  --canary-file <path>       Canary input path (paired with --canary-expected).
+  --canary-expected <path>   Controller's expected token file; never sent in the prompt.
+  --output <path>            Save raw runtime output to a NEW private file.
   --stderr <path>            Write stderr to a NEW private file; existing paths are rejected.
   --last-message <path>      Save final message to a NEW file after the run completes.
   --sandbox <mode>           read-only, workspace-write, or danger-full-access.
@@ -119,6 +123,10 @@ open_output_streams() {
   [[ -z "$stderr_file" ]] || exec {stderr_fd}>"$stderr_file" || die "cannot create stderr: $stderr_file"
 }
 
+detail=false
+canary_file=""
+canary_expected=""
+typeset -a artifacts=()
 provider=""
 workdir="$PWD"
 output_format="json"
@@ -140,6 +148,10 @@ typeset -a extra_args=()
 
 while (( $# > 0 )); do
   case "$1" in
+    --detail) detail=true; shift ;;
+    --artifact) require_value "$1" "$#"; artifacts+=("$2"); shift 2 ;;
+    --canary-file) require_value "$1" "$#"; canary_file="$2"; shift 2 ;;
+    --canary-expected) require_value "$1" "$#"; canary_expected="$2"; shift 2 ;;
     --provider)
       require_value "$1" "$#"
       provider="$2"
@@ -386,6 +398,20 @@ elif [[ -n "$last_message_file" ]]; then
   last_message_file="$REPLY"
 fi
 
+# Default collection always retains both streams, even without explicit destinations.
+if [[ "$detail" == false ]]; then
+  [[ "$output_format" != text ]] || die "--output-format text requires --detail"
+  [[ -z "$canary_file" && -z "$canary_expected" || -n "$canary_file" && -n "$canary_expected" ]] || die "canary options must be paired"
+  result_adapter="${0:A:h}/agent-run-result.py"
+  [[ -r "$result_adapter" ]] || die "result adapter missing: $result_adapter"
+  command -v python3 >/dev/null 2>&1 || die "python3 is required for result collection"
+  if [[ -z "$output_file" || -z "$stderr_file" ]]; then
+    log_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-run.XXXXXXXX")" || die "cannot create log directory"
+    [[ -n "$output_file" ]] || output_file="$log_dir/output.jsonl"
+    [[ -n "$stderr_file" ]] || stderr_file="$log_dir/stderr.log"
+  fi
+fi
+
 require_distinct_outputs "$output_file" "$stderr_file"
 require_distinct_outputs "$output_file" "$last_message_file"
 require_distinct_outputs "$stderr_file" "$last_message_file"
@@ -445,7 +471,8 @@ run_codex() {
 
 open_output_streams
 run_codex >&$stdout_fd 2>&$stderr_fd
-run_exit=$?
+runtime_exit=$?
+run_exit=$runtime_exit
 
 if [[ -n "$last_message_file" ]]; then
   if [[ -f "$last_message_tmp" && ! -L "$last_message_tmp" ]]; then
@@ -464,5 +491,17 @@ if [[ -n "$last_message_file" ]]; then
     print -u2 -- "$PROGRAM_NAME: Agent did not produce a regular final-message file"
     (( run_exit != 0 )) || run_exit=1
   fi
+fi
+
+if [[ "$detail" == false ]]; then
+  exec {stdout_fd}>&-
+  exec {stderr_fd}>&-
+  typeset -a collect_args=(--runtime codex --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$runtime_exit" --runner-exit-code "$run_exit")
+  [[ -z "$canary_file" ]] || collect_args+=(--canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}")
+  for artifact in "${artifacts[@]}"; do collect_args+=(--artifact "${artifact:A}"); done
+  [[ -z "$last_message_file" ]] || collect_args+=(--last-message "$last_message_file")
+  python3 "$result_adapter" "${collect_args[@]}"
+  collect_exit=$?
+  (( run_exit != 0 )) || run_exit=$collect_exit
 fi
 exit "$run_exit"

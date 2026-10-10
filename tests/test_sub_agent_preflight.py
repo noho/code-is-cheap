@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import subprocess
 import tempfile
 import unittest
@@ -25,7 +26,7 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         (home / ".codex").mkdir(parents=True)
         (home / ".codex/mimo.config.toml").write_text("", encoding="utf-8")
         tools = self.root / "agent-tools.zsh"
-        tools.write_text("mimo_codex() { :; }\n", encoding="utf-8")
+        tools.write_text("mimo_codex() { :; }\nds-flash_claude() { :; }\n", encoding="utf-8")
         bin_dir = self.root / "bin"
         bin_dir.mkdir()
         for name in ("codex-agent-run", "claude-agent-run"):
@@ -50,7 +51,7 @@ class PreflightStaleCanaryTests(unittest.TestCase):
             "FAKE_CLAUDE_EXIT": "0",
         }
 
-    def preflight(self, source: str, body: str | Path, *options: str) -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
+    def preflight(self, source: str, body: str | Path, *options: str, runtime: str = "codex") -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
         if source == "--task":
             value = str(body)
         elif isinstance(body, Path):
@@ -61,7 +62,7 @@ class PreflightStaleCanaryTests(unittest.TestCase):
             value = str(task_file)
         result = subprocess.run(
             [
-                "bash", str(PREFLIGHT), "--runtime", "codex", "--provider", "mimo",
+                "bash", str(PREFLIGHT), "--runtime", runtime, "--provider", "mimo" if runtime == "codex" else "ds-flash",
                 "--cwd", str(ROOT), "--label", "preflight-stale-canary-test", source, value, *options,
             ],
             env=self.env, capture_output=True, text=True, check=False,
@@ -89,7 +90,28 @@ class PreflightStaleCanaryTests(unittest.TestCase):
         result, report = self.preflight("--task", BODY, "--deny-list", str(denied))
         self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
         self.assertTrue(report["command"].startswith("agent-sandbox --cwd "))
-        self.assertIn("--full-access --no-persist", report["command"])
+        self.assertIn("--full-access", shlex.split(report["command"]))
+        self.assertIn("--no-persist", shlex.split(report["command"]))
+
+    def test_collection_contract_and_claude_trace_match_envelope_check(self):
+        capture = self.root / "checked-args"
+        wrapper = self.root / "bin/agent-sandbox"
+        wrapper.write_text(f"#!/bin/sh\nprintf '%s\\n' \"$@\" > '{capture}'\n")
+        wrapper.chmod(0o755)
+        denied = self.root / "denied.json"
+        denied.write_text('[]')
+        artifacts = [self.root / "not yet created.md", self.root / "result2.md"]
+        result, report = self.preflight("--task", BODY, "--deny-list", str(denied),
+                                       "--artifact", str(artifacts[0]), "--artifact", str(artifacts[1]), runtime="claude")
+        self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+        command = shlex.split(report["command"])
+        checked = capture.read_text().splitlines()
+        self.assertEqual(command[command.index("--")+1:], checked[checked.index("--")+1:])
+        self.assertEqual(command[command.index("--output-format")+1], "stream-json")
+        self.assertEqual(command.count("--artifact"), 2)
+        self.assertEqual(command[command.index("--canary-file")+1], report["canary_file"])
+        self.assertEqual(command[command.index("--canary-expected")+1], report["canary_expected"])
+        self.assertNotIn("--detail", command)
 
     def test_prompt_file_directory_reports_structured_failure(self) -> None:
         directory = self.root / "prompt-input-dir"

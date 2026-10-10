@@ -39,6 +39,9 @@ Prompt (give exactly one):
                              natural-language old report instructions are absent;
                              the controller must review their meaning before dispatch.
 
+Optional result contract:
+  --artifact <path>         Expected task artifact; repeatable. Checked by the runner after exit.
+
 Optional access mode (defaults remain unchanged):
   --full-access             Disable the runtime's inner sandbox and tool approvals.
   --deny-list <json>        Prefix the command with agent-sandbox; implies --full-access.
@@ -70,6 +73,7 @@ task_text=""
 task_file=""
 full_access=false
 deny_list=""
+artifacts=()
 
 while (( $# > 0 )); do
   case "$1" in
@@ -80,6 +84,7 @@ while (( $# > 0 )); do
     --prompt-file) [[ $# -ge 2 ]] || die_usage "--prompt-file needs a value"; prompt_file="$2"; shift 2 ;;
     --task)        [[ $# -ge 2 ]] || die_usage "--task needs a value";        task_text="$2"; shift 2 ;;
     --task-file)   [[ $# -ge 2 ]] || die_usage "--task-file needs a value";   task_file="$2"; shift 2 ;;
+    --artifact) [[ $# -ge 2 ]] || die_usage "--artifact needs a value"; artifacts+=("$2"); shift 2 ;;
     --full-access) full_access=true; shift ;;
     --deny-list) [[ $# -ge 2 ]] || die_usage "--deny-list needs a value"; deny_list="$2"; full_access=true; shift 2 ;;
     -h|--help)     usage; exit 0 ;;
@@ -278,6 +283,7 @@ if [[ -n "$prompt_used" ]]; then
     printf '\n报告要求（必须遵守，以本轮以下协议为准）：\n'
     printf -- '- 开头声明一行：RUNTIME/PROVIDER/MODEL: %s/%s/<你实际运行的模型>\n' "$runtime" "$provider"
     printf -- '- 用工具读取本轮 %s 并把内容逐字写成 CANARY=<内容>（不要猜、不要改写；旧轮次 CANARY 不作为本轮证明）\n' "$canary_file"
+    printf -- '- 最终答复保持简短：结论、未完成事项和产物路径；完整证据写入任务指定的 artifact\n'
     printf -- '- 完成后停止；除任务正文明确要求外，不派发子 Agent\n'
   } >> "$prompt_used"
   grep -qF -- "$token" "$prompt_used" \
@@ -294,7 +300,7 @@ if [[ -n "$prompt_used" ]]; then
 fi
 
 # --- 输出路径（全部全新）----------------------------------------------------
-out_file="$run_dir/$label.json"
+out_file="$run_dir/$label.jsonl"
 stderr_file="$run_dir/$label.stderr"
 last_message_file=""
 if [[ "$runtime" == codex ]]; then
@@ -309,35 +315,38 @@ status=ok
 
 command_line=""
 if [[ "$status" == ok ]]; then
+  format=json
+  [[ "$runtime" != claude ]] || format=stream-json
+  dispatch_args=("$runner" --provider "$provider" --cwd "$workspace" --no-persist
+    --output-format "$format" --output "$out_file" --stderr "$stderr_file"
+    --prompt-file "$prompt_used" --canary-file "$canary_file" --canary-expected "$canary_expected")
   if [[ "$runtime" == codex ]]; then
-    command_line="$runner --provider $provider --cwd \"$workspace\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --last-message \"$last_message_file\" --prompt-file \"$prompt_used\""
+    dispatch_args+=(--last-message "$last_message_file")
   else
-    command_line="$runner --provider $provider --cwd \"$workspace\" --instance \"$label\" --no-persist --output-format json --output \"$out_file\" --stderr \"$stderr_file\" --prompt-file \"$prompt_used\""
+    dispatch_args+=(--instance "$label")
   fi
-fi
-
-if [[ "$status" == ok && "$full_access" == true ]]; then
-  command_line="${command_line/ --no-persist/ --full-access --no-persist}"
-fi
-if [[ "$status" == ok && -n "$deny_list" ]]; then
-  if ! command -v agent-sandbox >/dev/null 2>&1; then
-    failures+=("agent-sandbox 未安装（运行 scripts/sync-agent-tools.sh）")
-    status=fail
-  else
-    deny_list="$(python3 -c 'import os,sys; print(os.path.abspath(os.path.expanduser(sys.argv[1])))' "$deny_list")"
-    check_args=(agent-sandbox --cwd "$workspace" --deny-list "$deny_list" --check -- "$runner"
-      --provider "$provider" --cwd "$workspace" --full-access --no-persist --output "$out_file"
-      --stderr "$stderr_file" --prompt-file "$prompt_used")
-    [[ "$runtime" != codex ]] || check_args+=(--last-message "$last_message_file")
-    if setup_error="$("${check_args[@]}" 2>&1)"; then
-      printf -v envelope_prefix 'agent-sandbox --cwd %q --deny-list %q -- ' "$workspace" "$deny_list"
-      command_line="$envelope_prefix$command_line"
-    else
-      failures+=("隔离 setup 失败: $setup_error")
+  [[ "$full_access" != true ]] || dispatch_args+=(--full-access)
+  if (( ${#artifacts[@]} > 0 )); then
+    for artifact in "${artifacts[@]}"; do dispatch_args+=(--artifact "$artifact"); done
+  fi
+  if [[ -n "$deny_list" ]]; then
+    if ! command -v agent-sandbox >/dev/null 2>&1; then
+      failures+=("agent-sandbox 未安装（运行 scripts/sync-agent-tools.sh）")
       status=fail
+    else
+      deny_list="$(python3 -c 'import os,sys; print(os.path.abspath(os.path.expanduser(sys.argv[1])))' "$deny_list")"
+      if setup_error="$(agent-sandbox --cwd "$workspace" --deny-list "$deny_list" --check -- "${dispatch_args[@]}" 2>&1)"; then
+        dispatch_args=(agent-sandbox --cwd "$workspace" --deny-list "$deny_list" -- "${dispatch_args[@]}")
+      else
+        failures+=("隔离 setup 失败: $setup_error")
+        status=fail
+      fi
     fi
   fi
-  [[ "$status" == ok ]] || command_line=""
+  if [[ "$status" == ok ]]; then
+    printf -v command_line '%q ' "${dispatch_args[@]}"
+    command_line="${command_line% }"
+  fi
 fi
 
 printf 'setup_status=%s\n' "$status"
@@ -363,7 +372,7 @@ for failure in "${failures[@]:-}"; do
 done
 
 if [[ "$status" == ok ]]; then
-  note "预检通过。收尾：比对子 Agent 报告的 CANARY 与 ${canary_expected}（逐字一致，边缘空白不计）。"
+  note "预检通过。runner 退出后返回汇总结果；总控裁决 anomalies 并独立验收任务证据。"
   exit 0
 else
   note "预检失败 ${#failures[@]} 项，按上面的 failure= 修好后重跑（不要带着 setup 错误派发）。"

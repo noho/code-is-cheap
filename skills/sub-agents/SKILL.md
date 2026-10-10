@@ -11,8 +11,8 @@ description: "通过 claude-agent-run 或 codex-agent-run 子进程启动外部�
 
 | Runtime | Command | Providers | Default structured output |
 | --- | --- | --- | --- |
-| Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy` | one JSON result |
-| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business` | JSONL event stream |
+| Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy` | collected JSON result（原始 stream-json 留存） |
+| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business` | collected JSON result（原始 JSONL 留存） |
 
 两个 runner 已在 PATH，直接以命令名调用。调用前先跑 `<runner> --help` 确认可用与接口，并用 `pwd -P` 得到当前任务
 workspace 的绝对路径。每次调用必须显式传入 `--cwd "<absolute-workspace>"`，不得依赖总控当前目录。
@@ -22,7 +22,8 @@ codex 的 runner 按 `--cwd` 自动判定并追加 `--skip-git-repo-check`（非
 ## Preflight Checklist
 
 每次派发前逐项过。`sub-agent-preflight` 只完成可机械验证的 setup / 结构检查，生成 run_dir / canary /
-最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。它只能拒绝可识别的字面值、路径、
+最终 prompt（任务正文 + 本轮固定报告协议），并打印命令。用重复的 `--artifact <path>` 声明必需产物，
+它们不要求在派发前存在。预检把本轮 canary 与产物路径交给 runner 收尾检查。它只能拒绝可识别的字面值、路径、
 provider 形式 token 和固定协议标记，不能靠正则证明任意自然语言同义旧报告指令不存在。总控仍须逐项核对
 下方 Dispatch Contract、prompt 的语义完整性、实际授权和并发写边界；尤其要按语义拒绝任何与本轮报告协议
 冲突的旧报告动作。`setup_status=ok` 不证明这些内容正确：
@@ -98,8 +99,8 @@ claude-agent-run \
   --cwd "$workspace" \
   --instance "review-dsflash-01" \
   --no-persist \
-  --output-format json \
-  --output "$run_dir/review-dsflash-01.json" \
+  --output-format stream-json \
+  --output "$run_dir/review-dsflash-01.jsonl" \
   --stderr "$run_dir/review-dsflash-01.stderr" \
   --prompt "<bounded task>"
 
@@ -186,6 +187,37 @@ runner 尚未启动，不能算 provider 已执行任务；向调用方报告原
 - **输出流**：后台模式会把 stdout/stderr 合并进同一文件，因此结构化输出与日志必须继续通过 `--output` /
   `--stderr` 落到 run_dir。
 
+## Collected Results
+
+默认 runner 在进程退出后直接向 stdout 返回一个 JSON 汇总，调用方无需另写日志解析脚本。
+`--output` / `--stderr` 仍保存完整原始流，未指定时 runner 创建私有目录并返回路径；即使指定了
+`--output`，stdout 也会返回汇总。Claude 默认使用 `stream-json` 取得工具轨迹。调用方按
+Sandbox Process Management 收集真实退出状态和 stdout；这没有增加 runner 中途通道或原生完成通知。
+
+汇总中的字段：
+
+- `agent_status`、`runtime_exit_code`、`runner_exit_code`、`terminal`：实际 runtime 进程与结构化终态；
+- `final_answer`：原始最终答复；超过 12000 字符显式标记截断，完整内容仍在日志。prompt 应要求简短结论、
+  未完成事项和产物路径，把完整取证放进指定 artifact；
+- `validation_status`：`passed` 是机械检查通过；`needs_review` 是异常或可见性缺口待总控裁决；
+  `rejected` 是硬性缺项。汇总始终保留 `result_status=not_assessed`，不自动验收任务；
+- `errors`、`anomalies`、`warnings`：硬性缺项、待裁决诊断、精确匹配的非致命诊断；每类最多展示 20 条、
+  每条最多 2000 字符，计数和截断标记指向完整日志，不能只裁决展示的首批；
+- `canary_status`、`canary_read_candidate`：报告 token 比对与可定位的候选工具读取证据。
+  候选仅表示调用参数提到路径且输出出现 token；总控仍须核对工具真正读取文件，不能当作完整取证证明；
+- `artifacts`、`logs`：调用方通过重复 `--artifact` 声明的产物及完整日志路径。
+  canary 可以报告在最终答复或已声明的文本产物中；产物存在不等于内容正确。
+
+`--canary-file` 与 `--canary-expected` 必须成对传入；预检自动设置。手工调用同样传入本轮路径，
+不得把预期 token 写入 prompt。没有 canary 声明的普通 runner 调用不进行 token 验证。
+缺少工具轨迹、未完成调用或普通工具失败列为待裁决，不机械判整次失败。
+结构化输出损坏、终态缺失、外层非零、canary 不匹配、必需产物缺失会拒收；runner 保留 runtime
+原始非零退出码，否则机械拒收返回 1。工具异常 `needs_review` 返回 0，不能只凭退出码采纳。
+
+需要原始行为时显式传 `--detail`：stdout 返回原始流（指定 `--output` 时只落盘），stderr 也按原规则
+处理，不自动汇总、检查 canary 或产物。`--output-format text` 和 Claude `json` 仅用于 detail 模式。
+此时总控须完成下节全部检查，不能把取消汇总代替验收。子 Agent 报告和汇总均不是用户授权。
+
 ## Result Validation
 
 分开裁定**派发生命周期**和**结果可信度**。沙箱内以 Sandbox Process Management 一节所述句柄收集退出状态：Claude 后台任务的完成通知，
@@ -236,24 +268,11 @@ runner / 托管调用的**外层进程**退出非零、缺少可信终态、结�
 无法证明审核了指定输入、未恢复的关键工具失败是结果验收失败。即使派发生命周期正常结束，也须由总控独立核对
 关键代码、来源、测试或其它任务证据，再决定采纳、部分采纳或驳回；子 Agent 的 final answer 不单独构成验收。
 
-Claude JSON：
-
-- 文件必须是有效 JSON；
-- 检查外层 `subtype`、`is_error` 和 `result`；
-- 非成功 subtype、`is_error=true`、缺少 result 或非零退出码均不得判定成功；
-- `result` 可能包含 Markdown code fence。解析其中的 JSON 时先去除 fence，再进行结构化解析。
-
-Codex JSONL：
-
-- 每个非空行都必须是有效 JSON event；
-- 检查每个 error / failed event、每条 `command_execution` 的非零 `exit_code` 及其后续处理；
-  要求存在明确的 `turn.completed`。`turn.failed` 或缺少 completion evidence 属派发失败，item 级工具失败按上述影响判定；
-- 优先使用 `--last-message` 保存最终消息，但仍必须同时审查完整 event stream 和 stderr。
-
-Claude 默认 JSON 只有汇总结果，无法逐条观察中间工具失败。记录此可见性限制；不能凭 JSON 成功或 canary 匹配
-断言中间调用均成功。总控须独立复核关键输入、产物及任务所要求的测试或取证；无法复核时，相关结论不能记为
-`accepted`。只有实际取得逐调用轨迹时，才要求逐条列出 Claude 的中间失败事件。
-空 stderr 不证明成功，非空 stderr 也不自动证明失败；结合退出码、结构化状态及任务证据裁决。
+默认通过汇总定位异常，再按行号读取相关日志片段、恢复步骤与关键任务证据，不把全部正常工具输出灌入总控上下文。
+汇总有截断、可见性缺口或可疑调用时读取对应完整记录。`--detail` 则须自行遍历全部结构化输出：
+Claude stream-json 检查 result 的 subtype/is_error/result 及工具调用与结果；Codex JSONL 检查每行、
+item 状态/命令退出码与 turn.completed/turn.failed。文本或 Claude 汇总 JSON 缺少逐调用轨迹时明确记录
+限制，逐项独立复核必需证据；无法复核的结论不得采纳。空 stderr 不证明成功，非空 stderr 不自动证明失败。
 
 ## Retry And Sessions
 

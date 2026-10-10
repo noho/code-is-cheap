@@ -18,8 +18,9 @@ from urllib.parse import urlsplit
 
 SRT_VERSION = "0.0.79"
 VALUE_OPTIONS = {"--provider", "--cwd", "--prompt", "--prompt-file", "--output",
-                 "--stderr", "--last-message", "--instance", "--output-format", "--thread-source"}
-SWITCH_OPTIONS = {"--full-access", "--no-persist", "--skip-git-repo-check"}
+                 "--stderr", "--last-message", "--instance", "--output-format", "--thread-source",
+                 "--canary-file", "--canary-expected", "--artifact"}
+SWITCH_OPTIONS = {"--full-access", "--no-persist", "--skip-git-repo-check", "--detail"}
 MODEL_KEYS = {"model", "model_provider", "model_reasoning_effort", "model_reasoning_summary",
               "model_context_window", "model_auto_compact_token_limit", "model_catalog_json",
               "model_verbosity", "model_max_output_tokens"}
@@ -99,7 +100,7 @@ def parse_runner(command, cwd):
     while i < len(command):
         option = command[i]
         if option in VALUE_OPTIONS:
-            if i + 1 >= len(command) or option in values:
+            if i + 1 >= len(command) or (option in values and option != "--artifact"):
                 raise ValueError(f"missing or duplicate runner option: {option}")
             value = command[i + 1]
             if option == "--cwd":
@@ -112,6 +113,8 @@ def parse_runner(command, cwd):
                     output = cwd / output
                 if output.is_symlink():
                     raise ValueError(f"output must not be a symlink: {output}")
+                value = str(absolute(value, cwd))
+            elif option in {"--artifact", "--canary-file", "--canary-expected"}:
                 value = str(absolute(value, cwd))
             elif option == "--prompt-file" and value != "-":
                 value = str(absolute(value))

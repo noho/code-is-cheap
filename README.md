@@ -329,6 +329,32 @@ dispatch-contract sections — `Goal` / `Non-goals` / `Stop condition`, one per 
 Chinese equivalents are accepted) — and the preflight checks those. The canary token is never printed and never placed
 in the prompt — the child reads it from the generated file.
 
+### Runner results
+
+By default, each runner returns one JSON report on stdout after execution: status, final answer, anomaly summary,
+expected artifact paths, and full log paths. `--output` and `--stderr` save **raw logs**, not the report; missing
+log destinations get private temporary files. Claude uses `stream-json` internally. Add repeatable
+`--artifact /path/to/report.md` to preflight (or the runner) to declare required artifacts.
+
+```bash
+codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
+claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task.md
+# Raw runtime output and original redirection behavior:
+codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
+```
+
+`validation_status` is `passed`, `needs_review`, or `rejected`; `result_status` remains `not_assessed` for controller
+adjudication. Ordinary tool failures need review and do not automatically fail the Agent. Runtime failures keep their
+original nonzero exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. The report records
+`runtime_exit_code` and `runner_exit_code` separately. Completion still comes from the managed process handle; this adds no mid-run channel.
+
+The final answer is capped at 12,000 characters with an explicit truncation flag; each diagnostic category displays at
+most 20 entries of 2,000 characters, with full counts. Inspect retained logs when truncated. Preflight passes paired
+`--canary-file` / `--canary-expected` automatically; hand-built validation calls must pass them too. A canary match and
+candidate read trace do not replace independent verification of required task evidence. Full evidence belongs in the
+task artifact. `--detail` skips collection and requires the controller to perform all checks; `text` output and Claude
+`json` are available in that mode. Neither reports nor Agent messages grant user authorization.
+
 ## Codex Agent Profiles
 
 All managed profiles share one Codex home (`~/.codex`, Codex's default home — it must be a real directory; the desktop app's sandbox rejects symlink components in its writable paths): the base
@@ -633,8 +659,8 @@ claude-agent-run --provider <provider> --cwd <absolute-workspace> ...
 codex-agent-run --provider <provider> --cwd <absolute-workspace> ...
 ```
 
-Independent tasks may run concurrently when their write ownership does not overlap. The controller must check exit codes,
-stderr, and structured output before accepting any result.
+Independent tasks may run concurrently when their write ownership does not overlap. Runners collect execution evidence;
+the controller adjudicates anomalies and independently verifies task evidence before accepting results.
 
 ## Repository Layout
 
@@ -716,6 +742,7 @@ scripts/agent-endpoint.py
 scripts/validate-skill.py
 scripts/agent-tools.zsh
 scripts/claude-agent-run
+scripts/agent-run-result.py
 scripts/codex-agent-run
 scripts/compose-codex-app-config.py
 codex-agent/model-providers.toml
