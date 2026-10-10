@@ -1,0 +1,18 @@
+{
+  "scope": "Controller verification of owned DS aggregate log only; no caller or current-peer read",
+  "log_sha256": "91bfa8e7c63d836f22abe8bc61807e92d091fd88203141245b073dbe5520bf4a",
+  "actual_records": {
+    "24525": "Initial private probe passed inconsistent native/precollection inputs then diagnostic printing raised IndexError; not product failure",
+    "25580": "Corrected direct collector probe: CLI exit1, report.runner_exit_code7, agent_status failed, native process exited7 and connection recovery not proven native/postprocessing nonzero",
+    "25659": "Actual full offline module Ran49 OK",
+    "34195": "Additional saturation/one-slot/21-notices/rate-limit/eviction controls passed with warnings45/44/21 and persistent truncation",
+    "37785": "Malformed sole/first start rejected; rg also incidentally returned snippets from four previously completed S1 reports",
+    "40671": "Native Claude Write tool wrote exact owned report, no product changes"
+  },
+  "controller_qualifications": [
+    "Do not call the corrected direct-collector CLI result an observed outer runner exit7; actual public runner native7 behavior is covered by full49 source/tests and unchanged shell propagation",
+    "Do not accept literal prior-report-unread statement: incidental rg snippets from completed S1 reports exist. No current aggregate-peer or unaccepted conclusions were returned in inspected tool output; conclusions independently corroborated by source/test/probes",
+    "Shared prompt used Codex exec_command terminology for Claude. Native Bash/Read/Write stayed in the authorized scope; future Claude prompt corrected to actual available native tools. This is controller prompt wording, not a product defect."
+  ],
+  "result": "Resolved private harness error; no effect on current product review correctness; exact native flags/stats/logs retained"
+}

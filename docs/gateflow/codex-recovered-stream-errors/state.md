@@ -1,7 +1,7 @@
 # Gate state: codex-recovered-stream-errors
 
 - Status: active; goal confirmed.
-- Current gate / next entry point: accepted slice commit -> aggregate deepreview.
+- Current gate / next entry point: accepted deepreview commit, then ready-to-open-draft-PR.
 - Branch: fix/codex-recovered-stream-errors; baseline 20fc6c37751836329143567c166990bdffa9de3c; original workspace clean.
 - Artifact: goal.md; structural/replay evidence evidence/goal-log-check.json; original logs retained unchanged.
 - Decision: defect reproduced; narrow recovered-connection classification proposed, arbitrary/unrecovered errors remain fatal.
@@ -34,3 +34,7 @@
 - GPT-6 Sol code-fix-01 native/runner0; focused1/full49/diff pass, only assigned test method AST changed; protected collector/runners/docs/goal/plan unchanged, prior evidence preserved. Root inspected actual full-test stderr/scope/final snapshot. Ordinary rg no-match anomaly nonblocking. MiMo001 fix-level complete; independent dual re-review pending.
 
 - S1 dual re-review accepted; MiMo001 accepted/已修复, no new material findings. code-adjudication.md records root evidence and residual owners. No unresolved accepted finding. Product hash map unchanged from frozen re-review. Next accepted slice commit then aggregate deepreview.
+
+- Accepted slice checkpoint: 8947d3e2949d9ae2b31a37457f93ec4a77f2d1e2. All five product files accepted; aggregate dual review now dispatching against immutable full branch range.
+
+- Aggregate adjudication PASS: both completed analyses accepted on source/native evidence; MiMo unsupported idle-SSE remains actual runner1/rejected and is not product-supported. DS incidental prior S1 snippets and direct-collector exit claim qualified. See aggregate-adjudication.md and evidence/aggregate-*-controls.json. No accepted product finding; source hashes unchanged.

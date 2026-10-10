@@ -1,0 +1,76 @@
+{
+  "log": "/private/tmp/codex-recovery-gateflow-tifv8dmb/aggregate-mimo.jsonl",
+  "sha256": "0f7c604090d482689696703c8495c6e452a7185600db9b896ec666419905e570",
+  "events": 149,
+  "starts": [
+    [
+      1,
+      "thread.started"
+    ],
+    [
+      2,
+      "turn.started"
+    ]
+  ],
+  "errors": [
+    [
+      69,
+      {
+        "type": "error",
+        "message": "Reconnecting... 1/5 (stream disconnected before completion: idle timeout waiting for SSE)"
+      }
+    ]
+  ],
+  "terminal": [
+    [
+      149,
+      "turn.completed"
+    ]
+  ],
+  "final": [
+    [
+      3,
+      289
+    ],
+    [
+      6,
+      226
+    ],
+    [
+      13,
+      349
+    ],
+    [
+      20,
+      260
+    ],
+    [
+      88,
+      281
+    ],
+    [
+      139,
+      248
+    ],
+    [
+      148,
+      469
+    ]
+  ],
+  "actual_full_tests": [
+    {
+      "event": 90,
+      "exit": 0,
+      "result": "49 tests OK"
+    },
+    {
+      "event": 143,
+      "exit": 0,
+      "result": "inspect required"
+    }
+  ],
+  "actual_native_exit": 0,
+  "actual_runner_exit": 1,
+  "collector_remains_rejected_for_unsupported_variant": true,
+  "decision": "Review analysis independently accepted on actual completed evidence; no change to unsupported idle-SSE product classification; raw rejection/statistics retained"
+}
