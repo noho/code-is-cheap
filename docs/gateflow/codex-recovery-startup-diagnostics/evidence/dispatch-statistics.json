@@ -244,5 +244,66 @@
       "fallback_credit": null
     },
     "validation_status": "needs_review"
+  },
+  {
+    "task": "aggregate-review-mimo",
+    "provider": "mimo",
+    "runtime": "codex",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-mimo.md",
+    "report": "docs/reviews/code-review-20261012-024733.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-mimo.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-mimo.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:47:45.466313",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:57:09.664357",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-mimo-result.json",
+    "wall_clock_seconds": 572.514101,
+    "usage": {
+      "input_tokens": 3145687,
+      "cached_input_tokens": 2955648,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 21834,
+      "reasoning_output_tokens": 12314
+    },
+    "validation_status": "passed"
+  },
+  {
+    "task": "aggregate-review-ds-flash",
+    "provider": "ds-flash",
+    "runtime": "claude",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-ds-flash.md",
+    "report": "docs/reviews/code-review-20261012-024734.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-ds-flash.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-ds-flash.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:47:45.466454",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:52:43.268547",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/aggregate-review-ds-flash-result.json",
+    "wall_clock_seconds": 244.749387,
+    "usage": {
+      "input_tokens": 97814,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2083328,
+      "output_tokens": 37497,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "validation_status": "passed"
   }
 ]

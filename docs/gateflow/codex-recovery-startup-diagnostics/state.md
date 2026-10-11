@@ -1,7 +1,7 @@
 # Gateflow state: codex-recovery-startup-diagnostics
 
 - Status: active; delegated user confirmed binding goal and automatic gate progression.
-- Current gate / next entry: accepted S1 commit, then aggregate deepreview.
+- Current gate / next entry: accepted deepreview commit, then ready-to-open-draft-PR.
 - Branch: `fix/codex-recovery-startup-diagnostics`.
 - Base: `0b2b6a4bc41430e5398c227b026fa98af640f1c0`.
 - Goal artifact: `goal.md`.
@@ -30,3 +30,7 @@
 - Implementation closed native/runner0 (413.662495s). Focused initial path-alias assertion failed, corrected in test only; focused rerun4 and full56 tests passed (41.444s). implementation.md records actual outcomes. Root fixed-original-structural-replay.json confirms 0/0/completed/turn.completed/needs_review, counts0/16/1, preserved stats/source hashes and diagnostics. No original optional/business acceptance. Parallel code reviews running.
 
 - Code review loop pass: code-review-decision.md. MiMo 662.971454s, DS 405.992417s, native/runner0; no accepted finding outstanding. DS fixture-location suggestion rejected with direct ownership/provenance rationale; no code fix/re-review required. All frozen source hashes unchanged.
+
+- Accepted S1 commit: 1225754. All product changes are committed; aggregate deepreview targets the full current work-unit diff from the exact base.
+
+- Aggregate loop pass: aggregate-review-decision.md; both reports no material findings and no blockers. No fix/re-review required. All source hashes unchanged; both runtime/runner0, statistics retained.
