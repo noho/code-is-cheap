@@ -1,0 +1,6 @@
+{"type": "thread.started", "thread_id": "synthetic-thread"}
+{"type": "item.completed", "item": {"id": "startup-warning", "type": "error", "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /tmp/synthetic-codex/config.toml."}}
+{"type": "turn.started"}
+{"type": "error", "message": "Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)"}
+{"type": "item.completed", "item": {"id": "final", "type": "agent_message", "text": "OK"}}
+{"type": "turn.completed", "usage": {"input_tokens": 12848965, "cached_input_tokens": 12536064, "cache_write_input_tokens": 0, "output_tokens": 102201, "reasoning_output_tokens": 45179}}

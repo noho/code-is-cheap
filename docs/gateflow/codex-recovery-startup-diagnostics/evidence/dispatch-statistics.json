@@ -1,0 +1,166 @@
+[
+  {
+    "task": "plan",
+    "provider": "gpt-6-sol",
+    "runtime": "codex",
+    "status": "closed",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan.stderr",
+    "dispatch_recorded_at": "2026-10-12T01:44:16.660072",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T01:51:40.923891",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-result.json",
+    "wall_clock_seconds": 452.735153,
+    "usage": {
+      "input_tokens": 757325,
+      "cached_input_tokens": 675072,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 14475,
+      "reasoning_output_tokens": 4239
+    },
+    "validation_status": "needs_review"
+  },
+  {
+    "task": "plan-review-mimo",
+    "provider": "mimo",
+    "runtime": "codex",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-mimo.md",
+    "report": "docs/reviews/plan-review-20261012-015140.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-mimo.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-mimo.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T01:52:31.655963",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:08:53.114967",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-mimo-result.json",
+    "wall_clock_seconds": 1002.228419,
+    "usage": {
+      "input_tokens": 3888339,
+      "cached_input_tokens": 3640960,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 32541,
+      "reasoning_output_tokens": 22204
+    },
+    "validation_status": "needs_review"
+  },
+  {
+    "task": "plan-review-ds-flash",
+    "provider": "ds-flash",
+    "runtime": "claude",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-ds-flash.md",
+    "report": "docs/reviews/plan-review-20261012-015142.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-ds-flash.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-ds-flash.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T01:52:31.656091",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T01:59:17.288632",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-review-ds-flash-result.json",
+    "wall_clock_seconds": 400.351441,
+    "usage": {
+      "input_tokens": 89832,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1793920,
+      "output_tokens": 61227,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "validation_status": "passed"
+  },
+  {
+    "task": "plan-fix",
+    "provider": "gpt-6-sol",
+    "runtime": "codex",
+    "status": "closed",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-fix.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-fix.stderr",
+    "dispatch_recorded_at": "2026-10-12T02:10:15.380347",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:13:55.813843",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-fix-result.json",
+    "wall_clock_seconds": 233.539696,
+    "usage": {
+      "input_tokens": 368535,
+      "cached_input_tokens": 320640,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 8398,
+      "reasoning_output_tokens": 3070
+    },
+    "validation_status": "passed"
+  },
+  {
+    "task": "plan-rereview-mimo",
+    "provider": "mimo",
+    "runtime": "codex",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-mimo.md",
+    "report": "docs/reviews/plan-review-20261012-021355.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-mimo.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-mimo.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:14:19.416379",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:25:55.838973",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-mimo-result.json",
+    "wall_clock_seconds": 703.704067,
+    "usage": {
+      "input_tokens": 2955504,
+      "cached_input_tokens": 2814080,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 28621,
+      "reasoning_output_tokens": 14495
+    },
+    "validation_status": "needs_review"
+  },
+  {
+    "task": "plan-rereview-ds-flash",
+    "provider": "ds-flash",
+    "runtime": "claude",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-ds-flash.md",
+    "report": "docs/reviews/plan-review-20261012-021356.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-ds-flash.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-ds-flash.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:14:19.416514",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:24:00.482248",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/plan-rereview-ds-flash-result.json",
+    "wall_clock_seconds": 555.059844,
+    "usage": {
+      "input_tokens": 87269,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2293632,
+      "output_tokens": 51723,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "validation_status": "passed"
+  }
+]

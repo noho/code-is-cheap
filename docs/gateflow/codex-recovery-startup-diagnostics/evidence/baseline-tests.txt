@@ -1,0 +1,8 @@
+Command: python3 -B tests/test_agent_run_results.py
+Base: 0b2b6a4bc41430e5398c227b026fa98af640f1c0
+Managed execution session: 18851 (closed)
+Exit code: 0
+Ran 49 tests in 30.085s
+OK
+
+This is the existing regression suite before product changes. The evidenced startup-warning/reconnect rejection is separately reproduced in baseline-reproduction.json; these existing tests do not cover that success case.

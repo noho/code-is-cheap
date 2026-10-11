@@ -1,0 +1,17 @@
+{
+  "source_sha256": "4fac3674803360b7c0d5fc0d61056411eb0a841886994d08e1d388ae8caee4ab",
+  "source_line": 2,
+  "plan_contract_checks": {
+    "envelope": true,
+    "item_shape": true,
+    "item_identity": true,
+    "message_and_path": true
+  },
+  "all_match": true,
+  "docs_spot_check": {
+    "README.md": "389-419",
+    "README.zh.md": "363-387",
+    "decision": "existing language states successful same-run recovery/selected checks and needs_review correctly; no adjacent-start assertion, no change needed"
+  },
+  "limits": "No business content exported. Structural original replay and optional synthetic tests remain separate."
+}

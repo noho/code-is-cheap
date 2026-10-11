@@ -1,0 +1,5 @@
+{"type": "thread.started", "thread_id": "synthetic-thread"}
+{"type": "turn.started"}
+{"type": "error", "message": "Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)"}
+{"type": "item.completed", "item": {"id": "final", "type": "agent_message", "text": "OK"}}
+{"type": "turn.completed", "usage": {"input_tokens": 12848965, "cached_input_tokens": 12536064, "cache_write_input_tokens": 0, "output_tokens": 102201, "reasoning_output_tokens": 45179}}

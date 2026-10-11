@@ -1,0 +1,106 @@
+{
+  "base_commit": "0b2b6a4bc41430e5398c227b026fa98af640f1c0",
+  "collector_sha256": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4",
+  "authorized_source_sha256": {
+    "controller-rejection-diagnosis.json": "379b20b27dbfc266032bdb9813dcc043aade927de24a66fcfa4d182d61c19417",
+    "runner-summary.json": "3512287092c51e615282d5fc9f696c7c447e814773fdcc62e331bd3814b212ad",
+    "output.jsonl": "4fac3674803360b7c0d5fc0d61056411eb0a841886994d08e1d388ae8caee4ab",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_unchanged_after_read": true,
+  "original_offline_collection": {
+    "runtime_exit_code": 0,
+    "runner_exit_code": 1,
+    "agent_status": "completed",
+    "terminal": "turn.completed",
+    "validation_status": "rejected",
+    "events": 364,
+    "tool_results": 177,
+    "wall_clock_seconds": 2698.161843,
+    "usage": {
+      "input_tokens": 12848965,
+      "cached_input_tokens": 12536064,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 102201,
+      "reasoning_output_tokens": 45179
+    },
+    "diagnostic_counts": {
+      "errors": 1,
+      "anomalies": 16,
+      "warnings": 0
+    },
+    "thread_starts": 1,
+    "turn_starts": 1,
+    "thread_start_ordinal": 1,
+    "turn_start_ordinal": 3,
+    "recovery_failure": "start multiplicity, shape or initial frame order",
+    "selected_checks": "not replayed; no original artifacts/canary checked or accepted",
+    "input_runner_exit_code": 0
+  },
+  "sanitized_controls": {
+    "startup-warning-recovered": {
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "validation_status": "rejected",
+      "usage": {
+        "input_tokens": 12848965,
+        "cached_input_tokens": 12536064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 102201,
+        "reasoning_output_tokens": 45179
+      },
+      "diagnostic_counts": {
+        "errors": 1,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "recovery_failure": "start multiplicity, shape or initial frame order"
+    },
+    "adjacent-starts-recovered": {
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "validation_status": "passed",
+      "usage": {
+        "input_tokens": 12848965,
+        "cached_input_tokens": 12536064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 102201,
+        "reasoning_output_tokens": 45179
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "recovery_failure": null
+    },
+    "startup-warning-no-retry": {
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "validation_status": "needs_review",
+      "usage": {
+        "input_tokens": 12848965,
+        "cached_input_tokens": 12536064,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 102201,
+        "reasoning_output_tokens": 45179
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
+    }
+  },
+  "limits": [
+    "Only technical collector classification was replayed. Original task output correctness, artifact and canary checks were not re-run or accepted.",
+    "Original business text/tool output is not copied into this artifact or synthetic fixtures.",
+    "No real provider call, agent-sandbox business task or live deployment was performed."
+  ]
+}
