@@ -1,7 +1,7 @@
 # Gateflow state: codex-recovery-startup-diagnostics
 
 - Status: active; delegated user confirmed binding goal and automatic gate progression.
-- Current gate / next entry: accepted deepreview commit, then ready-to-open-draft-PR.
+- Current gate / next entry: push, then create draft PR.
 - Branch: `fix/codex-recovery-startup-diagnostics`.
 - Base: `0b2b6a4bc41430e5398c227b026fa98af640f1c0`.
 - Goal artifact: `goal.md`.
@@ -34,3 +34,5 @@
 - Accepted S1 commit: 1225754. All product changes are committed; aggregate deepreview targets the full current work-unit diff from the exact base.
 
 - Aggregate loop pass: aggregate-review-decision.md; both reports no material findings and no blockers. No fix/re-review required. All source hashes unchanged; both runtime/runner0, statistics retained.
+
+- Accepted deepreview commit: 86ee51d. ready.md records readiness pass, intended branch scope and all11 managed calls closed0. Next push/create draft PR then PR review; no merge/live authorization.
