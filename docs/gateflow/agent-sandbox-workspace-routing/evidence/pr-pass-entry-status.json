@@ -1,0 +1,27 @@
+{
+  "observed_at": "2026-10-11T09:11:21.253298+08:00",
+  "accepted_pr_review_commit": "129b539a2bf55e70fad89fa04d760bc8183e7bb7",
+  "remote_facts": {
+    "baseRefOid": "20fc6c37751836329143567c166990bdffa9de3c",
+    "headRefOid": "129b539a2bf55e70fad89fa04d760bc8183e7bb7",
+    "isDraft": true,
+    "statusCheckRollup": [],
+    "url": "https://github.com/noho/code-is-cheap/pull/53"
+  },
+  "post_review_delta": "review/statistics/lifecycle/evidence only",
+  "changed_files": [
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/pr-initial-snapshot.json",
+    "docs/gateflow/agent-sandbox-workspace-routing/pr-adjudication.md",
+    "docs/gateflow/agent-sandbox-workspace-routing/review-statistics.json",
+    "docs/gateflow/agent-sandbox-workspace-routing/state.md",
+    "docs/reviews/pr-53-review-20261011-084858.md",
+    "docs/reviews/pr-53-review-20261011-084859.md"
+  ],
+  "source_entry": "/private/tmp/code-is-cheap-workspace-routing/scripts/agent-sandbox",
+  "source_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+  "installed_entry": "/Users/leo/.local/bin/agent-sandbox",
+  "installed_sha256": "18d54243b1302aa8ebb4097821c47c44e38776f241185047f771e5c30f1b3eb5",
+  "installed_ca_helper_present": false,
+  "deployed_by_this_task": false,
+  "no_business_task_replay": true
+}

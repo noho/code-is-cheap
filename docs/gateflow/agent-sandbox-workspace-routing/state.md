@@ -1,7 +1,7 @@
 # State: agent-sandbox-workspace-routing
 
-- Status: active; delegated caller confirmed goal on 2026-10-11.
-- Current gate / next entry point: accepted PR review commit; dual PR review pass, then push and remote verification.
+- Status: completed; final closeout pass. Delegated caller confirmed goal on 2026-10-11.
+- Current gate / next entry point: user manual merge, separately authorized live sync, then caller entry/boundary revalidation and restoration decision.
 - Branch: `fix/agent-sandbox-workspace-routing`; baseline `20fc6c37751836329143567c166990bdffa9de3c`.
 - Worktree: `/private/tmp/code-is-cheap-workspace-routing`.
 - Accepted plan: `1e6693b06717a70a018355e93bf93164a777259d`; accepted S1: `b2ac329ec410b11ffc2f8a873add800ad1957290`.
@@ -17,3 +17,5 @@
 - Accepted deepreview: `9298c2d255996549e40c4ee8d210b8f894f08c1d`; draft readiness pass in draft-readiness.md.
 
 - PR review target e21f3070, complete immutable40file diff; both full reports and actual successful GH before/after checked. No new material finding. Metadata-only closeout remains.
+
+- Accepted PR review `129b539a2bf55e70fad89fa04d760bc8183e7bb7` pushed/GH head verified; draft-PR-pass. Mandatory final-closeout.md recorded, source/plan unchanged, installed helper absent. Final metadata checkpoint follows; no merge/live authorization.
