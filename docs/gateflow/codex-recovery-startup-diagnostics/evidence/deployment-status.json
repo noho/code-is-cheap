@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-10-12T03:26:26.195582+08:00",
+  "source_collector_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+  "installed_collector_path": "/Users/leo/.local/bin/agent-run-result.py",
+  "installed_collector_sha256": "0301f6dd9f589b7b705aa5e2f5033b573a2bfce23f0ae2ca23b40c374dab06e4",
+  "controller_sync_performed": false,
+  "source_fix_deployed": false,
+  "entrypoint": "codex-agent-run --provider mimo (including agent-sandbox wrapping); argv/schema unchanged",
+  "source_entry_validation": "actual original structural replay and public deterministic runner/collector tests passed; no forced live reconnect",
+  "next_deployment_steps": "user manual merge; separately authorize sync-agent-tools.sh to update installed collector; caller owns original selected/business checks and restoration"
+}

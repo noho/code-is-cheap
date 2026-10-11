@@ -1,7 +1,7 @@
 # Gateflow state: codex-recovery-startup-diagnostics
 
-- Status: active; delegated user confirmed binding goal and automatic gate progression.
-- Current gate / next entry: accepted PR review commit, then final push.
+- Status: completed; final closeout pass within the confirmed scope.
+- Current gate: final closeout pass. Next entry: user manual merge, separately authorized live sync, caller verification/restoration.
 - Branch: `fix/codex-recovery-startup-diagnostics`.
 - Base: `0b2b6a4bc41430e5398c227b026fa98af640f1c0`.
 - Goal artifact: `goal.md`.
@@ -40,3 +40,7 @@
 - Readiness checkpoint 93e5cf3 pushed. New draft PR #54 created: https://github.com/noho/code-is-cheap/pull/54. Current gate is PR review, not draft-PR-pass. Exact GitHub snapshot preparation underway; no merge/live authorization.
 
 - PR review loop pass: pr-review-decision.md; both exact-OID reports collected, F1 fixture ownership suggestion rejected with stable test-resource ownership recorded, no accepted finding outstanding. No product fix/re-review required. Final GitHub OIDs stable at reviewed head93e5cf3/base0b2b6a4. Next accepted evidence commit and final push; final closeout still required.
+
+- Accepted PR review commit: 636d1dc; required final push actually exited0 and updated origin. draft-PR-pass criteria satisfied: both artifacts/decisions present, no required fixes, accepted evidence commit published. Next final closeout; derivative metadata changes do not change reviewed product bytes.
+
+- Final closeout: final-closeout.md; all accepted findings fixed/verified or explicitly rejected, no unresolved/deferred blocker or unclassified risk. Actual installed collector remains baseline0301f6dd; new sourceea836b68 is not deployed (deployment-status.json). PR remains draft, no merge/live/caller operation. Source and test bytes equal reviewed head93e5cf3; derivative records only.
