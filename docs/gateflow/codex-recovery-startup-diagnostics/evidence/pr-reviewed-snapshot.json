@@ -1,0 +1,137 @@
+{
+  "pr": "54",
+  "url": "https://github.com/noho/code-is-cheap/pull/54",
+  "base": "0b2b6a4bc41430e5398c227b026fa98af640f1c0",
+  "head": "93e5cf325e3f39b8ee129d243e9bb4fa6992c67a",
+  "immutable_endpoint": "repos/noho/code-is-cheap/compare/0b2b6a4bc41430e5398c227b026fa98af640f1c0...93e5cf325e3f39b8ee129d243e9bb4fa6992c67a",
+  "files": 28,
+  "complete_manifest_and_line_counts": true,
+  "file_manifest": {
+    "docs/gateflow/codex-recovery-startup-diagnostics/aggregate-review-decision.md": [
+      19,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/code-review-decision.md": [
+      23,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/adjacent-starts-recovered.jsonl": [
+      5,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/baseline-reproduction.json": [
+      106,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/baseline-tests.txt": [
+      8,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/dispatch-statistics.json": [
+      309,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/fixed-original-structural-replay.json": [
+      35,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/implementation-tests.txt": [
+      39,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/pre-implementation-check.json": [
+      17,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/startup-warning-no-retry.jsonl": [
+      5,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/evidence/startup-warning-recovered.jsonl": [
+      6,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/goal.md": [
+      60,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/implementation.md": [
+      79,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/plan-fix.md": [
+      45,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/plan-review-decision.md": [
+      26,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/plan.md": [
+      246,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/ready.md": [
+      11,
+      0
+    ],
+    "docs/gateflow/codex-recovery-startup-diagnostics/state.md": [
+      38,
+      0
+    ],
+    "docs/reviews/code-review-20261012-023405.md": [
+      55,
+      0
+    ],
+    "docs/reviews/code-review-20261012-023406.md": [
+      74,
+      0
+    ],
+    "docs/reviews/code-review-20261012-024733.md": [
+      59,
+      0
+    ],
+    "docs/reviews/code-review-20261012-024734.md": [
+      61,
+      0
+    ],
+    "docs/reviews/plan-review-20261012-015140.md": [
+      96,
+      0
+    ],
+    "docs/reviews/plan-review-20261012-015142.md": [
+      102,
+      0
+    ],
+    "docs/reviews/plan-review-20261012-021355.md": [
+      62,
+      0
+    ],
+    "docs/reviews/plan-review-20261012-021356.md": [
+      78,
+      0
+    ],
+    "scripts/agent-run-result.py": [
+      27,
+      1
+    ],
+    "tests/test_agent_run_results.py": [
+      323,
+      14
+    ]
+  },
+  "diff_sha256": "f39c501bb889c7f74f18bb64f79b48436f8a1eb612caec0a6eb48c90120112d2",
+  "facts_stable_before_after": true,
+  "isDraft": true,
+  "statusCheckRollup": [],
+  "diff_snapshot_path": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/pr-immutable.diff",
+  "code_version_source": "git show exact reviewed head; root verified product bytes",
+  "post_review_root_query": {
+    "headRefOid": "93e5cf325e3f39b8ee129d243e9bb4fa6992c67a",
+    "baseRefOid": "0b2b6a4bc41430e5398c227b026fa98af640f1c0",
+    "isDraft": true,
+    "state": "OPEN",
+    "statusCheckRollup": []
+  },
+  "post_review_recorded_at": "2026-10-12T03:26:08.057206+08:00"
+}

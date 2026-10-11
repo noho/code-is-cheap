@@ -1,14 +1,14 @@
 # Gateflow state: codex-recovery-startup-diagnostics
 
 - Status: active; delegated user confirmed binding goal and automatic gate progression.
-- Current gate / next entry: push, then create draft PR.
+- Current gate / next entry: accepted PR review commit, then final push.
 - Branch: `fix/codex-recovery-startup-diagnostics`.
 - Base: `0b2b6a4bc41430e5398c227b026fa98af640f1c0`.
 - Goal artifact: `goal.md`.
 - Controller baseline evidence: `evidence/baseline-reproduction.json`; three sanitized JSONL controls.
 - Independent reproduction: actual collector rejection reproduced from original authorized native structure; controls isolate the intervening startup warning. Original input hashes unchanged.
 - Product changes: S1 implemented; collector/test changes passed independent code review.
-- External tasks: GPT-6 Sol plan closed normally (452.735153s, runtime/runner 0); independent parallel plan reviews prepared.
+- External tasks: all13 assigned calls closed0; all required review loops passed. Actual call statistics/log paths are retained in evidence/dispatch-statistics.json.
 - Role routing after confirmation: GPT-6 Sol plan/implement/fix; MiMo/Codex and DS Flash/Claude independent parallel planreview/deepreview.
 - Authorization: work branch, commits/push/new draft PR; no merge/sync live/caller task execution/session interruption.
 - Findings: recovery predicate requires fixed ordinals 1/2 despite the evidenced startup diagnostic at ordinal 2; implementation decision pending approved plan.
@@ -36,3 +36,7 @@
 - Aggregate loop pass: aggregate-review-decision.md; both reports no material findings and no blockers. No fix/re-review required. All source hashes unchanged; both runtime/runner0, statistics retained.
 
 - Accepted deepreview commit: 86ee51d. ready.md records readiness pass, intended branch scope and all11 managed calls closed0. Next push/create draft PR then PR review; no merge/live authorization.
+
+- Readiness checkpoint 93e5cf3 pushed. New draft PR #54 created: https://github.com/noho/code-is-cheap/pull/54. Current gate is PR review, not draft-PR-pass. Exact GitHub snapshot preparation underway; no merge/live authorization.
+
+- PR review loop pass: pr-review-decision.md; both exact-OID reports collected, F1 fixture ownership suggestion rejected with stable test-resource ownership recorded, no accepted finding outstanding. No product fix/re-review required. Final GitHub OIDs stable at reviewed head93e5cf3/base0b2b6a4. Next accepted evidence commit and final push; final closeout still required.
