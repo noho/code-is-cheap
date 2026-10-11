@@ -1,6 +1,7 @@
 """Exercise the public runners with deterministic runtime streams, no model requests."""
 import importlib.util
 import json
+import math
 import os
 import subprocess
 import tempfile
@@ -68,9 +69,16 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
     def connection_notice(self, attempt=1):
         return {'type':'error','message':f'Reconnecting... {attempt}/5 (stream disconnected before completion: stream closed before response.completed)'}
 
-    def recovered_codex(self, text='done', attempts=(1,)):
+    def startup_diagnostic(self, path='/tmp/synthetic-codex/config.toml', identity='startup-warning'):
+        return {'type':'item.completed','item':{'id':identity,'type':'error','message':
+            'Under-development features enabled: skip_host_skill_discovery. '
+            'Under-development features are incomplete and may behave unpredictably. '
+            'To suppress this warning, set `suppress_unstable_features_warning = true` in '+path+'.'}}
+
+    def recovered_codex(self, text='done', attempts=(1,), startup=False):
         events=self.codex(text)
         events[2:2]=[self.connection_notice(attempt) for attempt in attempts]
+        if startup:events.insert(1,self.startup_diagnostic())
         return events
 
     def run_collector(self, events, *args, native=0, precollection=0, err=''):
@@ -111,6 +119,266 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         if not recovered:
             self.assertFalse(any('Recovered Codex connection notice:' in d['message'] for d in report['warnings']))
         return report
+
+    def assert_output_diagnostic(self, diagnostic, message, line):
+        self.assertEqual(diagnostic, {'stream':'output','line':line,'message':message,
+            'message_chars':len(message),'truncated':False,'path':None,'proof_line':None})
+
+    def test_codex_startup_diagnostic_recovery_and_controls(self):
+        evidence=ROOT/'docs/gateflow/codex-recovery-startup-diagnostics/evidence'
+        controls=[('startup-warning-recovered.jsonl','needs_review',6,1,1,4),
+                  ('adjacent-starts-recovered.jsonl','passed',5,0,1,3),
+                  ('startup-warning-no-retry.jsonl','needs_review',5,1,0,None)]
+        for name,status,count,anomalies,warnings,notice_line in controls:
+            with self.subTest(control=name):
+                raw=(evidence/name).read_text()
+                events=[json.loads(line) for line in raw.splitlines()]
+                result=self.run_collector(events,'--wall-clock-seconds','2698.161843')
+                report=self.assert_connection_result(result,events,True,status)
+                self.assertEqual(report['runtime_exit_code'],0)
+                self.assertEqual((report['agent_status'],report['terminal']),('completed','turn.completed'))
+                self.assertEqual(report['diagnostic_counts'],{'errors':0,'anomalies':anomalies,'warnings':warnings})
+                self.assertEqual(report['errors'],[])
+                self.assertEqual(report['events'],count)
+                self.assertEqual((report['final_answer'],report['final_answer_chars'],report['final_answer_truncated']),('OK',2,False))
+                self.assertEqual(report['session_id'],'synthetic-thread')
+                self.assertEqual(report['tool_results'],0)
+                self.assertEqual(report['runtime_metrics'],{})
+                self.assertEqual(report['canary_status'],'not_run')
+                self.assertEqual(report['artifacts'],[])
+                self.assertFalse(report['diagnostics_truncated'])
+                self.assertEqual(report['usage'],events[-1]['usage'])
+                self.assertEqual(report['wall_clock_seconds'],2698.161843)
+                self.assertEqual(Path(report['logs']['output']).read_text(),raw)
+                self.assertEqual(Path(report['logs']['stderr']).read_text(),'')
+                if anomalies:self.assert_output_diagnostic(report['anomalies'][0],str(events[1]['item']),2)
+                if warnings:self.assert_output_diagnostic(report['warnings'][0],
+                    'Recovered Codex connection notice: '+str(events[notice_line-1]),notice_line)
+
+        events=self.recovered_codex(text='OK',startup=True)
+        tool={'type':'item.completed','item':{'id':'tool','type':'command_execution',
+            'command':'rg no-match','exit_code':1,'status':'completed','aggregated_output':''}}
+        events.insert(3,tool)
+        last=self.root/'combined.last.md'
+        result=self.run_agent('codex',events,'--last-message',str(last),exit_code=0,err='',final='OK')
+        report=self.assert_connection_result(result,events,True,'needs_review')
+        self.assertEqual(last.read_text(),'OK')
+        self.assertEqual(Path(report['logs']['last_message']),last.resolve())
+        self.assertEqual((report['runtime_exit_code'],report['agent_status'],report['terminal']),(0,'completed','turn.completed'))
+        self.assertEqual(report['diagnostic_counts'],{'errors':0,'anomalies':2,'warnings':1})
+        self.assertEqual(report['errors'],[])
+        self.assertEqual((report['events'],report['tool_results']),(7,1))
+        for diagnostic,event,line in zip(report['anomalies'],[events[1],tool],[2,4]):
+            self.assert_output_diagnostic(diagnostic,str(event['item']),line)
+        self.assert_output_diagnostic(report['warnings'][0],'Recovered Codex connection notice: '+str(events[4]),5)
+        self.assertEqual((report['final_answer'],report['final_answer_chars'],report['final_answer_truncated']),('OK',2,False))
+        self.assertEqual(report['usage'],events[-1]['usage'])
+        self.assertEqual(Path(report['logs']['output']).read_text(),'\n'.join(json.dumps(e) for e in events)+'\n')
+        self.assertEqual(Path(report['logs']['stderr']).read_text(),'')
+
+        paths=['/tmp/synthetic-codex/config.toml','/home/synthetic/.codex/config.toml',
+               '/Users/synthetic/.codex/agent-homes/profile_1/config.toml','/a/config.toml',
+               '/.../.profile-2_3/config.toml']
+        identities=['startup-warning','other-id','  nonblank  ','0','告警']
+        for index,(path,identity) in enumerate(zip(paths,identities)):
+            for attempts in [(i,) for i in range(1,6)]+[(1,2,5)]:
+                with self.subTest(path=path,identity=identity,attempts=attempts):
+                    events=self.recovered_codex('OK',attempts,startup=True)
+                    events[1]=self.startup_diagnostic(path,identity)
+                    usage={'input_tokens':12345678,'cached_input_tokens':0,'output_tokens':7}
+                    events[-1]['usage']=usage
+                    last=self.root/f'variation-{index}-{attempts}.last.md'
+                    report=self.assert_connection_result(self.run_agent('codex',events,
+                        '--last-message',str(last),final='OK'),events,True,'needs_review')
+                    self.assertEqual(report['diagnostic_counts'],{'errors':0,'anomalies':1,'warnings':len(attempts)})
+                    self.assert_output_diagnostic(report['anomalies'][0],str(events[1]['item']),2)
+                    self.assertEqual([d['line'] for d in report['warnings']],list(range(4,4+len(attempts))))
+                    self.assertEqual((report['final_answer'],report['final_answer_chars'],report['final_answer_truncated']),('OK',2,False))
+                    self.assertEqual(report['usage'],usage)
+                    self.assertEqual(report['runtime_exit_code'],0)
+                    self.assertTrue(math.isfinite(report['wall_clock_seconds']))
+                    self.assertGreaterEqual(report['wall_clock_seconds'],0)
+                    self.assertEqual(Path(report['logs']['output']).read_text(),'\n'.join(json.dumps(e) for e in events)+'\n')
+                    self.assertEqual(Path(report['logs']['stderr']).read_text(),'')
+                    self.assertEqual(Path(report['logs']['last_message']).read_text(),'OK')
+
+    def test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap(self):
+        message=self.startup_diagnostic()['item']['message']
+        messages=[('prefix','x '+message),('suffix',message+' x'),('leading-space',' '+message),
+            ('trailing-space',message+' '),('newline',message+'\n'),('case',message.lower()),
+            ('feature','other_feature'),('feature-list',message.replace('skip_host_skill_discovery','skip_host_skill_discovery, other')),
+            ('feature-suffix',message.replace('skip_host_skill_discovery','skip_host_skill_discovery_extra')),
+            ('feature-other',message.replace('skip_host_skill_discovery','other_feature')),
+            ('explanation-omitted',message.replace('Under-development features are incomplete and may behave unpredictably. ','')),
+            ('suppression-omitted',message.split(' To suppress')[0]),
+            ('punctuation',message.replace('discovery.','discovery!')),
+            ('setting',message.replace(' = true',' = false')),('spacing',message.replace(' in /',' in  /')),
+            ('nonstring',42),('null',None),('list',[])]
+        cases=[]
+        for name,value in messages:
+            event=self.startup_diagnostic();event['item']['message']=value;cases.append((name,event))
+        for field in ('message','id','type'):
+            event=self.startup_diagnostic();event['item'].pop(field);cases.append(('missing-item-'+field,event))
+        for identity in ('','  ','\t\n',None,42,[],{}):
+            event=self.startup_diagnostic(identity=identity);cases.append((f'id-{identity!r}',event))
+        cases += [('missing-item',{'type':'item.completed'}),('null-item',{'type':'item.completed','item':None}),
+                  ('list-item',{'type':'item.completed','item':[]}),('top-error',{'type':'error','message':message})]
+        for kind in ('item.started','item.updated'):
+            event=self.startup_diagnostic();event['type']=kind;cases.append((kind,event))
+        for kind in ('agent_message','command_execution','unknown'):
+            event=self.startup_diagnostic();event['item']['type']=kind;cases.append(('item-'+kind,event))
+        for target in ('envelope','item'):
+            for key in ('metadata','status','error','code'):
+                for value in ('fixture',None):
+                    event=self.startup_diagnostic();(event if target=='envelope' else event['item'])[key]=value
+                    cases.append((f'{target}-extra-{key}-{value}',event))
+        paths=['tmp/a/config.toml','~/a/config.toml','/config.toml','/a//config.toml','//a/config.toml',
+            '/a/./config.toml','/a/../config.toml','/./a/config.toml','/../a/config.toml',
+            '/a b/config.toml','/a\tb/config.toml','/a\nb/config.toml','/`a`/config.toml',
+            '/"a"/config.toml',"/'a'/config.toml",'/中文/config.toml',r'C:\a\config.toml',
+            r'/a\b/config.toml','https://example/a/config.toml','/a/other.toml','/a/Config.toml',
+            '/a/config.TOML','/a/config.toml.bak','/a/config.toml/']
+        cases += [('path-'+path,self.startup_diagnostic(path)) for path in paths]
+        for name,value in [('missing-period',message[:-1]),('double-period',message+'.'),
+                           ('unknown-text','Unknown warning in /a/config.toml.')]:
+            event=self.startup_diagnostic();event['item']['message']=value;cases.append((name,event))
+        for name,event in cases:
+            with self.subTest(name=name):
+                events=self.recovered_codex();events.insert(1,event)
+                self.assert_connection_result(self.run_collector(events),events,False,
+                    reason='start multiplicity, shape or initial frame order')
+        unsupported=self.startup_diagnostic('/config.toml')
+        events=self.codex();events.insert(1,unsupported)
+        result=self.run_agent('codex',events);report=json.loads(result.stdout)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(report['validation_status'],'needs_review')
+        self.assertEqual(report['diagnostic_counts'],{'errors':0,'anomalies':1,'warnings':0})
+        self.assert_output_diagnostic(report['anomalies'][0],str(unsupported['item']),2)
+        events=self.codex();events.insert(1,{'type':'error','message':message})
+        result=self.run_agent('codex',events);report=json.loads(result.stdout)
+        self.assertEqual(result.returncode,1,result.stderr)
+        self.assertEqual(report['diagnostic_counts'],{'errors':1,'anomalies':0,'warnings':0})
+
+    def test_codex_startup_diagnostic_gap_order_and_count(self):
+        frames=[{'type':'future.nonproof'},{'type':'future.failed','message':'failure'},
+            {'type':'rate_limit_event'},self.codex('premature')[2],
+            {'type':'item.completed','item':{'id':'metadata','type':'error','message':'Model metadata for fixture not found'}},
+            {'type':'item.completed','item':{'id':'unknown','type':'error','message':'unknown warning'}},
+            {'type':'error','message':'unknown error'},self.connection_notice(2)]
+        for kind in ('command_execution','mcp_tool_call','file_change'):
+            for phase in ('item.started','item.completed'):
+                frames.append({'type':phase,'item':{'id':'gap-tool','type':kind,'status':'completed'}})
+        for frame in frames:
+            for gap in ([frame],[frame,self.startup_diagnostic()],[self.startup_diagnostic(),frame]):
+                with self.subTest(gap=gap):
+                    events=self.recovered_codex();events[1:1]=gap
+                    self.assert_connection_result(self.run_collector(events),events,False,reason='start multiplicity')
+        for count in (0,1,2,25):
+            for distinct in (False,True):
+                with self.subTest(count=count,distinct=distinct):
+                    gap=[self.startup_diagnostic(f'/tmp/profile_{i}/config.toml',f'warning-{i}')
+                         if distinct else self.startup_diagnostic() for i in range(count)]
+                    events=self.recovered_codex();events[1:1]=gap
+                    accepted=count in (0,1)
+                    report=self.assert_connection_result(self.run_collector(events),events,accepted,
+                        status=('needs_review' if count else 'passed') if accepted else None,
+                        reason=None if accepted else 'start multiplicity')
+                    self.assertEqual(report['diagnostic_counts'],{'errors':int(not accepted),'anomalies':count,'warnings':int(accepted)})
+                    self.assertEqual(len(report['anomalies']),min(count,20))
+                    self.assertEqual(report['diagnostics_truncated'],count>20)
+        cases=[]
+        events=self.recovered_codex(startup=True);events.insert(0,self.startup_diagnostic())
+        cases.append(('before-thread',events))
+        for index,kind in [(0,'thread'),(2,'turn')]:
+            events=self.recovered_codex(startup=True);events.pop(index);cases.append(('missing-'+kind,events))
+            for place in (1,3,-2):
+                events=self.recovered_codex(startup=True);events.insert(place,events[index].copy())
+                cases.append((f'duplicate-{kind}-{place}',events))
+            for field in ('metadata','status','error'):
+                events=self.recovered_codex(startup=True);events[index][field]=None;cases.append((f'malformed-{kind}-{field}',events))
+        for identity in (None,42,[],{},'','  '):
+            events=self.recovered_codex(startup=True);events[0]['thread_id']=identity;cases.append((f'thread-id-{identity!r}',events))
+        events=self.recovered_codex(startup=True);events[0].pop('thread_id');cases.append(('thread-id-missing',events))
+        events=self.recovered_codex(startup=True);events[0],events[2]=events[2],events[0];cases.append(('reversed',events))
+        for name,events in cases:
+            with self.subTest(name=name):
+                self.assert_connection_result(self.run_collector(events),events,False,reason='start multiplicity')
+        for startup in (False,True):
+            events=self.recovered_codex(startup=startup);events.insert(-2,self.startup_diagnostic())
+            report=self.assert_connection_result(self.run_collector(events),events,True,'needs_review')
+            self.assertEqual(report['diagnostic_counts']['anomalies'],1+int(startup))
+        events=self.recovered_codex(startup=True);events.append(self.startup_diagnostic())
+        report=self.assert_connection_result(self.run_collector(events),events,False,reason='other collector')
+        self.assertTrue(any(d['message']=='event after runtime terminal' for d in report['errors']))
+        events=self.recovered_codex(startup=True);events.insert(0,'');events.insert(2,'  ');events.insert(4,'\t')
+        report=self.assert_connection_result(self.run_collector(events),events,True,'needs_review')
+        self.assertEqual(report['events'],6)
+        self.assert_output_diagnostic(report['anomalies'][0],str(self.startup_diagnostic()['item']),4)
+        self.assertEqual(report['warnings'][0]['line'],7)
+        corrupt=['not-json','{"type":"future.event","type":"other"}',
+            '{"type":"future.event","value":NaN}','{"type":"future.event","value":Infinity}',
+            '{"type":"future.event","value":1e400}',json.dumps({'type':'future.event','value':'\ud800'}),'[]']
+        for raw in corrupt:
+            for position in (1,2):
+                with self.subTest(raw=raw,position=position):
+                    events=self.recovered_codex(startup=True);events.insert(position,raw)
+                    report=self.assert_connection_result(self.run_collector(events),events,False,reason='other collector')
+                    errors=[d for d in report['errors'] if d['message'].startswith('invalid event:')]
+                    self.assertEqual(len(errors),1)
+                    self.assertEqual((errors[0]['stream'],errors[0]['line']),('output',position+1))
+                    self.assertEqual(report['events'],6)
+                    self.assertEqual(report['diagnostic_counts'],{'errors':2,'anomalies':1,'warnings':0})
+
+    def test_codex_startup_diagnostic_keeps_recovery_fences(self):
+        cases=[]
+        for message in ('unknown failure',self.connection_notice()['message'].replace('stream closed','socket closed')):
+            events=self.recovered_codex(startup=True);events.insert(-2,{'type':'error','message':message})
+            cases.append(('unknown-error-'+message,events,'other collector'))
+        for name,mutate,reason in [
+            ('missing-terminal',lambda e:e.pop(-1),'terminal'),
+            ('failed-terminal',lambda e:e[-1].update(type='turn.failed'),'terminal'),
+            ('duplicate-terminal',lambda e:e.append(e[-1].copy()),'terminal'),
+            ('conflicting-terminal',lambda e:e.insert(-1,{'type':'turn.failed','error':'failed'}),'terminal'),
+            ('missing-final',lambda e:e.pop(-2),'final'),
+            ('final-before-notice',lambda e:e.insert(3,e.pop(-2)),'final'),
+            ('final-after-terminal',lambda e:e.append(e.pop(-2)),'final'),
+            ('notice-after-terminal',lambda e:e.append(self.connection_notice(2)),'final')]:
+            events=self.recovered_codex(startup=True);mutate(events);cases.append((name,events,reason))
+        for target in ('terminal','final-envelope','final-item'):
+            for key in ('metadata','status','error','code'):
+                events=self.recovered_codex(startup=True)
+                obj=events[-1] if target=='terminal' else events[-2] if target=='final-envelope' else events[-2]['item']
+                obj[key]=None;cases.append((target+'-extra-'+key,events,'terminal' if target=='terminal' else 'final'))
+        for field in ('id','text'):
+            for value in ('','  ',None,42,[],{}):
+                events=self.recovered_codex(startup=True);events[-2]['item'][field]=value
+                cases.append((f'final-{field}-{value!r}',events,'final'))
+            events=self.recovered_codex(startup=True);events[-2]['item'].pop(field);cases.append(('final-missing-'+field,events,'final'))
+        for name,events,reason in cases:
+            with self.subTest(name=name):
+                self.assert_connection_result(self.run_collector(events),events,False,reason=reason)
+        # An unsupported disconnect stays fatal even without any supported notice.
+        events=self.recovered_codex(startup=True);events[3]['message']='stream disconnected before completion'
+        result=self.run_collector(events);report=json.loads(result.stdout)
+        self.assertEqual(result.returncode,1,result.stderr)
+        self.assertEqual(report['validation_status'],'rejected')
+        self.assertEqual(report['diagnostic_counts'],{'errors':1,'anomalies':1,'warnings':0})
+        self.assert_output_diagnostic(report['errors'][0],str(events[3]),4)
+        # No terminal/final after an exact retry cannot establish recovery.
+        events=self.recovered_codex(startup=True)[:4]
+        self.assert_connection_result(self.run_collector(events),events,False,reason='terminal')
+        last=self.root/'mismatch.last.md';last.write_text('stale')
+        events=self.recovered_codex(startup=True)
+        report=self.assert_connection_result(self.run_collector(events,'--last-message',str(last)),events,False,reason='other collector')
+        self.assertTrue(any('last-message differs' in d['message'] for d in report['errors']))
+        for usage in ('omitted',None,42,[],{'input_tokens':0,'label':'fixture'}):
+            with self.subTest(usage=usage):
+                events=self.recovered_codex(startup=True)
+                if usage=='omitted':events[-1].pop('usage')
+                else:events[-1]['usage']=usage
+                events.append({'type':'rate_limit_event','metadata':'allowed trailing event'})
+                report=self.assert_connection_result(self.run_collector(events),events,True,'needs_review')
+                self.assertEqual(report['usage'],usage if isinstance(usage,dict) else None)
 
     def test_codex_recovered_connection_notice(self):
         cases=[(f'attempt-{i}',self.recovered_codex(attempts=(i,)),'passed','') for i in range(1,6)]
@@ -301,22 +569,32 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.assert_connection_result(self.run_agent('codex',events),events,True)
 
     def test_codex_connection_notice_keeps_selected_checks(self):
+        self.assert_codex_connection_selected_checks(startup=False)
+
+    def test_codex_startup_diagnostic_keeps_selected_checks(self):
+        self.assert_codex_connection_selected_checks(startup=True)
+
+    def assert_codex_connection_selected_checks(self, startup):
         artifact=self.root/'new-review.md'
         self.env['ARTIFACT_CONTENTS']=json.dumps({str(artifact):'CANARY=fresh-12345678\n'})
-        events=self.recovered_codex();events.insert(-2,{'type':'item.completed','item':{
+        events=self.recovered_codex(startup=startup);events.insert(-2,{'type':'item.completed','item':{
             'id':'read','type':'command_execution','command':f'cat {self.canary}',
             'exit_code':0,'aggregated_output':self.canary.read_text()}})
         result=self.run_agent('codex',events,'--artifact',str(artifact),
             '--canary-file',str(self.canary),'--canary-expected',str(self.expected),
             '--last-message',str(self.root/'matching-last.md'))
-        report=self.assert_connection_result(result,events,True)
+        report=self.assert_connection_result(result,events,True,'needs_review' if startup else 'passed')
         self.assertEqual(report['canary_status'],'match')
         self.assertTrue(report['canary_read_candidate'])
         self.assertEqual(report['artifacts'],[{'path':str(artifact.resolve()),'exists':True,'regular_file':True}])
+        self.assertEqual(report['tool_results'],1)
+        self.assertEqual(report['runtime_exit_code'],0)
+        self.assertEqual(report['diagnostic_counts'],{'errors':0,'anomalies':int(startup),'warnings':1})
+        if startup:self.assert_output_diagnostic(report['anomalies'][0],str(events[1]['item']),2)
         self.env.pop('ARTIFACT_CONTENTS')
         for name,text in [('mismatch','CANARY=wrong'),('missing-proof','done')]:
             with self.subTest(name=name):
-                bad=self.recovered_codex(text)
+                bad=self.recovered_codex(text,startup=startup)
                 result=self.run_agent('codex',bad,'--canary-file',str(self.canary),
                     '--canary-expected',str(self.expected),final=text)
                 report=self.assert_connection_result(result,bad,False,reason='other collector')
@@ -356,7 +634,13 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                 self.assertFalse(capture.exists())
 
     def test_codex_connection_notice_keeps_process_failures(self):
-        events=self.recovered_codex()
+        self.assert_codex_connection_process_failures(startup=False)
+
+    def test_codex_startup_diagnostic_keeps_process_failures(self):
+        self.assert_codex_connection_process_failures(startup=True)
+
+    def assert_codex_connection_process_failures(self, startup):
+        events=self.recovered_codex(startup=startup)
         result=self.run_agent('codex',events,exit_code=7);report=json.loads(result.stdout)
         self.assertEqual(result.returncode,7,result.stderr)
         self.assertEqual(report['runtime_exit_code'],7)
@@ -364,6 +648,7 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         self.assertEqual(report['agent_status'],'failed')
         self.assertEqual(report['validation_status'],'rejected')
         self.assertEqual(report['diagnostic_counts']['warnings'],0)
+        self.assertEqual(report['diagnostic_counts']['anomalies'],int(startup))
         self.assertTrue(any('native or postprocessing nonzero' in d['message'] for d in report['errors']))
         for mode,phrase in [('missing','did not produce'),('raced','destination now exists'),('unwritable','cannot save')]:
             with self.subTest(name=mode):
@@ -381,8 +666,16 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         result=self.run_collector(events,native=0,precollection=1)
         report=self.assert_connection_result(result,events,False,reason='native or postprocessing')
         self.assertEqual(report['agent_status'],'failed')
+        self.assertEqual(report['runtime_exit_code'],0)
+        self.assertEqual(report['runner_exit_code'],1)
 
     def test_codex_connection_notice_diagnostic_bounds(self):
+        self.assert_codex_connection_diagnostic_bounds(startup=False)
+
+    def test_codex_startup_diagnostic_diagnostic_bounds(self):
+        self.assert_codex_connection_diagnostic_bounds(startup=True)
+
+    def assert_codex_connection_diagnostic_bounds(self, startup):
         cases=[('unsaturated-success-25',0,True,False),('unsaturated-failure-25',0,False,True),
             ('saturated-success-20-old-25-notices',20,True,False),
             ('saturated-failure-20-old-25-notices',20,False,False),
@@ -396,20 +689,22 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                 notices=[self.connection_notice((i%5)+1) for i in range(25)]
                 events=self.codex()[:2]+old+([self.codex()[2]] if early_final else [])+notices
                 events+=([self.codex()[-1]] if early_final else self.codex()[2:])
+                if startup:events.insert(1,self.startup_diagnostic())
                 result=self.run_agent('codex',events);report=json.loads(result.stdout)
                 category='warnings' if recovered else 'errors'
                 self.assertEqual(result.returncode,0 if recovered else 1,result.stderr)
-                self.assertEqual(report['validation_status'],'passed' if recovered else 'rejected')
+                self.assertEqual(report['validation_status'],('needs_review' if startup else 'passed') if recovered else 'rejected')
                 self.assertEqual(report['runner_exit_code'],0 if recovered else 1)
                 self.assertEqual(report['runtime_exit_code'],0)
                 self.assertEqual(report['diagnostic_counts'],{
-                    'errors':0 if recovered else old_count+25,'anomalies':0,
+                    'errors':0 if recovered else old_count+25,'anomalies':int(startup),
                     'warnings':old_count+25 if recovered else 0})
                 self.assertEqual(len(report[category]),20)
                 self.assertTrue(report['diagnostics_truncated'])
-                first_line=3+old_count+int(early_final)
+                first_line=3+int(startup)+old_count+int(early_final)
                 displayed_old=min(old_count,19)
-                self.assertEqual([d['line'] for d in report[category][:displayed_old]],list(range(3,3+displayed_old)))
+                self.assertEqual([d['line'] for d in report[category][:displayed_old]],list(range(3+int(startup),3+int(startup)+displayed_old)))
+                if startup:self.assert_output_diagnostic(report['anomalies'][0],str(events[1]['item']),2)
                 first=report[category][displayed_old]
                 self.assertEqual((first['stream'],first['line']),('output',first_line))
                 self.assertIn(notices[0]['message'],first['message'])
@@ -422,11 +717,11 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                     self.assertEqual(diagnostic['message_chars'],len(diagnostic['message']))
                     self.assertFalse(diagnostic['truncated'])
         with self.subTest(name='last-candidate-beyond-retention'):
-            events=self.recovered_codex(attempts=(1,)*20);events[-1:-1]=[self.connection_notice(2)]*5
+            events=self.recovered_codex(attempts=(1,)*20,startup=startup);events[-1:-1]=[self.connection_notice(2)]*5
             result=self.run_agent('codex',events);report=json.loads(result.stdout)
             self.assertEqual(result.returncode,1,result.stderr)
             self.assertEqual(report['runner_exit_code'],1)
-            self.assertEqual(report['diagnostic_counts'],{'errors':25,'anomalies':0,'warnings':0})
+            self.assertEqual(report['diagnostic_counts'],{'errors':25,'anomalies':int(startup),'warnings':0})
             self.assertEqual(report['validation_status'],'rejected')
             self.assertTrue(all('final shape or order' in d['message'] for d in report['errors']))
         spec=importlib.util.spec_from_file_location('agent_result',ROOT/'scripts/agent-run-result.py')
@@ -434,7 +729,7 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         for recovered in (True,False):
             with self.subTest(name=f'evicted-long-diagnostic-keeps-text-truncation-{recovered}'):
                 output=self.root/'direct.jsonl';stderr=self.root/'direct.stderr'
-                output.write_text('\n'.join(json.dumps(e) for e in self.recovered_codex())+'\n');stderr.write_text('')
+                output.write_text('\n'.join(json.dumps(e) for e in self.recovered_codex(startup=startup))+'\n');stderr.write_text('')
                 args=SimpleNamespace(runtime='codex',provider='mimo',output=str(output),stderr=str(stderr),
                     last_message=None,canary_file=None,canary_expected=None,artifact=[],exit_code=0,
                     runner_exit_code=0,wall_clock_seconds=None)
@@ -450,8 +745,8 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                 self.assertEqual(len(report[category]),20)
                 self.assertEqual([d['message'] for d in report[category][:19]],[f'old-{i}' for i in range(19)])
                 self.assertIn(self.connection_notice()['message'],report[category][-1]['message'])
-                self.assertEqual(report[category][-1]['line'],3)
-                self.assertEqual(report['validation_status'],'passed' if recovered else 'rejected')
+                self.assertEqual(report[category][-1]['line'],3+int(startup))
+                self.assertEqual(report['validation_status'],('needs_review' if startup else 'passed') if recovered else 'rejected')
                 self.assertEqual(collector.stream,'stderr')
 
     def test_claude_connection_error_stays_fatal(self):
@@ -765,6 +1060,20 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         result=self.run_agent('claude',self.claude(),'--detail','--output',str(output))
         self.assertEqual(result.stdout,'')
         self.assertIn('result',output.read_text())
+        events=self.recovered_codex('OK',startup=True)
+        raw='\n'.join(json.dumps(e) for e in events)+'\n'
+        for exit_code in (0,7):
+            with self.subTest(startup_detail_exit=exit_code):
+                result=self.run_agent('codex',events,'--detail',exit_code=exit_code,err='diagnostic\n')
+                self.assertEqual(result.returncode,exit_code)
+                self.assertEqual(result.stdout,raw)
+                self.assertEqual(result.stderr,'diagnostic\n')
+                output=self.root/f'startup-detail-{exit_code}.jsonl'
+                result=self.run_agent('codex',events,'--detail','--output',str(output),exit_code=exit_code,err='diagnostic\n')
+                self.assertEqual(result.returncode,exit_code)
+                self.assertEqual(result.stdout,'')
+                self.assertEqual(output.read_text(),raw)
+                self.assertEqual(result.stderr,'diagnostic\n')
 
     def test_nonzero_process_preserves_partial_answer(self):
         result=self.run_agent('codex',self.codex('partial'),'--last-message',str(self.root/'last.md'),exit_code=7,final='partial')

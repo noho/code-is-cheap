@@ -162,5 +162,87 @@
       "fallback_credit": null
     },
     "validation_status": "passed"
+  },
+  {
+    "task": "implementation",
+    "provider": "gpt-6-sol",
+    "runtime": "codex",
+    "status": "closed",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/implementation.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/implementation.stderr",
+    "dispatch_recorded_at": "2026-10-12T02:26:42.697073",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:33:33.735858",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/implementation-result.json",
+    "wall_clock_seconds": 413.662495,
+    "usage": {
+      "input_tokens": 1026694,
+      "cached_input_tokens": 953216,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 15690,
+      "reasoning_output_tokens": 2994
+    },
+    "validation_status": "needs_review"
+  },
+  {
+    "task": "code-review-mimo",
+    "provider": "mimo",
+    "runtime": "codex",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-mimo.md",
+    "report": "docs/reviews/code-review-20261012-023405.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-mimo.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-mimo.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:34:38.964274",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:45:55.123405",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-mimo-result.json",
+    "wall_clock_seconds": 662.971454,
+    "usage": {
+      "input_tokens": 3639977,
+      "cached_input_tokens": 3470592,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 24385,
+      "reasoning_output_tokens": 14678
+    },
+    "validation_status": "needs_review"
+  },
+  {
+    "task": "code-review-ds-flash",
+    "provider": "ds-flash",
+    "runtime": "claude",
+    "prompt": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-ds-flash.md",
+    "report": "docs/reviews/code-review-20261012-023406.md",
+    "output": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-ds-flash.jsonl",
+    "stderr": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-ds-flash.stderr",
+    "status": "closed",
+    "dispatch_recorded_at": "2026-10-12T02:34:38.964398",
+    "exit_code": 0,
+    "closed_recorded_at": "2026-10-12T02:41:20.598251",
+    "summary_file": "/private/tmp/startup-diagnostic-gateflow.g8TgB3/code-review-ds-flash-result.json",
+    "wall_clock_seconds": 405.992417,
+    "usage": {
+      "input_tokens": 122089,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3506688,
+      "output_tokens": 54287,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "validation_status": "needs_review"
   }
 ]

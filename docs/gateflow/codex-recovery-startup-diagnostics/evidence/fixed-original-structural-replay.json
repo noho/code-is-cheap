@@ -1,0 +1,35 @@
+{
+  "runtime_exit_code": 0,
+  "runner_exit_code": 0,
+  "agent_status": "completed",
+  "terminal": "turn.completed",
+  "validation_status": "needs_review",
+  "events": 364,
+  "tool_results": 177,
+  "wall_clock_seconds": 2698.161843,
+  "usage": {
+    "input_tokens": 12848965,
+    "cached_input_tokens": 12536064,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 102201,
+    "reasoning_output_tokens": 45179
+  },
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 16,
+    "warnings": 1
+  },
+  "collector_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+  "authorized_source_sha256": {
+    "controller-rejection-diagnosis.json": "379b20b27dbfc266032bdb9813dcc043aade927de24a66fcfa4d182d61c19417",
+    "runner-summary.json": "3512287092c51e615282d5fc9f696c7c447e814773fdcc62e331bd3814b212ad",
+    "output.jsonl": "4fac3674803360b7c0d5fc0d61056411eb0a841886994d08e1d388ae8caee4ab",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_unchanged": true,
+  "startup_diagnostic_preserved_line": 2,
+  "recovered_notice_line": 322,
+  "input_precollection_runner_exit": 0,
+  "selected_checks": "Original artifacts/canary/business correctness not replayed or accepted; synthetic tests are separate evidence.",
+  "business_content_exported": false
+}

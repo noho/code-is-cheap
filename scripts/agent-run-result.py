@@ -53,6 +53,26 @@ def recognized_codex_connection_notice(event):
                              event["message"]) is not None)
 
 
+def recognized_codex_startup_diagnostic(event):
+    # Proof-only recognition: ordinary dispatch must retain this startup anomaly.
+    if (not isinstance(event, dict) or set(event) != {"type", "item"}
+            or event.get("type") != "item.completed"):
+        return False
+    item = event["item"]
+    if (not isinstance(item, dict) or set(item) != {"id", "type", "message"}
+            or item.get("type") != "error" or not isinstance(item.get("id"), str)
+            or not item["id"].strip() or not isinstance(item.get("message"), str)):
+        return False
+    prefix = ("Under-development features enabled: skip_host_skill_discovery. "
+              "Under-development features are incomplete and may behave unpredictably. "
+              "To suppress this warning, set `suppress_unstable_features_warning = true` in ")
+    match = re.fullmatch(re.escape(prefix) + r"((?:/[A-Za-z0-9._-]+)+/config\.toml)\.",
+                         item["message"])
+    # Lexical POSIX paths only; never inspect or normalize the diagnostic's path.
+    return match is not None and all(part not in {".", ".."}
+                                    for part in match[1].split("/")[1:-1])
+
+
 def reported_tokens(lines):
     """Only standalone proof lines outside fenced examples constitute reports."""
     fence = None
@@ -155,6 +175,7 @@ class Collection:
         self.thread_start_line = self.turn_start_line = None
         self.thread_start_ordinal = self.turn_start_ordinal = None
         self.thread_start_valid = self.turn_start_valid = False
+        self.startup_diagnostics_before_turn = 0
         self.completed_line = None
         self.completed_valid = self.final_valid = False
         self.connection_notice_count = 0
@@ -209,6 +230,9 @@ class Collection:
                 self.runtime_metrics["modelUsage"] = event["modelUsage"]
 
     def codex(self, event, line):
+        if (self.thread_starts == 1 and self.turn_starts == 0
+                and recognized_codex_startup_diagnostic(event)):
+            self.startup_diagnostics_before_turn += 1
         kind = event.get("type")
         if kind == "thread.started":
             self.thread_starts += 1
@@ -285,7 +309,9 @@ class Collection:
     def codex_connection_recovery_failure(self):
         if (self.thread_starts != 1 or self.turn_starts != 1
                 or not self.thread_start_valid or not self.turn_start_valid
-                or self.thread_start_ordinal != 1 or self.turn_start_ordinal != 2
+                or self.thread_start_ordinal != 1
+                or self.startup_diagnostics_before_turn not in (0, 1)
+                or self.turn_start_ordinal != 2 + self.startup_diagnostics_before_turn
                 or not self.thread_start_line < self.turn_start_line):
             return "start multiplicity, shape or initial frame order"
         if self.first_connection_notice_line <= self.turn_start_line:

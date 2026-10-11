@@ -1,0 +1,39 @@
+command: /bin/zsh -c 'python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_startup_diagnostic_recovery_and_controls RunnerResults.test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap RunnerResults.test_codex_startup_diagnostic_gap_order_and_count RunnerResults.test_codex_startup_diagnostic_keeps_recovery_fences -v'
+exit: 1
+test_codex_startup_diagnostic_recovery_and_controls (__main__.RunnerResults.test_codex_startup_diagnostic_recovery_and_controls) ... FAIL
+test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap (__main__.RunnerResults.test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap) ... ok
+test_codex_startup_diagnostic_gap_order_and_count (__main__.RunnerResults.test_codex_startup_diagnostic_gap_order_and_count) ... ok
+test_codex_startup_diagnostic_keeps_recovery_fences (__main__.RunnerResults.test_codex_startup_diagnostic_keeps_recovery_fences) ... ok
+
+======================================================================
+FAIL: test_codex_startup_diagnostic_recovery_and_controls (__main__.RunnerResults.test_codex_startup_diagnostic_recovery_and_controls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 166, in test_codex_startup_diagnostic_recovery_and_controls
+    self.assertEqual(Path(report['logs']['last_message']),last)
+AssertionError: PosixPath('/private/var/folders/2t/vbqfkdyj40v8f4jc4x[40 chars].md') != PosixPath('/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c00[32 chars].md')
+
+----------------------------------------------------------------------
+Ran 4 tests in 6.415s
+
+FAILED (failures=1)
+
+command: /bin/zsh -c 'python3 -B tests/test_agent_run_results.py RunnerResults.test_codex_startup_diagnostic_recovery_and_controls RunnerResults.test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap RunnerResults.test_codex_startup_diagnostic_gap_order_and_count RunnerResults.test_codex_startup_diagnostic_keeps_recovery_fences -v'
+exit: 0
+test_codex_startup_diagnostic_recovery_and_controls (__main__.RunnerResults.test_codex_startup_diagnostic_recovery_and_controls) ... ok
+test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap (__main__.RunnerResults.test_codex_startup_diagnostic_lookalikes_do_not_bridge_gap) ... ok
+test_codex_startup_diagnostic_gap_order_and_count (__main__.RunnerResults.test_codex_startup_diagnostic_gap_order_and_count) ... ok
+test_codex_startup_diagnostic_keeps_recovery_fences (__main__.RunnerResults.test_codex_startup_diagnostic_keeps_recovery_fences) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 9.238s
+
+OK
+
+command: /bin/zsh -c 'python3 -B tests/test_agent_run_results.py'
+exit: 0
+........................................................
+----------------------------------------------------------------------
+Ran 56 tests in 41.444s
+
+OK
