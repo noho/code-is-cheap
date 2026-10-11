@@ -1,0 +1,175 @@
+{
+  "pr": "53",
+  "url": "https://github.com/noho/code-is-cheap/pull/53",
+  "base": "20fc6c37751836329143567c166990bdffa9de3c",
+  "head": "e21f3070f3701335808b36fef66189fe3a183093",
+  "immutable_endpoint": "repos/noho/code-is-cheap/compare/20fc6c37751836329143567c166990bdffa9de3c...e21f3070f3701335808b36fef66189fe3a183093",
+  "files": 40,
+  "complete_manifest_and_line_counts": true,
+  "file_manifest": {
+    "README.md": [
+      25,
+      0
+    ],
+    "README.zh.md": [
+      20,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/aggregate-adjudication.md": [
+      21,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/aggregate-fix-01.md": [
+      88,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/code-adjudication.md": [
+      14,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/code-fix-01.md": [
+      47,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/draft-readiness.md": [
+      15,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/additional-astra-sample.json": [
+      51,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/aggregate-f1-root-control.json": [
+      10,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/diagnostic-controls.json": [
+      198,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/original-boundary-ca-check.json": [
+      22,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/plan-initial.md": [
+      272,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/s1-validation-01.json": [
+      158,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/s1-validation.json": [
+      162,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/evidence/trusted-ca-parser-control.json": [
+      16,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/goal.md": [
+      45,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/implementation.md": [
+      114,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/kernel-validation-initial.md": [
+      2,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/plan-adjudication.md": [
+      32,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/plan-fix-01.md": [
+      68,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/plan.md": [
+      284,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/review-statistics.json": [
+      765,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/state.md": [
+      17,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/validation-01.md": [
+      11,
+      0
+    ],
+    "docs/gateflow/agent-sandbox-workspace-routing/validation.md": [
+      13,
+      0
+    ],
+    "docs/reviews/code-review-20261011-070512.md": [
+      58,
+      0
+    ],
+    "docs/reviews/code-review-20261011-070513.md": [
+      56,
+      0
+    ],
+    "docs/reviews/code-review-20261011-072619.md": [
+      69,
+      0
+    ],
+    "docs/reviews/code-review-20261011-072620.md": [
+      86,
+      0
+    ],
+    "docs/reviews/code-review-20261011-074039.md": [
+      53,
+      0
+    ],
+    "docs/reviews/code-review-20261011-074040.md": [
+      45,
+      0
+    ],
+    "docs/reviews/code-review-20261011-082243.md": [
+      63,
+      0
+    ],
+    "docs/reviews/code-review-20261011-082244.md": [
+      109,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-055758.md": [
+      96,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-055759.md": [
+      97,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-062440.md": [
+      153,
+      0
+    ],
+    "docs/reviews/plan-review-20261011-062441.md": [
+      108,
+      0
+    ],
+    "scripts/agent-sandbox": [
+      121,
+      1
+    ],
+    "skills/sub-agents/references/advanced.md": [
+      20,
+      0
+    ],
+    "tests/test_agent_sandbox.py": [
+      605,
+      1
+    ]
+  },
+  "diff_sha256": "d82eec4103f7aaee222857e553fa1616aa5a41e0ea3832ca22445ad2aba41b65",
+  "facts_stable_before_after": true,
+  "isDraft": true,
+  "statusCheckRollup": []
+}

@@ -1,7 +1,7 @@
 # State: agent-sandbox-workspace-routing
 
 - Status: active; delegated caller confirmed goal on 2026-10-11.
-- Current gate / next entry point: push and create new draft PR; readiness pass.
+- Current gate / next entry point: accepted PR review commit; dual PR review pass, then push and remote verification.
 - Branch: `fix/agent-sandbox-workspace-routing`; baseline `20fc6c37751836329143567c166990bdffa9de3c`.
 - Worktree: `/private/tmp/code-is-cheap-workspace-routing`.
 - Accepted plan: `1e6693b06717a70a018355e93bf93164a777259d`; accepted S1: `b2ac329ec410b11ffc2f8a873add800ad1957290`.
@@ -10,8 +10,10 @@
 - Additional Astra native startup-failure sample linked in evidence/additional-astra-sample.json; not post-fix Astra proof.
 - Decision: matched controls support default certificate handling under the strict envelope; explicit permitted CA restores minimal startup without boundary changes. Exact blocked system service remains unmeasured.
 - Routes: GPT-6 Sol plan/implement/fix; simultaneous MiMo/Codex and DS Flash/Claude reviews.
-- PR: new draft pending, independent of recovered-stream PR52.
+- PR: https://github.com/noho/code-is-cheap/pull/53 (draft), independent of recovered-stream PR52.
 - Authorization: commit/push/new draft only; no merge/live sync or original task restoration.
 - Source entry verified; installed live entry remains undeployed. Caller owns post-deployment large-boundary revalidation and notification/restoration.
 
 - Accepted deepreview: `9298c2d255996549e40c4ee8d210b8f894f08c1d`; draft readiness pass in draft-readiness.md.
+
+- PR review target e21f3070, complete immutable40file diff; both full reports and actual successful GH before/after checked. No new material finding. Metadata-only closeout remains.

@@ -760,6 +760,99 @@
         "anomalies": 1,
         "warnings": 0
       }
+    },
+    {
+      "gate": "PR review",
+      "artifact": "docs/reviews/pr-53-review-20261011-084859.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 478.8396,
+      "usage": {
+        "input_tokens": 121739,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 4224256,
+        "output_tokens": 66500,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 476323,
+        "duration_api_ms": 362562,
+        "total_cost_usd": 4.383323000000001,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 121739,
+            "outputTokens": 66500,
+            "cacheReadInputTokens": 4224256,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 4.383323000000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "0cd4e0be-9ed1-4a14-923b-acb9a06328ed",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/pr-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/pr-review-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "PR review",
+      "artifact": "docs/reviews/pr-53-review-20261011-084858.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1246.604279,
+      "usage": {
+        "input_tokens": 4941393,
+        "cached_input_tokens": 4730240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 39551,
+        "reasoning_output_tokens": 25100
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1286f-7e61-76b2-9c80-cb8b3fc0ab66",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/pr-review-mimo.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/pr-review-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
     }
   ]
 }
