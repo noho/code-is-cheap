@@ -234,6 +234,7 @@ root 祖先、不可读/不支持目标、扫描失败及输入冲突均停止 s
 输入必须是获准可读的普通 PEM 文件，含至少一个 `CERTIFICATE` 和/或 `TRUSTED CERTIFICATE`。
 每个识别到的证书都检查语法，畸形伴随证书会失败；trusted 标签仅在内存中规范化用于验证，
 原生 Codex 仍读取原文件及 AUX 数据。忽略 `X509 CRL`，不做吊销验证。
+忽略证书块之外的注释和非证书条目（包括 CSR），这些内容不计为证书。
 setup 不证明 endpoint trust、内核隔离或全部原生 parser/算法兼容性，也不增加文件权限或网络访问。
 
 公共系统 PEM 可能不含仅安装在 macOS keychain 的企业根；调用方须提供包含所需根的获准显式 PEM。

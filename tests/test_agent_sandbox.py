@@ -120,6 +120,21 @@ Dry6t0w2geW6UYVGmb831i8ZP3JVVVwcwi0=
 """
 
 
+# Deliberately invalid noncertificate payloads: setup must not parse these as CAs.
+SYNTHETIC_NONCERTIFICATE_BLOCKS = tuple(
+    b'-----BEGIN '+label+b'-----\n%%%not-certificate-data%%%\n-----END '+label+b'-----\n'
+    for label in (b'CERTIFICATE REQUEST', b'NEW CERTIFICATE REQUEST',
+                  b'TRUSTED CERTIFICATE REQUEST', b'CERTIFICATE CHAIN',
+                  b'TRUSTED CERTIFICATE CHAIN', b'CERTIFICATE-REQUEST',
+                  b'TRUSTED CERTIFICATE-REQUEST')
+)
+DECORATIVE_CERTIFICATE_COMMENTS = (
+    b'# -----BEGIN CERTIFICATE-----\n# -----END CERTIFICATE-----\n'
+    b' \t# -----BEGIN TRUSTED CERTIFICATE-----\n# -----END TRUSTED CERTIFICATE-----\n'
+    b'decoration: -----BEGIN CERTIFICATE----- and -----END CERTIFICATE----- \xff\n'
+)
+
+
 def profile_fields(stderr):
     # The adapter emits before spawn; descendants can forge later duplicates.
     line=next(line for line in stderr.splitlines() if line.startswith('agent-sandbox: seatbelt_profile='))
@@ -506,6 +521,55 @@ class CodexCATests(unittest.TestCase):
         self.assertTrue(der(PUBLIC_TRUSTED_CA).startswith(der(PUBLIC_CA)))
         self.assertGreater(len(der(PUBLIC_TRUSTED_CA)), len(der(PUBLIC_CA)))
 
+    def test_noncertificate_labels_around_ordinary_and_trusted_certificates(self):
+        crl = PUBLIC_CRL + b'\n'
+        for other in SYNTHETIC_NONCERTIFICATE_BLOCKS:
+            for cert in (PUBLIC_CA+b'\n', PUBLIC_TRUSTED_CA+b'\n'):
+                bundles = (other+cert, cert+other, crl+other+cert+crl+other+cert+crl)
+                for position, data in enumerate(bundles):
+                    with self.subTest(label=other.splitlines()[0], trusted=b'TRUSTED' in cert,
+                                      position=position):
+                        self.ca.write_bytes(data)
+                        env = {'CODEX_CA_CERTIFICATE':'ca.pem'}; self.prepare(env)
+                        self.assertEqual(env['CODEX_CA_CERTIFICATE'], str(self.ca))
+                        self.assertEqual(self.ca.read_bytes(), data)
+            data = other+PUBLIC_CA+b'\n'+crl+other+PUBLIC_TRUSTED_CA+b'\n'+other
+            with self.subTest(label=other.splitlines()[0], mixed=True):
+                self.ca.write_bytes(data)
+                self.prepare({'CODEX_CA_CERTIFICATE':'ca.pem'})
+                self.assertEqual(self.ca.read_bytes(), data)
+
+    def test_decorative_certificate_comments_outside_blocks_are_ignored(self):
+        comments = DECORATIVE_CERTIFICATE_COMMENTS
+        for cert in (PUBLIC_CA+b'\n', PUBLIC_TRUSTED_CA+b'\n'):
+            for data in (comments+cert, cert+comments,
+                         comments+PUBLIC_CRL+b'\n'+cert+comments+cert+PUBLIC_CRL):
+                with self.subTest(trusted=b'TRUSTED' in cert, size=len(data)):
+                    self.ca.write_bytes(data)
+                    self.prepare({'CODEX_CA_CERTIFICATE':'ca.pem'})
+                    self.assertEqual(self.ca.read_bytes(), data)
+
+    def test_noncertificate_text_inside_active_block_is_kept_for_validation(self):
+        for cert in (PUBLIC_CA, PUBLIC_TRUSTED_CA):
+            begin, payload = cert.split(b'\n', 1)
+            for extra in (SYNTHETIC_NONCERTIFICATE_BLOCKS[0],
+                          b'# -----BEGIN CERTIFICATE-----\n', b'unknown text \xff\n'):
+                with self.subTest(trusted=b'TRUSTED' in begin, extra=extra.splitlines()[0]):
+                    data = begin+b'\n'+extra+payload
+                    self.ca.write_bytes(data)
+                    if b'\xff' in extra:
+                        self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle',
+                                      reason='UnicodeDecodeError')
+                        continue
+                    context = unittest.mock.Mock()
+                    with unittest.mock.patch.object(sandbox.ssl, 'SSLContext', return_value=context):
+                        self.prepare({'CODEX_CA_CERTIFICATE':'ca.pem'})
+                    expected = data.decode().replace('TRUSTED CERTIFICATE', 'CERTIFICATE')
+                    self.assertEqual(context.load_verify_locations.call_count, 1)
+                    actual = context.load_verify_locations.call_args.kwargs['cadata']
+                    self.assertEqual(hashlib.sha256(actual.encode()).hexdigest(),
+                                     hashlib.sha256(expected.encode()).hexdigest())
+
     def test_validator_receives_individual_normalized_certificates_never_crls(self):
         context = unittest.mock.Mock()
         self.ca.write_bytes(PUBLIC_CRL+b'\n'+PUBLIC_TRUSTED_CA+b'\n'+PUBLIC_CA+b'\n'+PUBLIC_CRL)
@@ -520,7 +584,9 @@ class CodexCATests(unittest.TestCase):
         self.assertTrue(all('CRL' not in value and 'TRUSTED' not in value for value in values))
 
     def test_empty_nonpem_and_genuine_crl_only_fail(self):
-        for data in (b'', b'not PEM', PUBLIC_CRL):
+        for data in (b'', b'not PEM', PUBLIC_CRL, DECORATIVE_CERTIFICATE_COMMENTS,
+                     *SYNTHETIC_NONCERTIFICATE_BLOCKS,
+                     PUBLIC_CRL+b'\n'+DECORATIVE_CERTIFICATE_COMMENTS+b''.join(SYNTHETIC_NONCERTIFICATE_BLOCKS)):
             with self.subTest(data_length=len(data)):
                 self.ca.write_bytes(data)
                 self.rejected({'CODEX_CA_CERTIFICATE':'ca.pem'}, 'invalid Codex CA bundle', reason='no certificate blocks')
@@ -534,6 +600,13 @@ class CodexCATests(unittest.TestCase):
                      (begin[:-3]+b'\n', 'malformed '+name.decode()+' delimiter'),
                      (begin[5:], 'malformed '+name.decode()+' delimiter'),
                      (begin+b'AAAA\n'+end[:-3]+b'\n', 'malformed '+name.decode()+' delimiter'),
+                     *[(marker, 'malformed '+name.decode()+' delimiter')
+                       for edge in (b' ', b'\t', b'\v', b'\f')
+                       for marker in (edge+begin, begin.rstrip(b'\n')+edge+b'\n',
+                                      begin+b'AAAA\n'+edge+end,
+                                      begin+b'AAAA\n'+end.rstrip(b'\n')+edge+b'\n')],
+                     (begin.rstrip(b'\n')+b'junk\n', 'malformed '+name.decode()+' delimiter'),
+                     (begin+b'AAAA\n'+end.rstrip(b'\n')+b'junk\n', 'malformed '+name.decode()+' delimiter'),
                      (end, 'orphan certificate END'), (begin+begin+end, 'nested certificate BEGIN'),
                      (begin+b'-----END '+other+b'-----\n', 'mismatched certificate labels')]
             for data, reason in cases:

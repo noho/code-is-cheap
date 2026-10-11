@@ -442,16 +442,19 @@ def prepare_codex_ca(route, cwd, env, denies):
     if not stat.S_ISREG(mode):
         raise failure("required Codex CA input is not a regular file")
 
-    # Scan candidates as well as complete delimiters: a valid certificate must
-    # never hide a malformed companion. Noncertificate text/CRLs are ignored.
-    candidate = re.compile(rb"(?:-+[ \t]*|^[ \t]*)(BEGIN|END)[ \t]+(TRUSTED[ \t]+CERTIFICATE|CERTIFICATE)\b")
+    # Classify supported labels only at a delimiter-line boundary. Longer PEM
+    # labels and surrounding comments are not certificates; malformed supported
+    # markers still fail, including incomplete dashes and surrounding whitespace.
+    candidate = re.compile(
+        rb"^[ \t\v\f]*(?:-+[ \t]*)?(BEGIN|END)[ \t]+(TRUSTED[ \t]+CERTIFICATE|CERTIFICATE)"
+        rb"(?=[ \t\v\f]*(?:-{5}|-+(?=[ \t\v\f]|$)|$))")
     delimiter = re.compile(rb"-----(BEGIN|END) (TRUSTED CERTIFICATE|CERTIFICATE)-----")
     label = None
     block = []
     count = 0
     for line in data.splitlines(keepends=True):
         spelling = line.rstrip(b"\r\n")
-        found = candidate.search(spelling)
+        found = candidate.match(spelling)
         if found is None:
             if label is not None:
                 block.append(line)

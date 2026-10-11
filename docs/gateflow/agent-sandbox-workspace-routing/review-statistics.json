@@ -516,6 +516,250 @@
         "anomalies": 2,
         "warnings": 0
       }
+    },
+    {
+      "gate": "aggregate deepreview",
+      "artifact": "docs/reviews/code-review-20261011-074040.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 369.912589,
+      "usage": {
+        "input_tokens": 127274,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3257856,
+        "output_tokens": 65241,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 367376,
+        "duration_api_ms": 344552,
+        "total_cost_usd": 3.8963229999999998,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 127274,
+            "outputTokens": 65241,
+            "cacheReadInputTokens": 3257856,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 3.8963229999999998,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "beb0eb60-1d16-40f4-94c4-300fc77ce39b",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-review-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "aggregate deepreview",
+      "artifact": "docs/reviews/code-review-20261011-074039.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 1919.526718,
+      "usage": {
+        "input_tokens": 17202635,
+        "cached_input_tokens": 16997248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 45161,
+        "reasoning_output_tokens": 34474
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12830-eb32-7210-824b-5e2ae65e69d9",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-review-mimo.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-review-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "aggregate fix",
+      "artifact": "docs/gateflow/agent-sandbox-workspace-routing/aggregate-fix-01.md",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 407.640605,
+      "usage": {
+        "input_tokens": 1269611,
+        "cached_input_tokens": 1181184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 14548,
+        "reasoning_output_tokens": 5994
+      },
+      "runtime_metrics": {},
+      "session_id": "01a1284f-0bbf-7d12-9364-61eee24bf6df",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-fix-01.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-fix-01.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "aggregate current-source live validation",
+      "artifact": "docs/gateflow/agent-sandbox-workspace-routing/validation.md",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 5.727766,
+      "usage": {
+        "input_tokens": 10689,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12856-511b-79a0-b420-114a12389993",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/events.jsonl",
+        "stderr": "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/runtime.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
+    },
+    {
+      "gate": "aggregate re-review",
+      "artifact": "docs/reviews/code-review-20261011-082244.md",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 386.704946,
+      "usage": {
+        "input_tokens": 109649,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 4193920,
+        "output_tokens": 70163,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 384256,
+        "duration_api_ms": 355534,
+        "total_cost_usd": 4.39928,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 109649,
+            "outputTokens": 70163,
+            "cacheReadInputTokens": 4193920,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 4.39928,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "7f53ab3a-840c-4a19-811e-29a9bf30e58b",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-rereview-ds-flash.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 1
+      }
+    },
+    {
+      "gate": "aggregate re-review",
+      "artifact": "docs/reviews/code-review-20261011-082243.md",
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1473.472979,
+      "usage": {
+        "input_tokens": 15254398,
+        "cached_input_tokens": 15065728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 30630,
+        "reasoning_output_tokens": 19042
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12857-5956-75b1-bde9-37ff5259274c",
+      "logs": {
+        "output": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/workspace-routing-gateflow-vVRPod/aggregate-rereview-mimo.stderr",
+        "last_message": null
+      },
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      }
     }
   ]
 }

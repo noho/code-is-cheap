@@ -255,7 +255,8 @@ exported literal `~` is not expanded, and the child receives the canonical path 
 Inputs must be permitted, readable regular PEM files with one or more `CERTIFICATE` and/or
 `TRUSTED CERTIFICATE` entries. Every recognized certificate is syntax-checked; malformed companions fail.
 Trusted labels are normalized only in memory for validation; native Codex reads the original file and AUX data.
-`X509 CRL` entries are ignored, with no revocation validation. Setup does not prove endpoint trust,
+`X509 CRL` entries are ignored, with no revocation validation. Surrounding comments and noncertificate
+entries (including CSRs) are ignored and do not count as certificates. Setup does not prove endpoint trust,
 kernel enforcement or full native parser/algorithm equivalence, and grants no extra permissions or network access.
 
 The public system PEM may omit enterprise roots installed only in the macOS keychain; provide an explicit

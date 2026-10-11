@@ -1,0 +1,158 @@
+{
+  "kernel": {
+    "command": "four selected KernelTests from accepted plan, require_escalated",
+    "exit": 0,
+    "tests": 4,
+    "skips": 0,
+    "CA_subcases": 2,
+    "raw_directory": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence",
+    "policy_audit": {
+      "records": [
+        {
+          "case": "default-6kyj4cj3",
+          "exit": 0,
+          "first_record_hashes_verified": true,
+          "boundary_verified": true,
+          "strict_policy_no_trustd": true,
+          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/default-6kyj4cj3/raw.json"
+        },
+        {
+          "case": "ssl-4_edb3ta",
+          "exit": 0,
+          "first_record_hashes_verified": true,
+          "boundary_verified": true,
+          "strict_policy_no_trustd": true,
+          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/ssl-4_edb3ta/raw.json"
+        },
+        {
+          "case": "test_claude_original_deny_write_wins_over_cwd-vkn1p77p",
+          "exit": 0,
+          "first_record_hashes_verified": true,
+          "boundary_verified": true,
+          "strict_policy_no_trustd": true,
+          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_claude_original_deny_write_wins_over_cwd-vkn1p77p/raw.json"
+        },
+        {
+          "case": "test_kernel_boundary_and_write_preservation-763xoy_3",
+          "exit": 0,
+          "first_record_hashes_verified": true,
+          "boundary_verified": true,
+          "strict_policy_no_trustd": true,
+          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_kernel_boundary_and_write_preservation-763xoy_3/raw.json"
+        },
+        {
+          "case": "test_read_only_does_not_gain_cwd_writes-uctreoen",
+          "exit": 0,
+          "first_record_hashes_verified": true,
+          "boundary_verified": true,
+          "strict_policy_no_trustd": true,
+          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_read_only_does_not_gain_cwd_writes-uctreoen/raw.json"
+        }
+      ],
+      "root_audit_correction": "First audit wrongly assumed small policies produce separate seatbelt.source.sb; corrected to existing adapter/test fallback (same loaded file). No model/test rerun or policy change."
+    }
+  },
+  "live": {
+    "argv": "env -u CODEX_CA_CERTIFICATE -u SSL_CERT_FILE AGENT_TOOLS_FILE=/private/tmp/code-is-cheap-workspace-routing/scripts/agent-tools.zsh PATH=/private/tmp/code-is-cheap-workspace-routing/scripts:/Users/leo/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin /private/tmp/code-is-cheap-workspace-routing/scripts/agent-sandbox --cwd /private/tmp/workspace-routing-live-ybp8wpbe/work --deny-list /private/tmp/workspace-routing-live-ybp8wpbe/denies.json -- codex-agent-run --provider gpt-6-sol --prompt 'Reply exactly OK without calling tools or reading files.' --output /private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl --stderr /private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr",
+    "outer_exit": 0,
+    "audit": {
+      "state": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v",
+      "native_exit": 0,
+      "runner_exit": 0,
+      "terminal": "turn.completed",
+      "final": "OK",
+      "tool_results": 0,
+      "validation_status": "needs_review",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "first_profile": {
+        "seatbelt_profile": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/seatbelt.sb",
+        "bytes": "16358",
+        "source_bytes": "16358",
+        "profile_sha256": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2",
+        "source_sha256": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2"
+      },
+      "policy_assertions": "strict network/no trustd/exact synthetic denies/unchanged write grants verified",
+      "source_wrapper_sha256": "f0bb921819d3a72260c7a3916d1916b2469a6064d54d3fa4190c419a1efe1d8c",
+      "anomalies": [
+        {
+          "stream": "output",
+          "line": 2,
+          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/codex/config.toml.'}",
+          "message_chars": 358,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    "summary": {
+      "schema_version": 1,
+      "source": "subagent_report",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "final_answer": "OK",
+      "final_answer_truncated": false,
+      "final_answer_chars": 2,
+      "wall_clock_seconds": 6.56447,
+      "usage": {
+        "input_tokens": 10685,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "runtime_metrics": {},
+      "session_id": "01a12822-7eca-7a91-ab4e-ad110f5d1dbf",
+      "terminal": "turn.completed",
+      "tool_evidence_scope": "recorded_events_only",
+      "tool_results": 0,
+      "events": 5,
+      "canary_status": "not_run",
+      "canary_read_candidate": false,
+      "errors": [],
+      "anomalies": [
+        {
+          "stream": "output",
+          "line": 2,
+          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/codex/config.toml.'}",
+          "message_chars": 358,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": [],
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "diagnostics_truncated": false,
+      "artifacts": [],
+      "logs": {
+        "output": "/private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl",
+        "stderr": "/private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr",
+        "last_message": null
+      }
+    },
+    "files_sha256": {
+      "/private/tmp/workspace-routing-live-ybp8wpbe/managed-output.txt": "60c95f5b1de6f6f44e11b19c1bc296c896f2144f779e8c343cc200f604b55c5f",
+      "/private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl": "3ca9f2d1ea4a74e796ab127deefdca908a99f53cf593e4b81e7e154aa1697a2d",
+      "/private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/private/tmp/workspace-routing-live-ybp8wpbe/srt.json": "36cc3a90fb149c06d4174502e08f046e8efd2e8e776b9f01b85635a270caf98e",
+      "/private/tmp/workspace-routing-live-ybp8wpbe/boundary.json": "a09bbb420b4523783f4ab258e48c7359ae6d305b3af9b88d4cc828c999351886",
+      "/private/tmp/workspace-routing-live-ybp8wpbe/seatbelt.sb": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2"
+    }
+  },
+  "limits": "No actual Astra post-fix or original business/large-boundary replay; exact denied system service unmeasured; no merge/live sync."
+}

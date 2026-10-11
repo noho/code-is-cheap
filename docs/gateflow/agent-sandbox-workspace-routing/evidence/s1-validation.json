@@ -5,58 +5,55 @@
     "tests": 4,
     "skips": 0,
     "CA_subcases": 2,
-    "raw_directory": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence",
-    "policy_audit": {
-      "records": [
-        {
-          "case": "default-6kyj4cj3",
-          "exit": 0,
-          "first_record_hashes_verified": true,
-          "boundary_verified": true,
-          "strict_policy_no_trustd": true,
-          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/default-6kyj4cj3/raw.json"
-        },
-        {
-          "case": "ssl-4_edb3ta",
-          "exit": 0,
-          "first_record_hashes_verified": true,
-          "boundary_verified": true,
-          "strict_policy_no_trustd": true,
-          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/ssl-4_edb3ta/raw.json"
-        },
-        {
-          "case": "test_claude_original_deny_write_wins_over_cwd-vkn1p77p",
-          "exit": 0,
-          "first_record_hashes_verified": true,
-          "boundary_verified": true,
-          "strict_policy_no_trustd": true,
-          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_claude_original_deny_write_wins_over_cwd-vkn1p77p/raw.json"
-        },
-        {
-          "case": "test_kernel_boundary_and_write_preservation-763xoy_3",
-          "exit": 0,
-          "first_record_hashes_verified": true,
-          "boundary_verified": true,
-          "strict_policy_no_trustd": true,
-          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_kernel_boundary_and_write_preservation-763xoy_3/raw.json"
-        },
-        {
-          "case": "test_read_only_does_not_gain_cwd_writes-uctreoen",
-          "exit": 0,
-          "first_record_hashes_verified": true,
-          "boundary_verified": true,
-          "strict_policy_no_trustd": true,
-          "raw": "/private/tmp/workspace-routing-kernel-fixed-47x_jbzm/evidence/test_read_only_does_not_gain_cwd_writes-uctreoen/raw.json"
-        }
-      ],
-      "root_audit_correction": "First audit wrongly assumed small policies produce separate seatbelt.source.sb; corrected to existing adapter/test fallback (same loaded file). No model/test rerun or policy change."
-    }
+    "raw_directory": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence",
+    "policy_audit": [
+      {
+        "case": "default-c1m1217i",
+        "exit": 0,
+        "first_record_hashes_verified": true,
+        "boundary_verified": true,
+        "strict_policy_no_trustd": true,
+        "raw": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence/default-c1m1217i/raw.json"
+      },
+      {
+        "case": "ssl-gra3meph",
+        "exit": 0,
+        "first_record_hashes_verified": true,
+        "boundary_verified": true,
+        "strict_policy_no_trustd": true,
+        "raw": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence/ssl-gra3meph/raw.json"
+      },
+      {
+        "case": "test_claude_original_deny_write_wins_over_cwd-uc47clrt",
+        "exit": 0,
+        "first_record_hashes_verified": true,
+        "boundary_verified": true,
+        "strict_policy_no_trustd": true,
+        "raw": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence/test_claude_original_deny_write_wins_over_cwd-uc47clrt/raw.json"
+      },
+      {
+        "case": "test_kernel_boundary_and_write_preservation-0ozc10kd",
+        "exit": 0,
+        "first_record_hashes_verified": true,
+        "boundary_verified": true,
+        "strict_policy_no_trustd": true,
+        "raw": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence/test_kernel_boundary_and_write_preservation-0ozc10kd/raw.json"
+      },
+      {
+        "case": "test_read_only_does_not_gain_cwd_writes-idf19iha",
+        "exit": 0,
+        "first_record_hashes_verified": true,
+        "boundary_verified": true,
+        "strict_policy_no_trustd": true,
+        "raw": "/private/tmp/workspace-routing-kernel-final-b53xddc7/evidence/test_read_only_does_not_gain_cwd_writes-idf19iha/raw.json"
+      }
+    ]
   },
   "live": {
-    "argv": "env -u CODEX_CA_CERTIFICATE -u SSL_CERT_FILE AGENT_TOOLS_FILE=/private/tmp/code-is-cheap-workspace-routing/scripts/agent-tools.zsh PATH=/private/tmp/code-is-cheap-workspace-routing/scripts:/Users/leo/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin /private/tmp/code-is-cheap-workspace-routing/scripts/agent-sandbox --cwd /private/tmp/workspace-routing-live-ybp8wpbe/work --deny-list /private/tmp/workspace-routing-live-ybp8wpbe/denies.json -- codex-agent-run --provider gpt-6-sol --prompt 'Reply exactly OK without calling tools or reading files.' --output /private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl --stderr /private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr",
+    "argv": "env -u CODEX_CA_CERTIFICATE -u SSL_CERT_FILE AGENT_TOOLS_FILE=/private/tmp/code-is-cheap-workspace-routing/scripts/agent-tools.zsh PATH=/private/tmp/code-is-cheap-workspace-routing/scripts:/Users/leo/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin /private/tmp/code-is-cheap-workspace-routing/scripts/agent-sandbox --cwd /private/tmp/workspace-routing-live-final-_b0syo6q/work --deny-list /private/tmp/workspace-routing-live-final-_b0syo6q/denies.json -- codex-agent-run --provider gpt-6-sol --prompt 'Reply exactly OK without calling tools or reading files.' --output /private/tmp/workspace-routing-live-final-_b0syo6q/logs/events.jsonl --stderr /private/tmp/workspace-routing-live-final-_b0syo6q/logs/runtime.stderr",
     "outer_exit": 0,
     "audit": {
-      "state": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v",
+      "state": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.jd2355ul",
       "native_exit": 0,
       "runner_exit": 0,
       "terminal": "turn.completed",
@@ -69,19 +66,19 @@
         "warnings": 0
       },
       "first_profile": {
-        "seatbelt_profile": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/seatbelt.sb",
-        "bytes": "16358",
-        "source_bytes": "16358",
-        "profile_sha256": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2",
-        "source_sha256": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2"
+        "seatbelt_profile": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.jd2355ul/seatbelt.sb",
+        "bytes": "16856",
+        "source_bytes": "16856",
+        "profile_sha256": "3833498b7832c457d75ba1121edda5d3c8dc16cdfe5d07d6e294536bdc2d1f54",
+        "source_sha256": "3833498b7832c457d75ba1121edda5d3c8dc16cdfe5d07d6e294536bdc2d1f54"
       },
       "policy_assertions": "strict network/no trustd/exact synthetic denies/unchanged write grants verified",
-      "source_wrapper_sha256": "f0bb921819d3a72260c7a3916d1916b2469a6064d54d3fa4190c419a1efe1d8c",
+      "source_wrapper_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
       "anomalies": [
         {
           "stream": "output",
           "line": 2,
-          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/codex/config.toml.'}",
+          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.jd2355ul/codex/config.toml.'}",
           "message_chars": 358,
           "truncated": false,
           "path": null,
@@ -103,16 +100,16 @@
       "final_answer": "OK",
       "final_answer_truncated": false,
       "final_answer_chars": 2,
-      "wall_clock_seconds": 6.56447,
+      "wall_clock_seconds": 5.727766,
       "usage": {
-        "input_tokens": 10685,
+        "input_tokens": 10689,
         "cached_input_tokens": 0,
         "cache_write_input_tokens": 0,
         "output_tokens": 5,
         "reasoning_output_tokens": 0
       },
       "runtime_metrics": {},
-      "session_id": "01a12822-7eca-7a91-ab4e-ad110f5d1dbf",
+      "session_id": "01a12856-511b-79a0-b420-114a12389993",
       "terminal": "turn.completed",
       "tool_evidence_scope": "recorded_events_only",
       "tool_results": 0,
@@ -124,7 +121,7 @@
         {
           "stream": "output",
           "line": 2,
-          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.caf1nd6v/codex/config.toml.'}",
+          "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox.jd2355ul/codex/config.toml.'}",
           "message_chars": 358,
           "truncated": false,
           "path": null,
@@ -140,19 +137,26 @@
       "diagnostics_truncated": false,
       "artifacts": [],
       "logs": {
-        "output": "/private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl",
-        "stderr": "/private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr",
+        "output": "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/events.jsonl",
+        "stderr": "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/runtime.stderr",
         "last_message": null
       }
     },
     "files_sha256": {
-      "/private/tmp/workspace-routing-live-ybp8wpbe/managed-output.txt": "60c95f5b1de6f6f44e11b19c1bc296c896f2144f779e8c343cc200f604b55c5f",
-      "/private/tmp/workspace-routing-live-ybp8wpbe/logs/events.jsonl": "3ca9f2d1ea4a74e796ab127deefdca908a99f53cf593e4b81e7e154aa1697a2d",
-      "/private/tmp/workspace-routing-live-ybp8wpbe/logs/runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "/private/tmp/workspace-routing-live-ybp8wpbe/srt.json": "36cc3a90fb149c06d4174502e08f046e8efd2e8e776b9f01b85635a270caf98e",
-      "/private/tmp/workspace-routing-live-ybp8wpbe/boundary.json": "a09bbb420b4523783f4ab258e48c7359ae6d305b3af9b88d4cc828c999351886",
-      "/private/tmp/workspace-routing-live-ybp8wpbe/seatbelt.sb": "6f3cc01fa1a74d8f18a247f4387e8a21f60740cf945b9bcfbdf74420d67b32e2"
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/managed-output.txt": "7b1bf477397e306e88b6178845b2a6cd1250506d7b235329f8adfb68b972e5e9",
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/events.jsonl": "0844c505d928384f5dd4e23878036784ea0150f2840709b4fe8accbcb5fa2b9d",
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/logs/runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/srt.json": "b2b4b8a8b698c8241d15f0c9e9c3dd8cee8799d71ec82da3653668a88e1977af",
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/boundary.json": "350378defd2228973fda8ce83bd39e22aa2d684955f22a3f63d18426a5eb2c1f",
+      "/private/tmp/workspace-routing-live-final-_b0syo6q/seatbelt.sb": "3833498b7832c457d75ba1121edda5d3c8dc16cdfe5d07d6e294536bdc2d1f54"
     }
   },
-  "limits": "No actual Astra post-fix or original business/large-boundary replay; exact denied system service unmeasured; no merge/live sync."
+  "limits": "No actual Astra post-fix or original business/large-boundary replay; exact denied system service unmeasured; no merge/live sync.",
+  "phase": "aggregate A1 current-source validation; initial source success archived validation-01.md/evidence/s1-validation-01.json",
+  "offline": {
+    "tests": 80,
+    "executed": 70,
+    "skipped": 10,
+    "artifact": "aggregate-fix-01.md"
+  }
 }

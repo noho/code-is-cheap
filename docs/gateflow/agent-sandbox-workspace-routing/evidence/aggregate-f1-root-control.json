@@ -1,0 +1,10 @@
+[
+  {
+    "case": "csr-with-cert",
+    "result": "invalid Codex CA bundle: source='CODEX_CA_CERTIFICATE' declared='/private/tmp/ca-label-root-control-xbzbxska/ca.pem' canonical='/private/tmp/ca-label-root-control-xbzbxska/ca.pem' reason=malformed CERTIFICATE delimiter"
+  },
+  {
+    "case": "comment-with-cert",
+    "result": "invalid Codex CA bundle: source='CODEX_CA_CERTIFICATE' declared='/private/tmp/ca-label-root-control-xbzbxska/ca.pem' canonical='/private/tmp/ca-label-root-control-xbzbxska/ca.pem' reason=malformed CERTIFICATE delimiter"
+  }
+]
