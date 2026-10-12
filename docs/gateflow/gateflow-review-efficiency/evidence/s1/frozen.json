@@ -1,0 +1,13 @@
+{
+  "base_commit": "15553f817a027b8c7468b8888bcd754f48eaf585",
+  "source_files": {
+    "skills/gateflow/SKILL.md": "09d35c263864b8d6c05f5f9d14fbbdb2028248f7f5922a0e66ff9c252382ba63",
+    "skills/deepreview/SKILL.md": "2adc6a039bba731762c98c6685e8ed043c400c5cb9eaede12d4649ec15728015",
+    "skills/phaseflow/SKILL.md": "ea758568f07c27de41c3c951f01ed710633d1ca6e41f222ac9c66ede3a1ea7c4"
+  },
+  "diff_snapshot": "/Users/leo/workspace/code-is-cheap/docs/gateflow/gateflow-review-efficiency/evidence/s1/source.patch",
+  "diff_sha256": "7b434fc4d26aa9748b84870cb7d29a220109f4c26734a27b81fdbc31a7cd0b58",
+  "implementation_artifact": "/Users/leo/workspace/code-is-cheap/docs/gateflow/gateflow-review-efficiency/implementation.md",
+  "implementation_sha256": "f4944d917034b4a15079917f844580dd59f22f65eeb1a1382ca8ba4db29dc99f",
+  "recorded_at": "2026-10-12T20:35:33.935704+08:00"
+}

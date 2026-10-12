@@ -1,0 +1,18 @@
+{
+  "ds-flash": {
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261012-203533.md",
+    "task": "/private/tmp/gateflow-efficiency-jka5c862/code-review-ds-flash-task.md",
+    "output": "/private/tmp/gateflow-efficiency-jka5c862/code-review-ds-flash.jsonl",
+    "stderr": "/private/tmp/gateflow-efficiency-jka5c862/code-review-ds-flash.stderr",
+    "managed_session_id": 3345
+  },
+  "mimo-flash": {
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261012-203610.md",
+    "task": "/private/tmp/gateflow-efficiency-jka5c862/code-review-mimo-flash-task.md",
+    "output": "/private/tmp/gateflow-efficiency-jka5c862/code-review-mimo-flash.jsonl",
+    "stderr": "/private/tmp/gateflow-efficiency-jka5c862/code-review-mimo-flash.stderr",
+    "managed_session_id": 79165
+  },
+  "recorded_at": "2026-10-12T20:37:07.236776+08:00",
+  "frozen_target": "evidence/s1/frozen.json"
+}

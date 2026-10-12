@@ -3,7 +3,7 @@
 - Work unit: Gateflow development efficiency skill optimization.
 - Baseline: `83e534f71adfdd4d8a0c353642a37dd364045504`.
 - Branch: `feat/gateflow-review-efficiency`.
-- Current gate / next entry point: `accepted plan commit` (both independent reviews pass; no actual fix/re-review).
+- Current gate / next entry point: `accepted slice commit` (both independent S1 reviews pass; no actual fix/re-review).
 - Goal: [goal.md](goal.md).
 - Preflight: [preflight.json](preflight.json), clean worktree before controller artifacts, main equals fetched origin/main, PR55 merged.
 - Decision: source evidence supports this text-only work unit; confirmation accepted; see [confirmation.md](confirmation.md).
@@ -21,3 +21,9 @@ Latest user instruction removes all live probes from this work unit and closeout
 Plan runtime/runner/outer exit 0, completed; raw no-index diff returned1 because files differ, no whitespace output. Ordinary tool anomaly retained, not a plan failure. Plan execution: [plan-execution.json](plan-execution.json).
 
 Plan review pass and adjudication: [plan-adjudication.md](plan-adjudication.md). No pending findings. Next: accepted plan checkpoint then Sol implementation S1.
+
+Accepted plan commit: `15553f817a027b8c7468b8888bcd754f48eaf585`. Sol owns S1 source edits and implementation artifact; controller owns state.
+
+Implementation execution: [implementation-execution.json](implementation-execution.json). Frozen target: [evidence/s1/frozen.json](evidence/s1/frozen.json); patch plus immutable base preserves exact source version.
+
+S1 pass: [code-adjudication.md](code-adjudication.md); source identities unchanged. Next accepted slice commit then aggregate deepreview.

@@ -96,6 +96,15 @@ docs/reviews/repo-review-[0-9]{8}-[0-9]{6}.md
 
 ## Review Method
 
+明确作为 Gateflow gate 派发时，按该 gate 的职责实质应用下方方法、Review Requirements 和 mode scope：
+slice 检查当前 approved 增量的 correctness/契约/失败路径/验证；aggregate 检查 slices 交互、整体目标与遗漏；
+PR 检查实际交付版本、完整 diff 与 accepted 工作一致性、title/body、CI/checks 及新增变化。
+单个未变 slice 的 aggregate/PR 可引用适用证据，无需重复同范围全面 correctness review；每位 reviewer 仍须独立审查证据和
+具体疑点，形成当前 gate 判断。新增变化、交互风险或证据反例须沿受影响的实现、依赖和 tests 深挖。
+验证复用按 Gateflow 核对实际来源/结果、版本/范围及代码/依赖/配置/相关环境，重验受影响部分并满足 mandatory checks。
+PR 的精确 OID、完整 diff 快照/hash、同版深挖对象与收尾核对仍须实际执行，不能用旧 metadata 代替。
+独立调用 Current Changes、PR 或 All Repository Mode 时，原 strict/exhaustive 方法与范围不变。
+
 Current Changes Mode：
 
 1. 先理解 change intent：阅读相关 notes、diff、commit scope、关键实现和 tests，判断改动声称要解决什么问题。
@@ -378,6 +387,9 @@ All Repository Mode 默认应使用 Large Scope Parallel Review。每个 subagen
 不要把全仓 review 做成纯 lint、命名或风格 review。仍然只报告有直接证据、真实执行路径或明确架构风险支撑的 material findings。
 
 ## Review Artifact Format
+
+在 Gateflow 中，Scope 明确当前 gate 职责、目标版本与实际覆盖；未变事实可按 Gateflow 的可取回版本引用规则提供。
+当前判断/findings、验证适用性、Open Questions 和 Residual Risk 仍须实质记录，不照抄历史 pass。
 
 使用这个结构：
 

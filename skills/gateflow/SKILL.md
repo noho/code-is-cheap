@@ -61,30 +61,26 @@ git status --short
 
 ## Gate Order
 
-固定顺序：
+固定必需 gates 的顺序如下；方括号内的 fix/re-review 仅在有实际修复时执行：
 
 ```text
 goal confirmation
 -> plan
 -> plan review
--> fix
--> re-review
+-> [fix -> re-review]
 -> accepted plan commit
 -> implementation
 -> code review
--> fix
--> re-review
+-> [fix -> re-review]
 -> accepted slice commit
 -> aggregate deepreview
--> fix
--> re-review
+-> [fix -> re-review]
 -> accepted deepreview commit
 -> ready-to-open-draft-PR
 -> push
 -> create draft PR
 -> PR review
--> fix
--> re-review
+-> [fix -> re-review]
 -> accepted PR review commit
 -> push
 -> draft-PR-pass
@@ -97,7 +93,7 @@ Gate Order entry 与下方 section 的绑定是执行约束。必须按对应的
 
 - `goal confirmation` -> `## Gate: goal confirmation`
 - `plan` -> `## Gate: plan`
-- `implementation -> code review -> fix -> re-review -> accepted slice commit` -> `## Gate Group: implementation slice`
+- `implementation -> code review -> [fix -> re-review] -> accepted slice commit` -> `## Gate Group: implementation slice`
 - `plan review`、`code review`、`aggregate deepreview`、`PR review` 及其 `fix` / `re-review` -> `## Gate Group: review / fix / re-review`
 - `ready-to-open-draft-PR -> ... -> draft-PR-pass` -> `## Gate Group: draft PR`
 - `final closeout` -> `## Gate: final closeout`
@@ -107,7 +103,7 @@ Gate Order entry 与下方 section 的绑定是执行约束。必须按对应的
 多 slice 时重复：
 
 ```text
-implementation -> code review -> fix -> re-review -> accepted slice commit
+implementation -> code review -> [fix -> re-review] -> accepted slice commit
 ```
 
 直到所有 approved slices 完成。
@@ -122,7 +118,7 @@ Gate Order 推进，直到当前 work unit 到达 `final closeout pass`。
 1. 读取 gate artifact / validation / decision；
 2. 裁决 findings 和 residual risks；
 3. 记录当前 gate 的 artifact、decision、validation、finding 状态和 residual risk；
-4. 将 current gate / next entry point 写成 Gate Order 中下一个未完成 gate；
+4. 将 current gate / next entry point 写成 Gate Order 中下一个未完成的适用 gate；
 5. 继续执行下一个 gate。
 
 不得因为某个 gate 刚完成就停止、总结或等待用户，除非出现以下情况之一：
@@ -135,8 +131,8 @@ Gate Order 推进，直到当前 work unit 到达 `final closeout pass`。
 - 需要 merge、approve、mark ready for review、request reviewers、delete branch、对外 comment 或创建/修改外部 issue；
 - 用户明确要求 pause、stop 或 redirect。
 
-current gate / next entry point 必须表示下一个未完成 gate，而不是刚完成的 gate。不得 invent、skip、collapse 或
-reorder gates。
+current gate / next entry point 必须表示下一个未完成的适用 gate，而不是刚完成的 gate。不得 invent、skip、collapse 或
+reorder 必需或适用 gates；不执行条件不成立的 fix/re-review 不属于 skip。放行条件未满足时保持当前 review/fix/re-review。
 
 PR gate chain 的状态不变量：
 
@@ -215,6 +211,14 @@ implementation 不得实现 approved slice 之外的修复、重构、硬化、�
 
 ## Gate Group: review / fix / re-review
 
+三层代码审核都须完成适用的独立审核数量，由 reviewer 审查证据并形成当前 gate 的实质判断：
+
+- slice code review：沿当前 approved slice 的受影响路径检查 correctness、契约/状态、边界/失败路径及 tests/validation。
+- aggregate deepreview：检查 slices 的接口/状态/共享假设交互、整体目标覆盖与遗漏、既有证据对整体版本的适用性。
+  单个未变 slice 仍须独立判断整体目标与遗漏，可引用 slice 证据，无需重做同范围全面 correctness review。
+- PR review：核对实际 PR 身份/版本、完整 diff 与 accepted 工作的一致性、title/body、CI/checks 及新增变化的影响。
+  精确 OID、diff 快照/hash、同版深挖与收尾核对按 Deepreview 执行；新变化、交互风险或证据反例须追踪受影响路径。
+
 review / re-review 必须 evidence-based，并产出 durable artifact。finding 必须能被裁决为：
 
 - `accepted`
@@ -233,19 +237,28 @@ plan review 与裁决先判断问题是否实际阻止正确实现已确认目�
 已实现代码判断的问题，不得反复阻塞 plan；按上述裁决与 fix 状态处理，说明 implementation / code review 等 destination
 及非阻塞依据。未解决的真实 scope/contract/architecture/state/acceptance blocker 仍阻塞，不得为通过 gate 改名、延期或豁免。
 
-re-review 聚焦已裁决 findings 与实际变更影响，复用对当前版本仍有效且未受影响的既有证据。artifact 变更即新版本，受影响的
-旧证据须重新验证；仅因实际变更影响或新的有证据反例扩大范围，不对未受影响部分全面重设计或重扫。
-仍须履行适用的独立 review、gate 顺序与批准要求。
+跨 gate 复用真实验证前，核对可取回的来源、实际命令/结果、被验证版本/范围及当前代码、依赖、配置和相关环境；
+在当前 artifact 说明证据仍支持哪些所需断言。裸 pass、错版、不可取回或覆盖不足的证据不能放行，也不能替代独立判断。
+fix 或其它变化后重验受影响断言与交互，重新判断其余证据的适用性；全量重跑只因实际影响、证据反例或项目 mandatory checks
+要求而执行。mandatory checks 仍须满足；reviewer 可独立调查具体疑点，无需每个 gate/reviewer 重跑同一整套命令。
+
+re-review 聚焦已裁决 findings 与实际变更影响，按上述规则复用适用证据。artifact 变更即新版本，受影响的旧证据须重新验证；
+仅因实际变更影响或新的有证据反例扩大范围，不对未受影响部分全面重设计或重扫。独立 review、gate 顺序与批准要求不变。
+
+所有 review loops（plan、slice、aggregate、PR）统一：有实际需要的修复才执行 fix -> re-review；无待修 finding 且全部
+通过条件满足时，记录 review/裁决/pass，直接进入对应 accepted commit，不制造空 fix/re-review。记录 pass 不是新 gate。
+缺失证据在当前 review 内补足；需要实际修复才进入 fix/re-review，证据不足不能推进。
 
 review gate 通过条件：
 
-- review artifact 已记录 artifact path；
+- 必要独立 review 已完成，review artifact 已记录 artifact path 和裁决；
+- 所需验证对当前目标有效且充分，mandatory checks 已满足；
 - 每个仍裁决为 `accepted` 的 finding 均为 `已修复`，且修复证据已由 re-review 验证并回写最终状态；
   `未修复`、`部分修复`、`证据失效` 不得仅因有状态、风险已分类或没有 open question 而放行；
 - 未完成的 finding 只有正式改裁决为 `deferred-with-owner` 才能退出本 gate 的修复要求；artifact 必须记录
   既有授权依据、明确的非阻塞理由、owner 和 destination。缺任一项不得通过；延期改变 goal、scope 或验收标准时，
   先按 Goal Confirmation 规则重新确认；
-- 没有 blocking open question；
+- 没有真实 blocker、blocking open question 或未解决的 `needs-more-evidence`；accepted 列表为空不等于 pass；
 - residual risks 已分类。
 
 ## Residual Risks
@@ -265,20 +278,22 @@ review gate 通过条件：
 必要 artifacts：
 
 - plan artifact；
-- plan review / re-review artifact；
+- plan review artifact；
 - implementation artifact for each slice；
-- code review / re-review artifact for each slice；
-- fix artifact when fixes occur；
-- aggregate deepreview / re-review artifact；
-- PR review / re-review artifact；
+- code review artifact for each slice；
+- fix / re-review artifacts when fixes occur；
+- aggregate deepreview artifact；
+- PR review artifact；
 - final closeout summary。
 
-artifact 必须记录 gate、work unit、scope、changed files 或 reviewed target、decisions/findings、validation、docs decision、
-residual risks、completion status 和 artifact path。
+artifact 必须记录 gate、work unit、scope、changed files 或 reviewed target/版本、decisions/findings、validation、docs decision、
+residual risks/uncovered areas、completion status、artifact path 和 next entry point。
+未变且已确认的 goal/scope/plan/实现/验证事实可引用 artifact 路径、可取回版本（commit 或 hash 对应的保存快照）及相关事实/章节，
+无需复制全文。hash 不替代保存版本；来源缺失、错版或不适用须先补足，不能标作完成。当前变化、检查、裁决与验证适用性仍须记录。
 
 ## Commits
 
-review loop 通过、artifact 完整且没有 blocking open question 后，自动创建 protected local commit：
+review loop 满足上述全部通过条件且 artifact 完整后，自动创建 protected local commit：
 
 ```text
 gateflow: accept plan for <work-unit>
@@ -295,9 +310,9 @@ commit 前必须确认 branch 不是 protected trunk，检查 `git status`，只
 
 - branch 只包含当前 work unit intended commits；
 - all approved slices 完成并有 accepted slice commits；
-- aggregate deepreview 已执行，accepted findings 已修复并 re-reviewed；
+- aggregate deepreview 已满足全部通过条件；实际 accepted 修复已 re-reviewed，无需修复时已记录 pass；
 - accepted deepreview commit 已创建；
-- tests/type checks 已运行或失败已说明；
+- tests/type checks 有实际运行或适用复用的结果，失败已说明且不妨碍放行；mandatory checks 已满足；
 - docs decision 已完成；
 - deferred findings/residual risks 有 owner/destination；
 - 如果当前 work unit 是 issue，创建 draft PR 时 PR body 必须关联 issue：完整解决时使用 GitHub closing keyword（如 `Closes #123`），部分解决或仅关联时使用非关闭引用（如 `Related to #123`）并说明剩余 owner/destination；
@@ -309,20 +324,20 @@ commit 前必须确认 branch 不是 protected trunk，检查 `git status`，只
 push
 -> create draft PR
 -> PR review
--> fix
--> re-review
+-> [fix -> re-review]
 -> accepted PR review commit
 -> push
 -> draft-PR-pass
 ```
 
-PR review 有 accepted findings 时，必须自动修复并 re-review。PR review 若无 accepted findings，也必须提交 PR review artifact /
-pass evidence 并 push。
+PR review 按上述统一通过条件执行：accepted findings 的实际修复必须 re-review；无需 fix 时记录 pass。
+PR review artifact / pass evidence 仍须提交并 push，沿用下方既有 no-commit pass 规则。
 
 进入 `draft-PR-pass` 前必须满足：
 
 - PR review artifacts 已存在；
 - 所有 PR review findings 已裁决；
+- 上述 review gate 的全部通过条件已满足；
 - required fixes / re-review 已通过，或 PR review artifact 明确记录 pass 且无需 fix；
 - accepted PR review commit 已创建，或已明确记录 PR review pass 且无需 commit；
 - PR review / fix 后的 final push 已完成。
@@ -343,6 +358,7 @@ pass evidence 并 push。
 
 如 final closeout summary 尚不存在，`final closeout` gate 必须创建它。`final closeout pass` 后必须记录 work unit completed
 status，以及用户 merge 当前 PR 后可继续的 next entry point。
+closeout 必须实质总结以上实际结果；可链接明细，不能只是历史 artifact 链接列表。
 
 如果当前 work unit 是 issue，`final closeout` gate 必须确认：
 
