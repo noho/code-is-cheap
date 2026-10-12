@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-10-12T16:30:08.737199+08:00",
+  "updated_at": "2026-10-12T18:03:36.159122+08:00",
   "kind": "actual closed external agent executions, raw runtime schemas preserved; no mixed-runtime token normalization or actual billing estimate",
-  "closed_calls": 14,
+  "closed_calls": 21,
   "rows": [
     {
       "stage": "aggregate-ds-flash",
+      "outer_exit_code": 0,
       "runtime": "claude",
       "provider": "ds-flash",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -70,9 +70,9 @@
     },
     {
       "stage": "aggregate-mimo",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "mimo",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -100,9 +100,9 @@
     },
     {
       "stage": "code-fix-gpt",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "gpt-6-sol",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -130,9 +130,9 @@
     },
     {
       "stage": "code-rereview-ds-flash",
+      "outer_exit_code": 0,
       "runtime": "claude",
       "provider": "ds-flash",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -195,9 +195,9 @@
     },
     {
       "stage": "code-rereview-mimo",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "mimo",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -225,9 +225,9 @@
     },
     {
       "stage": "code-review-ds-flash",
+      "outer_exit_code": 0,
       "runtime": "claude",
       "provider": "ds-flash",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -290,9 +290,9 @@
     },
     {
       "stage": "code-review-mimo",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "mimo",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -320,9 +320,9 @@
     },
     {
       "stage": "implementation-gpt",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "gpt-6-sol",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -350,9 +350,9 @@
     },
     {
       "stage": "plan-fix-gpt",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "gpt-6-sol",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -380,9 +380,9 @@
     },
     {
       "stage": "plan-gpt",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "gpt-6-sol",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -410,9 +410,9 @@
     },
     {
       "stage": "plan-rereview-ds-flash",
+      "outer_exit_code": 0,
       "runtime": "claude",
       "provider": "ds-flash",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -475,9 +475,9 @@
     },
     {
       "stage": "plan-rereview-mimo",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "mimo",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "passed",
@@ -505,9 +505,9 @@
     },
     {
       "stage": "plan-review-ds-flash",
+      "outer_exit_code": 0,
       "runtime": "claude",
       "provider": "ds-flash",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -570,9 +570,9 @@
     },
     {
       "stage": "plan-review-mimo",
+      "outer_exit_code": 0,
       "runtime": "codex",
       "provider": "mimo",
-      "outer_exit_code": 0,
       "runtime_exit_code": 0,
       "runner_exit_code": 0,
       "validation_status": "needs_review",
@@ -597,10 +597,378 @@
         "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-review-mimo.stderr",
         "last_message": null
       }
+    },
+    {
+      "stage": "pr-fix-gpt",
+      "outer_exit_code": 0,
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 331.529147,
+      "usage": {
+        "input_tokens": 485208,
+        "cached_input_tokens": 425728,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 10198,
+        "reasoning_output_tokens": 2979
+      },
+      "runtime_metrics": {},
+      "tool_results": 25,
+      "events": 57,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-fix-gpt.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-fix-gpt.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "pr-rereview-ds-flash",
+      "outer_exit_code": 0,
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 355.633934,
+      "usage": {
+        "input_tokens": 102089,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2828544,
+        "output_tokens": 53286,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 352520,
+        "duration_api_ms": 325228,
+        "total_cost_usd": 3.2568670000000006,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 102089,
+            "outputTokens": 53286,
+            "cacheReadInputTokens": 2828544,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 3.2568670000000006,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 58,
+      "events": 36589,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-rereview-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "pr-review-ds-flash",
+      "outer_exit_code": 0,
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 588.140672,
+      "usage": {
+        "input_tokens": 304151,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 10555008,
+        "output_tokens": 53120,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 585539,
+        "duration_api_ms": 423976,
+        "total_cost_usd": 8.126259000000001,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 304151,
+            "outputTokens": 53120,
+            "cacheReadInputTokens": 10555008,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 8.126259000000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 69,
+      "events": 40759,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 3,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-review-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "pr-review-mimo",
+      "outer_exit_code": 0,
+      "runtime": "codex",
+      "provider": "mimo",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1370.794456,
+      "usage": {
+        "input_tokens": 9600332,
+        "cached_input_tokens": 9353344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 41620,
+        "reasoning_output_tokens": 17104
+      },
+      "runtime_metrics": {},
+      "tool_results": 138,
+      "events": 284,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 4,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-review-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-review-mimo.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "pr-workflow-review-ds-flash",
+      "outer_exit_code": 0,
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 425.067457,
+      "usage": {
+        "input_tokens": 299834,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5345920,
+        "output_tokens": 54339,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 421923,
+        "duration_api_ms": 381051,
+        "total_cost_usd": 5.5306049999999995,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 299834,
+            "outputTokens": 54339,
+            "cacheReadInputTokens": 5345920,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 5.5306049999999995,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 61,
+      "events": 39826,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-workflow-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-workflow-review-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "pr-workflow-review-mimo-flash",
+      "outer_exit_code": 0,
+      "runtime": "claude",
+      "provider": "mimo-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 949.257335,
+      "usage": {
+        "input_tokens": 155370,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7320320,
+        "output_tokens": 45873,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 946404,
+        "duration_api_ms": 797945,
+        "total_cost_usd": 5.583835,
+        "modelUsage": {
+          "mimo-v2.6-flash[1m]": {
+            "inputTokens": 155370,
+            "outputTokens": 45873,
+            "cacheReadInputTokens": 7320320,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 5.583835,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "mimo-v2.6-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 100,
+      "events": 9364,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 7,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-workflow-review-mimo-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-workflow-review-mimo-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "user-workflow-gpt",
+      "outer_exit_code": 0,
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 485.197235,
+      "usage": {
+        "input_tokens": 603182,
+        "cached_input_tokens": 546560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9431,
+        "reasoning_output_tokens": 3950
+      },
+      "runtime_metrics": {},
+      "tool_results": 30,
+      "events": 67,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/user-workflow-gpt.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/user-workflow-gpt.stderr",
+        "last_message": null
+      }
     }
   ],
   "setup_rejection": "initial plan setup denied before runtime, preserved privately, not counted as provider execution",
   "tiny_real_status_calls": "separate provider-acceptance.json8calls, Kimi exactly1; no tools/retries",
   "synthetic_native": "separate fixture records,0providerrequests, excluded from provider token totals",
-  "reported_cost": "Claude runtime metrics costBasis unknown; not actual billing"
+  "reported_cost": "Claude runtime metrics costBasis unknown; not actual billing",
+  "interrupted_calls": [
+    {
+      "outer_exit_code": 130,
+      "runtime_exit_code": null,
+      "runner_exit_code": null,
+      "status": "interrupted",
+      "managed_handle": 46859,
+      "reason": "Controller requested stop under explicit user authorization; authorization was issued before the user removed the controller-added no-delegation constraint. This is not an invalidation of nested review in general.",
+      "raw_logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/pr-rereview-mimo.stderr"
+      },
+      "child_execution_evidence": "Raw parent events item_32, item_33, item_35 record nested runner launches. No child terminal summary was received before parent interruption; do not claim child success or actual child termination from parent exit alone.",
+      "original_prompt": "/private/tmp/official-catalog-gateflow-4774laal/prompts/pr-rereview-mimo.original-dispatched.md",
+      "replacement_review_routes": "mimo-flash/Claude and ds-flash/Claude, per latest user instruction; no no-delegation requirement."
+    }
+  ],
+  "statistics_limits": "Interrupted MiMo parent has actual outer exit130 but no complete runtime terminal/usage/wall summary. Nested child tool launches are retained in its raw JSONL; child terminal statistics unavailable, not silently counted as success or zero usage. Completed calls preserve raw runtime usage schemas; reported SDK cost is not verified billing. Eight real status-only acceptance requests are recorded separately in provider-acceptance.json, Kimi exactly one."
 }

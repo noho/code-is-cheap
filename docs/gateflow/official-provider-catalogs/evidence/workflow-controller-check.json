@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-10-12T17:46:59.470853+08:00",
+  "prior_verified_head": "c1c9d0804779cab1b6b246f9c1521e043410d410",
+  "published_review_head": "e2b7e582f22f8b1068948deaedc110bf6892d527",
+  "changed_files": [
+    "AGENTS.md",
+    "docs/gateflow/official-provider-catalogs/state.md",
+    "docs/gateflow/official-provider-catalogs/user-workflow-update.md"
+  ],
+  "all_production_scripts_tests_cards_catalogs_blobs_unchanged": true,
+  "whitespace_policy_check_exit": 0,
+  "product_matrix_reexecution": "Not needed for documentation-only delta; original results/version binding retained",
+  "source_snapshot_hashes": {
+    "kimi-model-catalogs.json": "61990fe840fe299eafc08460b16da5b53c720cc34ccd147e820265dd2f1f50d4",
+    "mimo-model-catalogs.json": "8834dc34d879b8489b7376a5a1788f0d1b696f8410fc2df3544ad38ab145601a",
+    "ds-model-catalogs.json": "d47876f3bca395fe2d9d3c7fc7312282a60da8a2479dd13b995cb8e0fe2695dd",
+    "glm-model-catalogs.json": "94cf9e8df540be39aa2948bf14ae665ec76699b1740d5344f499dd67fc71d1a3",
+    "qwen-model-catalogs.json": "4bc94831cb66e43aaf4c375543f92883bfa1d3116a4065c5796c5de29e8a019c"
+  }
+}

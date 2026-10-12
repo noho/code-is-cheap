@@ -1,12 +1,12 @@
 # Official provider catalogs gate state
 
-- Current gate: pending new exact-OID PR review; final closeout has not passed
+- Current gate: accepted PR review commit (final current-source review passed)
 - Next entry point: freeze literal PR55 base/head OIDs and their compare for the published head including this workflow update, then run independent parallel PR reviews and controller adjudication
 - Branch: feat/official-provider-catalogs
 - Base: 17ef441
 - User source: five provider catalogs in Downloads
 - Current review defaults: mimo-flash via claude-agent-run (Claude runtime) and ds-flash via claude-agent-run (Claude runtime), independent and concurrent
-- Blocking item: new current-head reviews and controller adjudication pending
+- Blocking item: none; final review findings adjudicated, required fixes independently verified
 - Deployment: not performed; no merge/live authorization
 - Product files changed: official snapshots/generator/sync, Kimi and Qwen cards, Kimi logical route, focused tests and bilingual docs
 - High-risk diagnosis: set aside per user instruction
@@ -55,3 +55,11 @@
 - Historical parent MiMo/Codex final review: interrupted with user authorization before this steering; managed46859 actual exit 130. No complete parent/child summary was collected; child exit status is not established.
 - Original DS final review: managed34484 exited 0; docs/reviews/pr-55-review-20261012-172143.md reviewed c1c9d0804779cab1b6b246f9c1521e043410d410, reporting finding 1 fixed and no new substantive findings. This is historical evidence, not acceptance of the workflow-update head.
 - Archived prompts/reviews and their recorded routing remain unchanged. The next published head requires the new default review routes and controller adjudication before final closeout.
+
+## Final current-source review acceptance
+
+- Reviewed source head: e2b7e582f22f8b1068948deaedc110bf6892d527; base17ef441bb9beac92914cc4a9c1c1dfc7108dd2a6.
+- MiMo Flash/Claude and DS Flash/Claude both completed runtime/runner/outer0; no new substantive findings; accepted PR finding1 (P3) 已修复.
+- Controller adjudication: [pr-rereview-decision.md](pr-rereview-decision.md), including ordinary-tool diagnostics and non-blocking legacy/custom-upstream uncertainty with maintainer owner.
+- All product/scripts/tests/cards/catalog blobs remain unchanged; further commits only closeout/review/evidence records.
+- Final closeout reminder must include applicable ./scripts/sync-codex-agent.sh command; no merge/live deployment authorization.
