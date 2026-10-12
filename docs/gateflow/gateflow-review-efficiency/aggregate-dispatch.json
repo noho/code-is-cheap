@@ -1,0 +1,14 @@
+{
+  "mimo-flash": {
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261012-204621.md",
+    "task": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-mimo-flash-task.md",
+    "output": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-mimo-flash.jsonl",
+    "stderr": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-mimo-flash.stderr"
+  },
+  "ds-flash": {
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261012-204622.md",
+    "task": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-ds-flash-task.md",
+    "output": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-ds-flash.jsonl",
+    "stderr": "/private/tmp/gateflow-efficiency-jka5c862/aggregate-ds-flash.stderr"
+  }
+}

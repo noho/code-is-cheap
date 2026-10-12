@@ -3,7 +3,7 @@
 - Work unit: Gateflow development efficiency skill optimization.
 - Baseline: `83e534f71adfdd4d8a0c353642a37dd364045504`.
 - Branch: `feat/gateflow-review-efficiency`.
-- Current gate / next entry point: `accepted slice commit` (both independent S1 reviews pass; no actual fix/re-review).
+- Current gate / next entry point: `accepted deepreview commit` (both aggregate routes pass; no source fix).
 - Goal: [goal.md](goal.md).
 - Preflight: [preflight.json](preflight.json), clean worktree before controller artifacts, main equals fetched origin/main, PR55 merged.
 - Decision: source evidence supports this text-only work unit; confirmation accepted; see [confirmation.md](confirmation.md).
@@ -27,3 +27,7 @@ Accepted plan commit: `15553f817a027b8c7468b8888bcd754f48eaf585`. Sol owns S1 so
 Implementation execution: [implementation-execution.json](implementation-execution.json). Frozen target: [evidence/s1/frozen.json](evidence/s1/frozen.json); patch plus immutable base preserves exact source version.
 
 S1 pass: [code-adjudication.md](code-adjudication.md); source identities unchanged. Next accepted slice commit then aggregate deepreview.
+
+Accepted S1 commit: `0dfc9ec56e939cd189923d1fbe65fc74a78bc1b2`. Controller evidence packaging only: [evidence-packaging.md](evidence-packaging.md), gzip preserves reviewed raw patch bytes. No product/source changes since S1 review.
+
+Aggregate pass: [aggregate-adjudication.md](aggregate-adjudication.md). No pending findings. Next accepted deepreview checkpoint then draft PR readiness/push/create/PR review.
