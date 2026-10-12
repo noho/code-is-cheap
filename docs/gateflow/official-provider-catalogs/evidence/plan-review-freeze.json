@@ -1,0 +1,7 @@
+{
+  "recorded_at": "2026-10-12T05:26:33.460160+00:00",
+  "plan_sha256": "c376940054522bd7242b0c441bffae206c4d42b08bcffd428a4e9e75cd5e32d8",
+  "base": "17ef441bb9beac92914cc4a9c1c1dfc7108dd2a6",
+  "branch": "feat/official-provider-catalogs",
+  "product_changes": false
+}

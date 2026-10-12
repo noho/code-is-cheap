@@ -1,0 +1,87 @@
+[
+  {
+    "vendor": "ds",
+    "command": [
+      "codex",
+      "debug",
+      "models"
+    ],
+    "exit_code": 0,
+    "selected_entry": {
+      "slug": "deepseek-flash",
+      "tool_mode": null,
+      "use_responses_lite": false,
+      "context_window": 1048576,
+      "max_context_window": 1048576
+    },
+    "stderr": ""
+  },
+  {
+    "vendor": "glm",
+    "command": [
+      "codex",
+      "debug",
+      "models"
+    ],
+    "exit_code": 0,
+    "selected_entry": {
+      "slug": "glm-5.3",
+      "tool_mode": null,
+      "use_responses_lite": false,
+      "context_window": 1048576,
+      "max_context_window": 1048576
+    },
+    "stderr": ""
+  },
+  {
+    "vendor": "kimi",
+    "command": [
+      "codex",
+      "debug",
+      "models"
+    ],
+    "exit_code": 0,
+    "selected_entry": {
+      "slug": "k3",
+      "tool_mode": null,
+      "use_responses_lite": false,
+      "context_window": 1048576,
+      "max_context_window": 1048576
+    },
+    "stderr": ""
+  },
+  {
+    "vendor": "mimo",
+    "command": [
+      "codex",
+      "debug",
+      "models"
+    ],
+    "exit_code": 0,
+    "selected_entry": {
+      "slug": "mimo-v2.6-pro",
+      "tool_mode": "code_mode_only",
+      "use_responses_lite": true,
+      "context_window": 1048576,
+      "max_context_window": 1048576
+    },
+    "stderr": ""
+  },
+  {
+    "vendor": "qwen",
+    "command": [
+      "codex",
+      "debug",
+      "models"
+    ],
+    "exit_code": 0,
+    "selected_entry": {
+      "slug": "qwen3.8-max",
+      "tool_mode": null,
+      "use_responses_lite": false,
+      "context_window": 983616,
+      "max_context_window": null
+    },
+    "stderr": ""
+  }
+]

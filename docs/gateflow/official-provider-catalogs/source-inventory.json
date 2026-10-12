@@ -1,0 +1,70 @@
+[
+  {
+    "file": "ds-model-catalogs.json",
+    "source": "/Users/leo/Downloads/ds-model-catalogs.json",
+    "sha256": "d47876f3bca395fe2d9d3c7fc7312282a60da8a2479dd13b995cb8e0fe2695dd",
+    "bytes": 76106,
+    "models": [
+      "deepseek-flash",
+      "deepseek-v4-pro"
+    ],
+    "provenance": "user-supplied official catalog; MiMo documentation URL supplied in conversation; other URLs not supplied"
+  },
+  {
+    "file": "glm-model-catalogs.json",
+    "source": "/Users/leo/Downloads/glm-model-catalogs.json",
+    "sha256": "94cf9e8df540be39aa2948bf14ae665ec76699b1740d5344f499dd67fc71d1a3",
+    "bytes": 2471,
+    "models": [
+      "glm-5.3",
+      "glm-5-turbo"
+    ],
+    "provenance": "user-supplied official catalog; MiMo documentation URL supplied in conversation; other URLs not supplied"
+  },
+  {
+    "file": "kimi-model-catalogs.json",
+    "source": "/Users/leo/Downloads/kimi-model-catalogs.json",
+    "sha256": "61990fe840fe299eafc08460b16da5b53c720cc34ccd147e820265dd2f1f50d4",
+    "bytes": 1952,
+    "models": [
+      "k3",
+      "k3-256k"
+    ],
+    "provenance": "user-supplied official catalog; MiMo documentation URL supplied in conversation; other URLs not supplied"
+  },
+  {
+    "file": "mimo-model-catalogs.json",
+    "source": "/Users/leo/Downloads/mimo-model-catalogs.json",
+    "sha256": "8834dc34d879b8489b7376a5a1788f0d1b696f8410fc2df3544ad38ab145601a",
+    "bytes": 85255,
+    "models": [
+      "mimo-v2.6-pro",
+      "mimo-v2.6-flash",
+      "mimo-v2.6-pro-ultraspeed",
+      "mimo-v2.5-pro",
+      "mimo-v2.5"
+    ],
+    "provenance": "user-supplied official catalog; MiMo documentation URL supplied in conversation; other URLs not supplied"
+  },
+  {
+    "file": "qwen-model-catalogs.json",
+    "source": "/Users/leo/Downloads/qwen-model-catalogs.json",
+    "sha256": "4bc94831cb66e43aaf4c375543f92883bfa1d3116a4065c5796c5de29e8a019c",
+    "bytes": 15100,
+    "models": [
+      "auto",
+      "qwen3.8-max",
+      "qwen3.8-flash",
+      "qwen3.7-max",
+      "qwen3.7-plus",
+      "qwen3.6-flash",
+      "glm-5.3",
+      "glm-5.2",
+      "deepseek-v4.1-flash",
+      "deepseek-v4-pro",
+      "deepseek-v4-pro-0813",
+      "deepseek-v4-flash-0731"
+    ],
+    "provenance": "user-supplied official catalog; MiMo documentation URL supplied in conversation; other URLs not supplied"
+  }
+]

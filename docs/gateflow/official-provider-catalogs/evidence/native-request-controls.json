@@ -1,0 +1,321 @@
+{
+  "external_provider_requests": 0,
+  "synthetic_endpoint_expected_http_status": 400,
+  "cases": [
+    {
+      "case": "ds-code-False",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/ds-code-False",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "deepseek-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tools",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "text",
+            "client_metadata"
+          ],
+          "input_types": [
+            "message",
+            "message",
+            "message",
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": [
+            "function",
+            "function",
+            "function",
+            "custom",
+            "function",
+            "namespace",
+            "function",
+            "function",
+            "function"
+          ]
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    },
+    {
+      "case": "glm-code-False",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/glm-code-False",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "glm-5.3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tools",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "client_metadata"
+          ],
+          "input_types": [
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": [
+            "function",
+            "function",
+            "function",
+            "custom",
+            "function",
+            "namespace",
+            "function",
+            "function",
+            "function"
+          ]
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    },
+    {
+      "case": "kimi-code-False",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/kimi-code-False",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "k3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tools",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "client_metadata"
+          ],
+          "input_types": [
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": [
+            "function",
+            "function",
+            "function",
+            "function",
+            "namespace",
+            "function",
+            "function",
+            "function"
+          ]
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    },
+    {
+      "case": "qwen-code-False",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/qwen-code-False",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "qwen3.8-max",
+          "reasoning": {
+            "effort": "max",
+            "summary": "auto"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tools",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "client_metadata"
+          ],
+          "input_types": [
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": [
+            "function",
+            "function",
+            "function",
+            "function",
+            "namespace",
+            "function",
+            "function",
+            "function"
+          ]
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    },
+    {
+      "case": "mimo-code-False",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/mimo-code-False",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "mimo-v2.6-pro",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "client_metadata"
+          ],
+          "input_types": [
+            "additional_tools",
+            "message",
+            "message",
+            "message",
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": []
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    },
+    {
+      "case": "mimo-code-True",
+      "argv": [
+        "codex",
+        "exec",
+        "--json",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "-C",
+        "/private/tmp/official-catalog-gateflow-4774laal/native-request-controls/mimo-code-True",
+        "Return a diagnostic status only. Do not use tools."
+      ],
+      "exit_code": 1,
+      "captured_requests": [
+        {
+          "path": "/v1/responses",
+          "model": "mimo-v2.6-pro",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "body_keys": [
+            "model",
+            "stream",
+            "input",
+            "tool_choice",
+            "parallel_tool_calls",
+            "reasoning",
+            "store",
+            "include",
+            "prompt_cache_key",
+            "client_metadata"
+          ],
+          "input_types": [
+            "additional_tools",
+            "message",
+            "message",
+            "message",
+            "message",
+            "message",
+            "message"
+          ],
+          "tool_types": []
+        }
+      ],
+      "error_tail": "Reading additional input from stdin...\n",
+      "expected_synthetic_stop_not_a_provider_success": true
+    }
+  ]
+}
