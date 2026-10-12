@@ -1,0 +1,33 @@
+{
+  "expected_pr_facts": {
+    "baseRefName": "main",
+    "baseRefOid": "83e534f71adfdd4d8a0c353642a37dd364045504",
+    "headRefName": "feat/gateflow-review-efficiency",
+    "headRefOid": "9fada4ef882089c031c2cc48c068e41dfe4f3e6e",
+    "headRepository": {
+      "id": "R_kgDOSd8g6w",
+      "name": "code-is-cheap",
+      "nameWithOwner": "noho/code-is-cheap"
+    },
+    "isDraft": true,
+    "state": "OPEN",
+    "title": "docs: streamline Gateflow review responsibilities and evidence reuse",
+    "url": "https://github.com/noho/code-is-cheap/pull/56"
+  },
+  "routes": {
+    "mimo-flash": {
+      "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-56-review-20261012-210406.md",
+      "task": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash-task.md",
+      "output": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash.jsonl",
+      "stderr": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash.stderr",
+      "scratch": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash-files"
+    },
+    "ds-flash": {
+      "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-56-review-20261012-210407.md",
+      "task": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash-task.md",
+      "output": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash.jsonl",
+      "stderr": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash.stderr",
+      "scratch": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash-files"
+    }
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "mimo-flash": {
+    "outer_exit_code": 0,
+    "summary": {
+      "schema_version": 1,
+      "source": "subagent_report",
+      "runtime": "claude",
+      "provider": "mimo-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "final_answer": "**结论：pass**\n\nPR 56 实际交付经独立核验：精确 OID compare diff（`83e534f…...9fada4e…`，34 文件，sha256 `5a6df2b5…`）仅含已审三份 SKILL 与本 workunit 必需证据；三份 SKILL hash 与 frozen.json/四份 gate 报告 identity 逐项一致，S1 后源码零变化；source.patch.gz 解码 hash `7b434fc4…` 与 frozen、checkpoint 原始 patch、base→head 再生 diff 三方字节一致；mandatory validator 与 whitespace（最终 diff）实测 exit 0；title/body/draft/目标 branch 真实；head/base 至收尾复验未移动。如实报告：repo 无任何 CI/checks。未发现实质性问题，无未决 blocking/NME 项。\n\n- Artifact：`docs/reviews/pr-56-review-20261012-210406.md`\n- 未决/残余：CI 缺失（仓库既有状况）；prompt 文本无机械 enforcement 属已分类的后续 work unit\n- 本 reviewer 仅 review，未 commit/push/approve/comment；accepted PR review / final push / final closeout 交回总控裁决。",
+      "final_answer_truncated": false,
+      "final_answer_chars": 664,
+      "wall_clock_seconds": 737.411285,
+      "usage": {
+        "input_tokens": 73991,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1323264,
+        "output_tokens": 37101,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 735199,
+        "duration_api_ms": 660478,
+        "total_cost_usd": 1.959112,
+        "modelUsage": {
+          "mimo-v2.6-flash[1m]": {
+            "inputTokens": 73991,
+            "outputTokens": 37101,
+            "cacheReadInputTokens": 1323264,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 1.959112,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "mimo-v2.6-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "79ffec01-105c-4826-bd3b-c15fca466bae",
+      "terminal": "success",
+      "tool_evidence_scope": "recorded_events_only",
+      "tool_results": 31,
+      "events": 7877,
+      "canary_status": "not_run",
+      "canary_read_candidate": false,
+      "errors": [],
+      "anomalies": [
+        {
+          "stream": "output",
+          "line": 926,
+          "message": "{'type': 'tool_result', 'content': 'File does not exist. Note: your current working directory is /Users/leo/workspace/code-is-cheap.', 'is_error': True, 'tool_use_id': 'call_c59cda5ffb444e1da236a537'}",
+          "message_chars": 200,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 1338,
+          "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n(eval):6: operation not permitted: /private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash-files/pr-56-facts.json', 'is_error': True, 'tool_use_id': 'call_80a9926d815f4b64a6e6d3aa'}",
+          "message_chars": 237,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 1364,
+          "message": "{'type': 'tool_result', 'content': 'Exit code 1\\nUnknown JSON field: \"draft\"\\nAvailable fields:\\n  additions\\n  assignees\\n  author\\n  autoMergeRequest\\n  baseRefName\\n  baseRefOid\\n  body\\n  changedFiles\\n  closed\\n  closedAt\\n  closingIssuesReferences\\n  comments\\n  commits\\n  createdAt\\n  deletions\\n  files\\n  fullDatabaseId\\n  headRefName\\n  headRefOid\\n  headRepository\\n  headRepositoryOwner\\n  id\\n  isCrossRepository\\n  isDraft\\n  labels\\n  latestReviews\\n  maintainerCanModify\\n  mergeCommit\\n  mergeStateStatus\\n  mergeable\\n  mergedAt\\n  mergedBy\\n  milestone\\n  number\\n  potentialMergeCommit\\n  projectCards\\n  projectItems\\n  reactionGroups\\n  reviewDecision\\n  reviewRequests\\n  reviews\\n  state\\n  statusCheckRollup\\n  title\\n  updatedAt\\n  url', 'is_error': True, 'tool_use_id': 'call_15b30840b9e540bdbec09db8'}",
+          "message_chars": 830,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 3511,
+          "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n== gh pr checks (retry unsandboxed) ==\\nno checks reported on the \\'feat/gateflow-review-efficiency\\' branch\\nGH_PR_CHECKS_EXIT=1\\n== REST check-runs for head OID ==\\n{\\n  \"total_count\": 0\\n}\\n== REST combined status ==\\n{\\n  \"state\": \"pending\",\\n  \"total_count\": 0\\n}\\n== workflow runs on head? ==\\n{\\n  \"total_count\": 0\\n}\\n== CI config present in repo? ==\\nls: .github/workflows: No such file or directory', 'is_error': True, 'tool_use_id': 'call_515ff29c5a054fbebf41a82f'}",
+          "message_chars": 525,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 3513,
+          "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n== find skill metadata validators ==\\n__pycache__\\nagent-endpoint.py\\nagent-run-result.py\\nagent-sandbox\\nagent-sandbox-launch.mjs\\nagent-tools.zsh\\nclaude-agent-run\\ncodex-agent-run\\ncompose-codex-app-config.py\\ninstall-agent-sandbox.sh\\npatch-codex-model-catalog.py\\nrepair-codex-reasoning-history.py\\nsub-agent-preflight\\nsync-agent-tools.sh\\nsync-codex-agent.sh\\nsync-codex-model-defaults.py\\nsync-codex-providers.py\\nsync-skills.sh\\nvalidate-skill.py\\nvalidate-skills.sh\\nscripts/agent-sandbox\\nscripts/sync-skills.sh\\nscripts/agent-endpoint.py\\nscripts/patch-codex-model-catalog.py\\nscripts/validate-skills.sh\\nscripts/agent-sandbox-launch.mjs\\nscripts/sync-codex-agent.sh\\nscripts/codex-agent-run\\nscripts/sub-agent-preflight\\nscripts/agent-run-result.py\\n== grep validator mentions in skills ==', 'is_error': True, 'tool_use_id': 'call_d50db97268e348f09435a684'}",
+          "message_chars": 919,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": [
+        {
+          "stream": "stderr",
+          "line": 1,
+          "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+          "message_chars": 85,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 5,
+        "warnings": 1
+      },
+      "diagnostics_truncated": false,
+      "artifacts": [
+        {
+          "path": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-56-review-20261012-210406.md",
+          "exists": true,
+          "regular_file": true
+        }
+      ],
+      "logs": {
+        "output": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash.jsonl",
+        "stderr": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-mimo-flash.stderr",
+        "last_message": null
+      }
+    }
+  },
+  "ds-flash": {
+    "outer_exit_code": 0,
+    "summary": {
+      "schema_version": 1,
+      "source": "subagent_report",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "validation_status": "passed",
+      "result_status": "not_assessed",
+      "final_answer": "**结论：pass — 未发现实质性问题。**\n\n- **Output**: `docs/reviews/pr-56-review-20261012-210407.md`（sha256 `278aacb2…`；本次唯一 repo 写入，未 commit/push/comment/approve/request reviewers/sync，未执行 probe，未读取另一 reviewer 本轮输出）\n- **核验要点**：精确 OID compare 快照（`5a6df2b5…`）与本地全 diff 逐字节一致，34 文件 = 3 份 SKILL + 本 work unit 证据/报告，无越界；三 SKILL sha256 与 `frozen.json` 逐项一致且自 accepted S1 (`0dfc9ec`) 零变化；gzip 解码 hash `7b434fc4…` == diff_sha256 == 历史 raw patch == 独立重生成 diff；历史 staged-check exit 2 如实保留（49 处均指向 source.patch 单空格 context），当前 head staged-check exit 0；`validate-skills.sh` exit 0；PR draft/OPEN、base==main tip、title/body 属实、无 force-push/外部评论。\n- **如实项**：仓库无 CI workflow，`gh pr checks` 报告 \"no checks reported\" —— 无可报告 checks，不构成通过证据，也非本 PR 引入。\n- **未决项**：无。交回总控裁决 accepted PR review commit / final push / final closeout；本 reviewer 不推进 gate。",
+      "final_answer_truncated": false,
+      "final_answer_chars": 811,
+      "wall_clock_seconds": 341.02839,
+      "usage": {
+        "input_tokens": 70852,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1164544,
+        "output_tokens": 51903,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 338762,
+        "duration_api_ms": 307688,
+        "total_cost_usd": 2.2341070000000003,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 70852,
+            "outputTokens": 51903,
+            "cacheReadInputTokens": 1164544,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 2.2341070000000003,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "session_id": "7e9f6c3b-5d4c-41dc-8dc8-d454e1fdc660",
+      "terminal": "success",
+      "tool_evidence_scope": "recorded_events_only",
+      "tool_results": 30,
+      "events": 39698,
+      "canary_status": "not_run",
+      "canary_read_candidate": false,
+      "errors": [],
+      "anomalies": [],
+      "warnings": [
+        {
+          "stream": "stderr",
+          "line": 1,
+          "message": "[claude-code:unrecognized_model] {\"model\":\"deepseek/deepseek-flash[1m]\",\"query_source\":\"sdk\"}",
+          "message_chars": 93,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "diagnostics_truncated": false,
+      "artifacts": [
+        {
+          "path": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-56-review-20261012-210407.md",
+          "exists": true,
+          "regular_file": true
+        }
+      ],
+      "logs": {
+        "output": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/gateflow-efficiency-jka5c862/pr-review-ds-flash.stderr",
+        "last_message": null
+      }
+    }
+  }
+}

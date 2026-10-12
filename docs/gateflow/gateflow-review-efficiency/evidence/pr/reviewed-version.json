@@ -1,0 +1,19 @@
+{
+  "repository": "noho/code-is-cheap",
+  "pr": 56,
+  "head_oid": "9fada4ef882089c031c2cc48c068e41dfe4f3e6e",
+  "base_oid": "83e534f71adfdd4d8a0c353642a37dd364045504",
+  "compare_url": "https://api.github.com/repos/noho/code-is-cheap/compare/83e534f71adfdd4d8a0c353642a37dd364045504...9fada4ef882089c031c2cc48c068e41dfe4f3e6e",
+  "decoded_snapshot_sha256": "5a6df2b565bee9a10ed1d7e522fd86031e2ca9110727e56fd70e32e0bc86d537",
+  "decoded_bytes": 219999,
+  "snapshot": "reviewed-compare.diff.gz",
+  "controller_version_rechecked_at": "2026-10-12T21:20:13.681729+08:00",
+  "pr_facts": {
+    "baseRefOid": "83e534f71adfdd4d8a0c353642a37dd364045504",
+    "body": "## Summary\n\n- Clarify substantive slice, aggregate and PR review duties, preserving independent reviews and strict standalone Deepreview.\n- Reuse applicable actual validation across gates; revalidate affected work and retain mandatory checks.\n- Make fix/re-review conditional on real fixes in all review loops; unresolved blockers, needs-more-evidence and inadequate evidence still block.\n- Allow traceable references to unchanged artifact facts while keeping current decisions/evidence and substantive final closeout.\n\nProduct changes are limited to Gateflow, Deepreview and Phaseflow SKILL text. Planreview was checked and needs no change. No runner, model/provider, business-project or permission changes.\n\n## Validation and review\n\nOne approved slice. GPT Sol performed plan/implementation. MiMo Flash and DS Flash independently reviewed in parallel at plan, slice and aggregate gates; all passed, controller adjudicated. Actual PR review follows on the created PR and precise head/base OIDs under the same two routes.\n\nExisting skill metadata validators and relevant whitespace checks pass; representative textual scenarios check no-findings pass, real fixes, interacting slices, stale evidence, unresolved blockers, PR version movement and missing references. Evidence: docs/gateflow/gateflow-review-efficiency/.\n\nOriginal diff evidence was losslessly compressed after literal unified-diff context spaces triggered a staged whitespace check; original failure and decoded hash/byte equality are preserved. No source change was needed.\n\n## Delivery boundaries\n\nDraft for manual merge. Reviewed skill sync is authorized after review/report, with deployed-text matching only. User revoked runtime live probes; none are a completion condition. No measured speed/token improvement or runtime enforcement is claimed. No linked GitHub issue for this workflow optimization.\n",
+    "headRefOid": "9fada4ef882089c031c2cc48c068e41dfe4f3e6e",
+    "isDraft": true,
+    "state": "OPEN",
+    "title": "docs: streamline Gateflow review responsibilities and evidence reuse"
+  }
+}
