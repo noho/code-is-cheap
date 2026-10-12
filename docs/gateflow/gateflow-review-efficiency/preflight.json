@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-10-12T20:03:05.449133+08:00",
+  "branch": "feat/gateflow-review-efficiency",
+  "base_ref": "origin/main",
+  "baseline_commit": "83e534f71adfdd4d8a0c353642a37dd364045504",
+  "head_before_artifact": "83e534f71adfdd4d8a0c353642a37dd364045504",
+  "status_before_artifact": "",
+  "previous_pr": {
+    "mergeCommit": {
+      "oid": "83e534f71adfdd4d8a0c353642a37dd364045504"
+    },
+    "mergedAt": "2026-10-12T11:43:50Z",
+    "state": "MERGED"
+  },
+  "source_files": [
+    "AGENTS.md",
+    "skills/gateflow/SKILL.md",
+    "skills/deepreview/SKILL.md",
+    "skills/planreview/SKILL.md",
+    "skills/phaseflow/SKILL.md",
+    "scripts/validate-skills.sh",
+    "scripts/validate-skill.py"
+  ],
+  "dispatch": {
+    "plan_implement_fix": "codex-agent-run --provider gpt-6-sol",
+    "reviews": [
+      "claude-agent-run --provider mimo-flash",
+      "claude-agent-run --provider ds-flash"
+    ]
+  },
+  "permission_boundary": "User authorized new branch/draft PR and live sync/probes after review/report; goal confirmation required before plan. No merge."
+}

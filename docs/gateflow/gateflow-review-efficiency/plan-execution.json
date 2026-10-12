@@ -1,0 +1,65 @@
+{
+  "outer_exit_code": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "已完成 [plan.md](/Users/leo/workspace/code-is-cheap/docs/gateflow/gateflow-review-efficiency/plan.md)。\n\n规划为一个可验证 slice，最小源改动范围为三份 SKILL。无必要未决项，待总控验收；未推进下一 gate。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 157,
+    "wall_clock_seconds": 429.451759,
+    "usage": {
+      "input_tokens": 344557,
+      "cached_input_tokens": 278528,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 10729,
+      "reasoning_output_tokens": 3714
+    },
+    "runtime_metrics": {},
+    "session_id": "01a13001-2e68-7092-91ac-9d306bd3657e",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 12,
+    "events": 31,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 27,
+        "message": "{'id': 'item_13', 'type': 'command_execution', 'command': \"/bin/zsh -c 'git diff --no-index --check /dev/null docs/gateflow/gateflow-review-efficiency/plan.md'\", 'aggregated_output': '', 'exit_code': 1, 'status': 'failed'}",
+        "message_chars": 222,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [
+      {
+        "path": "/Users/leo/workspace/code-is-cheap/docs/gateflow/gateflow-review-efficiency/plan.md",
+        "exists": true,
+        "regular_file": true
+      }
+    ],
+    "logs": {
+      "output": "/private/tmp/gateflow-efficiency-jka5c862/plan.jsonl",
+      "stderr": "/private/tmp/gateflow-efficiency-jka5c862/plan.stderr",
+      "last_message": null
+    }
+  },
+  "scope_reconciliation": "Original consumed goal/confirmation/state snapshots SHA match saved plan hashes. Controller updated revoked probe acceptance/authority only after real plan exit; no implementation decision changed."
+}
