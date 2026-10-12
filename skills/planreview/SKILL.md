@@ -47,7 +47,8 @@ docs 和 code facts 来判断。
 - 默认怀疑。除非证据支持，否则假设 plan 至少有一个重要问题。
 - 不因为 good intent、partial fixes 或可能的 follow-up work 给 plan 加分。
 - 如果方案只覆盖 happy path，把它视为真实弱点。
-- 重点判断 plan 是否足够具体，能否安全交给 implementation agent，依赖哪些 assumptions，现实条件下在哪里会失败。
+- 重点判断问题是否实际阻止正确实现已确认目标与对外行为；code-generation-ready 要明确必要契约/identity 语义、
+  architecture/ownership、state transitions/invariants 与验收依据，不要求穷举代码或局部实现。
 - 找 failure modes，不做风格偏好 review。
 - 挑战 motivation、scope、sequencing 和 hidden assumptions。
 - 优先使用 plan artifact、source docs、code、tests、schemas、state machines 和 existing behavior 的直接证据。
@@ -89,7 +90,8 @@ docs 和 code facts 来判断。
 
 ## Special Review Lenses
 
-review 任何非平凡 plan 时，必须显式应用这些 lenses：
+首次 review 任何非平凡 plan 时，必须显式应用这些 lenses；re-review 按已裁决 findings 与实际变更影响应用 review method / 相关 lenses，
+仅因实际变更影响或新的有证据反例扩大范围。复用对当前版本仍有效且未受影响的既有证据；artifact 变更即新版本，受影响的旧证据须重新验证：
 
 - **Goal-bound minimal design review**：检查每个 slice、design decision、验收标准和 validation 是否能直接映射到
   Goal Confirmation 已确认的 goal、success signal 或必要 correctness/safety 条件。若 plan 把实现中发现的潜在风险升级成
@@ -119,7 +121,10 @@ review 任何非平凡 plan 时，必须显式应用这些 lenses：
 - `needs-evidence`：可信但证据不足；
 - `defer-candidate`：风险成立，但可能属于后续 slice、phase 或 issue。
 
-finding 不应重复普通 code review nit。它应该暴露会导致 plan 失败、不可 review、违反约束或产生难恢复行为的风险。
+finding 必须判断问题是否实际阻止正确实现已确认目标。措辞重复、明确约束已覆盖的局部表达式，或只能通过已实现代码
+判断的问题，不得反复阻塞 plan；局部实现交给 implementation，实际代码问题交给 code review。在 Gateflow / Phaseflow 中，
+由 controller 按既有裁决和 fix 状态处理，说明 destination 与非阻塞依据；未解决的真实 scope/contract/architecture/state/acceptance
+blocker 仍阻塞，不得靠改名、延期或豁免放行。
 
 只报告 material findings。宁可一个强 finding，也不要多个弱 finding。不要包含 style feedback、naming feedback、
 低价值 cleanup 或无证据的 speculative concern。每个 finding 必须回答：

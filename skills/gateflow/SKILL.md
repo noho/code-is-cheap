@@ -158,8 +158,9 @@ PR gate chain 的状态不变量：
 
 ## Gate: plan
 
-plan 必须 code-generation-ready，即可以直接指导实现，不需要重新设计方案、发明契约、猜 file ownership、猜 state transition
-或决定 test scope。
+plan 必须 code-generation-ready：实现无需重新决定已确认目标与对外行为、必要契约与 identity 语义、architecture/ownership
+边界、state transitions/invariants 或验收依据。不要求穷举代码、局部表达式或实现细节；实现者在 approved scope 内决定
+局部实现，实际代码问题由 code review 检查。
 
 plan 必须是最小化 plan/design：只规划 Goal Confirmation 已确认目标所必需的设计、实现和验证。每个 design decision、
 验收标准和 implementation slice 都必须能映射到已确认的 goal、success signal 或必要 correctness/safety 条件。不得把实现层
@@ -174,7 +175,7 @@ plan 必须包含：
 - first-principles judgment and direct code evidence；
 - affected files/modules；
 - contract/schema/state-machine/public-interface changes；
-- implementation decisions；
+- 必要的 implementation decisions；
 - small implementation slices；
 - tests/validation commands and expected assertions；
 - docs decision；
@@ -201,8 +202,8 @@ slices；若超过，plan 必须说明为什么不能合并或减少。若 desig
 - id/name、objective、expected outcome；
 - allowed files/modules；
 - prerequisites/dependencies；
-- exact allowed changes；
-- functions/classes/types、call paths、data flow、state transitions、error handling、invariants；
+- 明确的 allowed change scope；
+- 必要 interfaces、data flow、identity 语义、state transitions、error handling、invariants；
 - non-goals；
 - tests/validation commands and expected assertions；
 - completion signal and stop condition。
@@ -227,6 +228,14 @@ fix/re-review 最终状态只用：
 - `已修复`
 - `部分修复`
 - `证据失效`
+
+plan review 与裁决先判断问题是否实际阻止正确实现已确认目标。措辞重复、明确约束已覆盖的局部表达式，或只能通过
+已实现代码判断的问题，不得反复阻塞 plan；按上述裁决与 fix 状态处理，说明 implementation / code review 等 destination
+及非阻塞依据。未解决的真实 scope/contract/architecture/state/acceptance blocker 仍阻塞，不得为通过 gate 改名、延期或豁免。
+
+re-review 聚焦已裁决 findings 与实际变更影响，复用对当前版本仍有效且未受影响的既有证据。artifact 变更即新版本，受影响的
+旧证据须重新验证；仅因实际变更影响或新的有证据反例扩大范围，不对未受影响部分全面重设计或重扫。
+仍须履行适用的独立 review、gate 顺序与批准要求。
 
 review gate 通过条件：
 
