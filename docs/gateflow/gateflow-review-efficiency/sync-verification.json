@@ -1,0 +1,194 @@
+{
+  "sync_source_commit": "7a6c58e93e60444be64b64c44ef6141cd09d556a",
+  "verified_at": "2026-10-12T21:24:46.090153+08:00",
+  "command": "./scripts/sync-skills.sh",
+  "actual_sync_exit_code": 0,
+  "actual_sync_wall_time_seconds": 0.610778792,
+  "actual_output": "Validating skills/deepreview\nSkill is valid!\nValidating skills/gateflow\nSkill is valid!\nValidating skills/phaseflow\nSkill is valid!\nValidating skills/planreview\nSkill is valid!\nValidating skills/sub-agents\nSkill is valid!\nValidating skills/tmux-agents\nSkill is valid!\nSyncing skills to /Users/leo/.codex/skills\nSyncing skills to /Users/leo/.claude/skills\n",
+  "changed_product_source_hashes_match_reviewed_s1": true,
+  "live_probes": 0,
+  "matches": [
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "live": "/Users/leo/.codex/skills/deepreview/SKILL.md",
+      "source_sha256": "2adc6a039bba731762c98c6685e8ed043c400c5cb9eaede12d4649ec15728015",
+      "live_sha256": "2adc6a039bba731762c98c6685e8ed043c400c5cb9eaede12d4649ec15728015",
+      "match": true
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "live": "/Users/leo/.claude/skills/deepreview/SKILL.md",
+      "source_sha256": "2adc6a039bba731762c98c6685e8ed043c400c5cb9eaede12d4649ec15728015",
+      "live_sha256": "2adc6a039bba731762c98c6685e8ed043c400c5cb9eaede12d4649ec15728015",
+      "match": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/deepreview/agents/openai.yaml",
+      "source_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "live_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "match": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/deepreview/agents/openai.yaml",
+      "source_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "live_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "match": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "live": "/Users/leo/.codex/skills/gateflow/SKILL.md",
+      "source_sha256": "09d35c263864b8d6c05f5f9d14fbbdb2028248f7f5922a0e66ff9c252382ba63",
+      "live_sha256": "09d35c263864b8d6c05f5f9d14fbbdb2028248f7f5922a0e66ff9c252382ba63",
+      "match": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "live": "/Users/leo/.claude/skills/gateflow/SKILL.md",
+      "source_sha256": "09d35c263864b8d6c05f5f9d14fbbdb2028248f7f5922a0e66ff9c252382ba63",
+      "live_sha256": "09d35c263864b8d6c05f5f9d14fbbdb2028248f7f5922a0e66ff9c252382ba63",
+      "match": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/gateflow/agents/openai.yaml",
+      "source_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "live_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "match": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/gateflow/agents/openai.yaml",
+      "source_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "live_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "match": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "live": "/Users/leo/.codex/skills/phaseflow/SKILL.md",
+      "source_sha256": "ea758568f07c27de41c3c951f01ed710633d1ca6e41f222ac9c66ede3a1ea7c4",
+      "live_sha256": "ea758568f07c27de41c3c951f01ed710633d1ca6e41f222ac9c66ede3a1ea7c4",
+      "match": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "live": "/Users/leo/.claude/skills/phaseflow/SKILL.md",
+      "source_sha256": "ea758568f07c27de41c3c951f01ed710633d1ca6e41f222ac9c66ede3a1ea7c4",
+      "live_sha256": "ea758568f07c27de41c3c951f01ed710633d1ca6e41f222ac9c66ede3a1ea7c4",
+      "match": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/phaseflow/agents/openai.yaml",
+      "source_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "live_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "match": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/phaseflow/agents/openai.yaml",
+      "source_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "live_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "match": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "live": "/Users/leo/.codex/skills/planreview/SKILL.md",
+      "source_sha256": "2e869b22887d42a857fce6a2c732633ac1e6b4d6300ea5b34c2cfbe969bf9da6",
+      "live_sha256": "2e869b22887d42a857fce6a2c732633ac1e6b4d6300ea5b34c2cfbe969bf9da6",
+      "match": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "live": "/Users/leo/.claude/skills/planreview/SKILL.md",
+      "source_sha256": "2e869b22887d42a857fce6a2c732633ac1e6b4d6300ea5b34c2cfbe969bf9da6",
+      "live_sha256": "2e869b22887d42a857fce6a2c732633ac1e6b4d6300ea5b34c2cfbe969bf9da6",
+      "match": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/planreview/agents/openai.yaml",
+      "source_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "live_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "match": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/planreview/agents/openai.yaml",
+      "source_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "live_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "live": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "source_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "live_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "live": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "source_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "live_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/sub-agents/agents/openai.yaml",
+      "source_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "live_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/sub-agents/agents/openai.yaml",
+      "source_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "live_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "live": "/Users/leo/.codex/skills/sub-agents/references/advanced.md",
+      "source_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "live_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "match": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "live": "/Users/leo/.claude/skills/sub-agents/references/advanced.md",
+      "source_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "live_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "match": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "live": "/Users/leo/.codex/skills/tmux-agents/SKILL.md",
+      "source_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "live_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "match": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "live": "/Users/leo/.claude/skills/tmux-agents/SKILL.md",
+      "source_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "live_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "match": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "live": "/Users/leo/.codex/skills/tmux-agents/agents/openai.yaml",
+      "source_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "live_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "match": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "live": "/Users/leo/.claude/skills/tmux-agents/agents/openai.yaml",
+      "source_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "live_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "match": true
+    }
+  ]
+}

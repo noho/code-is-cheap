@@ -1,4 +1,4 @@
-# Final closeout — pass (skill deployment pending authorized action)
+# Final closeout — pass; authorized skill deployment verified
 
 Work unit `gateflow-review-efficiency`; completed Gateflow review/delivery chain. Baseline83e534f; accepted PR review/final push `fe25dba8f9c364c448363122f4877e66f65c8393`; [draft-pr-pass.json](draft-pr-pass.json) records actual current PR, qualified reviewed OID and post-review delta. PR56 remains OPEN/draft: https://github.com/noho/code-is-cheap/pull/56. No merge.
 
@@ -18,7 +18,7 @@ Raw unified diff blank-context spaces triggered staged whitespace exit2; origina
 
 ## Actual execution statistics
 
-Each row is one actual managed invocation, no repair redispatch. Complete raw schema retained in executions.json; cached fields are not added/normalized across runtimes. SDK costBasis unknown is not billing.
+Each row is one actual managed invocation, no repair redispatch. Complete raw schema retained in the existing receipt artifacts indexed by executions.json; cached fields are not added/normalized across runtimes. SDK costBasis unknown is not billing.
 
 | Task | Route | Wall seconds | Raw input / cached-or-cache-read / output | Result |
 |---|---|---:|---|---|
@@ -39,10 +39,10 @@ Source docs are the three SKILLs; gate/review/source snapshots, decisions and st
 
 ## Deployment and next entry
 
-Required user-authorized remaining action after this review report: run from this reviewed checkout:
+Executed after the review report from the reviewed checkout:
 ```bash
 ./scripts/sync-skills.sh
 ```
-Then compare actual installed files to reviewed sources at both ~/.codex/skills and ~/.claude/skills; retain matching hash/version/command evidence. No sync-agent-tools/sync-codex-agent is needed because those components did not change. No runtime probe. Reopen Agent sessions to load updated skills; runner callers do not need source ~/.zshrc for these text-only changes.
+Actual installed files were compared to reviewed sources at both ~/.codex/skills and ~/.claude/skills: all 26 file pairs match. [sync-result.md](sync-result.md) and [sync-verification.json](sync-verification.json) retain exact source version/hash/command evidence. No sync-agent-tools/sync-codex-agent is needed because those components did not change. No runtime probe. Reopen Agent sessions to load updated skills; runner callers do not need source ~/.zshrc for these text-only changes.
 
-Gateflow final closeout pass is recorded; this turn continues authorized deployment rather than claiming it already happened. After deployment and evidence push, next user action is manual PR merge. After user merges, fetch/pull main and use the merged skill version in a new Agent session for the next independently confirmed work unit; no current business run is restored.
+Gateflow final closeout pass and authorized skill deployment/text matching are complete. Runtime probes=0. After evidence push, next user action is manual PR merge. After user merges, fetch/pull main and use the merged skill version in a new Agent session for the next independently confirmed work unit; no current business run is restored.
