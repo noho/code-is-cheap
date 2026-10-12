@@ -1,0 +1,606 @@
+{
+  "updated_at": "2026-10-12T16:30:08.737199+08:00",
+  "kind": "actual closed external agent executions, raw runtime schemas preserved; no mixed-runtime token normalization or actual billing estimate",
+  "closed_calls": 14,
+  "rows": [
+    {
+      "stage": "aggregate-ds-flash",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 592.913615,
+      "usage": {
+        "input_tokens": 154563,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 8349440,
+        "output_tokens": 67023,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 590352,
+        "duration_api_ms": 478745,
+        "total_cost_usd": 6.623110000000001,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 154563,
+            "outputTokens": 67023,
+            "cacheReadInputTokens": 8349440,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 6.623110000000001,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 83,
+      "events": 53033,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/aggregate-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/aggregate-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "aggregate-mimo",
+      "runtime": "codex",
+      "provider": "mimo",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1412.317672,
+      "usage": {
+        "input_tokens": 11691864,
+        "cached_input_tokens": 11327104,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 41573,
+        "reasoning_output_tokens": 23958
+      },
+      "runtime_metrics": {},
+      "tool_results": 131,
+      "events": 272,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 4,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/aggregate-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/aggregate-mimo.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "code-fix-gpt",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 398.857605,
+      "usage": {
+        "input_tokens": 775869,
+        "cached_input_tokens": 706176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9750,
+        "reasoning_output_tokens": 4179
+      },
+      "runtime_metrics": {},
+      "tool_results": 32,
+      "events": 72,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 2,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-fix-gpt.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-fix-gpt.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "code-rereview-ds-flash",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 384.200177,
+      "usage": {
+        "input_tokens": 110048,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1751296,
+        "output_tokens": 49630,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 381596,
+        "duration_api_ms": 304215,
+        "total_cost_usd": 2.666638,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 110048,
+            "outputTokens": 49630,
+            "cacheReadInputTokens": 1751296,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 2.666638,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 36,
+      "events": 38795,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-rereview-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "code-rereview-mimo",
+      "runtime": "codex",
+      "provider": "mimo",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 933.777057,
+      "usage": {
+        "input_tokens": 6377110,
+        "cached_input_tokens": 6077184,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 26838,
+        "reasoning_output_tokens": 12305
+      },
+      "runtime_metrics": {},
+      "tool_results": 93,
+      "events": 198,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-rereview-mimo.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "code-review-ds-flash",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 700.747761,
+      "usage": {
+        "input_tokens": 153059,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 8032256,
+        "output_tokens": 75808,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 698521,
+        "duration_api_ms": 530501,
+        "total_cost_usd": 6.676622999999999,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 153059,
+            "outputTokens": 75808,
+            "cacheReadInputTokens": 8032256,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 6.676622999999999,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 66,
+      "events": 62754,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-review-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "code-review-mimo",
+      "runtime": "codex",
+      "provider": "mimo",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 1704.523918,
+      "usage": {
+        "input_tokens": 8943984,
+        "cached_input_tokens": 8653056,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 48449,
+        "reasoning_output_tokens": 29971
+      },
+      "runtime_metrics": {},
+      "tool_results": 149,
+      "events": 309,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-review-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/code-review-mimo.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "implementation-gpt",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 2172.973801,
+      "usage": {
+        "input_tokens": 6134432,
+        "cached_input_tokens": 5943168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 60723,
+        "reasoning_output_tokens": 19042
+      },
+      "runtime_metrics": {},
+      "tool_results": 71,
+      "events": 155,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 5,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/implementation-gpt.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/implementation-gpt.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-fix-gpt",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 819.6471,
+      "usage": {
+        "input_tokens": 1100609,
+        "cached_input_tokens": 988800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 25711,
+        "reasoning_output_tokens": 6958
+      },
+      "runtime_metrics": {},
+      "tool_results": 27,
+      "events": 62,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-fix-gpt.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-fix-gpt.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-gpt",
+      "runtime": "codex",
+      "provider": "gpt-6-sol",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1066.561387,
+      "usage": {
+        "input_tokens": 4483566,
+        "cached_input_tokens": 4287872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 30976,
+        "reasoning_output_tokens": 11560
+      },
+      "runtime_metrics": {},
+      "tool_results": 52,
+      "events": 115,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-gpt-authorized.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-gpt-authorized.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-rereview-ds-flash",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 398.096425,
+      "usage": {
+        "input_tokens": 104630,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2731648,
+        "output_tokens": 57996,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 395863,
+        "duration_api_ms": 382789,
+        "total_cost_usd": 3.3388739999999997,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 104630,
+            "outputTokens": 57996,
+            "cacheReadInputTokens": 2731648,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 3.3388739999999997,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 40,
+      "events": 49577,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-rereview-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-rereview-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-rereview-mimo",
+      "runtime": "codex",
+      "provider": "mimo",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "wall_clock_seconds": 528.96925,
+      "usage": {
+        "input_tokens": 3149912,
+        "cached_input_tokens": 2982528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 17143,
+        "reasoning_output_tokens": 7349
+      },
+      "runtime_metrics": {},
+      "tool_results": 59,
+      "events": 128,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-rereview-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-rereview-mimo.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-review-ds-flash",
+      "runtime": "claude",
+      "provider": "ds-flash",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 837.571,
+      "usage": {
+        "input_tokens": 141450,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 9322368,
+        "output_tokens": 96660,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "runtime_metrics": {
+        "duration_ms": 834936,
+        "duration_api_ms": 770534,
+        "total_cost_usd": 8.514479,
+        "modelUsage": {
+          "deepseek/deepseek-flash[1m]": {
+            "inputTokens": 212529,
+            "outputTokens": 111626,
+            "cacheReadInputTokens": 9322368,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 8.514479,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "deepseek/deepseek-flash[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        }
+      },
+      "tool_results": 87,
+      "events": 80260,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 3,
+        "warnings": 1
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-review-ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-review-ds-flash.stderr",
+        "last_message": null
+      }
+    },
+    {
+      "stage": "plan-review-mimo",
+      "runtime": "codex",
+      "provider": "mimo",
+      "outer_exit_code": 0,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "wall_clock_seconds": 1560.937354,
+      "usage": {
+        "input_tokens": 9176330,
+        "cached_input_tokens": 8813568,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 47406,
+        "reasoning_output_tokens": 30470
+      },
+      "runtime_metrics": {},
+      "tool_results": 133,
+      "events": 276,
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 11,
+        "warnings": 0
+      },
+      "logs": {
+        "output": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-review-mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/logs/plan-review-mimo.stderr",
+        "last_message": null
+      }
+    }
+  ],
+  "setup_rejection": "initial plan setup denied before runtime, preserved privately, not counted as provider execution",
+  "tiny_real_status_calls": "separate provider-acceptance.json8calls, Kimi exactly1; no tools/retries",
+  "synthetic_native": "separate fixture records,0providerrequests, excluded from provider token totals",
+  "reported_cost": "Claude runtime metrics costBasis unknown; not actual billing"
+}

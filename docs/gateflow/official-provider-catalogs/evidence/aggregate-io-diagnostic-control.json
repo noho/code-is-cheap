@@ -1,0 +1,15 @@
+{
+  "scope": "isolated output-path IO diagnostic only; native parser mocked after valid assembly, no CLI/model/provider/service/live call",
+  "trigger": "output-dir is an existing regular sentinel file",
+  "exit_code": 1,
+  "stderr_tail": [
+    "    target.parent.mkdir(parents=True, exist_ok=True)",
+    "  File \"/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/pathlib.py\", line 1116, in mkdir",
+    "    os.mkdir(self, mode)",
+    "FileExistsError: [Errno 17] File exists: '/private/tmp/catalog-io-diagnostic-52br3vpy/output-dir'"
+  ],
+  "target_path_visible": true,
+  "overall_success_printed": false,
+  "sentinel_unchanged": true,
+  "public_contract": "nonzero/visible specific failure; no promised WARNING-only/no-traceback diagnostic schema"
+}

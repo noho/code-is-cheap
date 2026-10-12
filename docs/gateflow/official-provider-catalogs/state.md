@@ -1,7 +1,7 @@
 # Official provider catalogs gate state
 
-- Current gate: accepted slice commit
-- Next entry point: protected S1 commit, then parallel aggregate deepreview
+- Current gate: accepted deepreview commit
+- Next entry point: protected deepreview commit, then push/create new draft PR and exact-OID PR review
 - Branch: feat/official-provider-catalogs
 - Base: 17ef441
 - User source: five provider catalogs in Downloads
@@ -31,3 +31,7 @@
 - GPT C1 fix closed runtime/runner/outer0; 15 focused conversion tests and syntax pass. Acceptance awaits independent re-review.
 
 - S1 code review/fix/re-review: pass; accepted C1/C2 independently verified 已修复.
+
+- Accepted S1 commit: ee91b15b06352cc99c948da2bbe1f0a803cbb296
+
+- Aggregate deepreview pass; DS diagnostic preference rejected on contract/direct IO evidence, historical kernel-hash scope documented.
