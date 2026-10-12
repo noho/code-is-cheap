@@ -1,0 +1,849 @@
+{
+  "measured_at": "2026-10-12T14:58:11.112714+08:00",
+  "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/Users/leo/.local/bin/srt OFFICIAL_CATALOG_EVIDENCE_DIR=/private/tmp/ocf54 python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+  "exit_code": 0,
+  "tests": 12,
+  "passed": 12,
+  "skipped": 0,
+  "seconds": 35.754,
+  "frozen_source_unchanged": true,
+  "source_hashes": {
+    "test_sha256": "95ce6151beec1123961aedf619433d8f82f1e050137204490051bbdfa2d4f778",
+    "generator_sha256": "03b814a2db9da562b8abcce38be9bfbed3d64da4319159a6a0b18db578f460fa"
+  },
+  "fixture_root": "/private/tmp/ocf54",
+  "scope": "All synthetic two-hop/native/host/guardian/context/kernel acceptance. No real provider calls or live deployment. Short evidence root for Unix socket length. Expected host-disabled/error/deny cases verified as negative outcomes, not successful task deliveries.",
+  "fixtures": [
+    {
+      "path": "/private/tmp/ocf54/official-deepseek-i75kpw5r",
+      "meta": {
+        "case": "deepseek",
+        "profile": "ds-flash",
+        "approval": null,
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "ds-flash",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_deepseek",
+        "final_answer_truncated": false,
+        "final_answer_chars": 32,
+        "wall_clock_seconds": 1.202135,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-449e-70b1-b629-f9b8054d02dc",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "match",
+        "canary_read_candidate": true,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-deepseek-i75kpw5r/work/result.txt",
+            "exists": true,
+            "regular_file": true
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-deepseek-i75kpw5r/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-deepseek-i75kpw5r/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-deepseek-i75kpw5r/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "2e46606f7d8675893cf13b425cdffd19359b666d23b93c2bb21a557429fea73a",
+        "ingress.jsonl": "eb156fdeaad5a1fae3861a8b7445337f34f0b3da62d333188f365bae4fe2a9f2",
+        "commands.jsonl": "df1136e18bec2f4df8c1e82ab20d448af092583c6f52cf3ce7c4bd58ce4cd427"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-ds-flash-allow-a08twxcc",
+      "meta": {
+        "case": "ds-flash-allow",
+        "profile": "ds-flash",
+        "approval": "allow",
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "ds-flash",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "Approval fixture complete",
+        "final_answer_truncated": false,
+        "final_answer_chars": 25,
+        "wall_clock_seconds": 1.195159,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-5003-7572-b413-b145f674566d",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-ds-flash-allow-a08twxcc/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-ds-flash-allow-a08twxcc/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-ds-flash-allow-a08twxcc/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "89fa75cd4c7303992d0a8303d9cce622223b50239facc9935aaced7ef4bc2401",
+        "ingress.jsonl": "3511f9701be088857198b458dbe3334cb9740e35ddbffa96289c1625486023ae",
+        "commands.jsonl": "ec16f5db70b557a5f2ed955b9cc156fb17b8d6c88fca4de1b16247201c56ebe2"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-ds-flash-deny-uq6mvj82",
+      "meta": {
+        "case": "ds-flash-deny",
+        "profile": "ds-flash",
+        "approval": "deny",
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "ds-flash",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "Approval fixture complete",
+        "final_answer_truncated": false,
+        "final_answer_chars": 25,
+        "wall_clock_seconds": 1.149008,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-5d7e-7ed0-afb0-9e35c65d7b03",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "stderr",
+            "line": 1,
+            "message": "2026-10-12T06:56:51.609870Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: \"Rejected(\\\"This action was rejected due to unacceptable risk.\\\\nReason: Synthetic fixture verdict\\\\nThe agent must not attempt to achieve the same outcome via workaround, indirect execution, or policy circumvention. Proceed only with a materially safer alternative, or if the user explicitly approves the action after being informed of the risk. Otherwise, stop and request user input.\\\")\" }",
+            "message_chars": 505,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-ds-flash-deny-uq6mvj82/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-ds-flash-deny-uq6mvj82/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-ds-flash-deny-uq6mvj82/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "03cf09a81346208ad2bde48004642c25c2993b7c070989b3e6e6e03be774d519",
+        "ingress.jsonl": "d4045b9dc36e7e424ba936db1ab391855662e3512ac40393b68351da9c4e3228",
+        "commands.jsonl": "b62b7beaf3111e299d6f02af33cce1255539659b747d78300080fb7f8c237d05"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-ds-flash-error-3upgo4jh",
+      "meta": {
+        "case": "ds-flash-error",
+        "profile": "ds-flash",
+        "approval": "error",
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "ds-flash",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "Approval fixture complete",
+        "final_answer_truncated": false,
+        "final_answer_chars": 25,
+        "wall_clock_seconds": 1.134685,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-68aa-7323-8fa0-555b8afa43b5",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "stderr",
+            "line": 1,
+            "message": "2026-10-12T06:56:54.470442Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: \"Rejected(\\\"Automatic approval review failed: <!DOCTYPE HTML>\\\\n<html lang=\\\\\\\"en\\\\\\\">\\\\n    <head>\\\\n        <meta charset=\\\\\\\"utf-8\\\\\\\">\\\\n        <title>Error response</title>\\\\n    </head>\\\\n    <body>\\\\n        <h1>Error response</h1>\\\\n        <p>Error code: 400</p>\\\\n        <p>Message: SYNTHETIC_GUARDIAN_HTTP_ERROR.</p>\\\\n        <p>Error code explanation: 400 - Bad request syntax or unsupported method.</p>\\\\n    </body>\\\\n</html>\\\\n\\\\nThe action was not executed because automatic approval review could not be completed. This is a review failure, not a determination that the action is unsafe. Do not bypass the approval check; resolve the error or ask the user for guidance.\\\")\" }",
+            "message_chars": 807,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-ds-flash-error-3upgo4jh/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-ds-flash-error-3upgo4jh/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-ds-flash-error-3upgo4jh/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "f640edcbe08519556175e847147cd5a0d42b65a0e654cde4b4810049a5124cf5",
+        "ingress.jsonl": "3be03cb76f80516b52c5f700b70b65168b03d35c88279f475db6754f39587c59",
+        "commands.jsonl": "83bde0f0f03f05e2c4393cb71905d7091d5be6e6cbdbf8b033afc8de93bec740"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-kimi-w3y6kwku",
+      "meta": {
+        "case": "kimi",
+        "profile": "kimi",
+        "approval": null,
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "kimi",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_kimi",
+        "final_answer_truncated": false,
+        "final_answer_chars": 28,
+        "wall_clock_seconds": 1.194305,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-73ff-7bc2-9668-d9e9aab4cdfc",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "match",
+        "canary_read_candidate": true,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-kimi-w3y6kwku/work/result.txt",
+            "exists": true,
+            "regular_file": true
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-kimi-w3y6kwku/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-kimi-w3y6kwku/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-kimi-w3y6kwku/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "5fc0974a1a8bb1ec1258f1c6be4f9171c9d4cc644c48ab5468bfd36524a63917",
+        "ingress.jsonl": "f3bd76208e37dd9be3f4cffac7f084d59909f26ae6d52118c9d56ac89e6f15b9",
+        "commands.jsonl": "b8ff62975c61c28c8fc5d08dcd1f067295af7bcdee5f8861fe287120349f74a7"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-mimo-013ajmoi",
+      "meta": {
+        "case": "mimo",
+        "profile": "mimo",
+        "approval": null,
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "mimo",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_mimo",
+        "final_answer_truncated": false,
+        "final_answer_chars": 28,
+        "wall_clock_seconds": 3.096023,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-b757-7f40-9227-26b1c0cab36f",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "match",
+        "canary_read_candidate": true,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-mimo-013ajmoi/work/result.txt",
+            "exists": true,
+            "regular_file": true
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-mimo-013ajmoi/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-mimo-013ajmoi/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-mimo-013ajmoi/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "79653ff0437479db8d8b3de7b65b31557536a52ab13c903003673f71a0a68201",
+        "ingress.jsonl": "251992e9ac08d7a053bf5a8d3e5c45fcd850879c3834fd7b25ba596a51b0407e",
+        "commands.jsonl": "bab011128fd4645c040c38197c2f83158b454fb31784b39695eba13f0c641811"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-mimo-allow-gwj_u3tv",
+      "meta": {
+        "case": "mimo-allow",
+        "profile": "mimo",
+        "approval": "allow",
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "mimo",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "Approval fixture complete",
+        "final_answer_truncated": false,
+        "final_answer_chars": 25,
+        "wall_clock_seconds": 1.174316,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-7f4d-7ae2-87cd-be81cf6e3aec",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-mimo-allow-gwj_u3tv/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-mimo-allow-gwj_u3tv/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-mimo-allow-gwj_u3tv/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "a7e247da49298e5b938b35ac674c05cc1f6a88b50d5ada72a13c6e7e55d82c5d",
+        "ingress.jsonl": "92f62084a9b470d7a71f3e266644b5c72a9b7d8e2ab72eaccb43aa39f7eb182f",
+        "commands.jsonl": "46075058da3df08089c3a2ee02020f86a0c4594587f1bb9f28b31c1bd4d16752"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-mimo-deny-k58uvpp1",
+      "meta": {
+        "case": "mimo-deny",
+        "profile": "mimo",
+        "approval": "deny",
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "mimo",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "Approval fixture complete",
+        "final_answer_truncated": false,
+        "final_answer_chars": 25,
+        "wall_clock_seconds": 1.427017,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-8ab6-7200-8cfa-0f2d481949e5",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "stderr",
+            "line": 1,
+            "message": "2026-10-12T06:57:03.218479Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: \"Rejected(\\\"This action was rejected due to unacceptable risk.\\\\nReason: Synthetic fixture verdict\\\\nDo not bypass this rejection through a workaround or indirect execution. Continue with a safer alternative, or carry out checks to prove that the action is authorized or low risk before trying again. Complete unaffected work without asking for confirmation. Report anything that remains blocked, clarify why it was blocked by auto-review, inform the user of the risk and ask for approval.\\\")\" }",
+            "message_chars": 608,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-mimo-deny-k58uvpp1/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-mimo-deny-k58uvpp1/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-mimo-deny-k58uvpp1/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "52025e1bb7ea480d1f97708806b86ca02ed71f1760f792bccc391ead4cd713eb",
+        "ingress.jsonl": "6d118003dde648800c37f96ab983e3c010de586320084b4d42f347fd2d040c0c",
+        "commands.jsonl": "6d453fd412a799381d6f3eb466e725abf339c6d9adb1bf0083da6ba97b3e268a"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n",
+      "meta": {
+        "case": "mimo-host-false",
+        "profile": "mimo",
+        "approval": null,
+        "host_false": true,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "mimo",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_mimo-host-false",
+        "final_answer_truncated": false,
+        "final_answer_chars": 39,
+        "wall_clock_seconds": 1.129572,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-a4c3-7690-8a07-e06bf8c276dd",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 5,
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "errors": [
+          {
+            "stream": "artifact",
+            "line": null,
+            "message": "required artifact missing: /private/tmp/ocf54/official-mimo-host-false-qb5wv71n/work/result.txt",
+            "message_chars": 95,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "anomalies": [
+          {
+            "stream": "output",
+            "line": 2,
+            "message": "{'id': 'item_0', 'type': 'error', 'message': 'Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`.'}",
+            "message_chars": 205,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "collection",
+            "line": null,
+            "message": "canary read evidence not visible; inspect logs and required evidence",
+            "message_chars": 68,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "collection",
+            "line": null,
+            "message": "no tool results visible; required evidence needs independent verification",
+            "message_chars": 73,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "stderr",
+            "line": 1,
+            "message": "2026-10-12T06:57:09.845365Z ERROR codex_core::tools::router: error=code-mode host is disabled",
+            "message_chars": 93,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 4,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n/work/result.txt",
+            "exists": false,
+            "regular_file": false
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "2ed1865d4399ce8ff5dff8c795b77fc1134e1caa7282b22139b4e9db47ac3886",
+        "ingress.jsonl": "846c884da942d3b6fed0fd372e2fe76088d3ef319033afd7e74dac83e49c11d5",
+        "commands.jsonl": "8dde41b39609a01817063e8b3fa0d6421de529363582f4d4c6ca7608287ffd06"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5",
+      "meta": {
+        "case": "mimo-kernel",
+        "profile": "mimo",
+        "approval": null,
+        "host_false": false,
+        "kernel": true,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "mimo",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_mimo-kernel",
+        "final_answer_truncated": false,
+        "final_answer_chars": 35,
+        "wall_clock_seconds": 0.524854,
+        "usage": {
+          "input_tokens": 140,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 35,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-99b1-7661-bd2f-2a714545438e",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 6,
+        "events": 17,
+        "canary_status": "match",
+        "canary_read_candidate": true,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "output",
+            "line": 2,
+            "message": "{'id': 'item_0', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/tmp/agent-sandbox.s7tpnvc7/codex/config.toml.'}",
+            "message_chars": 354,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 5,
+            "message": "{'id': 'item_1', 'type': 'command_execution', 'command': \"/bin/zsh -lc 'cat /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/denied/secret'\", 'aggregated_output': 'cat: /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/denied/secret: Operation not permitted\\n', 'exit_code': 1, 'status': 'failed'}",
+            "message_chars": 306,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 7,
+            "message": "{'id': 'item_2', 'type': 'command_execution', 'command': \"/bin/zsh -lc 'cat /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/alias'\", 'aggregated_output': 'cat: /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/alias: Operation not permitted\\n', 'exit_code': 1, 'status': 'failed'}",
+            "message_chars": 290,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 9,
+            "message": "{'id': 'item_3', 'type': 'command_execution', 'command': \"/bin/zsh -lc 'touch /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/outside-write'\", 'aggregated_output': 'touch: /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/outside-write: Operation not permitted\\n', 'exit_code': 1, 'status': 'failed'}",
+            "message_chars": 300,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 11,
+            "message": "{'id': 'item_4', 'type': 'command_execution', 'command': \"/bin/zsh -lc 'touch /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/.git/protected-write'\", 'aggregated_output': 'touch: /private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/.git/protected-write: Operation not permitted\\n', 'exit_code': 1, 'status': 'failed'}",
+            "message_chars": 324,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 5,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5/work/result.txt",
+            "exists": true,
+            "regular_file": true
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5/sinks/final.txt"
+        }
+      },
+      "logs_sha256": {
+        "upstream.jsonl": "631274ff50208b80c8da7329b1f861db64edef95e1ab7741fcab7fbad87431df",
+        "ingress.jsonl": "31485b5667f9dc82324158441029fe9bf77804a0e0b6d9240b3ecf472c71fa41",
+        "commands.jsonl": "efe6bb59f9aedcb615076298269bc7fa285a6467414acc20c24c7d3708816ea8"
+      }
+    },
+    {
+      "path": "/private/tmp/ocf54/official-qwen-2wnnpi7d",
+      "meta": {
+        "case": "qwen",
+        "profile": "qwen",
+        "approval": null,
+        "host_false": false,
+        "kernel": false,
+        "external_provider_requests": 0
+      },
+      "runner": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "qwen",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "CANARY=SYNTHETIC_CANARY_qwen",
+        "final_answer_truncated": false,
+        "final_answer_chars": 28,
+        "wall_clock_seconds": 1.229352,
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        },
+        "runtime_metrics": {},
+        "session_id": "01a12ee6-c2fd-7a61-9a14-3bdebda59f4e",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "match",
+        "canary_read_candidate": true,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [
+          {
+            "path": "/private/tmp/ocf54/official-qwen-2wnnpi7d/work/result.txt",
+            "exists": true,
+            "regular_file": true
+          }
+        ],
+        "logs": {
+          "output": "/private/tmp/ocf54/official-qwen-2wnnpi7d/sinks/events.jsonl",
+          "stderr": "/private/tmp/ocf54/official-qwen-2wnnpi7d/sinks/native.stderr",
+          "last_message": "/private/tmp/ocf54/official-qwen-2wnnpi7d/sinks/final.txt"
+        }
+      },
+      "context_evidence_path": "/private/tmp/ocf54/official-qwen-2wnnpi7d/context-evidence.json",
+      "logs_sha256": {
+        "upstream.jsonl": "37b4941d87155148c72c76c94a22cb2a8747060858d81078f72d7e37d8cbc08a",
+        "ingress.jsonl": "dcf26f86050a5496156485ed19cf065c0409f342acdfdf5e8abb8307bf1c61e2",
+        "commands.jsonl": "0370cbb7c73532af947762ddb009bb245963bc4d8c3474b5209c4e344e570f6b"
+      }
+    }
+  ]
+}

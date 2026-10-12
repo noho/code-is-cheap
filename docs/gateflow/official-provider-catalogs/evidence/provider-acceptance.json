@@ -1,0 +1,424 @@
+{
+  "measured_at": "2026-10-12T14:36:31.335502+08:00",
+  "native_cli": "0.162.1",
+  "outer_exit_code": 0,
+  "kind": "real tiny configuration acceptance, staged home/branch shim; no live deployment",
+  "limits": "One native status-only execution per effective connection, zero retries, no tool calls. This is not provider tool/guardian/kernel or full workflow certification. Kimi quota consumed exactly once; no repeat. Current Kimi logical k3 -> private endpoint wire kimi-k3 confirmed.",
+  "artifact_root": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01",
+  "results": [
+    {
+      "profile": "ds-flash",
+      "endpoint": "https://api.deepseek.com/v1",
+      "wire_model": "deepseek-flash",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 1.7359975000144914,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 9015,
+        "cached_input_tokens": 640,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5,
+        "reasoning_output_tokens": 0
+      },
+      "ingress": [
+        {
+          "model": "deepseek-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": {}
+        }
+      ],
+      "upstream": [
+        {
+          "model": "deepseek-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true
+        }
+      ],
+      "catalog_sha256": "58ca2d8599ccbbfb64733b30ee83acf78b424bcc7729f32815826677f2e2ceb8",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/ds-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/ds-flash.stderr",
+        "jsonl_sha256": "fe13e38e8ce711b8a2089adca092714e962d484709972bd85d3514b67964a975",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "glm",
+      "endpoint": "https://open.bigmodel.cn/api/v1",
+      "wire_model": "glm-5.3",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 5.38871570804622,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 4784,
+        "cached_input_tokens": 64,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 6,
+        "reasoning_output_tokens": 0
+      },
+      "ingress": [
+        {
+          "model": "glm-5.3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": {}
+        }
+      ],
+      "upstream": [
+        {
+          "model": "glm-5.3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true
+        }
+      ],
+      "catalog_sha256": "6426256863dab72c101db5f0bb170bc3e56302d9bd3435df1386813fe5d852e7",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/glm.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/glm.stderr",
+        "jsonl_sha256": "1d328677efa156a1cfb138cb18db760414c09eb0c780878b0569d7f20dfb7412",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "glm-flash",
+      "endpoint": "https://open.bigmodel.cn/api/v1",
+      "wire_model": "glm-5.3-flash",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 7.468746458995156,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 4825,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 134,
+        "reasoning_output_tokens": 128
+      },
+      "ingress": [
+        {
+          "model": "glm-5.3-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": {}
+        }
+      ],
+      "upstream": [
+        {
+          "model": "glm-5.3-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true
+        }
+      ],
+      "catalog_sha256": "c212d4aca30f96bd51b5e4df1a0a51f9dca7ba571c513c23a5d93a697937ed9a",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/glm-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/glm-flash.stderr",
+        "jsonl_sha256": "2a81c754bb919e6fa061a219d9a377ce079013ed4e1e776b28c5f9a694740a89",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "kimi",
+      "endpoint": "https://api.kimi.com/coding/v1",
+      "wire_model": "kimi-k3",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 3.974888666998595,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 4261,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 36,
+        "reasoning_output_tokens": 20
+      },
+      "ingress": [
+        {
+          "model": "k3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": {}
+        }
+      ],
+      "upstream": [
+        {
+          "model": "kimi-k3",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true
+        }
+      ],
+      "catalog_sha256": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/kimi.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/kimi.stderr",
+        "jsonl_sha256": "def62178b1b1e230599c4ef5f9928ea16c493e7ba4ccaae0f9931afe7df5741b",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "mimo",
+      "endpoint": "https://token-plan-cn.xiaomimimo.com/v1",
+      "wire_model": "mimo-v2.6-pro",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 2.1759313750080764,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 7791,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19,
+        "reasoning_output_tokens": 13
+      },
+      "ingress": [
+        {
+          "model": "mimo-v2.6-pro",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": {
+            "x-openai-internal-codex-responses-lite": "true"
+          }
+        }
+      ],
+      "upstream": [
+        {
+          "model": "mimo-v2.6-pro",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false
+        }
+      ],
+      "catalog_sha256": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo.stderr",
+        "jsonl_sha256": "b6a7361d33de23ec729efb43b00a914ddb596044f8aa75fd282c109d19155abb",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "mimo-fast",
+      "endpoint": "https://api.xiaomimimo.com/v1",
+      "wire_model": "mimo-v2.6-pro-ultraspeed",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 3.949327667010948,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 7791,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 25,
+        "reasoning_output_tokens": 19
+      },
+      "ingress": [
+        {
+          "model": "mimo-v2.6-pro-ultraspeed",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": {
+            "x-openai-internal-codex-responses-lite": "true"
+          }
+        }
+      ],
+      "upstream": [
+        {
+          "model": "mimo-v2.6-pro-ultraspeed",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false
+        }
+      ],
+      "catalog_sha256": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo-fast.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo-fast.stderr",
+        "jsonl_sha256": "4a3a2ee7500d521248e5f2bedffd3054b173874515f0c07c17bb675dfcd53b4c",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "mimo-flash",
+      "endpoint": "https://token-plan-cn.xiaomimimo.com/v1",
+      "wire_model": "mimo-v2.6-flash",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 6.69843704206869,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 7791,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 12,
+        "reasoning_output_tokens": 6
+      },
+      "ingress": [
+        {
+          "model": "mimo-v2.6-flash",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": {
+            "x-openai-internal-codex-responses-lite": "true"
+          }
+        }
+      ],
+      "upstream": [
+        {
+          "model": "mimo-v2.6-flash",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false
+        }
+      ],
+      "catalog_sha256": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo-flash.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/mimo-flash.stderr",
+        "jsonl_sha256": "05cf9bf2bfb08ee533b4ab1bb3fed998a79b6cd8b236d03c566f0a3c730893f8",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    },
+    {
+      "profile": "qwen",
+      "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "wire_model": "qwen3.8-max",
+      "kind": "tiny_real_status_only",
+      "retries": 0,
+      "wall_clock_seconds": 3.308883916004561,
+      "exit_code": 0,
+      "terminal": [
+        "turn.completed"
+      ],
+      "final_answer": "CATALOG_OK",
+      "tool_results": 0,
+      "usage": {
+        "input_tokens": 4964,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 34,
+        "reasoning_output_tokens": 27
+      },
+      "ingress": [
+        {
+          "model": "qwen3.8-max",
+          "reasoning": {
+            "effort": "max",
+            "summary": "auto"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": {}
+        }
+      ],
+      "upstream": [
+        {
+          "model": "qwen3.8-max",
+          "reasoning": {
+            "effort": "max",
+            "summary": "auto"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true
+        }
+      ],
+      "catalog_sha256": "c21599b8ffeb237231bdee6b4d66a7c99a95616bd199eca1c2d79058e004480f",
+      "status": "accepted",
+      "logs": {
+        "jsonl": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/qwen.jsonl",
+        "stderr": "/private/tmp/official-catalog-gateflow-4774laal/real-acceptance-01/qwen.stderr",
+        "jsonl_sha256": "980c768bd5c29958b9eba46c27bcaf5ca47f2ce05b861f550226bc3367bd894e",
+        "stderr_sha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721"
+      }
+    }
+  ]
+}

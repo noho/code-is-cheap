@@ -1,0 +1,15 @@
+{
+  "trigger": "synthetic launchctl print=0/kickstart=77; no actual service call",
+  "actual_sync_exit_code": 0,
+  "success_message": true,
+  "stdout_tail": [
+    "synced bin: codex-auto-review-shim-service",
+    "synced shim-routes.json",
+    "note: business config not found; skipped model defaults: /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpr5n8z8lz/home/.codex-agent/business/config.toml",
+    "Synced codex-agent cards to /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpr5n8z8lz/home/.codex"
+  ],
+  "stderr": "",
+  "entry": "scripts/sync-codex-agent.sh existing kickstart && echo under set -e",
+  "expected": "explicit ancillary service failure; no final success",
+  "finding": "accepted plan \u00a7ordinary recovery step5 requires ancillary failures not described as successful overall sync"
+}

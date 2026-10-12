@@ -456,7 +456,7 @@ leaving its account and other local settings intact.
 | `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + patched catalog |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite + patched catalog |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite + patched catalog |
-| `kimi` | `kimi-k3` | api.kimi.com | 8790 | + patched catalog |
+| `kimi` | `k3` | api.kimi.com | 8790 | + patched catalog |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + patched catalog + `json_object` downgrade |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
@@ -500,14 +500,46 @@ The sync script changes only its marked provider block and refuses to overwrite 
 Cards are pure artifacts and are overwritten wholesale on sync. To change
 one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
-`model-catalogs/<id>.json` for all nine third-party profiles are **generated artifacts and are not tracked**. The sync
-script regenerates them from Codex's built-in catalog (`codex debug models` under a fresh `CODEX_HOME`), patches the
-guardian tool mode, and adds each profile's model with its card's context window and direct tool mode. Without that
-entry, Codex clamps unknown models to its 272K fallback maximum. The session template is the first compatible
-direct-tool model in the current catalog's order, selected by tool capabilities rather than a fixed model ID.
-Code-mode models and the guardian are excluded. If no compatible template exists or Codex changes the required
-catalog shape, the generator exits non-zero; sync stages all cards and catalogs first, so installed cards and
-catalogs stay intact.
+`model-catalogs/<id>.json` remain **generated, untracked outputs**. The eight cloud profiles
+use byte-verified [official source snapshots](codex-agent/catalog-sources/README.md), preserving
+complete source metadata and instructions. Each appends only an independently obtained bundled native
+guardian; cloud sessions have no GPT donor. `glm-flash` is a user-authorized clone of official `glm-5.3`,
+labelled derived for `glm-5.3-flash` with only its three identity fields changed; it does not switch to Turbo.
+Kimi's card and shim logical slug are `k3`; endpoint-owned URL/key/upstream model stay independent.
+Qwen uses context **983616** and compact limit **737712**, preserving its absent maximum. Other cloud
+cards retain 1048576/786432. All eight efforts stay **max**. Official advertised/default levels stay intact:
+MiMo's snapshot omits max (user reports official confirmation); Qwen advertises low/medium/xhigh.
+Informational notes expose these differences. Mock forwarding is not vendor acceptance.
+
+DS/GLM/Kimi/Qwen guardian transport uses direct tools with Lite disabled; MiMo retains native
+Code Mode/Responses Lite and `additional_tools`. Native 0.162.1 has stable/default-true
+`code_mode_host`; its key stays omitted, including isolation's existing `code_mode=false` configuration.
+Required Code Mode needs the installed native host and a working kernel sandbox. Explicit host false
+fails visibly. MiMo's route-wide `json_schema` → `json_object` downgrade applies to ordinary sessions
+and guardians and loses schema enforcement. The local profile alone retains the compatible native
+direct-session donor, chosen by capabilities rather than a fixed model ID; GPT/business are unchanged.
+
+The generator gets the native source with `codex debug models --bundled` in an empty home, then validates
+every assembled catalog with `codex -c model_catalog_json=... debug models` in another empty home.
+Native parsing owns nested schema. Missing mappings, source/hash/card mismatches or native rejection fail
+before registry/card/catalog replacement. Sync backs up all replaced cards/catalogs and registry bytes,
+installs each pair and verifies installed bytes. Ordinary copy/replace/registry/verification failure restores
+prior bytes/modes/absence; restoration failure reports an error and retains backups. This does not guarantee
+atomic cross-file visibility, concurrent-writer coordination, SIGKILL/power-loss recovery or recovery from
+restoration I/O failure. Later shim/service/business deployment is outside this recovery block.
+
+Focused validation (synthetic endpoints only):
+
+```bash
+python3 -m unittest discover -s tests -p 'test_model_catalog_generation.py'
+OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p 'test_official_catalog_runtime.py'
+```
+
+Native read/write/collection and kernel tests require a parent that permits Seatbelt execution.
+For the official MiMo outer-boundary case, also set `AGENT_SANDBOX_KERNEL_TESTS=1` and
+`SRT_TEST_BIN=/absolute/path/to/srt` (installed 0.0.79). Missing prerequisites remain failures/unverified,
+with no weaker fallback. [Implementation evidence](docs/gateflow/official-provider-catalogs/implementation.md)
+records actual outcomes; vendor acceptance and desktop/future-runtime compatibility are separate checks.
 
 ### Repairing reasoning history for cross-provider resume
 

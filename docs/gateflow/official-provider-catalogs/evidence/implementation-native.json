@@ -1,0 +1,772 @@
+{
+  "scope": "synthetic two-hop/native evidence only; no vendor acceptance or kernel pass",
+  "external_provider_requests": 0,
+  "final_full_smoke": {
+    "tests": 12,
+    "passed": 7,
+    "failed": 4,
+    "skipped": 1,
+    "failures": "four read/write cases: parent sandbox_apply Operation not permitted",
+    "kernel": "not executed by implementer"
+  },
+  "fixtures": [
+    {
+      "case": "deepseek",
+      "root": "/private/tmp/official-deepseek-g0gegih_",
+      "command_manifest": "/private/tmp/official-deepseek-g0gegih_/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "tool_results": 0,
+        "session_id": "01a12ede-df99-77d1-9502-fb554544a221",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ],
+      "actual_tool_outputs": [
+        "Chunk ID: c9bd34\nWall time: 0.0000 seconds\nProcess exited with code 71\nOriginal token count: 14\nOutput:\nsandbox-exec: sandbox_apply: Operation not permitted\n"
+      ]
+    },
+    {
+      "case": "kimi",
+      "root": "/private/tmp/official-kimi-d92veiut",
+      "command_manifest": "/private/tmp/official-kimi-d92veiut/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "tool_results": 0,
+        "session_id": "01a12edf-0ea0-7ad3-8611-d247a3e87047",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/coding/v1/responses",
+          "upstream_path": "/fixture/kimi/v1/responses",
+          "logical_model": "k3",
+          "wire_model": "fixture-wire-kimi",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/coding/v1/responses",
+          "upstream_path": "/fixture/kimi/v1/responses",
+          "logical_model": "k3",
+          "wire_model": "fixture-wire-kimi",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ],
+      "actual_tool_outputs": [
+        "Chunk ID: f4a320\nWall time: 0.0000 seconds\nProcess exited with code 71\nOriginal token count: 14\nOutput:\nsandbox-exec: sandbox_apply: Operation not permitted\n"
+      ]
+    },
+    {
+      "case": "qwen",
+      "root": "/private/tmp/official-qwen-1y5xua_2",
+      "command_manifest": "/private/tmp/official-qwen-1y5xua_2/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "tool_results": 0,
+        "session_id": "01a12edf-4921-7222-a711-bdf9aefbee0a",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/compatible-mode/v1/responses",
+          "upstream_path": "/fixture/qwen/v1/responses",
+          "logical_model": "qwen3.8-max",
+          "wire_model": "fixture-wire-qwen",
+          "reasoning": {
+            "effort": "max",
+            "summary": "auto"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/compatible-mode/v1/responses",
+          "upstream_path": "/fixture/qwen/v1/responses",
+          "logical_model": "qwen3.8-max",
+          "wire_model": "fixture-wire-qwen",
+          "reasoning": {
+            "effort": "max",
+            "summary": "auto"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ],
+      "context_evidence": {
+        "rollout": "/private/tmp/official-qwen-1y5xua_2/home/.codex/sessions/2026/10/12/rollout-2026-10-12T14-49-07-01a12edf-4921-7222-a711-bdf9aefbee0a.jsonl",
+        "turn_context": [
+          {
+            "line": 6,
+            "type": "turn_context",
+            "model": "qwen3.8-max",
+            "effort": "max"
+          }
+        ],
+        "token_count": [
+          {
+            "line": 12,
+            "type": "event_msg",
+            "payload_type": "token_count",
+            "model_context_window": 934435
+          },
+          {
+            "line": 16,
+            "type": "event_msg",
+            "payload_type": "token_count",
+            "model_context_window": 934435
+          }
+        ]
+      },
+      "actual_tool_outputs": [
+        "Chunk ID: 4c19a1\nWall time: 0.0000 seconds\nProcess exited with code 71\nOriginal token count: 14\nOutput:\nsandbox-exec: sandbox_apply: Operation not permitted\n"
+      ]
+    },
+    {
+      "case": "mimo",
+      "root": "/private/tmp/official-mimo-gxg84f6w",
+      "command_manifest": "/private/tmp/official-mimo-gxg84f6w/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "tool_results": 0,
+        "session_id": "01a12edf-3d5f-7393-adcd-9f3da14d08c9",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ],
+      "actual_tool_outputs": [
+        [
+          {
+            "type": "input_text",
+            "text": "Script completed\nWall time 0.0 seconds\nOutput:\n"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"chunk_id\":\"bb20c8\",\"wall_time_seconds\":0,\"exit_code\":71,\"original_token_count\":14,\"output\":\"sandbox-exec: sandbox_apply: Operation not permitted\\n\"}"
+          }
+        ]
+      ]
+    },
+    {
+      "case": "mimo-host-false",
+      "root": "/private/tmp/official-mimo-host-false-5kw0ip2v",
+      "command_manifest": "/private/tmp/official-mimo-host-false-5kw0ip2v/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             false",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "canary_status": "match",
+        "canary_read_candidate": false,
+        "tool_results": 0,
+        "session_id": "01a12ee1-5bef-7772-9f6b-7abed08101cc",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    },
+    {
+      "case": "ds-flash-allow",
+      "root": "/private/tmp/official-ds-flash-allow-n12bwz26",
+      "command_manifest": "/private/tmp/official-ds-flash-allow-n12bwz26/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "tool_results": 1,
+        "session_id": "01a12ee1-506d-70d0-b2dd-0b8f1b549453",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": true,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "codex-auto-review",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "low"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": "json_schema",
+          "upstream_format": "json_schema"
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    },
+    {
+      "case": "ds-flash-deny",
+      "root": "/private/tmp/official-ds-flash-deny-tnog2dd0",
+      "command_manifest": "/private/tmp/official-ds-flash-deny-tnog2dd0/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "tool_results": 1,
+        "session_id": "01a12ede-f70a-7721-8486-0ebca2ab3843",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "codex-auto-review",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "low"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": "json_schema",
+          "upstream_format": "json_schema"
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    },
+    {
+      "case": "ds-flash-error",
+      "root": "/private/tmp/official-ds-flash-error-9d6pb1qy",
+      "command_manifest": "/private/tmp/official-ds-flash-error-9d6pb1qy/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "tool_results": 1,
+        "session_id": "01a12edf-02b3-7770-a9cd-63aaeccb38ab",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "codex-auto-review",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "low"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": "json_schema",
+          "upstream_format": "json_schema"
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/ds-flash/v1/responses",
+          "logical_model": "deepseek-flash",
+          "wire_model": "fixture-wire-ds-flash",
+          "reasoning": {
+            "effort": "max"
+          },
+          "additional_tools": 0,
+          "top_level_tools": true,
+          "lite_header": null,
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    },
+    {
+      "case": "mimo-allow",
+      "root": "/private/tmp/official-mimo-allow-3porlrua",
+      "command_manifest": "/private/tmp/official-mimo-allow-3porlrua/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "tool_results": 1,
+        "session_id": "01a12ee3-4d0c-7181-9511-f0e64f8e9545",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": true,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "codex-auto-review",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "low",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": "json_schema",
+          "upstream_format": "json_object"
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    },
+    {
+      "case": "mimo-deny",
+      "root": "/private/tmp/official-mimo-deny-cr8z75k9",
+      "command_manifest": "/private/tmp/official-mimo-deny-cr8z75k9/commands.jsonl",
+      "native_version": "codex-cli 0.162.1",
+      "host_feature": "code_mode_host                           stable             true",
+      "result": {
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "tool_results": 1,
+        "session_id": "01a12edf-2643-71b3-86b9-7a1ae30ef5ea",
+        "terminal": "turn.completed",
+        "usage": {
+          "input_tokens": 40,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 10,
+          "reasoning_output_tokens": 0
+        }
+      },
+      "artifact_exists": false,
+      "approval_write_exists": false,
+      "hops": [
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "codex-auto-review",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "low",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": "json_schema",
+          "upstream_format": "json_object"
+        },
+        {
+          "ingress_path": "/v1/responses",
+          "upstream_path": "/fixture/mimo/v1/responses",
+          "logical_model": "mimo-v2.6-pro",
+          "wire_model": "fixture-wire-mimo",
+          "reasoning": {
+            "effort": "max",
+            "context": "all_turns"
+          },
+          "additional_tools": 1,
+          "top_level_tools": false,
+          "lite_header": "true",
+          "auth_snapshot_verified": true,
+          "instructions_preserved": true,
+          "ingress_format": null,
+          "upstream_format": null
+        }
+      ]
+    }
+  ]
+}

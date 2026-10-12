@@ -1,0 +1,105 @@
+{
+  "controller_command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/Users/leo/.local/bin/srt OFFICIAL_CATALOG_EVIDENCE_DIR=/private/tmp/ocf54 python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+  "controller_exit_code": 0,
+  "controller_tests": 12,
+  "source_hashes_verified": {
+    "tests/test_official_catalog_runtime.py": "95ce6151beec1123961aedf619433d8f82f1e050137204490051bbdfa2d4f778",
+    "scripts/patch-codex-model-catalog.py": "03b814a2db9da562b8abcce38be9bfbed3d64da4319159a6a0b18db578f460fa"
+  },
+  "fixtures": [
+    {
+      "case": "deepseek",
+      "root": "/private/tmp/ocf54/official-deepseek-i75kpw5r",
+      "capture_and_command_hashes_verified": true,
+      "artifact_sha256": "b23ea48e64ed35a34a23111d4853ea5eb5818a9673bff29b1c39d5dadc268582",
+      "artifact_matches_last_message": true,
+      "tool_results": 1,
+      "max_preserved_both_hops": true,
+      "synthetic_wire_auth_mapping_verified": true
+    },
+    {
+      "case": "ds-flash-allow",
+      "root": "/private/tmp/ocf54/official-ds-flash-allow-a08twxcc",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "ds-flash-deny",
+      "root": "/private/tmp/ocf54/official-ds-flash-deny-uq6mvj82",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "ds-flash-error",
+      "root": "/private/tmp/ocf54/official-ds-flash-error-3upgo4jh",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "kimi",
+      "root": "/private/tmp/ocf54/official-kimi-w3y6kwku",
+      "capture_and_command_hashes_verified": true,
+      "artifact_sha256": "2c662ecba66bc6ea3391bafb118cc38234fac3988c286b471bc00d8ee69ebcb3",
+      "artifact_matches_last_message": true,
+      "tool_results": 1,
+      "max_preserved_both_hops": true,
+      "synthetic_wire_auth_mapping_verified": true
+    },
+    {
+      "case": "mimo",
+      "root": "/private/tmp/ocf54/official-mimo-013ajmoi",
+      "capture_and_command_hashes_verified": true,
+      "artifact_sha256": "5197626f08b27966eebf20b56ada4fef995379ed0835f68cefe057871958cc71",
+      "artifact_matches_last_message": true,
+      "tool_results": 1,
+      "max_preserved_both_hops": true,
+      "synthetic_wire_auth_mapping_verified": true
+    },
+    {
+      "case": "mimo-allow",
+      "root": "/private/tmp/ocf54/official-mimo-allow-gwj_u3tv",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "mimo-deny",
+      "root": "/private/tmp/ocf54/official-mimo-deny-k58uvpp1",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "mimo-host-false",
+      "root": "/private/tmp/ocf54/official-mimo-host-false-qb5wv71n",
+      "capture_and_command_hashes_verified": true
+    },
+    {
+      "case": "mimo-kernel",
+      "root": "/private/tmp/ocf54/official-mimo-kernel-qweh9xz5",
+      "capture_and_command_hashes_verified": true,
+      "artifact_sha256": "3449863f95bbb2a44e01779d63fdd3f937d6d1fd667cd4f398d835b88c47a0c0",
+      "artifact_matches_last_message": true,
+      "tool_results": 6,
+      "max_preserved_both_hops": true,
+      "synthetic_wire_auth_mapping_verified": true,
+      "denied_content_absent": true,
+      "disallowed_writes_absent": true,
+      "unlisted_listener_no_request": true,
+      "strict_network_and_binding_policy_verified": true
+    },
+    {
+      "case": "qwen",
+      "root": "/private/tmp/ocf54/official-qwen-2wnnpi7d",
+      "capture_and_command_hashes_verified": true,
+      "artifact_sha256": "fe9d5d9f6e25527035e5c444c73644747a5013ec8d77ceaeb266f5954ca879c9",
+      "artifact_matches_last_message": true,
+      "tool_results": 1,
+      "max_preserved_both_hops": true,
+      "synthetic_wire_auth_mapping_verified": true,
+      "native_context_events": [
+        {
+          "line": 13,
+          "value": 934435
+        },
+        {
+          "line": 17,
+          "value": 934435
+        }
+      ]
+    }
+  ]
+}

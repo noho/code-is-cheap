@@ -419,7 +419,7 @@ Astra 和 Sol 默认使用 high reasoning effort，Luna 默认使用 xhigh（ext
 | `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 改模型名 + 目录补丁 |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 改模型名 + 目录补丁 |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 改模型名 + 目录补丁 |
-| `kimi` | `kimi-k3` | api.kimi.com | 8790 | + 目录补丁 |
+| `kimi` | `k3` | api.kimi.com | 8790 | + 目录补丁 |
 | `mimo` | `mimo-v2.6-pro` | token-plan-cn.xiaomimimo.com | 8791 | + 目录补丁 + `json_object` 降级 |
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
@@ -459,12 +459,40 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 同步时整文件覆盖。要给单个模型改设置，改仓库里那张卡再同步即可
 （layering 让卡上的键压过 base）。
 
-`model-catalogs/<id>.json`（全部九个第三方 profile）是**生成型产物，不入仓库**。同步脚本会用 Codex 内置目录
-（`codex debug models`，在全新 `CODEX_HOME` 下取）重新生成：修正 guardian 的工具模式，并给各模型补入
-模型卡配置的窗口和 direct 工具模式。否则 Codex 会将未知模型限制在 272K 的后备上限。
-会话模板按当前 catalog 顺序选择第一个工具能力兼容的 direct 模型，不绑定固定模型 ID；
-code-mode 模型和 guardian 不作为模板。若没有兼容模板或 Codex 改了必要的目录结构，生成脚本会 WARNING 且非零退出；同步时先暂存全部模型卡和 catalog，
-失败不会替换已安装的模型卡或 catalog。
+`model-catalogs/<id>.json` 仍是**生成型产物，不入仓库**。八个云端 profile 使用按字节校验的
+[官方来源快照](codex-agent/catalog-sources/README.md)，保留完整源元数据和指令；每个只追加独立取得的
+native guardian，云端会话不再使用 GPT donor。`glm-flash` 是用户明确授权的官方 `glm-5.3` 克隆，
+仅修改三个身份字段、明确标注派生为 `glm-5.3-flash`，不切换 Turbo。Kimi 模型卡和 shim 逻辑 slug 为
+`k3`，endpoint 管理的 URL/key/上游模型仍独立。Qwen 上下文 **983616**、压缩阈值 **737712**，
+保留源里缺失的最大窗口；其它云端卡仍为 1048576/786432。八个默认 effort 都是 **max**，官方支持
+列表和默认等级完整保留。MiMo 快照未列 max（用户报告官方确认支持），Qwen 仅列 low/medium/xhigh；
+生成器给出信息提示。模拟请求转发不证明厂商接受。
+
+DS/GLM/Kimi/Qwen guardian 使用 direct 且关闭 Lite；MiMo 保留 native Code Mode/Responses Lite 和
+`additional_tools`。Native 0.162.1 的 `code_mode_host` 为 stable、默认 true，保持不显式设置，
+隔离层原有 `code_mode=false` 也保留。必需的 Code Mode 需要已安装的 native host 和可用内核沙箱；
+显式 host false 必须可见失败。MiMo 现有路由级 `json_schema` → `json_object` 降级同时作用于普通
+会话与 guardian，会失去 schema 强制约束。只有 local 继续按能力选择 native direct-session donor，
+不绑定模型 ID；GPT/business 不变。
+
+生成器在空 home 下用 `codex debug models --bundled` 取得 native 来源，再在新的空 home 下对每个
+完整输出执行 `codex -c model_catalog_json=... debug models`。嵌套 schema 由 native parser 判断。
+映射缺失、来源/hash/卡片不一致或 native 拒绝会在 registry/卡片/catalog 替换前失败。Sync 备份所有
+被替换的卡片/catalog 和 registry 字节，成对安装并校验安装字节。普通复制、替换、registry 或校验
+失败会恢复原字节/模式/不存在状态；恢复本身失败则报错并保留备份。不保证跨文件原子可见性、
+并发写协调、SIGKILL/断电恢复或恢复 I/O 失败后的可恢复性。后续 shim/service/business 部署不在此恢复块内。
+
+定向验证（仅合成 endpoint）：
+
+```bash
+python3 -m unittest discover -s tests -p 'test_model_catalog_generation.py'
+OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p 'test_official_catalog_runtime.py'
+```
+
+Native 读写/收集和内核测试需要允许 Seatbelt 执行的父环境。官方 MiMo outer-boundary 用例还需
+`AGENT_SANDBOX_KERNEL_TESTS=1`、`SRT_TEST_BIN=/absolute/path/to/srt`（已安装 0.0.79）。缺少前置条件
+应标为失败/未验证，不使用更弱 fallback。[实施证据](docs/gateflow/official-provider-catalogs/implementation.md)
+记录实际结果；真实厂商接受情况与 desktop/未来 runtime 兼容性另行验证。
 
 ### 修复跨 provider 恢复时的 reasoning 历史
 

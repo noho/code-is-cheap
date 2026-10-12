@@ -1,0 +1,29 @@
+{
+  "measured_at": "2026-10-12T15:01:12.496250+08:00",
+  "gate": "implementation controller validation before independent code review",
+  "native_final": "evidence/controller-native-final.json",
+  "native_final_exit_code": 0,
+  "native_final_tests": 12,
+  "kernel_regressions": [
+    {
+      "command": "AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/Users/leo/.local/bin/srt python3 -m unittest discover -s tests -p test_agent_sandbox.py",
+      "exit_code": 0,
+      "tests": 80,
+      "skipped": 0,
+      "seconds": 16.091
+    },
+    {
+      "command": "AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=/Users/leo/.local/bin/srt AGENT_SANDBOX_EVIDENCE_DIR=/private/tmp/official-catalog-gateflow-4774laal/controller-runtime-regression python3 -m unittest discover -s tests -p test_agent_sandbox_runtimes.py",
+      "exit_code": 0,
+      "tests": 2,
+      "skipped": 0,
+      "seconds": 2.396,
+      "evidence_root": "/private/tmp/official-catalog-gateflow-4774laal/controller-runtime-regression"
+    }
+  ],
+  "provider_acceptance": "evidence/provider-acceptance.json",
+  "provider_acceptance_connections": 8,
+  "provider_acceptance_limit": "status-only, max accepted; no vendor tool/guardian/desktop certification; Kimi exactly one call, no repeat",
+  "initial_failures": "Preliminary relative-canary fixture mismatch and long fixture TMPDIR Unix socket EINVAL retained; final corrected invocation/source passes without product collector/sandbox changes. Restricted implementer parent fails native sandbox entry; outside-parent controller succeeds.",
+  "residual_owners": "Maintainer owns platform prerequisites/current native schema and bounded normal-failure rollback limits; user owns alternate override/vendor capability and later derived GLM source; no high-risk fix, merge or live certification."
+}

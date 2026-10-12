@@ -22,7 +22,7 @@
     },
     {
       "port": 8790,
-      "to": "kimi-k3",
+      "to": "k3",
       "id_fix": false,
       "json_fmt_fix": false,
       "drop_tools_item": false,

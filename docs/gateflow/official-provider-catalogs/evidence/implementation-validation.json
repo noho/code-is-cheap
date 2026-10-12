@@ -1,0 +1,360 @@
+{
+  "scope": "implementer commands only; synthetic/native; zero vendor requests",
+  "focused_matrix_count": 221,
+  "focused_matrix_skipped": 22,
+  "source_snapshots": [
+    {
+      "file": "ds-model-catalogs.json",
+      "bytes": 76106,
+      "sha256": "d47876f3bca395fe2d9d3c7fc7312282a60da8a2479dd13b995cb8e0fe2695dd"
+    },
+    {
+      "file": "glm-model-catalogs.json",
+      "bytes": 2471,
+      "sha256": "94cf9e8df540be39aa2948bf14ae665ec76699b1740d5344f499dd67fc71d1a3"
+    },
+    {
+      "file": "kimi-model-catalogs.json",
+      "bytes": 1952,
+      "sha256": "61990fe840fe299eafc08460b16da5b53c720cc34ccd147e820265dd2f1f50d4"
+    },
+    {
+      "file": "mimo-model-catalogs.json",
+      "bytes": 85255,
+      "sha256": "8834dc34d879b8489b7376a5a1788f0d1b696f8410fc2df3544ad38ab145601a"
+    },
+    {
+      "file": "qwen-model-catalogs.json",
+      "bytes": 15100,
+      "sha256": "4bc94831cb66e43aaf4c375543f92883bfa1d3116a4065c5796c5de29e8a019c"
+    }
+  ],
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_model_catalog_generation.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-01.log",
+      "seconds": 20.96,
+      "sha256": "d13b199470218ea220fe28c84087427b2ab038f50d4380a49344b18ca2afefc7",
+      "test_count": 25,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_provider_registry.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-02.log",
+      "seconds": 0.547,
+      "sha256": "6bf464a84b50bb00856b7481f99319b24a045ae1fab6369f5751a17e3835240b",
+      "test_count": 10,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_install_endpoints.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-03.log",
+      "seconds": 16.949,
+      "sha256": "53d65e7c3b4dcb6ff97cec6df9bde44830610fafe8f873b5e36fd6b8313cdc6b",
+      "test_count": 19,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_agent_sandbox.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-04.log",
+      "seconds": 3.072,
+      "sha256": "edccc1e6c98aa95097ee22ef4d082780f5aa445a5b5ad7142bbda8aa358c6892",
+      "test_count": 80,
+      "outcome": "OK (skipped=10)"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_agent_sandbox_launch.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-05.log",
+      "seconds": 0.678,
+      "sha256": "77c23c87205db2a4f02ed3420bd47c12d123d0e992cb3570aecd188cd49e1ba8",
+      "test_count": 6,
+      "outcome": "OK (skipped=1)"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_agent_run_results.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-06.log",
+      "seconds": 41.853,
+      "sha256": "4b36c69fb99f373a4f6ee9027166de49599cddcfa836c4c91f5c4104472507cc",
+      "test_count": 56,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_codex_model_defaults.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-07.log",
+      "seconds": 1.877,
+      "sha256": "7f6dfd35db552820ba6258efde3ff5843577ac608dad10e04490d0487ea35928",
+      "test_count": 5,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_service.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-08.log",
+      "seconds": 8.781,
+      "sha256": "20459157c1b703c95130fb2e245f85f73b3dfdb24152edd990ffc7616f7d898f",
+      "test_count": 8,
+      "outcome": "OK"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_official_catalog_runtime.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-09.log",
+      "seconds": 0.061,
+      "sha256": "fab268c770910177f138ebafd564a1b3bda447f68c11abd3463f78f5dc340621",
+      "test_count": 12,
+      "outcome": "OK (skipped=11)"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "scripts/sync-codex-agent.sh"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-10.log",
+      "seconds": 0.004,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_count": null,
+      "outcome": null
+    },
+    {
+      "argv": [
+        "zsh",
+        "-n",
+        "scripts/agent-tools.zsh",
+        "scripts/codex-agent-run"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-11.log",
+      "seconds": 0.005,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_count": null,
+      "outcome": null
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "py_compile",
+        "scripts/patch-codex-model-catalog.py",
+        "tests/test_model_catalog_generation.py",
+        "tests/test_official_catalog_runtime.py",
+        "tests/test_install_endpoints.py"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-12.log",
+      "seconds": 0.039,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_count": null,
+      "outcome": null
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/check-13.log",
+      "seconds": 0.017,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "test_count": null,
+      "outcome": null
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_model_catalog_generation.py",
+      "exit_code": 0,
+      "log": "/tmp/official-catalog-unit-first.log",
+      "sha256": "3c42bd0dc24162deefe0e00a491541d23f60e153743f22c94354f107fdac3206",
+      "test_count": 23,
+      "outcome": "OK"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_install_endpoints.py",
+      "exit_code": 0,
+      "log": "/tmp/official-install-first.log",
+      "sha256": "9b399757c3b5b08625b801e14b0f53effca1d9dfccf33cb93ed5cab6f780a1e7",
+      "test_count": 18,
+      "outcome": "OK"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+      "exit_code": 1,
+      "log": "/tmp/official-native-first.log",
+      "sha256": "3f1dc25dddaf293f344708348b2a2169d8dedea98e3fac01510e7024e34a02a4",
+      "test_count": 12,
+      "outcome": "FAILED (failures=7, skipped=1)"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+      "exit_code": 1,
+      "log": "/tmp/official-native-second.log",
+      "sha256": "9e36b9a1e71582ada78340c378f930ed2b1cc2ca086a0aa75404c4533f3b8d7e",
+      "test_count": 12,
+      "outcome": "FAILED (failures=6, skipped=1)"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 PYTHONPATH=tests python3 -m unittest test_official_catalog_runtime.OfficialRuntimeTests.test_mimo_native_default_host_lite_read_write test_official_catalog_runtime.OfficialRuntimeTests.test_lite_guardian_allow test_official_catalog_runtime.OfficialRuntimeTests.test_lite_guardian_deny test_official_catalog_runtime.OfficialRuntimeTests.test_mimo_explicit_host_false_fails_visibly test_official_catalog_runtime.OfficialRuntimeTests.test_qwen_native_persisted_context",
+      "exit_code": 1,
+      "log": "/tmp/official-native-third.log",
+      "sha256": "4911d1433cd390357586f78153a5e63029f414f6c28a10e9156b6592d8df78e7",
+      "test_count": 5,
+      "outcome": "FAILED (failures=2)"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+      "exit_code": 1,
+      "log": "/private/tmp/official-implementation-checks-20261012/native-final.log",
+      "sha256": "e6fcd4545a5ae60d0e293859a6c1f54467d24d5c0d9e1513beacbaf21cb8f13d",
+      "test_count": 12,
+      "outcome": "FAILED (failures=4, skipped=1)"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 PYTHONPATH=tests python3 -m unittest test_official_catalog_runtime.OfficialRuntimeTests.test_direct_guardian_allow test_official_catalog_runtime.OfficialRuntimeTests.test_mimo_explicit_host_false_fails_visibly",
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/native-final-targeted.log",
+      "sha256": "a3576c43c90729df94f47034c1588a86dd6aa73946afb4798acd0859c297f333",
+      "test_count": 2,
+      "outcome": "OK"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 PYTHONPATH=tests python3 -m unittest test_official_catalog_runtime.OfficialRuntimeTests.test_lite_guardian_allow",
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/native-lite-final-targeted.log",
+      "sha256": "36d7d8b29902c51e0206554ab7fdcdf7862f9d33f9431b8197bf05352b4e724d",
+      "test_count": 1,
+      "outcome": "OK"
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest test_model_catalog_generation.ConversionSyncTests.test_actual_native_rejection_before_registry_and_pair_mutation",
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/native-parser-rejection-final.log",
+      "sha256": "0bd6918b8588bee588edcc50fba790d2e2e6e6e7799429b449390d2f7d10e9f7",
+      "test_count": 1,
+      "outcome": "OK"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_official_catalog_runtime.py",
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/runtime-controls-final.log",
+      "sha256": "fab268c770910177f138ebafd564a1b3bda447f68c11abd3463f78f5dc340621",
+      "test_count": 12,
+      "outcome": "OK (skipped=11)"
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest test_install_endpoints.InstallTests",
+      "exit_code": 0,
+      "log": "/private/tmp/official-implementation-checks-20261012/install-bootstrap-final.log",
+      "sha256": "d56a5c0db329db27bc12aa7418abc6c664f24e775e33e67ba806568fc82a31cc",
+      "test_count": 1,
+      "outcome": "OK"
+    },
+    {
+      "command": "python3 /private/tmp/record-official-evidence.py",
+      "exit_code": 0,
+      "outcome": "wrote tracked command/source/native evidence summaries"
+    },
+    {
+      "command": "python3 /private/tmp/verify-official-controller-evidence.py",
+      "exit_code": 0,
+      "outcome": "matching current hashes, capture hashes, actual artifact/max/auth/Qwen/kernel evidence verified",
+      "artifact": "docs/gateflow/official-provider-catalogs/evidence/implementation-controller-check.json"
+    }
+  ],
+  "controller_evidence_references": {
+    "official_native_kernel": "docs/gateflow/official-provider-catalogs/evidence/controller-native-final.json",
+    "tests": 12,
+    "passed": 12,
+    "skipped": 0,
+    "source_hashes_verified_against_current": true,
+    "existing_kernel_regressions": "not supplied here"
+  }
+}

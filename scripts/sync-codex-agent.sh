@@ -33,16 +33,46 @@ local_base_url="$(python3 "$repo_root/scripts/agent-endpoint.py" --provider loca
 mkdir -p "$target_root"
 mkdir -p "$shared_home/model-catalogs"
 
-# Every provider used by a saved thread must be resolvable before resume can
-# apply a different model card. Sync this registry before deploying cards.
-python3 "$repo_root/scripts/sync-codex-providers.py" \
-  --base "$shared_home/config.toml" \
-  --registry "$repo_root/codex-agent/model-providers.toml" \
-  --local-base-url "$local_base_url"
-
 # --- stage cards and catalogs before replacing installed cards -------------
 stage_dir="$(mktemp -d "$shared_home/.catalog-stage.XXXXXX")"
-trap 'rm -rf "$stage_dir"' EXIT
+recovery_active=false
+keep_backups=false
+attempted=()
+destinations=()
+backups=()
+original_present=()
+cleanup_conversion() {
+  local rc=$? index dest tmp
+  trap - EXIT
+  if [[ "$recovery_active" == true ]]; then
+    # Registry is restored only when this block changed its bytes/absence.
+    if [[ "${original_present[0]}" == true ]]; then
+      if ! cmp -s "${backups[0]}" "${destinations[0]}"; then attempted+=(0); fi
+    elif [[ -e "${destinations[0]}" ]]; then
+      attempted+=(0)
+    fi
+    for ((index=${#attempted[@]}-1; index>=0; index--)); do
+      local slot="${attempted[index]}"
+      dest="${destinations[slot]}"
+      tmp="$dest.tmp.$$"
+      if [[ "${original_present[slot]}" == true ]]; then
+        if ! cp -p "${backups[slot]}" "$tmp" || ! mv "$tmp" "$dest"; then keep_backups=true; fi
+      else
+        if ! rm -f "$dest"; then keep_backups=true; fi
+      fi
+      rm -f "$tmp" || keep_backups=true
+    done
+    if [[ "$keep_backups" == true ]]; then
+      echo "ERROR: conversion rollback failed; backups retained: $stage_dir" >&2
+      rc=1
+    else
+      echo "ERROR: conversion failed; restored cards/catalogs and changed registry" >&2
+    fi
+  fi
+  if [[ "$keep_backups" != true ]]; then rm -rf "$stage_dir"; fi
+  exit "$rc"
+}
+trap cleanup_conversion EXIT
 mkdir -p "$stage_dir/cards" "$stage_dir/catalogs"
 for src in "$repo_root"/codex-agent/profiles/*/config.toml; do
   [[ -f "$src" ]] || continue
@@ -63,22 +93,61 @@ python3 "$repo_root/scripts/patch-codex-model-catalog.py" \
   --cards-dir "$stage_dir/cards" \
   --output-dir "$stage_dir/catalogs"
 
-for src in "$stage_dir"/catalogs/*.json; do
-  [[ -f "$src" ]] || continue
-  dest="$shared_home/model-catalogs/$(basename "$src")"
-  tmp="$dest.tmp.$$"
-  install -m 600 "$src" "$tmp"
-  mv "$tmp" "$dest"
-  echo "synced catalog: $(basename "$src") -> $dest"
-done
+# Back up all destinations before the first mutation. Recovery covers only
+# ordinary failures in this conversion block, not crash/concurrent visibility.
+mkdir -p "$stage_dir/backups"
+backup_destination() {
+  local dest="$1" slot="${#destinations[@]}"
+  destinations+=("$dest")
+  backups+=("$stage_dir/backups/$slot")
+  if [[ -L "$dest" || ( -e "$dest" && ! -f "$dest" ) ]]; then
+    echo "ERROR: conversion destination is not a regular file: $dest" >&2
+    exit 1
+  fi
+  if [[ -e "$dest" ]]; then
+    cp -p "$dest" "${backups[slot]}"
+    original_present+=(true)
+  else
+    original_present+=(false)
+  fi
+}
+backup_destination "$shared_home/config.toml"
+# Pair catalogs with cards, retaining the existing install policy for GPT cards.
+sources=()
 for src in "$stage_dir"/cards/*.config.toml; do
-  [[ -f "$src" ]] || continue
-  dest="$shared_home/$(basename "$src")"
+  profile="$(basename "$src" .config.toml)"
+  catalog="$stage_dir/catalogs/$profile.json"
+  if [[ -f "$catalog" ]]; then
+    sources+=("$catalog")
+    backup_destination "$shared_home/model-catalogs/$profile.json"
+  fi
+  sources+=("$src")
+  backup_destination "$shared_home/$(basename "$src")"
+done
+recovery_active=true
+# Saved-thread provider IDs must resolve before new cards become visible.
+python3 "$repo_root/scripts/sync-codex-providers.py" \
+  --base "$shared_home/config.toml" \
+  --registry "$repo_root/codex-agent/model-providers.toml" \
+  --local-base-url "$local_base_url"
+for ((slot=1; slot<${#destinations[@]}; slot++)); do
+  src="${sources[slot-1]}"
+  dest="${destinations[slot]}"
   tmp="$dest.tmp.$$"
+  attempted+=("$slot")
   install -m 600 "$src" "$tmp"
   mv "$tmp" "$dest"
-  echo "synced card: $(basename "$src" .config.toml) -> $dest"
+  echo "synced: $(basename "$src") -> $dest"
 done
+# Staged native parsing already proved the pair relationships. Exact installed
+# byte equality proves we installed those same cards/catalogs without reparsing.
+for ((slot=1; slot<${#destinations[@]}; slot++)); do
+  if ! cmp -s "${sources[slot-1]}" "${destinations[slot]}"; then
+    echo "ERROR: installed conversion bytes differ: ${destinations[slot]}" >&2
+    exit 1
+  fi
+done
+recovery_active=false
 
 # --- shim + launcher scripts ------------------------------------------------
 mkdir -p "$target_root/bin"
@@ -97,8 +166,11 @@ echo "synced shim-routes.json"
 
 # --- 让运行中的 shim 用上新路由 ----------------------------------------------
 if launchctl print "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then
-  launchctl kickstart -k "gui/$(id -u)/$shim_label" >/dev/null 2>&1 \
-    && echo "restarted launchd service: $shim_label"
+  if ! launchctl kickstart -k "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then
+    echo "ERROR: failed to restart launchd service: $shim_label" >&2
+    exit 1
+  fi
+  echo "restarted launchd service: $shim_label"
 else
   echo "note: launchd 服务未加载（若手工跑着 shim，需要重启它才能用上新路由）"
 fi

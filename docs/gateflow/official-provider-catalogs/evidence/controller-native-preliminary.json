@@ -1,0 +1,27 @@
+{
+  "phase": "implementation in progress, preliminary controller checks only",
+  "checks": [
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 ... -k test_deepseek_native_read_write",
+      "test_exit_code": 1,
+      "path": "/private/tmp/official-catalog-gateflow-4774laal/controller-native-first",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "canary_status": "match",
+      "native_tool_results": 1,
+      "result_artifact": "actual synthetic token present",
+      "anomaly": "canary read evidence not visible",
+      "cause": "fixture uses relative cat canary.txt, collector optional canary evidence expects supplied absolute/equivalent absolute path; fix fixture invocation, not collector semantics",
+      "status": "targeted fixture fix remains required"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 ... -k test_direct_guardian_allow",
+      "test_exit_code": 0,
+      "test_count": 1,
+      "path": "/private/tmp/official-catalog-gateflow-4774laal/controller-guardian-first",
+      "status": "actual native guardian allow path passed"
+    }
+  ],
+  "scope": "synthetic two-hop/native tests outside parent sandbox; no provider API, production auth, service operations or live deployment"
+}

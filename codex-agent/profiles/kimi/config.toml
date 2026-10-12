@@ -2,7 +2,7 @@
 # (~/.codex/config.toml), which owns policy and machine-local
 # runtime state. Only model deltas live here.
 
-model = "kimi-k3"
+model = "k3"
 model_provider = "kimi"
 model_reasoning_effort = "max"
 model_context_window = 1048576

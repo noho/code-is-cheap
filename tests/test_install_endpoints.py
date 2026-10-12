@@ -621,6 +621,35 @@ class EndpointTests(unittest.TestCase):
                 ),
             )
 
+    def test_mimo_ordinary_format_downgrade_preserves_lite_and_snapshot_auth(self):
+        with tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, {"HOME":temp}):
+            private_doc(temp, {"default":{}, "override":{"mimo":{"codex":conn()}}})
+            route=next(r for r in json.loads((ROOT/"codex-agent/shim-routes.json").read_text())["routes"] if r["endpoint_id"]=="mimo") | {"from":"codex-auto-review"}
+            original={"model":route["to"],"reasoning":{"effort":"max","context":"all_turns"},
+                      "input":[{"type":"additional_tools","tools":[{"type":"custom","name":"exec"}]}],
+                      "instructions":"Synthetic configuration marker",
+                      "text":{"format":{"type":"json_schema","schema":{"type":"object"}}}}
+            for encoding in ("", "gzip", "deflate"):
+                plain=json.dumps(original).encode()
+                raw={"":lambda b:b,"gzip":gzip.compress,"deflate":zlib.compress}[encoding](plain)
+                handler=Mock(spec=shim.Handler); handler.route=route
+                handler.headers={"Content-Length":str(len(raw)),"Content-Encoding":encoding,
+                                 "Authorization":"Bearer WRONG_INBOUND", "x-openai-internal-codex-responses-lite":"true"}
+                handler.rfile=io.BytesIO(raw); handler.wfile=io.BytesIO()
+                handler.path="/v1/responses"; handler.command="POST"; handler._summary=shim.Handler._summary
+                response=Mock(); response.status=200; response.headers={}
+                response.read1.side_effect=[b"event: response.completed\n",b""]
+                with patch.object(shim,"upstream_open",return_value=response) as opening:
+                    shim.Handler._handle(handler)
+                req=opening.call_args.args[0]
+                decoded={"":lambda b:b,"gzip":gzip.decompress,"deflate":zlib.decompress}[encoding](req.data)
+                forwarded=json.loads(decoded)
+                self.assertEqual(forwarded,original | {"model":"gateway/model","text":{"format":{"type":"json_object"}}})
+                self.assertEqual(req.get_header("Authorization"),"Bearer fake-json-key")
+                self.assertEqual(req.get_header("X-openai-internal-codex-responses-lite"),"true")
+                self.assertEqual(req.full_url,"https://gateway.example/custom/v1/responses")
+                response.read.assert_not_called() # ordinary session stays streaming
+
     def test_shim_missing_key_or_bad_json_fails_before_upstream_and_logs_sanitized_error(
         self,
     ):
@@ -859,8 +888,8 @@ class InstallTests(unittest.TestCase):
         # Use the installed Codex only to read its bundled catalog, never a model API.
         with tempfile.TemporaryDirectory() as codex_home:
             catalog = subprocess.check_output(
-                ["codex", "debug", "models"],
-                env=os.environ | {"CODEX_HOME": codex_home},
+                ["codex", "debug", "models", "--bundled"],
+                env=fixture_env(HOME=codex_home, CODEX_HOME=codex_home, CODEX_SQLITE_HOME=codex_home),
                 text=True,
             )
         with tempfile.TemporaryDirectory() as temp:
@@ -874,7 +903,17 @@ class InstallTests(unittest.TestCase):
             downloaded = root / "downloaded.sh"
             shutil.copyfile(ROOT / "install.sh", downloaded)
             scripts = {
-                "codex": '#!/bin/sh\ncat "$TEST_CATALOG"\n',
+                "codex": f'''#!{sys.executable}
+import json,os,sys
+from pathlib import Path
+if '--bundled' in sys.argv:
+    print(Path(os.environ['TEST_CATALOG']).read_text())
+else:
+    value=sys.argv[sys.argv.index('-c')+1].split('=',1)[1]
+    doc=json.loads(Path(json.loads(value)).read_text())
+    assert doc['models'] and len({{m['slug'] for m in doc['models']}})==len(doc['models'])
+    print(json.dumps(doc))
+''',
                 "claude": "#!/bin/sh\nexit 0\n",
                 "launchctl": "#!/bin/sh\nexit 1\n",
                 "uv": """#!/bin/sh
