@@ -1,12 +1,12 @@
 # Official provider catalogs gate state
 
-- Current gate: re-review (PR review)
-- Next entry point: publish fixed documentation head, refresh literal OID compare and parallel PR re-review
+- Current gate: pending new exact-OID PR review; final closeout has not passed
+- Next entry point: freeze literal PR55 base/head OIDs and their compare for the published head including this workflow update, then run independent parallel PR reviews and controller adjudication
 - Branch: feat/official-provider-catalogs
 - Base: 17ef441
 - User source: five provider catalogs in Downloads
-- Review routes: MiMo via Codex runner and DS Flash via Claude runner, independent and concurrent
-- Blocking item: none at goal gate; record any evidence-based implementation limitation
+- Current review defaults: mimo-flash via claude-agent-run (Claude runtime) and ds-flash via claude-agent-run (Claude runtime), independent and concurrent
+- Blocking item: new current-head reviews and controller adjudication pending
 - Deployment: not performed; no merge/live authorization
 - Product files changed: official snapshots/generator/sync, Kimi and Qwen cards, Kimi logical route, focused tests and bilingual docs
 - High-risk diagnosis: set aside per user instruction
@@ -16,6 +16,14 @@
 - MiMo max: user reports explicit official support
 - Kimi quota: debugging/small live probe only; offline metadata checks, no development/review tasks or repeated probes
 - Kimi explicit confirmation: config.toml model is k3
+- Latest user workflow update (2026-10-12): [scope, implementation, checks and residual limits](user-workflow-update.md). All providers may read this repository; no Kimi API/development/review or further probe is authorized for this continuation.
+- Current ownership: gpt-6-sol via codex-agent-run owns plan/implementation/fixes; the user expressly permits the controller to verify and complete this minimal documentation update. The controller alone adjudicates and commits/pushes.
+- Prospective task handoffs: the controller-added no-delegation restriction is withdrawn. Nested delegation is permitted within authorized scope; the user's explanation about larger reviews is background, not an additional delegation mandate.
+- Closeout requirement: after current-head reviews and final closeout pass, remind the user to sync and record applicable commands from AGENTS.md in the closeout artifact. No merge or live sync is authorized.
+
+## Recorded history before the workflow update
+
+- Review routes: MiMo via Codex runner and DS Flash via Claude runner, independent and concurrent
 - Plan delegation: initial GPT-6 Sol dispatch denied before runtime start; user then explicitly authorized dispatch/access for all providers. Resume GPT-6 Sol plan/implementation/fix delegation, retaining the initial denial evidence. Required MiMo/DS Flash independent review routes unchanged.
 
 - Accepted plan commit: 9f66fc3
@@ -42,3 +50,8 @@
 - PR finding1 accepted: current manual reasoning-drop example must include logical k3, preserve legacykimi-k3. No catalog/runtime change.
 
 - GPT PR finding1 docs fix closed0; combinedlogical-model examples and syntheticactualCLI validation delivered. Await independent re-review.
+
+- Prior published docs-fix head: c1c9d0804779cab1b6b246f9c1521e043410d410.
+- Historical parent MiMo/Codex final review: interrupted with user authorization before this steering; managed46859 actual exit 130. No complete parent/child summary was collected; child exit status is not established.
+- Original DS final review: managed34484 exited 0; docs/reviews/pr-55-review-20261012-172143.md reviewed c1c9d0804779cab1b6b246f9c1521e043410d410, reporting finding 1 fixed and no new substantive findings. This is historical evidence, not acceptance of the workflow-update head.
+- Archived prompts/reviews and their recorded routing remain unchanged. The next published head requires the new default review routes and controller adjudication before final closeout.
