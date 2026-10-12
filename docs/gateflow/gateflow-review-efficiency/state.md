@@ -3,7 +3,7 @@
 - Work unit: Gateflow development efficiency skill optimization.
 - Baseline: `83e534f71adfdd4d8a0c353642a37dd364045504`.
 - Branch: `feat/gateflow-review-efficiency`.
-- Current gate / next entry point: `push` (draft PR readiness pass; new draft PR not created yet).
+- Current gate / next entry point: `PR review` (draft PR56 created; review not yet passed).
 - Goal: [goal.md](goal.md).
 - Preflight: [preflight.json](preflight.json), clean worktree before controller artifacts, main equals fetched origin/main, PR55 merged.
 - Decision: source evidence supports this text-only work unit; confirmation accepted; see [confirmation.md](confirmation.md).
@@ -33,3 +33,5 @@ Accepted S1 commit: `0dfc9ec56e939cd189923d1fbe65fc74a78bc1b2`. Controller evide
 Aggregate pass: [aggregate-adjudication.md](aggregate-adjudication.md). No pending findings. Next accepted deepreview checkpoint then draft PR readiness/push/create/PR review.
 
 Accepted deepreview commit: `8eaa17fc61ed9f819d21276cf9e15f8bcb04b62e`. Ready-to-open-draft-PR pass: [pr-readiness.md](pr-readiness.md). Next push/create draft PR, then PR review (not draft-PR-pass).
+
+Draft PR created: https://github.com/noho/code-is-cheap/pull/56 (OPEN/draft, base main). Initial push/create successful; [pr-created.json](pr-created.json) preserves actual creation facts. Current next entry is PR review, not draft-PR-pass.
