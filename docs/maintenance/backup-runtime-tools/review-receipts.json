@@ -1,0 +1,136 @@
+[
+  {
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "terminal": "success",
+    "wall_clock_seconds": 947.337296,
+    "usage": {
+      "input_tokens": 94433,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1254272,
+      "output_tokens": 40008,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 944921,
+      "duration_api_ms": 920042,
+      "total_cost_usd": 2.099501,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 94433,
+          "outputTokens": 40008,
+          "cacheReadInputTokens": 1254272,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.099501,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "ed618512-32b6-4884-931b-16b3dd1b0848",
+    "tool_results": 29,
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "logs": {
+      "output": "/private/tmp/backup-runtime-update-7lewfcpa/review-mimo-flash.jsonl",
+      "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/review-mimo-flash.stderr",
+      "last_message": null
+    },
+    "review_artifact": "docs/reviews/code-review-20261012-222431.md",
+    "adjudication": "Accepted completed independent review; material diagnostics addressed in review-adjudication.md. Original raw logs retained privately."
+  },
+  {
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "terminal": "success",
+    "wall_clock_seconds": 380.183352,
+    "usage": {
+      "input_tokens": 83743,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1504128,
+      "output_tokens": 53306,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 377803,
+      "duration_api_ms": 343267,
+      "total_cost_usd": 2.503429,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 83743,
+          "outputTokens": 53306,
+          "cacheReadInputTokens": 1504128,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.503429,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "f7904711-114b-4912-87d2-5a6459d87f3f",
+    "tool_results": 29,
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 1,
+      "warnings": 1
+    },
+    "logs": {
+      "output": "/private/tmp/backup-runtime-update-7lewfcpa/review-ds-flash.jsonl",
+      "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/review-ds-flash.stderr",
+      "last_message": null
+    },
+    "review_artifact": "docs/reviews/code-review-20261012-222432.md",
+    "adjudication": "Accepted completed independent review; material diagnostics addressed in review-adjudication.md. Original raw logs retained privately."
+  }
+]

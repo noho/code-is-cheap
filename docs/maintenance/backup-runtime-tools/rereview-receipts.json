@@ -1,0 +1,136 @@
+[
+  {
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "terminal": "success",
+    "wall_clock_seconds": 545.347126,
+    "usage": {
+      "input_tokens": 76116,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1264256,
+      "output_tokens": 21749,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 542737,
+      "duration_api_ms": 483695,
+      "total_cost_usd": 1.5564330000000002,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 76116,
+          "outputTokens": 21749,
+          "cacheReadInputTokens": 1264256,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 1.5564330000000002,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "0c519963-5d4e-46e1-afe5-5296fb7ed38c",
+    "tool_results": 25,
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 1,
+      "warnings": 1
+    },
+    "logs": {
+      "output": "/private/tmp/backup-runtime-update-7lewfcpa/rereview-mimo-flash.jsonl",
+      "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/rereview-mimo-flash.stderr",
+      "last_message": null
+    },
+    "review_artifact": "docs/reviews/code-review-20261012-224758.md",
+    "adjudication": "Both accepted findings corrected. Existing general CLI installer diagnostic deferred with repository backup maintainer; see review-adjudication.md."
+  },
+  {
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "terminal": "success",
+    "wall_clock_seconds": 414.948511,
+    "usage": {
+      "input_tokens": 77844,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1543424,
+      "output_tokens": 53873,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 412676,
+      "duration_api_ms": 336472,
+      "total_cost_usd": 2.5077570000000002,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 77844,
+          "outputTokens": 53873,
+          "cacheReadInputTokens": 1543424,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.5077570000000002,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "db34ed0d-f038-40ef-9a3a-142f627d4dd3",
+    "tool_results": 28,
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "logs": {
+      "output": "/private/tmp/backup-runtime-update-7lewfcpa/rereview-ds-flash.jsonl",
+      "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/rereview-ds-flash.stderr",
+      "last_message": null
+    },
+    "review_artifact": "docs/reviews/code-review-20261012-224759.md",
+    "adjudication": "Both accepted findings corrected. Existing general CLI installer diagnostic deferred with repository backup maintainer; see review-adjudication.md."
+  }
+]

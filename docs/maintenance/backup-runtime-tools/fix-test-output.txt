@@ -1,0 +1,16 @@
+test_archive_nonregular_collector_rejected_before_rollback (test_agent_backup_restore.BackupTests.test_archive_nonregular_collector_rejected_before_rollback) ... ok
+test_backupsysfiles_helpers_optional_cleanup_metadata_and_catalog (test_agent_backup_restore.BackupTests.test_backupsysfiles_helpers_optional_cleanup_metadata_and_catalog) ... ok
+test_backupsysfiles_missing_collector_fails (test_agent_backup_restore.BackupTests.test_backupsysfiles_missing_collector_fails) ... ok
+test_four_tools_restore_modes_rollback_catalog_home_and_private_data (test_agent_backup_restore.BackupTests.test_four_tools_restore_modes_rollback_catalog_home_and_private_data) ... ok
+test_install_rejects_invalid_post_install_package_and_old_node (test_agent_backup_restore.BackupTests.test_install_rejects_invalid_post_install_package_and_old_node) ... ok
+test_install_uses_archived_installer_fixed_pin_and_target_directories (test_agent_backup_restore.BackupTests.test_install_uses_archived_installer_fixed_pin_and_target_directories) ... ok
+test_missing_collector_rejects_backup_and_archive_before_target_changes (test_agent_backup_restore.BackupTests.test_missing_collector_rejects_backup_and_archive_before_target_changes) ... ok
+test_no_source_srt_and_optional_helpers_does_not_install_even_with_flag (test_agent_backup_restore.BackupTests.test_no_source_srt_and_optional_helpers_does_not_install_even_with_flag) ... ok
+test_npm_installer_failure_reports_restored_files_and_retained_previous_files (test_agent_backup_restore.BackupTests.test_npm_installer_failure_reports_restored_files_and_retained_previous_files) ... ok
+test_source_srt_missing_installer_reports_concrete_missing_helper (test_agent_backup_restore.BackupTests.test_source_srt_missing_installer_reports_concrete_missing_helper) ... ok
+test_target_layout_version_modules_node_and_npm_are_checked_offline (test_agent_backup_restore.BackupTests.test_target_layout_version_modules_node_and_npm_are_checked_offline) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 18.013s
+
+OK

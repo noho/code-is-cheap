@@ -1,0 +1,30 @@
+{
+  "runtime": "codex",
+  "provider": "gpt-6-sol",
+  "runtime_exit_code": 0,
+  "runner_exit_code": 0,
+  "agent_status": "completed",
+  "validation_status": "needs_review",
+  "terminal": "turn.completed",
+  "wall_clock_seconds": 1309.758269,
+  "usage": {
+    "input_tokens": 2765992,
+    "cached_input_tokens": 2686464,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 13749,
+    "reasoning_output_tokens": 7631
+  },
+  "session_id": "01a1306c-b47e-7180-9f34-f347ec32cd91",
+  "tool_results": 55,
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 4,
+    "warnings": 0
+  },
+  "logs": {
+    "output": "/private/tmp/backup-runtime-update-7lewfcpa/implementation.jsonl",
+    "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/implementation.stderr",
+    "last_message": null
+  },
+  "adjudication": "Accepted implementation after source inspection and independent final passing tests. rg empty search/diff no-index exit 1 anomalies do not indicate implementation failure. Original diagnostics retained in private logs."
+}

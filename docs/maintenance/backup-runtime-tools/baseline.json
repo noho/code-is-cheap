@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-12T22:02:56.460622+08:00",
+  "baseline": "eb8a384208dc962ea1b921aa32c069f7b562da04",
+  "branch": "fix/agent-backup-runtime-tools",
+  "usb_target": "/Volumes/LEO/Agents/agents-backup-restore.sh",
+  "usb_original_sha256": "237c12a8160821e37c04ee2683f375548e47ad8b6a5f5a49dc315787972e3de1",
+  "zshrc_target": "/Users/leo/.zshrc",
+  "zshrc_original_sha256": "5514653069af91457fccdaed13751d1b9db5e43ad190caa46bd610105861c1c8",
+  "backupsysfiles_original_sha256": "1d200beb2b253c82768b75b38f69ff47596525412e732827833acf7b94b0de8a",
+  "original_private_snapshots": "/private/tmp/backup-runtime-update-7lewfcpa",
+  "scope": "Only helpers collector/envelope/adapter/installer and optional pinned SRT portability; full shared Codex home/catalog coverage retained. No real backup/restore, model request probe, service restart or business task operation."
+}

@@ -1,0 +1,30 @@
+{
+  "runtime": "codex",
+  "provider": "gpt-6-sol",
+  "runtime_exit_code": 0,
+  "runner_exit_code": 0,
+  "agent_status": "completed",
+  "validation_status": "needs_review",
+  "terminal": "turn.completed",
+  "wall_clock_seconds": 285.022432,
+  "usage": {
+    "input_tokens": 344703,
+    "cached_input_tokens": 296320,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 8561,
+    "reasoning_output_tokens": 2912
+  },
+  "session_id": "01a13090-de39-7f92-beec-64369f2d01ea",
+  "tool_results": 33,
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 8,
+    "warnings": 0
+  },
+  "logs": {
+    "output": "/private/tmp/backup-runtime-update-7lewfcpa/fix.jsonl",
+    "stderr": "/private/tmp/backup-runtime-update-7lewfcpa/fix.stderr",
+    "last_message": null
+  },
+  "adjudication": "Accepted focused fix pending re-review: final recorded test invocation passed11. rg empty/diff differences are routine; an overbroad AGENTS filename-discovery command was canceled exit130 with empty output. Controller did not delegate business content; inspected actual edits/evidence. Original diagnostics retained."
+}
