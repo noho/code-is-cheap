@@ -1,11 +1,12 @@
 # Backup runtime tools closeout
 
-Status: **review closeout pass**. GPT-6 Sol implementation/fix and both independent
+Status: **final closeout pass; authorized live update complete**. GPT-6 Sol implementation/fix and both independent
 MiMo Flash/Claude and DS Flash/Claude review loops have closed. Exact reviewed
 source hashes are in final-test-verification.json; adjudication and native timing/
 usage receipts are retained alongside it. New branch: fix/agent-backup-runtime-tools;
-base eb8a384208dc962ea1b921aa32c069f7b562da04. Draft PR/publication and authorized
-static live file update are the next delivery steps; no merge is authorized.
+base eb8a384208dc962ea1b921aa32c069f7b562da04. Source commit
+8a252e58c8302d2c6f5eb66bb99243e274559036. Draft PR:
+https://github.com/noho/code-is-cheap/pull/57. No merge is authorized.
 
 ## Delivered changes and validation
 
@@ -41,8 +42,11 @@ The controller-only helper verifies reviewed hashes and original target content,
 backs up the full private shell file and USB script outside Git, syntax-checks a
 candidate, preserves file modes and atomically installs the script/function.
 Only the backupsysfiles region is replaced; unchanged shell prefix/suffix and
-source/live byte equality are checked. Final results will be recorded in
-live-deployment.json. For later maintenance, deploy the reviewed USB source and
+source/live byte equality are checked. Deployment completed 2026-10-12 23:00
++08:00, exit 0; actual results are in live-deployment.json. Both targets match
+the reviewed source, Bash/Zsh syntax pass, original modes are preserved, and
+the unrelated .zshrc prefix/suffix is unchanged. Private rollback copies are
+in /private/tmp/backup-runtime-update-7lewfcpa/live-rollback/. For later maintenance, deploy the reviewed USB source and
 replace only this function in the current .zshrc, retaining unrelated shell text.
 
 Reload the function with `source ~/.zshrc` or open a new terminal after this

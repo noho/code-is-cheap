@@ -1,0 +1,24 @@
+{
+  "deployed_at": "2026-10-12T23:00:12.613656+08:00",
+  "source_commit": "8a252e58c8302d2c6f5eb66bb99243e274559036",
+  "usb_target": "/Volumes/LEO/Agents/agents-backup-restore.sh",
+  "usb_sha256": "993458798ac49e0bfbc817b09d91462cad30a3f7e610ae5949afd7490193ac96",
+  "usb_source_matches": true,
+  "zshrc_target": "/Users/leo/.zshrc",
+  "zshrc_sha256": "77e7ab99a77c243dacde773ee6e97ba83b18f9f5b53f40c4074aec00bd1d646e",
+  "function_sha256": "8ac7d2573453372157ffa734873e37722b946741300854b7be7958b6ac833f9a",
+  "function_source_matches": true,
+  "unrelated_zshrc_prefix_suffix_unchanged": true,
+  "bash_syntax_exit": 0,
+  "zsh_syntax_exit": 0,
+  "original_modes_preserved": true,
+  "rollback_private_directory": "/private/tmp/backup-runtime-update-7lewfcpa/live-rollback",
+  "reviewed_source_hashes": {
+    ".gitignore": "b0a4ed4be3c6164d1adbe4c66e67386799e99272e218f960fd7b6bbfe52e38bf",
+    "scripts/backup/agents-backup-restore.sh": "993458798ac49e0bfbc817b09d91462cad30a3f7e610ae5949afd7490193ac96",
+    "scripts/backup/backupsysfiles.zsh": "8ac7d2573453372157ffa734873e37722b946741300854b7be7958b6ac833f9a",
+    "scripts/backup/README.md": "f250443bc73dfbe5dbdd380e7a431ac481b4614b3c6d2dd698eeaa912376f8a9",
+    "tests/test_agent_backup_restore.py": "70c5501c891ada1941d22e5286df8262a2f1ad2c0307b698c2c95c9e9d3972b1"
+  },
+  "operations": "Two static file updates only; no backup, restore, installation, Agent request, service restart or shell sourcing."
+}
