@@ -1,0 +1,167 @@
+{
+  "scope": "accepted PR55 finding1 only; independent synthetic data; actual Python repair CLI; no provider/native/kernel replay",
+  "timestamp_utc": "2026-10-12T09:08:38.092528+00:00",
+  "head": "5d25d37f16b69fd4b8a47b6c4aba31dd4c691d71",
+  "branch": "feat/official-provider-catalogs",
+  "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "probe_command": "python3 /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/verify.py",
+  "probe_sha256": "d284fcbdfcd12893a7ccb314d38d3cf25d07739f6b40fabd948159f591994d15",
+  "source_sha256": {
+    "AGENTS.md": {
+      "before": "b474e46fc40db1cf7bbd61e6afecaf0380ca25bfcec1836e6eeacaa068fb6205",
+      "after": "b474e46fc40db1cf7bbd61e6afecaf0380ca25bfcec1836e6eeacaa068fb6205"
+    },
+    "docs/gateflow/official-provider-catalogs/goal.md": {
+      "before": "21d238ba1f9e53332d6e81726bdadcaac1cdb9c11dc7dbe527b0dc6edca8e687",
+      "after": "21d238ba1f9e53332d6e81726bdadcaac1cdb9c11dc7dbe527b0dc6edca8e687"
+    },
+    "docs/gateflow/official-provider-catalogs/accepted-plan.md": {
+      "before": "b0983ed478c168ded84feebc8991f205eadc0c8cc4f886d826451ba11c5a9540",
+      "after": "b0983ed478c168ded84feebc8991f205eadc0c8cc4f886d826451ba11c5a9540"
+    },
+    "docs/gateflow/official-provider-catalogs/plan.md": {
+      "before": "dd0cd1c37fbe382732fbd152898b4721a9b40ea951d57a8ff9262448e8df327d",
+      "after": "dd0cd1c37fbe382732fbd152898b4721a9b40ea951d57a8ff9262448e8df327d"
+    },
+    "docs/gateflow/official-provider-catalogs/pr-review-decision.md": {
+      "before": "3684f3cf897aecacd0812daa74b40fee0fe5dd4e3a35d95a406c2a7504998e34",
+      "after": "3684f3cf897aecacd0812daa74b40fee0fe5dd4e3a35d95a406c2a7504998e34"
+    },
+    "scripts/repair-codex-reasoning-history.py": {
+      "before": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "after": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08"
+    },
+    "README.md": {
+      "before": "1dd24bea3f7bbf38c7c03e735b69a23a4ff8a8dd5f4a01c4187bdc2ca10610a5",
+      "after": "56f2dfc23d77b92140bf3c7261ddca0d03cbbf9b0748f5aaa014125b1748ae63"
+    },
+    "README.zh.md": {
+      "before": "2c7f064581fa5bbc62ed4f6e9b20b13675f435b25c0ae5c3b0e635db06b5ca27",
+      "after": "1cf6d71b60e641100d2017b114bcd2f814fe58b006c25a4d5c537f2e79f3077e"
+    }
+  },
+  "synthetic_paths": {
+    "root": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj",
+    "probe": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/verify.py",
+    "source_baseline": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/source-baseline.json",
+    "initial_status": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/initial-status.txt",
+    "before": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/synthetic-before.jsonl",
+    "repaired_rollout": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl",
+    "backup": "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl.backup-20261012-170838-1791796118005735000"
+  },
+  "synthetic_sha256": {
+    "before": "2c6f850bfe8cdd5aeb17602559cc074073f2818d8fb05c16147868c709577f8b",
+    "backup": "2c6f850bfe8cdd5aeb17602559cc074073f2818d8fb05c16147868c709577f8b",
+    "repaired_rollout": "d4d31bbd68a8f3da3e59e023aeb64a0d38599588590582fef4fe758e15a15f15"
+  },
+  "synthetic_modes": {
+    "before_rollout": "0644",
+    "repaired_rollout": "0600",
+    "backup": "0600"
+  },
+  "synthetic_before_jsonl": "{\"type\": \"turn_context\", \"payload\": {\"model\": \"k3\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"reasoning\", \"id\": \"synthetic-reasoning-k3\", \"content\": [{\"type\": \"reasoning_text\", \"text\": \"synthetic reasoning\"}], \"encrypted_content\": \"synthetic-encrypted-k3\", \"summary\": [{\"type\": \"summary_text\", \"text\": \"synthetic summary k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-k3\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-k3\", \"output\": \"synthetic output k3\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"kimi-k3\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"reasoning\", \"id\": \"synthetic-reasoning-kimi-k3\", \"content\": null, \"encrypted_content\": \"synthetic-encrypted-kimi-k3\", \"summary\": [{\"type\": \"summary_text\", \"text\": \"synthetic summary kimi-k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message kimi-k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-kimi-k3\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-kimi-k3\", \"output\": \"synthetic output kimi-k3\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"mimo-v2.6-pro\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"reasoning\", \"id\": \"synthetic-reasoning-mimo-v2.6-pro\", \"content\": null, \"encrypted_content\": \"synthetic-encrypted-mimo-v2.6-pro\", \"summary\": [{\"type\": \"summary_text\", \"text\": \"synthetic summary mimo-v2.6-pro\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message mimo-v2.6-pro\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-mimo-v2.6-pro\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-mimo-v2.6-pro\", \"output\": \"synthetic output mimo-v2.6-pro\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"unrelated-synthetic-model\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"reasoning\", \"id\": \"synthetic-reasoning-unrelated-synthetic-model\", \"content\": null, \"encrypted_content\": \"synthetic-encrypted-unrelated-synthetic-model\", \"summary\": [{\"type\": \"summary_text\", \"text\": \"synthetic summary unrelated-synthetic-model\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message unrelated-synthetic-model\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-unrelated-synthetic-model\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-unrelated-synthetic-model\", \"output\": \"synthetic output unrelated-synthetic-model\"}}\n",
+  "synthetic_after_jsonl": "{\"type\": \"turn_context\", \"payload\": {\"model\": \"k3\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-k3\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-k3\", \"output\": \"synthetic output k3\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"kimi-k3\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message kimi-k3\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-kimi-k3\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-kimi-k3\", \"output\": \"synthetic output kimi-k3\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"mimo-v2.6-pro\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message mimo-v2.6-pro\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-mimo-v2.6-pro\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-mimo-v2.6-pro\", \"output\": \"synthetic output mimo-v2.6-pro\"}}\n{\"type\": \"turn_context\", \"payload\": {\"model\": \"unrelated-synthetic-model\", \"fixture\": \"independent-synthetic-only\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"reasoning\", \"id\": \"synthetic-reasoning-unrelated-synthetic-model\", \"content\": null, \"encrypted_content\": \"synthetic-encrypted-unrelated-synthetic-model\", \"summary\": [{\"type\": \"summary_text\", \"text\": \"synthetic summary unrelated-synthetic-model\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"message\", \"role\": \"assistant\", \"content\": [{\"type\": \"output_text\", \"text\": \"synthetic message unrelated-synthetic-model\"}]}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call\", \"call_id\": \"synthetic-call-unrelated-synthetic-model\", \"name\": \"synthetic_tool\", \"arguments\": \"{}\"}}\n{\"type\": \"response_item\", \"payload\": {\"type\": \"function_call_output\", \"call_id\": \"synthetic-call-unrelated-synthetic-model\", \"output\": \"synthetic output unrelated-synthetic-model\"}}\n",
+  "record_counts": {
+    "before": 20,
+    "after": 17,
+    "dropped": 3,
+    "unrelated_retained": 5
+  },
+  "runs": [
+    {
+      "label": "documented dry-run",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "python3",
+        "scripts/repair-codex-reasoning-history.py",
+        "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl",
+        "--drop-reasoning-model",
+        "k3",
+        "--drop-reasoning-model",
+        "kimi-k3",
+        "--drop-reasoning-model",
+        "mimo-v2.6-pro"
+      ],
+      "command": "python3 scripts/repair-codex-reasoning-history.py /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro",
+      "returncode": 0,
+      "stdout": "affected reasoning items: 3\ndropped reasoning items for k3: 1\ndropped reasoning items for kimi-k3: 1\ndropped reasoning items for mimo-v2.6-pro: 1\n",
+      "stderr": ""
+    },
+    {
+      "label": "documented apply",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "python3",
+        "scripts/repair-codex-reasoning-history.py",
+        "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl",
+        "--drop-reasoning-model",
+        "k3",
+        "--drop-reasoning-model",
+        "kimi-k3",
+        "--drop-reasoning-model",
+        "mimo-v2.6-pro",
+        "--apply"
+      ],
+      "command": "python3 scripts/repair-codex-reasoning-history.py /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply",
+      "returncode": 0,
+      "stdout": "affected reasoning items: 3\ndropped reasoning items for k3: 1\ndropped reasoning items for kimi-k3: 1\ndropped reasoning items for mimo-v2.6-pro: 1\nrepaired: /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl\nbackup: /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl.backup-20261012-170838-1791796118005735000\n",
+      "stderr": ""
+    },
+    {
+      "label": "repeat dry-run",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "python3",
+        "scripts/repair-codex-reasoning-history.py",
+        "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl",
+        "--drop-reasoning-model",
+        "k3",
+        "--drop-reasoning-model",
+        "kimi-k3",
+        "--drop-reasoning-model",
+        "mimo-v2.6-pro"
+      ],
+      "command": "python3 scripts/repair-codex-reasoning-history.py /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro",
+      "returncode": 0,
+      "stdout": "affected reasoning items: 0\ndropped reasoning items for k3: 0\ndropped reasoning items for kimi-k3: 0\ndropped reasoning items for mimo-v2.6-pro: 0\n",
+      "stderr": "warning: no reasoning items matched model 'k3'; check turn_context model names\nwarning: no reasoning items matched model 'kimi-k3'; check turn_context model names\nwarning: no reasoning items matched model 'mimo-v2.6-pro'; check turn_context model names\n"
+    },
+    {
+      "label": "repeat apply",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "python3",
+        "scripts/repair-codex-reasoning-history.py",
+        "/private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl",
+        "--drop-reasoning-model",
+        "k3",
+        "--drop-reasoning-model",
+        "kimi-k3",
+        "--drop-reasoning-model",
+        "mimo-v2.6-pro",
+        "--apply"
+      ],
+      "command": "python3 scripts/repair-codex-reasoning-history.py /private/tmp/pr55-reasoning-doc-fix-iwgx9znj/rollout-synthetic.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply",
+      "returncode": 0,
+      "stdout": "affected reasoning items: 0\ndropped reasoning items for k3: 0\ndropped reasoning items for kimi-k3: 0\ndropped reasoning items for mimo-v2.6-pro: 0\n",
+      "stderr": "warning: no reasoning items matched model 'k3'; check turn_context model names\nwarning: no reasoning items matched model 'kimi-k3'; check turn_context model names\nwarning: no reasoning items matched model 'mimo-v2.6-pro'; check turn_context model names\n"
+    }
+  ],
+  "checks": {
+    "bilingual_documented_commands_identical": true,
+    "dry_run_3_items_1_per_selected_model_no_mutation_no_backup": true,
+    "apply_3_items_1_per_selected_model": true,
+    "private_backup_byte_equal_to_original": true,
+    "repaired_and_backup_modes_0600": true,
+    "all_17_retained_records_byte_equal_to_original_lines": true,
+    "all_5_unrelated_turn_records_byte_equal": true,
+    "selected_models_messages_and_tool_history_retained": true,
+    "repeat_dry_run_and_apply_zero_with_expected_warnings_no_extra_backup": true,
+    "repair_source_hash_unchanged": true
+  },
+  "limits": [
+    "Unrelated reasoning uses content=null, which default normalization leaves unchanged; unselected nonempty reasoning_text can still be normalized by existing repair behavior.",
+    "No real session/OpenAI resume/provider/endpoint/Kimi API/native/kernel/deployment checks.",
+    "Root owns commit/push and exact-OID dual PR re-review; no gate pass is claimed."
+  ]
+}

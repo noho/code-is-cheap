@@ -1,7 +1,7 @@
 # Official provider catalogs gate state
 
-- Current gate: accepted deepreview commit
-- Next entry point: protected deepreview commit, then push/create new draft PR and exact-OID PR review
+- Current gate: re-review (PR review)
+- Next entry point: publish fixed documentation head, refresh literal OID compare and parallel PR re-review
 - Branch: feat/official-provider-catalogs
 - Base: 17ef441
 - User source: five provider catalogs in Downloads
@@ -35,3 +35,10 @@
 - Accepted S1 commit: ee91b15b06352cc99c948da2bbe1f0a803cbb296
 
 - Aggregate deepreview pass; DS diagnostic preference rejected on contract/direct IO evidence, historical kernel-hash scope documented.
+
+- Draft PR55 created: https://github.com/noho/code-is-cheap/pull/55
+- Accepted deepreview/pushed head: 5d25d37f16b69fd4b8a47b6c4aba31dd4c691d71
+
+- PR finding1 accepted: current manual reasoning-drop example must include logical k3, preserve legacykimi-k3. No catalog/runtime change.
+
+- GPT PR finding1 docs fix closed0; combinedlogical-model examples and syntheticactualCLI validation delivered. Await independent re-review.

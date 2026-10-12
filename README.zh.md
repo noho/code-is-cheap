@@ -504,15 +504,16 @@ Native 读写/收集和内核测试需要允许 Seatbelt 执行的父环境。�
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
 # 若随后出现 invalid_encrypted_content 或 reasoning item ID 不存在：
-python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
-python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
 ```
 
 第一条命令只统计命中数。`--apply` 只将非空且全为 `reasoning_text` 的 reasoning `content` 改为 `null`，
 替换前在原目录保存带时间戳的私有备份。第三方加密推理内容仍可能校验失败，其 item ID 也可能在 OpenAI
 端点不存在。此时按来源模型使用 `--drop-reasoning-model`：只删除这些模型的 reasoning 记录，保留对话和工具历史。
 被删记录中的内部推理及推理摘要不再出现在修复后的会话中，但仍保留在带时间戳的备份里。
-参数要使用 `turn_context` 记录的模型名，而非 profile 别名；没有匹配项时工具会警告。
+参数精确匹配 `turn_context` 记录的逻辑模型名，而非 endpoint 的上游 wire 模型名或 profile 别名。
+示例同时覆盖当前 Kimi `k3`、旧 Kimi `kimi-k3` 和 MiMo `mimo-v2.6-pro`；没有匹配项时工具会警告。
 修复后的 rollout 和备份均收紧为仅所有者可访问（原文件允许所有者写入时为 `0600`）。
 再次运行相同修复命令应显示零条命中，然后用目标模型的 profile 恢复会话。
 若工具报告不支持的 reasoning 内容或 JSONL 损坏，会保持原文件不变；需单独检查报错行。需要回滚时，

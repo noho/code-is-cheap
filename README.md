@@ -550,8 +550,8 @@ endpoint rejects that history on resume with `Invalid 'input[n].content': array 
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
 # If cross-provider resume then reports invalid_encrypted_content or a missing reasoning item ID:
-python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
-python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
+python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
 ```
 
 The first command only counts affected items. `--apply` changes only reasoning items whose nonempty `content` consists
@@ -560,7 +560,8 @@ before replacing the file. Third-party encrypted reasoning may still fail valida
 OpenAI's endpoint. In that case, use `--drop-reasoning-model` for each source model: it removes only reasoning records
 from those models' turns, keeping messages and tool history. Their private reasoning and any reasoning summaries in those
 records are lost from the repaired rollout, but remain in the timestamped backup. The second run of each repair reports zero affected items.
-Use the exact model name recorded in `turn_context`, rather than its profile alias; a zero-match model produces a warning.
+Flags match the exact logical model name recorded in `turn_context`, not the endpoint's upstream wire model or a profile alias.
+The examples cover current Kimi `k3`, legacy Kimi `kimi-k3`, and MiMo `mimo-v2.6-pro`; a zero-match model produces a warning.
 Both the repaired rollout and its backup have owner-only permissions (`0600` when the original is writable by its owner).
 Reopen the session with the target model's profile after repair. If the tool reports unsupported reasoning content or malformed JSONL, it leaves the rollout
 unchanged; inspect that line separately. To roll back, close the session again and copy the reported
