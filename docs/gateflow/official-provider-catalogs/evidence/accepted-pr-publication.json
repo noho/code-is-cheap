@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-10-12T18:05:03.272097+08:00",
+  "reviewed_source_head": "e2b7e582f22f8b1068948deaedc110bf6892d527",
+  "accepted_pr_review_commit": "4a6a71bd2ac52b8c8760e2295d69147e19b66707",
+  "remote_head": "4a6a71bd2ac52b8c8760e2295d69147e19b66707",
+  "base": "17ef441bb9beac92914cc4a9c1c1dfc7108dd2a6",
+  "state": "open",
+  "draft": true,
+  "merged": false,
+  "metadata_only_changed_paths": [
+    "docs/gateflow/official-provider-catalogs/evidence/execution-statistics.json",
+    "docs/gateflow/official-provider-catalogs/evidence/pr-rereview-snapshot.json",
+    "docs/gateflow/official-provider-catalogs/evidence/pr-workflow-rereview-snapshot.json",
+    "docs/gateflow/official-provider-catalogs/evidence/workflow-controller-check.json",
+    "docs/gateflow/official-provider-catalogs/pr-rereview-decision.md",
+    "docs/gateflow/official-provider-catalogs/state.md",
+    "docs/reviews/pr-55-review-20261012-172143.md",
+    "docs/reviews/pr-55-review-20261012-175121.md",
+    "docs/reviews/pr-55-review-20261012-175919.md"
+  ],
+  "worktree_clean": true,
+  "gate_decision": "draft-PR-pass; next final closeout",
+  "review_version_limit": "Independent reviews bind to reviewed_source_head; acceptance commit adds only review/control evidence."
+}

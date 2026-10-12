@@ -1,6 +1,6 @@
 # Official provider catalogs gate state
 
-- Current gate: accepted PR review commit (final current-source review passed)
+- Current gate: final closeout pass; work unit completed
 - Next entry point: freeze literal PR55 base/head OIDs and their compare for the published head including this workflow update, then run independent parallel PR reviews and controller adjudication
 - Branch: feat/official-provider-catalogs
 - Base: 17ef441
@@ -63,3 +63,11 @@
 - Controller adjudication: [pr-rereview-decision.md](pr-rereview-decision.md), including ordinary-tool diagnostics and non-blocking legacy/custom-upstream uncertainty with maintainer owner.
 - All product/scripts/tests/cards/catalog blobs remain unchanged; further commits only closeout/review/evidence records.
 - Final closeout reminder must include applicable ./scripts/sync-codex-agent.sh command; no merge/live deployment authorization.
+
+## Final closeout
+
+- Accepted PR review checkpoint: 4a6a71bd2ac52b8c8760e2295d69147e19b66707; pushed successfully and remote identity verified.
+- draft-PR-pass verified before final closeout; later delta consists only of control/review/evidence metadata.
+- [Final closeout](final-closeout.md): pass; work unit completed, no accepted unresolved finding or blocking question.
+- User reminder: manually merge PR55, then authorize sync to live. This PR requires ./scripts/sync-codex-agent.sh; skills/runners unchanged. AGENTS.md records general sync methods.
+- Deployment remains not performed. No merge, mark-ready, or live action.
