@@ -3,7 +3,7 @@
 - Work unit: Gateflow development efficiency skill optimization.
 - Baseline: `83e534f71adfdd4d8a0c353642a37dd364045504`.
 - Branch: `feat/gateflow-review-efficiency`.
-- Current gate / next entry point: `accepted deepreview commit` (both aggregate routes pass; no source fix).
+- Current gate / next entry point: `push` (draft PR readiness pass; new draft PR not created yet).
 - Goal: [goal.md](goal.md).
 - Preflight: [preflight.json](preflight.json), clean worktree before controller artifacts, main equals fetched origin/main, PR55 merged.
 - Decision: source evidence supports this text-only work unit; confirmation accepted; see [confirmation.md](confirmation.md).
@@ -31,3 +31,5 @@ S1 pass: [code-adjudication.md](code-adjudication.md); source identities unchang
 Accepted S1 commit: `0dfc9ec56e939cd189923d1fbe65fc74a78bc1b2`. Controller evidence packaging only: [evidence-packaging.md](evidence-packaging.md), gzip preserves reviewed raw patch bytes. No product/source changes since S1 review.
 
 Aggregate pass: [aggregate-adjudication.md](aggregate-adjudication.md). No pending findings. Next accepted deepreview checkpoint then draft PR readiness/push/create/PR review.
+
+Accepted deepreview commit: `8eaa17fc61ed9f819d21276cf9e15f8bcb04b62e`. Ready-to-open-draft-PR pass: [pr-readiness.md](pr-readiness.md). Next push/create draft PR, then PR review (not draft-PR-pass).
