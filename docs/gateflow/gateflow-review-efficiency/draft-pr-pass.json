@@ -1,0 +1,26 @@
+{
+  "gate": "draft-PR-pass",
+  "result": "pass",
+  "verified_at": "2026-10-12T21:22:01.572732+08:00",
+  "reviewed_head": "9fada4ef882089c031c2cc48c068e41dfe4f3e6e",
+  "accepted_pr_review_commit": "fe25dba8f9c364c448363122f4877e66f65c8393",
+  "final_push_exit_code": 0,
+  "actual_pr_facts": {
+    "baseRefOid": "83e534f71adfdd4d8a0c353642a37dd364045504",
+    "headRefOid": "fe25dba8f9c364c448363122f4877e66f65c8393",
+    "isDraft": true,
+    "state": "OPEN",
+    "url": "https://github.com/noho/code-is-cheap/pull/56"
+  },
+  "post_review_changed_files": [
+    "docs/gateflow/gateflow-review-efficiency/evidence/pr/reviewed-compare.diff.gz",
+    "docs/gateflow/gateflow-review-efficiency/evidence/pr/reviewed-version.json",
+    "docs/gateflow/gateflow-review-efficiency/pr-adjudication.md",
+    "docs/gateflow/gateflow-review-efficiency/pr-review-dispatch.json",
+    "docs/gateflow/gateflow-review-efficiency/pr-review-executions.json",
+    "docs/gateflow/gateflow-review-efficiency/state.md",
+    "docs/reviews/pr-56-review-20261012-210406.md",
+    "docs/reviews/pr-56-review-20261012-210407.md"
+  ],
+  "controller_delta_check": "Only actual review reports/receipts/snapshots/current-state bookkeeping; contents inspected. No product change; all frozen source hashes match. Original reviewers conclusions remain limited to9fada4e, not falsely attributed to later head."
+}
