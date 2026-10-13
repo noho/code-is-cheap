@@ -49,8 +49,15 @@ def validate_event_text(event):
 def recognized_codex_connection_notice(event):
     return (set(event) == {"type", "message"} and event.get("type") == "error"
             and isinstance(event.get("message"), str)
-            and re.fullmatch(r"Reconnecting\.\.\. [1-5]/5 \(stream disconnected before completion: stream closed before response\.completed\)",
-                             event["message"]) is not None)
+            and (re.fullmatch(r"Reconnecting\.\.\. [1-5]/5 \(stream disconnected before completion: stream closed before response\.completed\)",
+                              event["message"]) is not None
+                 or re.fullmatch(
+                     r"Reconnecting\.\.\. [1-5]/5 \(stream disconnected before completion: "
+                     r"An error occurred while processing your request\. You can retry your request, "
+                     r"or contact us through our help center at help\.openai\.com if the error persists\. "
+                     r"Please include the request ID "
+                     r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                     r" in your message\.\)", event["message"]) is not None))
 
 
 def recognized_codex_startup_diagnostic(event):

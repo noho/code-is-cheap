@@ -1,0 +1,777 @@
+{
+  "created_at": "2026-10-13T01:50:28.671595+00:00",
+  "cwd": "/Users/leo/workspace/code-is-cheap",
+  "baseline_sha256": "516edbd7ed236558d6233f6880fec14653580331b3230e0c89c3be4b367ee90d",
+  "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+  "replay_driver_sha256": "422d1b2bb3c68f7a7713a56b90fb2c1ad5d14ddb1b1501438d2d67f7ab6a123e",
+  "cases": [
+    {
+      "scenario": "case10_exact_notices_valid_finish",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 0,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 0, \"agent_status\": \"completed\", \"validation_status\": \"passed\", \"result_status\": \"not_assessed\", \"final_answer\": \"Synthetic; business not assessed.\", \"final_answer_truncated\": false, \"final_answer_chars\": 33, \"wall_clock_seconds\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": \"turn.completed\", \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 0, \"events\": 6, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [], \"anomalies\": [], \"warnings\": [{\"stream\": \"output\", \"line\": 3, \"message\": \"Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}\", \"message_chars\": 368, \"truncated\": false, \"path\": null, \"proof_line\": null}, {\"stream\": \"output\", \"line\": 4, \"message\": \"Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}\", \"message_chars\": 368, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"diagnostic_counts\": {\"errors\": 0, \"anomalies\": 0, \"warnings\": 2}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "final",
+            "type": "agent_message",
+            "text": "Synthetic; business not assessed."
+          }
+        },
+        {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 1,
+            "output_tokens": 1
+          }
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"final\", \"type\": \"agent_message\", \"text\": \"Synthetic; business not assessed.\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}\n",
+      "input_sha256": "4c1d3a49d0b1a32790094c18ccd0802b257f383a9e4bd73eb2e3e14fd75b5f9b",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "Synthetic; business not assessed.",
+        "final_answer_truncated": false,
+        "final_answer_chars": 33,
+        "wall_clock_seconds": null,
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 1
+        },
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [
+          {
+            "stream": "output",
+            "line": 3,
+            "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+            "message_chars": 368,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 4,
+            "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+            "message_chars": 368,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 2
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 0,
+        "validation_status": "passed",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 2
+        }
+      },
+      "assertions_completed": true
+    },
+    {
+      "scenario": "recognized_closed_valid_finish",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 0,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 0, \"agent_status\": \"completed\", \"validation_status\": \"passed\", \"result_status\": \"not_assessed\", \"final_answer\": \"Synthetic; business not assessed.\", \"final_answer_truncated\": false, \"final_answer_chars\": 33, \"wall_clock_seconds\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": \"turn.completed\", \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 0, \"events\": 5, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [], \"anomalies\": [], \"warnings\": [{\"stream\": \"output\", \"line\": 3, \"message\": \"Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}\", \"message_chars\": 167, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"diagnostic_counts\": {\"errors\": 0, \"anomalies\": 0, \"warnings\": 1}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "final",
+            "type": "agent_message",
+            "text": "Synthetic; business not assessed."
+          }
+        },
+        {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 1,
+            "output_tokens": 1
+          }
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"final\", \"type\": \"agent_message\", \"text\": \"Synthetic; business not assessed.\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}\n",
+      "input_sha256": "ed7f008d04173bc5599d4070d8914e739a6fb1f735afcaf05bb3bbd3ee815814",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "passed",
+        "result_status": "not_assessed",
+        "final_answer": "Synthetic; business not assessed.",
+        "final_answer_truncated": false,
+        "final_answer_chars": 33,
+        "wall_clock_seconds": null,
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 1
+        },
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 5,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [],
+        "warnings": [
+          {
+            "stream": "output",
+            "line": 3,
+            "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+            "message_chars": 167,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 0,
+        "validation_status": "passed",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 1
+        }
+      },
+      "assertions_completed": true
+    },
+    {
+      "scenario": "recognized_closed_tool_anomaly",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 0,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 0, \"agent_status\": \"completed\", \"validation_status\": \"needs_review\", \"result_status\": \"not_assessed\", \"final_answer\": \"Synthetic; business not assessed.\", \"final_answer_truncated\": false, \"final_answer_chars\": 33, \"wall_clock_seconds\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": \"turn.completed\", \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 1, \"events\": 6, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [], \"anomalies\": [{\"stream\": \"output\", \"line\": 4, \"message\": \"{'id': 'tool', 'type': 'command_execution', 'command': 'synthetic tool', 'exit_code': 1, 'status': 'completed', 'aggregated_output': 'synthetic failure'}\", \"message_chars\": 153, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"warnings\": [{\"stream\": \"output\", \"line\": 3, \"message\": \"Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}\", \"message_chars\": 167, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"diagnostic_counts\": {\"errors\": 0, \"anomalies\": 1, \"warnings\": 1}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "tool",
+            "type": "command_execution",
+            "command": "synthetic tool",
+            "exit_code": 1,
+            "status": "completed",
+            "aggregated_output": "synthetic failure"
+          }
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "final",
+            "type": "agent_message",
+            "text": "Synthetic; business not assessed."
+          }
+        },
+        {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 1,
+            "output_tokens": 1
+          }
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"tool\", \"type\": \"command_execution\", \"command\": \"synthetic tool\", \"exit_code\": 1, \"status\": \"completed\", \"aggregated_output\": \"synthetic failure\"}}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"final\", \"type\": \"agent_message\", \"text\": \"Synthetic; business not assessed.\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}\n",
+      "input_sha256": "a3171c50e8d158a430c261e647d2582a943b175cbf5073ebb42ed3c7bc6dec85",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "Synthetic; business not assessed.",
+        "final_answer_truncated": false,
+        "final_answer_chars": 33,
+        "wall_clock_seconds": null,
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 1
+        },
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 1,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "output",
+            "line": 4,
+            "message": "{'id': 'tool', 'type': 'command_execution', 'command': 'synthetic tool', 'exit_code': 1, 'status': 'completed', 'aggregated_output': 'synthetic failure'}",
+            "message_chars": 153,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [
+          {
+            "stream": "output",
+            "line": 3,
+            "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+            "message_chars": 167,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 1
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 0,
+        "validation_status": "needs_review",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 1
+        }
+      },
+      "assertions_completed": true
+    },
+    {
+      "scenario": "case10_exact_notices_no_finish",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 1,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 1, \"agent_status\": \"failed\", \"validation_status\": \"rejected\", \"result_status\": \"not_assessed\", \"final_answer\": \"\", \"final_answer_truncated\": false, \"final_answer_chars\": 0, \"wall_clock_seconds\": null, \"usage\": null, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": null, \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 0, \"events\": 4, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [{\"stream\": \"output\", \"line\": null, \"message\": \"missing successful runtime terminal\", \"message_chars\": 35, \"truncated\": false, \"path\": null, \"proof_line\": null}, {\"stream\": \"output\", \"line\": null, \"message\": \"missing final answer\", \"message_chars\": 20, \"truncated\": false, \"path\": null, \"proof_line\": null}, {\"stream\": \"output\", \"line\": 3, \"message\": \"Codex connection notice recovery not proven (terminal identity or shape): {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}\", \"message_chars\": 407, \"truncated\": false, \"path\": null, \"proof_line\": null}, {\"stream\": \"output\", \"line\": 4, \"message\": \"Codex connection notice recovery not proven (terminal identity or shape): {'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}\", \"message_chars\": 407, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"anomalies\": [], \"warnings\": [], \"diagnostic_counts\": {\"errors\": 4, \"anomalies\": 0, \"warnings\": 0}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)"
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)\"}\n",
+      "input_sha256": "b01794879d6591bc22f11d337939ceffc3b88bcf00583f0a6eeb4357bdb5ea8e",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "failed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "final_answer": "",
+        "final_answer_truncated": false,
+        "final_answer_chars": 0,
+        "wall_clock_seconds": null,
+        "usage": null,
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": null,
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 4,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [
+          {
+            "stream": "output",
+            "line": null,
+            "message": "missing successful runtime terminal",
+            "message_chars": 35,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": null,
+            "message": "missing final answer",
+            "message_chars": 20,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 3,
+            "message": "Codex connection notice recovery not proven (terminal identity or shape): {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+            "message_chars": 407,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          },
+          {
+            "stream": "output",
+            "line": 4,
+            "message": "Codex connection notice recovery not proven (terminal identity or shape): {'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+            "message_chars": 407,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 4,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 1,
+        "validation_status": "rejected",
+        "diagnostic_counts": {
+          "errors": 4,
+          "anomalies": 0,
+          "warnings": 0
+        }
+      },
+      "assertions_completed": true
+    },
+    {
+      "scenario": "unknown_error_valid_finish",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 1,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 1, \"agent_status\": \"completed\", \"validation_status\": \"rejected\", \"result_status\": \"not_assessed\", \"final_answer\": \"Synthetic; business not assessed.\", \"final_answer_truncated\": false, \"final_answer_chars\": 33, \"wall_clock_seconds\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": \"turn.completed\", \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 0, \"events\": 5, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [{\"stream\": \"output\", \"line\": 3, \"message\": \"{'type': 'error', 'message': 'synthetic unrelated error'}\", \"message_chars\": 57, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"anomalies\": [], \"warnings\": [], \"diagnostic_counts\": {\"errors\": 1, \"anomalies\": 0, \"warnings\": 0}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "synthetic unrelated error"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "final",
+            "type": "agent_message",
+            "text": "Synthetic; business not assessed."
+          }
+        },
+        {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 1,
+            "output_tokens": 1
+          }
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"synthetic unrelated error\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"final\", \"type\": \"agent_message\", \"text\": \"Synthetic; business not assessed.\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}\n",
+      "input_sha256": "333fa9c675d3f91e335c89891b4022c6ae0df03c94df5abf4e1ddf48d781aece",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 1,
+        "agent_status": "completed",
+        "validation_status": "rejected",
+        "result_status": "not_assessed",
+        "final_answer": "Synthetic; business not assessed.",
+        "final_answer_truncated": false,
+        "final_answer_chars": 33,
+        "wall_clock_seconds": null,
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 1
+        },
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 5,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [
+          {
+            "stream": "output",
+            "line": 3,
+            "message": "{'type': 'error', 'message': 'synthetic unrelated error'}",
+            "message_chars": 57,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "anomalies": [],
+        "warnings": [],
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 1,
+        "validation_status": "rejected",
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        }
+      },
+      "assertions_completed": true
+    },
+    {
+      "scenario": "recognized_closed_startup_valid_finish",
+      "argv": [
+        "python3",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "gpt-6-sol",
+        "--output",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+        "--stderr",
+        "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "outer_exit": 0,
+      "stdout": "{\"schema_version\": 1, \"source\": \"subagent_report\", \"runtime\": \"codex\", \"provider\": \"gpt-6-sol\", \"runtime_exit_code\": 0, \"runner_exit_code\": 0, \"agent_status\": \"completed\", \"validation_status\": \"needs_review\", \"result_status\": \"not_assessed\", \"final_answer\": \"Synthetic; business not assessed.\", \"final_answer_truncated\": false, \"final_answer_chars\": 33, \"wall_clock_seconds\": null, \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}, \"runtime_metrics\": {}, \"session_id\": \"diagnostic-synthetic\", \"terminal\": \"turn.completed\", \"tool_evidence_scope\": \"recorded_events_only\", \"tool_results\": 0, \"events\": 6, \"canary_status\": \"not_run\", \"canary_read_candidate\": false, \"errors\": [], \"anomalies\": [{\"stream\": \"output\", \"line\": 2, \"message\": \"{'id': 'startup-warning', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /tmp/synthetic-codex/config.toml.'}\", \"message_chars\": 302, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"warnings\": [{\"stream\": \"output\", \"line\": 4, \"message\": \"Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}\", \"message_chars\": 167, \"truncated\": false, \"path\": null, \"proof_line\": null}], \"diagnostic_counts\": {\"errors\": 0, \"anomalies\": 1, \"warnings\": 1}, \"diagnostics_truncated\": false, \"artifacts\": [], \"logs\": {\"output\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl\", \"stderr\": \"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log\", \"last_message\": null}}\n",
+      "stderr": "",
+      "input_events": [
+        {
+          "type": "thread.started",
+          "thread_id": "diagnostic-synthetic"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "startup-warning",
+            "type": "error",
+            "message": "Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /tmp/synthetic-codex/config.toml."
+          }
+        },
+        {
+          "type": "turn.started"
+        },
+        {
+          "type": "error",
+          "message": "Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)"
+        },
+        {
+          "type": "item.completed",
+          "item": {
+            "id": "final",
+            "type": "agent_message",
+            "text": "Synthetic; business not assessed."
+          }
+        },
+        {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 1,
+            "output_tokens": 1
+          }
+        }
+      ],
+      "input_jsonl": "{\"type\": \"thread.started\", \"thread_id\": \"diagnostic-synthetic\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"startup-warning\", \"type\": \"error\", \"message\": \"Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /tmp/synthetic-codex/config.toml.\"}}\n{\"type\": \"turn.started\"}\n{\"type\": \"error\", \"message\": \"Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)\"}\n{\"type\": \"item.completed\", \"item\": {\"id\": \"final\", \"type\": \"agent_message\", \"text\": \"Synthetic; business not assessed.\"}}\n{\"type\": \"turn.completed\", \"usage\": {\"input_tokens\": 1, \"output_tokens\": 1}}\n",
+      "input_sha256": "72c49f380fd2238745834735c12735bb053389962df9bd587725f8daebddd5de",
+      "stderr_input": "",
+      "stderr_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "report": {
+        "schema_version": 1,
+        "source": "subagent_report",
+        "runtime": "codex",
+        "provider": "gpt-6-sol",
+        "runtime_exit_code": 0,
+        "runner_exit_code": 0,
+        "agent_status": "completed",
+        "validation_status": "needs_review",
+        "result_status": "not_assessed",
+        "final_answer": "Synthetic; business not assessed.",
+        "final_answer_truncated": false,
+        "final_answer_chars": 33,
+        "wall_clock_seconds": null,
+        "usage": {
+          "input_tokens": 1,
+          "output_tokens": 1
+        },
+        "runtime_metrics": {},
+        "session_id": "diagnostic-synthetic",
+        "terminal": "turn.completed",
+        "tool_evidence_scope": "recorded_events_only",
+        "tool_results": 0,
+        "events": 6,
+        "canary_status": "not_run",
+        "canary_read_candidate": false,
+        "errors": [],
+        "anomalies": [
+          {
+            "stream": "output",
+            "line": 2,
+            "message": "{'id': 'startup-warning', 'type': 'error', 'message': 'Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /tmp/synthetic-codex/config.toml.'}",
+            "message_chars": 302,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "warnings": [
+          {
+            "stream": "output",
+            "line": 4,
+            "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+            "message_chars": 167,
+            "truncated": false,
+            "path": null,
+            "proof_line": null
+          }
+        ],
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 1
+        },
+        "diagnostics_truncated": false,
+        "artifacts": [],
+        "logs": {
+          "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/output.jsonl",
+          "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/server-retry-replay-uv2mni_2/stderr.log",
+          "last_message": null
+        }
+      },
+      "expected": {
+        "outer_exit": 0,
+        "validation_status": "needs_review",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 1,
+          "warnings": 1
+        }
+      },
+      "assertions_completed": true
+    }
+  ],
+  "assertions_completed": true
+}

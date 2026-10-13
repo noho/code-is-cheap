@@ -393,7 +393,7 @@ execution claims cannot be distinguished from text alone; inspect relevant evide
 exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
 task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 
-Recognized Codex connection retry notices become warnings only after valid later completion in the same execution and successful selected checks; unknown or unrecovered errors remain fatal.
+Recognized Codex connection retry notices become warnings only after valid later completion in the same execution and successful selected checks; unknown or unrecovered errors remain fatal. Supported notices are the exact native `stream closed before response.completed` text and the server-request text `An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID UUID in your message.`, each inside `Reconnecting... N/5 (stream disconnected before completion: ...)`. `N` must be one ASCII digit from 1 to 5; the server request ID must have lowercase hexadecimal UUID shape (`8-4-4-4-12`). Other wording or shapes remain unsupported.
 
 `session_id` exposes the native Codex thread_id or Claude session_id, or null when unavailable/conflicting.
 Only explicitly persisted sessions can be resumed; an ID does not imply an ephemeral run was saved.

@@ -1,0 +1,23 @@
+{
+  "gate": "code review",
+  "created_at": "2026-10-13T01:58:37.667010+00:00",
+  "base": "ca98d59242cd16f8305331d310a1bdde93fc0270",
+  "source_sha256": {
+    "scripts/agent-run-result.py": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+    "tests/test_agent_run_results.py": "394d9e6960553dd8b046c5653ed36aed51f23e2154fe878004e518fa42881dae",
+    "README.md": "23121d6eddb29703fdc2cba7ab3eb7686d0c4cf6092d3f6c83ffd1d0490c6da1"
+  },
+  "production_outside_matcher_ast_equal": true,
+  "old_test_method_count": 56,
+  "old_test_method_asts_equal": true,
+  "new_test_methods": [
+    "test_codex_server_retry_notice_keeps_process_failures",
+    "test_codex_server_retry_notice_keeps_selected_checks",
+    "test_codex_server_retry_notice_lookalikes_rejected",
+    "test_codex_server_retry_notice_recovery_fences",
+    "test_codex_server_retry_recovered_connection_notice"
+  ],
+  "validation_reused": "implementation-v1/v2/v3.json; actual commands/exits and source versions inspected",
+  "implementation_anomaly_adjudication": "exploratory rg --files had no matches (exit1) after successful reads; not failed tests or source loss",
+  "command": "python3 -B inline AST/hash check using git show exact accepted-plan base"
+}
