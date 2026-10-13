@@ -1,0 +1,48 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "- 报告：[aggregate-fix.md](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/aggregate-fix.md)\n- 证据：[validation.json](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-fix-ds-a1-20261013T084811Z-821b78d0/validation.json)\n\n无实现阻塞；controller 尚需执行当前源码 native suite、原始 replay 和双路复审。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 353,
+    "wall_clock_seconds": 489.474765,
+    "usage": {
+      "input_tokens": 1074422,
+      "cached_input_tokens": 986496,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 15765,
+      "reasoning_output_tokens": 6541
+    },
+    "runtime_metrics": {},
+    "session_id": "01a13470-eb9c-7c53-ad62-d729879c853d",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 36,
+    "events": 81,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.CfZdu8ZY/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.CfZdu8ZY/stderr.log",
+      "last_message": null
+    }
+  }
+}

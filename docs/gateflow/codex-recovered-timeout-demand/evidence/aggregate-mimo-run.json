@@ -1,0 +1,93 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "Aggregate deepreview complete.\n\n**Conclusion: PASS — 未发现实质性问题 (0 material findings).** Fresh independent aggregate judgment over the single unchanged S-1 slice at HEAD `edd3d7b` / base `62c3b26`: all five delivered source hashes verified equal to the immutable manifest and the accepted slice commit (58/58 evidence checksums OK); the input-exit → adapter proof → checks → exit/status chain, cross-runtime shared assumptions, and EN/ZH/skill doc parity re-walked with no goal-coverage gap or omission; the new post-slice Judge TLS replay evidence verified (delivered collector hash, native exit-0 input, first harness display-equivalence failure cleanly separated from collector acceptance — both runs collector exit 0, records differ only in that one check plus the display note, originals unchanged, Developer/Judge remain caller-unaccepted, no allowlist/goal extension), with 3 fresh synthetic probes (1 positive + 2 negative controls) passing at the delivered hash. Pending items (parallel ds-flash adjudication, PR gates, sync, live probes) are controller-owned and honestly classified; mechanical exit 0 alone was not treated as a pass.\n\n**Output:** `docs/reviews/code-review-20261013-164409.md` (probe evidence: `docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-mimo-flash/`)",
+    "final_answer_truncated": false,
+    "final_answer_chars": 1297,
+    "wall_clock_seconds": 633.044586,
+    "usage": {
+      "input_tokens": 104618,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2448320,
+      "output_tokens": 25145,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 630442,
+      "duration_api_ms": 545761,
+      "total_cost_usd": 2.3758750000000006,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 104618,
+          "outputTokens": 25145,
+          "cacheReadInputTokens": 2448320,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.3758750000000006,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "e46135ca-6fb3-47aa-92ce-24d0cd5371d6",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 58,
+    "events": 5345,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.cTZCQFiS/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.cTZCQFiS/stderr.log",
+      "last_message": null
+    }
+  }
+}

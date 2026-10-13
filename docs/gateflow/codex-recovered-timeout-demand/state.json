@@ -1,7 +1,7 @@
 {
   "work_unit": "codex-recovered-timeout-demand",
-  "current_gate": "accepted slice commit",
-  "next_entry_point": "accepted slice commit",
+  "current_gate": "accepted deepreview commit",
+  "next_entry_point": "accepted deepreview commit",
   "goal_confirmation": "passed-user-confirmed",
   "history": [
     {
@@ -123,6 +123,56 @@
       ],
       "collector_sha256": "9b44ac33099f49e8d4904e561e63f4e5dee43a6e177548cbb2edb5226f35ce5b",
       "supplemental_replay": "evidence/judge-replay-repository.json"
+    },
+    {
+      "gate": "accepted slice commit",
+      "slice": "S-1",
+      "commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3",
+      "decision": "pass checkpoint; 5 delivered source hashes unchanged"
+    },
+    {
+      "gate": "aggregate deepreview",
+      "provider": "ds-flash",
+      "decision": "artifact available; DS-A1 accepted, 未修复; await original mimo review before source fix",
+      "artifact": "docs/reviews/code-review-20261013-164206.md",
+      "actual_managed_exit": 0,
+      "runner_evidence": "evidence/aggregate-ds-run.json"
+    },
+    {
+      "gate": "aggregate deepreview",
+      "decision": "fix required; DS-A1 accepted 未修复; both reviews actual exit0",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/aggregate-review-decision.md",
+      "reviews": [
+        "docs/reviews/code-review-20261013-164206.md",
+        "docs/reviews/code-review-20261013-164409.md"
+      ]
+    },
+    {
+      "gate": "fix",
+      "revision": "aggregate DS-A1",
+      "decision": "implementation 已修复; current-version mandatory56 suite, native2, both original replays pass; independent re-review pending",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/aggregate-fix.md",
+      "collector_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff"
+    },
+    {
+      "gate": "re-review",
+      "revision": "aggregate DS-A1",
+      "provider": "ds-flash",
+      "decision": "artifact available, DS-A1 已修复; dual controller adjudication pending",
+      "artifact": "docs/reviews/code-review-20261013-170322.md",
+      "actual_managed_exit": 0,
+      "runner_evidence": "evidence/aggregate-rereview-ds-run.json"
+    },
+    {
+      "gate": "re-review",
+      "revision": "aggregate DS-A1",
+      "decision": "pass; DS-A1 已修复, dual actual exit0; no new findings",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/aggregate-review-decision.md",
+      "reviews": [
+        "docs/reviews/code-review-20261013-170322.md",
+        "docs/reviews/code-review-20261013-171623.md"
+      ],
+      "collector_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff"
     }
   ],
   "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
@@ -135,5 +185,6 @@
   },
   "goal_contract": "goal-confirmation-v2.md",
   "inflight": [],
-  "accepted_plan_commit": "b5a8095a2f2c8f72596f4a393ad5c70e85ca48ca"
+  "accepted_plan_commit": "b5a8095a2f2c8f72596f4a393ad5c70e85ca48ca",
+  "accepted_slice_commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3"
 }

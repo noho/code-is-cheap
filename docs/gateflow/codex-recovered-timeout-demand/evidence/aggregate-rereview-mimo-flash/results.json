@@ -1,0 +1,374 @@
+{
+ "probe": "aggregate-rereview-mimo-flash DS-A1 focused synthetic",
+ "collector_path": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+ "collector_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff",
+ "python": "3.11.15",
+ "cases": [
+  {
+   "name": "blank_result_keeps_partial_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root",
+   "final_answer_chars": 12,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': ''}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.026
+  },
+  {
+   "name": "whitespace_result_keeps_partial_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root",
+   "final_answer_chars": 12,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': '  '}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "missing_result_key_keeps_partial_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root",
+   "final_answer_chars": 12,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed'}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "null_result_keeps_partial_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root",
+   "final_answer_chars": 12,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': None}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "number_result_keeps_partial_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root",
+   "final_answer_chars": 12,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'result': 42, 'stop_reason': 'end_turn', 'terminal_reason': 'completed'}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "blank_no_prior_empty_display_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "",
+   "final_answer_chars": 0,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': ''}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "missing_result_no_prior_empty_display_rejects",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "",
+   "final_answer_chars": 0,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed'}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.026
+  },
+  {
+   "name": "nested_text_never_supplies_root_display_blank",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "",
+   "final_answer_chars": 0,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': ''}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "nested_text_never_supplies_root_display_missing",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "",
+   "final_answer_chars": 0,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed'}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "native_negative_nonempty_result_displayed_yet_rejected",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "authoritative",
+   "final_answer_chars": 13,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 2,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'max_tokens', 'terminal_reason': 'completed', 'result': 'authoritative'}",
+    "missing successful runtime terminal"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "normal_nonblank_claude_unchanged_passed",
+   "status": "pass",
+   "returncode": 0,
+   "validation_status": "passed",
+   "agent_status": "completed",
+   "result_status": "not_assessed",
+   "terminal": "success",
+   "final_answer": "authoritative final",
+   "final_answer_chars": 19,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "duplicate_result_first_terminal_final_retained",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "conflicting",
+   "final_answer": "done first",
+   "final_answer_chars": 10,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "event after runtime terminal",
+    "multiple result terminals",
+    "missing successful runtime terminal"
+   ],
+   "wall_seconds": 0.026
+  },
+  {
+   "name": "postterminal_trailing_assistant_cannot_change_final",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "success",
+   "final_answer": "done first",
+   "final_answer_chars": 10,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 1,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [
+    "event after runtime terminal"
+   ],
+   "wall_seconds": 0.025
+  },
+  {
+   "name": "blank_partial_wrong_canary_mismatch_at_retained_line",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root\nCANARY=wrong-token",
+   "final_answer_chars": 31,
+   "canary_status": "mismatch",
+   "diagnostic_counts": {
+    "errors": 5,
+    "anomalies": 2,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': ''}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer",
+    "canary proof does not match expected token",
+    "required artifact missing: /tmp/claude-501/mimo-rereview-r8pj0rne/missing-artifact"
+   ],
+   "wall_seconds": 0.026
+  },
+  {
+   "name": "blank_partial_matching_canary_still_rejected",
+   "status": "pass",
+   "returncode": 1,
+   "validation_status": "rejected",
+   "agent_status": "failed",
+   "result_status": "not_assessed",
+   "terminal": "failed",
+   "final_answer": "partial root\nCANARY=fresh-12345678",
+   "final_answer_chars": 34,
+   "canary_status": "match",
+   "diagnostic_counts": {
+    "errors": 3,
+    "anomalies": 2,
+    "warnings": 0
+   },
+   "error_messages": [
+    "invalid or unsuccessful result terminal: {'type': 'result', 'subtype': 'success', 'is_error': False, 'stop_reason': 'end_turn', 'terminal_reason': 'completed', 'result': ''}",
+    "missing successful runtime terminal",
+    "missing valid complete final answer"
+   ],
+   "wall_seconds": 0.026
+  },
+  {
+   "name": "codex_normal_stream_unchanged_passed",
+   "status": "pass",
+   "returncode": 0,
+   "validation_status": "passed",
+   "agent_status": "completed",
+   "result_status": "not_assessed",
+   "terminal": "turn.completed",
+   "final_answer": "done",
+   "final_answer_chars": 4,
+   "canary_status": "not_run",
+   "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 0,
+    "warnings": 0
+   },
+   "error_messages": [],
+   "wall_seconds": 0.026
+  }
+ ],
+ "totals": {
+  "cases": 16,
+  "passed": 16,
+  "failed": 0,
+  "assertions_failed": 0
+ },
+ "all_pass": true
+}

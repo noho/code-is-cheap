@@ -1,0 +1,69 @@
+test_claude_native_negative_and_malformed_completion_overrides_success (test_agent_run_results.RunnerResults.test_claude_native_negative_and_malformed_completion_overrides_success) ... ok
+test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) ... 
+  test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='') ... FAIL
+  test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ') ... FAIL
+  test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ', nested=False) ... FAIL
+  test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ', nested=True) ... FAIL
+
+======================================================================
+FAIL: test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/rr-before/tests/test_agent_run_results.py", line 298, in test_claude_result_owns_final_without_assistant_fallback
+    self.assertEqual(report['final_answer'],displayed)
+AssertionError: '' != 'partial root'
++ partial root
+
+======================================================================
+FAIL: test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/rr-before/tests/test_agent_run_results.py", line 298, in test_claude_result_owns_final_without_assistant_fallback
+    self.assertEqual(report['final_answer'],displayed)
+AssertionError: '  ' != 'partial root'
+-   
++ partial root
+
+
+======================================================================
+FAIL: test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ', nested=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/rr-before/tests/test_agent_run_results.py", line 316, in test_claude_result_owns_final_without_assistant_fallback
+    self.assertEqual((report['final_answer'],report['final_answer_chars']),('',0))
+AssertionError: Tuples differ: ('  ', 2) != ('', 0)
+
+First differing element 0:
+'  '
+''
+
+- ('  ', 2)
+?   --   ^
+
++ ('', 0)
+?      ^
+
+
+======================================================================
+FAIL: test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) (value='  ', nested=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/rr-before/tests/test_agent_run_results.py", line 316, in test_claude_result_owns_final_without_assistant_fallback
+    self.assertEqual((report['final_answer'],report['final_answer_chars']),('',0))
+AssertionError: Tuples differ: ('  ', 2) != ('', 0)
+
+First differing element 0:
+'  '
+''
+
+- ('  ', 2)
+?   --   ^
+
++ ('', 0)
+?      ^
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.579s
+
+FAILED (failures=4)

@@ -246,11 +246,14 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         for normal in ('end_turn','stop_sequence'):
             for field,value in fields:
                 with self.subTest(normal=normal,field=field,value=value):
-                    events=self.claude();events[-1].update(stop_reason=normal,terminal_reason='completed')
+                    events=self.claude('authoritative');events[-1].update(stop_reason=normal,terminal_reason='completed')
                     events[-1][field]=value
+                    events.insert(1,self.assistant([{'type':'text','text':'partial root'}]))
                     events.insert(1,{'type':'error','message':'recovered intermediate'})
                     report=self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
                     self.assertEqual(report['terminal'],'failed')
+                    self.assertEqual(report['final_answer'],'authoritative')
+                    self.assertEqual(report['final_answer_chars'],len('authoritative'))
                     self.assertEqual(report['diagnostic_counts']['anomalies'],1)
         for field in ('is_error','subtype'):
             events=self.claude();events[-1].pop(field)
@@ -286,13 +289,31 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
     def test_claude_result_owns_final_without_assistant_fallback(self):
         prior=self.assistant([{'type':'text','text':'partial root'}])
         for value in ('authoritative','', '  ', None,42,[]):
-            events=self.claude();events.insert(1,prior);events[-1]['result']=value
-            valid=isinstance(value,str) and bool(value.strip())
-            report=self.assert_completion(self.run_collector(events,runtime='claude'),
-                'passed' if valid else 'rejected','completed' if valid else 'failed')
-            self.assertEqual(report['final_answer'],value if isinstance(value,str) else 'partial root')
+            with self.subTest(value=value):
+                events=self.claude();events.insert(1,prior);events[-1]['result']=value
+                valid=isinstance(value,str) and bool(value.strip())
+                report=self.assert_completion(self.run_collector(events,runtime='claude'),
+                    'passed' if valid else 'rejected','completed' if valid else 'failed')
+                displayed=value if valid else 'partial root'
+                self.assertEqual(report['final_answer'],displayed)
+                self.assertEqual(report['final_answer_chars'],len(displayed))
+                if not valid:
+                    self.assertEqual(report['terminal'],'failed')
+                    self.assertEqual(report['errors'][0]['line'],3)
+                    self.assertTrue(any('missing valid complete final answer' in d['message'] for d in report['errors']))
         events=self.claude();events.insert(1,prior);events[-1].pop('result')
-        self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
+        report=self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
+        self.assertEqual((report['final_answer'],report['final_answer_chars']),('partial root',len('partial root')))
+        for value in ('','  ',None,42,[]):
+            for nested in (False,True):
+                with self.subTest(value=value,nested=nested):
+                    events=self.claude(value)
+                    if nested:
+                        events[1:1]=[self.tool_call('parent'),self.assistant(
+                            [{'type':'text','text':'child text'}],parent_tool_use_id='parent'),
+                            self.tool_result('parent')]
+                    report=self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
+                    self.assertEqual((report['final_answer'],report['final_answer_chars']),('',0))
         events=[prior]
         report=self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
         self.assertEqual(report['final_answer'],'partial root')
@@ -453,6 +474,22 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
                 self.assert_completion(self.run_collector(events,*args,runtime=runtime),'rejected')
             saved=self.root/f'{runtime}-stale-last';saved.write_text('stale')
             self.assert_completion(self.run_collector(events,'--last-message',str(saved),runtime=runtime),'rejected')
+            if runtime=='claude':
+                for value in ('','  '):
+                    for token in ('wrong','fresh-12345678'):
+                        with self.subTest(value=value,token=token):
+                            partial=f'partial root\nCANARY={token}'
+                            bad=self.claude(value);bad[1:1]=[self.assistant([{'type':'text','text':partial}]),
+                                {'type':'error','message':'unknown'}]
+                            report=self.assert_completion(self.run_collector(bad,
+                                '--canary-file',str(self.canary),'--canary-expected',str(self.expected),
+                                '--artifact',str(self.root/'missing'),runtime=runtime),'rejected','failed')
+                            self.assertEqual((report['final_answer'],report['final_answer_chars']),(partial,len(partial)))
+                            self.assertEqual(report['canary_status'],'mismatch' if token=='wrong' else 'match')
+                            self.assertTrue(any('required artifact missing' in d['message'] for d in report['errors']))
+                            if token=='wrong':
+                                error=next(d for d in report['errors'] if 'canary proof does not match' in d['message'])
+                                self.assertEqual((error['stream'],error['line'],error['proof_line']),('output',2,2))
 
     def test_recovered_diagnostics_detail_keeps_raw_and_bypasses_checks(self):
         for runtime in ('codex','claude'):

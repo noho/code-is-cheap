@@ -1,0 +1,111 @@
+{
+  "collector_path": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+  "collector_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff",
+  "argv": [
+    "python3",
+    "-B",
+    "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+    "--runtime",
+    "codex",
+    "--provider",
+    "gpt-6-sol",
+    "--output",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/output.jsonl",
+    "--stderr",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/stderr.log",
+    "--exit-code",
+    "0",
+    "--runner-exit-code",
+    "0",
+    "--canary-file",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.txt",
+    "--canary-expected",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.expected",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.md",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.patch"
+  ],
+  "actual_exit": 0,
+  "stderr_bytes": 0,
+  "summary": {
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "terminal": "turn.completed",
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 8,
+      "warnings": 0
+    },
+    "canary_status": "match",
+    "canary_read_candidate": false,
+    "events": 187,
+    "tool_results": 85
+  },
+  "retained_notices": [
+    {
+      "stream": "output",
+      "line": 3,
+      "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (request timed out)'}"
+    },
+    {
+      "stream": "output",
+      "line": 176,
+      "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+    },
+    {
+      "stream": "output",
+      "line": 177,
+      "message": "{'type': 'error', 'message': 'Reconnecting... 3/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+    },
+    {
+      "stream": "output",
+      "line": 178,
+      "message": "{'type': 'error', 'message': 'Reconnecting... 4/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+    },
+    {
+      "stream": "output",
+      "line": 179,
+      "message": "{'type': 'error', 'message': 'Reconnecting... 5/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+    }
+  ],
+  "anomalies_sha256": "7aece6bb3c5987c9ef021c14b7f575638b3ab751945e2e67489e78cb57f6b9c6",
+  "final_sha256": "0018ceb1402d8427246f94b2dee156e385b2bb73380a24725b2fad8245c2eef1",
+  "checks": {
+    "collector_exit_zero": true,
+    "stderr_empty": true,
+    "expected_status": true,
+    "no_fatal_errors": true,
+    "original_anomalies_retained": true,
+    "final_unchanged": true,
+    "session_usage_tools_unchanged": true,
+    "selected_artifacts_unchanged": true,
+    "all_five_notices_retained": true,
+    "original_inputs_unchanged": true
+  },
+  "sources_sha256": {
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/diagnosis.json": "79a3b2aa4bdc35ab206aa68833d754161d146d61d21484e7fc27cf75f4a90414",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.json": "854e3262b25e1568160f6a3c6b043a3757a0dd43b8a341a30e2e98d6ac85f0a7",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/output.jsonl": "66427f66da39f5a19eb3a378ba1ccc2ed10d515bdf28615bb2897cceaa43196c",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.txt": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.expected": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.md": "23dad1c7234f4029583c04e89ef1a31e18356cd31f2463ebc135dceb68005112",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.patch": "5e383d6b1f42f488e8e7e3892b06bd160c953881ce1980c10e7ff1d13d86ebc5"
+  },
+  "source_integrity_after": {
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/diagnosis.json": "79a3b2aa4bdc35ab206aa68833d754161d146d61d21484e7fc27cf75f4a90414",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.json": "854e3262b25e1568160f6a3c6b043a3757a0dd43b8a341a30e2e98d6ac85f0a7",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/output.jsonl": "66427f66da39f5a19eb3a378ba1ccc2ed10d515bdf28615bb2897cceaa43196c",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.txt": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.expected": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.md": "23dad1c7234f4029583c04e89ef1a31e18356cd31f2463ebc135dceb68005112",
+    "/Users/leo/workspace/portfolio-manager-v2/docs/impacts/shaanxi-g1-methods-dev-01-v001.patch": "5e383d6b1f42f488e8e7e3892b06bd160c953881ce1980c10e7ff1d13d86ebc5"
+  }
+}

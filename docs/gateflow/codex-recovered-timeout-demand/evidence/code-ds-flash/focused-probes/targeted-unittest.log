@@ -1,9 +1,0 @@
-test_novel_diagnostics_recover_without_text_inventory (test_agent_run_results.RunnerResults.test_novel_diagnostics_recover_without_text_inventory) ... ok
-test_claude_native_negative_and_malformed_completion_overrides_success (test_agent_run_results.RunnerResults.test_claude_native_negative_and_malformed_completion_overrides_success) ... ok
-test_codex_start_and_final_fences_apply_with_or_without_diagnostics (test_agent_run_results.RunnerResults.test_codex_start_and_final_fences_apply_with_or_without_diagnostics) ... ok
-test_claude_nested_ownership_and_scoped_tool_pairing (test_agent_run_results.RunnerResults.test_claude_nested_ownership_and_scoped_tool_pairing) ... ok
-
-----------------------------------------------------------------------
-Ran 4 tests in 5.947s
-
-OK

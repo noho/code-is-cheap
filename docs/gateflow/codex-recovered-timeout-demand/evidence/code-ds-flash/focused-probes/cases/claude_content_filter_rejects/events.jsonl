@@ -1,2 +1,0 @@
-{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
-{"type": "result", "subtype": "success", "is_error": false, "result": "answer", "stop_reason": "content_filter", "terminal_reason": "completed"}

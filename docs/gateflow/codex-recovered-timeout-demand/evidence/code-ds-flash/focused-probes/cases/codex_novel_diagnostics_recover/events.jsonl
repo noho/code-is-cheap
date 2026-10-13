@@ -1,7 +1,0 @@
-{"type": "thread.started", "thread_id": "t1"}
-{"type": "error", "message": "Reconnecting... 29/5 (novel upstream wording \u03a9)"}
-{"type": "turn.started"}
-{"type": "item.completed", "item": {"id": "d1", "type": "error", "message": "socket changed; demand timed out"}}
-{"type": "item.completed", "item": {"id": "m", "type": "agent_message", "text": "done"}}
-{"type": "error", "message": "after final novel diagnostic"}
-{"type": "turn.completed", "usage": {"input_tokens": 2}}

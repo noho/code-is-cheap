@@ -1,5 +1,0 @@
-{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
-{"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "task1", "name": "Task", "input": {"prompt": "x"}}]}, "parent_tool_use_id": null, "session_id": "s"}
-{"type": "assistant", "message": {"content": [{"type": "text", "text": "child"}]}, "parent_tool_use_id": "task1", "session_id": "child"}
-{"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "task1", "content": "ok", "is_error": false}]}, "parent_tool_use_id": null, "session_id": "s"}
-{"type": "result", "subtype": "success", "is_error": false, "result": "answer", "stop_reason": "end_turn", "session_id": "s"}

@@ -1,4 +1,0 @@
-{"type": "thread.started", "thread_id": "t1"}
-{"type": "turn.started"}
-{"type": "item.completed", "item": {"id": "m", "type": "agent_message", "text": "done", "status": "completed"}}
-{"type": "turn.completed", "usage": {}}

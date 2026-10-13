@@ -1,0 +1,21 @@
+{
+ "captured_utc": "2026-10-13T09:13:48.907251+00:00",
+ "role": "mimo-flash targeted aggregate re-review (DS-A1), independent source identity",
+ "head_commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3",
+ "base_main": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
+ "current_worktree_sha256": {
+  "scripts/agent-run-result.py": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff",
+  "tests/test_agent_run_results.py": "6cda405c565c9ebc200885bd61c1d8fe7e480b3562330afacd63e9ac38be891b",
+  "README.md": "73141fd5ffb4268bb6b610b5e0d1f30119d549c3158e0dc0c962ccb6f94f9bed",
+  "README.zh.md": "61ff31d06e68076db92fd3a215b25dc279b097c1ffe7ed0eda1db36ae75d52ea",
+  "skills/sub-agents/SKILL.md": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db"
+ },
+ "head_sha256": {
+  "scripts/agent-run-result.py": "9b44ac33099f49e8d4904e561e63f4e5dee43a6e177548cbb2edb5226f35ce5b",
+  "tests/test_agent_run_results.py": "6a237ba6338c9f3c04c5825606e3d75e03d2d053f6c6246665b1486d2beec8c4"
+ },
+ "workspace_diff_HEAD_collector_tests_sha256": "f0aebba1512375b2877aa4e26521f4211e3a50da61d7984e48a868f9fd5edd15",
+ "slice_diff_main_to_HEAD_sha256": "978f0f045dfdd8dabf5362c0f12ea3bd991e4ca00fefda0c460e3ba402cd2185",
+ "runner_diff_main_exit": 0,
+ "python": "3.11.15"
+}

@@ -1,0 +1,32 @@
+{
+  "all_bool_checks_true": true,
+  "n_checks": 42,
+  "probe_a": {
+    "exit_zero": true,
+    "completed": true,
+    "needs_review": true,
+    "not_assessed": true,
+    "terminal_turn_completed": true,
+    "counts": true,
+    "events_8": true,
+    "final_text": true,
+    "anomaly_lines_3_to_6": true,
+    "anomaly_full_event": true,
+    "anomaly_stream_and_source": true,
+    "four_tls_texts_retained": true,
+    "tls_notices_not_errors": true,
+    "missing_terminal_rejects": true,
+    "malformed_diag_completed_but_rejected": true
+  },
+  "probe_b": {
+    "v1_message_is_item_payload": true,
+    "v2_message_is_full_envelope": true,
+    "inner_item_identical": true,
+    "same_source_location": true,
+    "both_untruncated": true,
+    "exact_display_equality_fails": true,
+    "text_identity": true,
+    "v1_retained_this_item": true,
+    "revised_relation_holds": true
+  }
+}

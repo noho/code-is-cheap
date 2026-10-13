@@ -1,3 +1,0 @@
-{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
-{"type": "result", "subtype": "success", "is_error": false, "result": "answer", "usage": {"input_tokens": 5}}
-{"type": "rate_limit_event", "session_id": "other", "usage": {"input_tokens": 99}, "result": "fake"}

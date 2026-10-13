@@ -342,7 +342,7 @@ class Collection:
             self.terminal = "success" if valid else "failed"
             self.terminal_metrics(event)
             self.final_valid = root and isinstance(event.get("result"), str) and bool(event["result"].strip())
-            if root and isinstance(event.get("result"), str):
+            if self.final_valid:
                 self.final = event["result"]
                 self.final_line = line
             if not valid:

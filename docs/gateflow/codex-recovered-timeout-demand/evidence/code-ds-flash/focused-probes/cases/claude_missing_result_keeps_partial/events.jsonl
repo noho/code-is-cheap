@@ -1,3 +1,0 @@
-{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
-{"type": "assistant", "message": {"content": [{"type": "text", "text": "partial"}]}, "session_id": "s"}
-{"type": "result", "subtype": "success", "is_error": false, "session_id": "s"}

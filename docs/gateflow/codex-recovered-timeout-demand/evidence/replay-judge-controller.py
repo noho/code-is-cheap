@@ -3,6 +3,7 @@ p=argparse.ArgumentParser();p.add_argument('--collector',required=True);p.add_ar
 root=pathlib.Path('/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence')
 old=json.loads((root/'runner-summary.json').read_text());diag=json.loads((root/'collector-tls-notice-diagnostic.json').read_text())
 assert old['runtime_exit_code']==0 and diag['native_runtime_exit_code']==0
+assert old['logs']['last_message'] is None  # No selected Codex save-final postprocessing; old outer1 is collection rejection.
 cmd=['python3','-B',str(pathlib.Path(a.collector).resolve()),'--runtime','codex','--provider',old['provider'],'--output',old['logs']['output'],'--stderr',old['logs']['stderr'],'--exit-code','0','--runner-exit-code','0','--canary-file',str(root/'canary.txt'),'--canary-expected',str(root/'canary.expected')]
 for x in old['artifacts']:cmd+=['--artifact',x['path']]
 files=[root/x for x in ['runner-summary.json','collector-tls-notice-diagnostic.json','controller-failure-record.json','actual-exit.json','output.jsonl','stderr.log','canary.txt','canary.expected']]+[pathlib.Path(x['path']) for x in old['artifacts']]

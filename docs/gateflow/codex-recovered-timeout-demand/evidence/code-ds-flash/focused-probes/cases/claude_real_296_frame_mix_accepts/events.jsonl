@@ -1,8 +1,0 @@
-{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
-{"type": "system", "subtype": "session_title_changed", "title": "x", "session_id": "s"}
-{"type": "system", "subtype": "ui_invalidate", "event": "ui.render", "session_id": "s"}
-{"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "tool1", "name": "Bash", "input": {"command": "cat canary"}}], "stop_reason": null}, "parent_tool_use_id": null, "session_id": "s"}
-{"type": "system", "subtype": "permission_denied", "tool_name": "Bash", "tool_use_id": "tool1", "session_id": "s"}
-{"type": "user", "message": {"content": [{"type": "tool_result", "content": "ALLOW_CANARY", "is_error": true, "tool_use_id": "tool1"}]}, "parent_tool_use_id": null, "session_id": "s"}
-{"type": "assistant", "message": {"content": [{"type": "text", "text": "Probe complete"}], "stop_reason": null}, "parent_tool_use_id": null, "session_id": "s"}
-{"type": "result", "subtype": "success", "is_error": false, "result": "answer", "stop_reason": "end_turn", "terminal_reason": "completed", "api_error_status": null, "session_id": "s", "permission_denials": [{"tool_name": "Bash"}]}

@@ -1,0 +1,8 @@
+test_claude_native_negative_and_malformed_completion_overrides_success (test_agent_run_results.RunnerResults.test_claude_native_negative_and_malformed_completion_overrides_success) ... ok
+test_claude_result_owns_final_without_assistant_fallback (test_agent_run_results.RunnerResults.test_claude_result_owns_final_without_assistant_fallback) ... ok
+test_recovered_diagnostics_keep_selected_checks_for_both_runtimes (test_agent_run_results.RunnerResults.test_recovered_diagnostics_keep_selected_checks_for_both_runtimes) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 4.750s
+
+OK
