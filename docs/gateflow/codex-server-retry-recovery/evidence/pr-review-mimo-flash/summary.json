@@ -1,0 +1,22 @@
+{
+  "gate": "PR review (mimo-flash)",
+  "route": "claude-agent-run / mimo-flash (Claude runtime)",
+  "pr": 58,
+  "repo": "noho/code-is-cheap",
+  "report_path": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-58-review-20261013-103402.md",
+  "verdict": "pass-with-risks（仅既有分类 residual risk 与无 CI 现状；零新 finding、零 blocker、零 needs-more-evidence，无 fix/re-review 条件）",
+  "reviewed_head": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "reviewed_base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+  "oid_stable_across_review": true,
+  "diff_complete_untruncated": true,
+  "files": {
+    "facts.json": "读 diff 前锁定的 PR facts",
+    "diff-request.json": "compare URL、快照路径/字节/hash、numstat 与归一化比对结论",
+    "ci-and-oid-recheck.json": "CI/checks 查询结果、无 .github 确认、diff 取得后 OID 复核",
+    "closing-oid-check.json": "收尾最终 OID/draft 复核",
+    "matcher-probe.json": "28 例独立 matcher 对抗探针"
+  },
+  "raw_diff": "/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.diff",
+  "completed_at": "2026-10-13T02:47:28.565930+00:00",
+  "next": "controller 裁决 -> accepted PR review commit/push -> draft-PR-pass -> final closeout"
+}

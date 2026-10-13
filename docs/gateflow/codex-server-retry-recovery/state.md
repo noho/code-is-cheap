@@ -1,6 +1,6 @@
 # codex-server-retry-recovery gate state
 
-Current gate / next entry point: push。
+Current gate / next entry point: accepted PR review commit。
 Work unit status: incomplete；未创建PR/未sync/未执行live probes；未授权merge。
 Branch: fix/codex-server-retry-recovery-20261013；base: 991eb26c082e006da80474ff85efc4cfeb1116c0。
 
@@ -19,3 +19,7 @@ Residual risks: code-adjudication.md/goal.md/plan.md已分类；未来文案/服
 Next after aggregate pass: accepted deepreview commit -> ready-to-open-draft-PR -> push -> create draft PR -> PR review（两路）-> accepted PR review commit/push -> draft-PR-pass -> final closeout含授权sync与两路Codex工具probe。
 
 Accepted deepreview commit: cfe37cb36c150df4385516c3ce213ac15b7768c0；ready-to-open-draft-PR pass，evidence/draft-pr-readiness.json。Remote main仍为goal base；全部intended commits、clean tree、冻结代码和diff-check已核对。PR创建后下一入口必须PR review。
+
+Draft PR #58 created: https://github.com/noho/code-is-cheap/pull/58。Head 2d1cbbc283d2bc042ba20be713246898f3f4d742，base 991eb26c082e006da80474ff85efc4cfeb1116c0；exact GitHub compare完整diff内容/范围/numstat与本地精确OID一致（只12处hunk函数注释不同），53 files/1344496 bytes；closing OID稳定。尚未PR-review-pass/draft-PR-pass。
+
+PR #58 two-route review completed: zero new findings, pass/pass-with-risks; pr-adjudication.md and controller closing check pass, stable reviewed head2d1cbbc/base991eb26, draft=true。No fix/re-review condition. Next accepted PR review commit then actual push before draft-PR-pass.

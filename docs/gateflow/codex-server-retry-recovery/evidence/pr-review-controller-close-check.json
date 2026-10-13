@@ -1,0 +1,37 @@
+{
+  "gate": "PR review",
+  "created_at": "2026-10-13T02:50:17.608767+00:00",
+  "snapshots": [
+    {
+      "provider": "mimo-flash",
+      "raw_snapshot_path": "/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.diff",
+      "sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa",
+      "bytes": 1344496,
+      "identical_to_saved_archive": true,
+      "archive": "evidence/pr-controller-compare.diff.gz"
+    },
+    {
+      "provider": "ds-flash",
+      "raw_snapshot_path": "/private/tmp/codex-server-retry-recovery/pr-review-ds-flash.diff",
+      "sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa",
+      "bytes": 1344496,
+      "identical_to_saved_archive": true,
+      "archive": "evidence/pr-controller-compare.diff.gz"
+    }
+  ],
+  "closing_facts": {
+    "baseRefOid": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "body": "Codex server-request retry notifications made the collector reject an execution even when later events satisfied its existing recovery checks. Recognize the exact observed notification wording, ASCII retry digits 1\u20135 with a fixed `/5` budget, and a lowercase hexadecimal UUID shape, then let the existing recovery proof decide whether each notification becomes a warning.\n\nUnknown or unrecovered errors, malformed completion evidence, nonzero exits, and failed selected checks retain their rejection behavior. `result_status` remains `not_assessed`; this change does not reassess the historical caller task.\n\nValidation:\n\n- Five new regression entry points and all 61 runner/collector tests passed.\n- Six saved-input scenarios replayed: the two supplied server notifications become warnings only with valid recovery; unrecovered and unknown errors remain rejected.\n- Independent mimo-flash and ds-flash plan, slice and aggregate reviews passed, with controller adjudication saved under `docs/gateflow/codex-server-retry-recovery/`.\n\nPR review, authorized live sync, and the gpt-6-sol/gpt-6-luna Codex tool probes are recorded in the final closeout artifact after their respective gates. This PR remains draft for the user's manual merge.\n",
+    "headRefOid": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+    "isDraft": true,
+    "statusCheckRollup": [],
+    "title": "fix: recognize recovered Codex server retry notices"
+  },
+  "raw_snapshot_completeness": "identical full archived GitHub compare for exact stable OIDs; all 53 file patches verified against local exact OID ranges/content/numstat",
+  "body_exactly_matches_head_file": true,
+  "body_export_note": "gh --jq export adds its own trailing newline; GraphQL body string is exactly head file",
+  "source_code_change_since_accepted_slice": false,
+  "decision": "pass",
+  "no_fix_or_re_review_condition": true,
+  "next_entry": "accepted PR review commit"
+}

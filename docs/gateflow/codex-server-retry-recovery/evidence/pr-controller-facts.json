@@ -1,0 +1,66 @@
+{
+  "gate": "PR review",
+  "created_at": "2026-10-13T02:32:16.518212+00:00",
+  "repository": "noho/code-is-cheap",
+  "facts_command": [
+    "gh",
+    "pr",
+    "view",
+    "58",
+    "--repo",
+    "noho/code-is-cheap",
+    "--json",
+    "number,title,body,url,author,headRefName,baseRefName,headRefOid,baseRefOid,headRepository,isDraft,statusCheckRollup"
+  ],
+  "facts": {
+    "author": {
+      "id": "MDQ6VXNlcjE0MTU4MzY3",
+      "is_bot": false,
+      "login": "noho",
+      "name": ""
+    },
+    "baseRefName": "main",
+    "baseRefOid": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "body": "Codex server-request retry notifications made the collector reject an execution even when later events satisfied its existing recovery checks. Recognize the exact observed notification wording, ASCII retry digits 1\u20135 with a fixed `/5` budget, and a lowercase hexadecimal UUID shape, then let the existing recovery proof decide whether each notification becomes a warning.\n\nUnknown or unrecovered errors, malformed completion evidence, nonzero exits, and failed selected checks retain their rejection behavior. `result_status` remains `not_assessed`; this change does not reassess the historical caller task.\n\nValidation:\n\n- Five new regression entry points and all 61 runner/collector tests passed.\n- Six saved-input scenarios replayed: the two supplied server notifications become warnings only with valid recovery; unrecovered and unknown errors remain rejected.\n- Independent mimo-flash and ds-flash plan, slice and aggregate reviews passed, with controller adjudication saved under `docs/gateflow/codex-server-retry-recovery/`.\n\nPR review, authorized live sync, and the gpt-6-sol/gpt-6-luna Codex tool probes are recorded in the final closeout artifact after their respective gates. This PR remains draft for the user's manual merge.\n",
+    "headRefName": "fix/codex-server-retry-recovery-20261013",
+    "headRefOid": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+    "headRepository": {
+      "id": "R_kgDOSd8g6w",
+      "name": "code-is-cheap",
+      "nameWithOwner": "noho/code-is-cheap"
+    },
+    "isDraft": true,
+    "number": 58,
+    "statusCheckRollup": [],
+    "title": "fix: recognize recovered Codex server retry notices",
+    "url": "https://github.com/noho/code-is-cheap/pull/58"
+  },
+  "compare_command": [
+    "gh",
+    "api",
+    "-H",
+    "Accept: application/vnd.github.v3.diff",
+    "repos/noho/code-is-cheap/compare/991eb26c082e006da80474ff85efc4cfeb1116c0...2d1cbbc283d2bc042ba20be713246898f3f4d742"
+  ],
+  "compare_url": "https://api.github.com/repos/noho/code-is-cheap/compare/991eb26c082e006da80474ff85efc4cfeb1116c0...2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "snapshot_path": "/private/tmp/codex-server-retry-recovery/pr-controller.diff",
+  "saved_compressed_snapshot": "docs/gateflow/codex-server-retry-recovery/evidence/pr-controller-compare.diff.gz",
+  "compressed_sha256": "7f2d145b7f4ac30a674507697e954f2d409e7766e3b826cabf7499a73ec40c83",
+  "diff_sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa",
+  "diff_bytes": 1344496,
+  "local_exact_oid_diff_sha256": "1b14a8987df962798d6fa5c602a8502c0f24b9f91694647341a2b3f54e4f4d30",
+  "raw_byte_equal": false,
+  "full_patch_content_and_ranges_equal": true,
+  "comparison_note": "Only 12 hunk function-context annotations differ; all ranges, content, modes, paths, index lines identical. First strict raw-byte assertion failed and was diagnosed, not an API truncation or code difference.",
+  "file_count": 53,
+  "numstat": "1\t1\tREADME.md\n21\t0\tdocs/gateflow/codex-server-retry-recovery/aggregate-adjudication.md\n24\t0\tdocs/gateflow/codex-server-retry-recovery/code-adjudication.md\n11\t0\tdocs/gateflow/codex-server-retry-recovery/draft-pr-body.md\n26\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/aggregate-review-dispatch.json\n95\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/aggregate-review-ds-flash-run.json\n114\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/aggregate-review-mimo-flash-run.json\n63\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/aggregate-source-snapshot.json\n24\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/code-review-dispatch.json\n105\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/code-review-ds-flash-run.json\n95\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/code-review-mimo-flash-run.json\n23\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/controller-slice-check.json\n41\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/draft-pr-readiness.json\n93\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-before.json\n183\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-final-check.json\n777\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-replay-reports.json\n85\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-replay.py\n82\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-run.json\n100\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-v1.json\n192\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-v2.json\n96\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-v3.json\n102\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/implementation-verify.py\n761\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-baseline.json\n14\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-review-dispatch.json\n114\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-review-ds-flash-run.json\n95\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-review-mimo-flash-run.json\n36\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-review-running.json\n81\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/plan-run.json\n86\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/pre-sync-inventory.json\n18\t0\tdocs/gateflow/codex-server-retry-recovery/evidence/server-error-notices.json\n51\t0\tdocs/gateflow/codex-server-retry-recovery/goal.md\n126\t0\tdocs/gateflow/codex-server-retry-recovery/implementation.md\n26\t0\tdocs/gateflow/codex-server-retry-recovery/plan-adjudication.md\n407\t0\tdocs/gateflow/codex-server-retry-recovery/plan.md\n21\t0\tdocs/gateflow/codex-server-retry-recovery/state.md\n7\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/aggregate-review-ds-flash.md\n7\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/aggregate-review-mimo-flash.md\n7\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/code-review-ds-flash.md\n7\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/code-review-mimo-flash.md\n11\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/implement.md\n6\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/plan-review-ds-flash.md\n6\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/plan-review-mimo-flash.md\n13\t0\tdocs/gateflow/codex-server-retry-recovery/tasks/plan.md\n47\t0\tdocs/reviews/code-review-20261013-095614.md\n73\t0\tdocs/reviews/code-review-20261013-095616.md\n76\t0\tdocs/reviews/code-review-20261013-101110.md\n60\t0\tdocs/reviews/code-review-20261013-101111.md\n113\t0\tdocs/reviews/plan-review-20261013-093111.md\n166\t0\tdocs/reviews/plan-review-20261013-093112.md\n403\t0\tdocs/reviews/upstream-agent-execution-diagnosis-20261013-090017-offline.json\n142\t0\tdocs/reviews/upstream-agent-execution-diagnosis-20261013-090017.md\n9\t2\tscripts/agent-run-result.py\n212\t19\ttests/test_agent_run_results.py\n",
+  "closing_oid_check": {
+    "baseRefOid": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "headRefOid": "2d1cbbc283d2bc042ba20be713246898f3f4d742"
+  },
+  "outer_exits": [
+    0,
+    0,
+    0
+  ]
+}

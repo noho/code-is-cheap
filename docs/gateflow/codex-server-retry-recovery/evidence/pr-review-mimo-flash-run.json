@@ -1,0 +1,114 @@
+{
+  "gate": "PR review",
+  "provider": "mimo-flash",
+  "outer_exit": 0,
+  "report": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "## PR #58 review（mimo-flash 路）完成\n\n**结论：pass-with-risks**（仅既有分类 residual risk 与无 CI 现状；零新 finding、零 blocker、零 needs-more-evidence，无 fix/re-review 条件）\n\n**报告：** `/Users/leo/workspace/code-is-cheap/docs/reviews/pr-58-review-20261013-103402.md`\n**Metadata：** `docs/gateflow/codex-server-retry-recovery/evidence/pr-review-mimo-flash/`（facts / diff-request / ci-and-oid-recheck / closing-oid-check / matcher-probe / summary）\n**原始 diff：** `/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.diff`（1344496 bytes，SHA256 `752ba590…efaa`）\n\n### 关键核验事实\n\n- **OID 全程稳定**：读 diff 前一次 facts 锁定 → diff 取得后复核 → 收尾复核，三次 head `2d1cbbc…` / base `991eb26…` 完全一致，PR 保持 draft。本报告即当前 PR 版本结论。\n- **完整 diff 无截断**：独立走 GitHub compare endpoint（精确两 OID）取得，53 files 与 controller 独立 facts 字节级一致（bytes/hash 全等）；与本地精确 OID diff 的 numstat 逐行相同，归一化后字节级相同——仅 12 处 hunk 头函数注释为展示差异，非源码漂移。\n- **交付身份一致**：`base..head` 恰为 4 个 accepted commits；工程只 3 文件且 hash 与 implementation.md 冻结版完全一致，无新增工程变化；其余 50 文件均为本 work unit docs/evidence/reviews，无越界改动。\n- **title/body 一致**：body 各项声明（5 新入口、61 测试、6 组重放、双路 review、`not_assessed` 不变、closeout 交接）与实际 evidence 逐项核对相符，未宣称未执行 gate 已通过。\n- **CI**：无 checks、无 check-runs、无 statuses，仓库无 `.github`/CI 目录——属仓库现状，非缺陷。\n- **本路新增独立验证**：对冻结 head 版 matcher 做 28 例对抗探针（历史 2/5、3/5、旧文案、N1–5 正控 + 18 例近似/非法形状负控），28/28 通过。\n\n### 需 controller 裁决项\n\n无——本 gate 无 findings 可裁决。通过后按流程由 controller 完成 accepted PR review commit/push → draft-PR-pass → final closeout（授权 sync 与两路 Codex 工具探针）；本路未执行任何提交/推送/部署/merge/approve/comment。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 1498,
+    "wall_clock_seconds": 822.371623,
+    "usage": {
+      "input_tokens": 114648,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2092224,
+      "output_tokens": 22233,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 820211,
+      "duration_api_ms": 684592,
+      "total_cost_usd": 2.1751770000000006,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 114648,
+          "outputTokens": 22233,
+          "cacheReadInputTokens": 2092224,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.1751770000000006,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "a0d8eee1-64f9-4138-9cb7-e09923fb1043",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 42,
+    "events": 2718,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 105,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n(eval):5: operation not permitted: /private/tmp/codex-server-retry-recovery/pr-review-mimo-flash-facts.json', 'is_error': True, 'tool_use_id': 'call_b53a9000e7f74064b3f1c871'}",
+        "message_chars": 224,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 718,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 2\\n--- GitHub diff numstat (via git apply --numstat) ---\\n(eval):4: operation not permitted: /private/tmp/codex-server-retry-recovery/mimo-numstat-github.txt\\ncat: /private/tmp/codex-server-retry-recovery/mimo-numstat-github.err: No such file or directory\\nwc: /private/tmp/codex-server-retry-recovery/mimo-numstat-github.txt: open: No such file or directory\\n--- local numstat base..head ---\\n(eval):7: operation not permitted: /private/tmp/codex-server-retry-recovery/mimo-numstat-local.txt\\nwc: /private/tmp/codex-server-retry-recovery/mimo-numstat-local.txt: open: No such file or directory\\n--- diff of numstats (empty = identical ranges/content counts) ---\\ndiff: /dev/fd/12: Operation not permitted\\nsort: No such file or directory\\nsort: No such file or directory', 'is_error': True, 'tool_use_id': 'call_aaa6c857250e4a16b4c6df81'}",
+        "message_chars": 885,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 2,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.jsonl",
+      "stderr": "/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.stderr",
+      "last_message": null
+    }
+  }
+}

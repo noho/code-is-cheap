@@ -1,0 +1,14 @@
+{
+  "gate": "PR review (mimo-flash)",
+  "checked_at": "2026-10-13T02:42:25.614271+00:00",
+  "purpose": "本 gate 独立 matcher 对抗探针（不重跑整套 tests；slice/aggregate 已通过且源码未变）",
+  "source_version": "git show 2d1cbbc283d2bc042ba20be713246898f3f4d742:scripts/agent-run-result.py（工作树与 head OID 哈希一致 8a0be0d0...，无 shadow）",
+  "method": "importlib 加载 frozen collector 模块（main guard 防护），直接调用 recognized_codex_connection_notice",
+  "results": {
+    "total": 28,
+    "passed": 28,
+    "all_pass": true,
+    "positives": "历史2/5、历史3/5、旧stream-closed、N1-5各1例共10例全部识别",
+    "negatives": "N=0/6/25、错误分母、大写UUID、UUID缺失/短段/braces、缺句尾、前后缀/空格/换行、无Reconnecting前缀、URL/措辞变体、Unicode hex、extra key、type!=error、non-string、missing key、unknown text共18例全部拒收"
+  }
+}

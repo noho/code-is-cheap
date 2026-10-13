@@ -1,0 +1,26 @@
+{
+  "gate": "PR review (mimo-flash)",
+  "created_at": "2026-10-13T02:41:50.478297+00:00",
+  "facts_locked_before_diff": true,
+  "request_url": "https://api.github.com/repos/noho/code-is-cheap/compare/991eb26c082e006da80474ff85efc4cfeb1116c0...2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "accept_header": "application/vnd.github.v3.diff",
+  "snapshot_path": "/private/tmp/codex-server-retry-recovery/pr-review-mimo-flash.diff",
+  "bytes": 1344496,
+  "sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa",
+  "diff_git_count": 56,
+  "has_diff_header": true,
+  "controller_expected": {
+    "files": 53,
+    "bytes": 1344496,
+    "sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa"
+  },
+  "matches_controller": true,
+  "numstat_identical_local_vs_github": true,
+  "numstat_lines_github": 53,
+  "numstat_lines_local": 53,
+  "normalized_byte_identical": true,
+  "normalized_sha256": "1346fc0476dc08668420d89e7b14f627de245bb26c936b9790a60ee62a1fa52a",
+  "hunk_header_context_only_differences": 12,
+  "non_hunk_diff_lines": 0,
+  "conclusion": "GitHub compare diff complete, untruncated; equals local exact-OID diff modulo 12 hunk-header display comments"
+}

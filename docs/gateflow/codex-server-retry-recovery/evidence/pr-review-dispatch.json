@@ -1,0 +1,22 @@
+[
+  {
+    "provider": "mimo-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/pr-review-mimo-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-58-review-20261013-103402.md",
+    "metadata_dir": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/pr-review-mimo-flash",
+    "repository": "noho/code-is-cheap",
+    "pr_number": 58,
+    "expected_head_oid": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+    "expected_base_oid": "991eb26c082e006da80474ff85efc4cfeb1116c0"
+  },
+  {
+    "provider": "ds-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/pr-review-ds-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/pr-58-review-20261013-103403.md",
+    "metadata_dir": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/pr-review-ds-flash",
+    "repository": "noho/code-is-cheap",
+    "pr_number": 58,
+    "expected_head_oid": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+    "expected_base_oid": "991eb26c082e006da80474ff85efc4cfeb1116c0"
+  }
+]

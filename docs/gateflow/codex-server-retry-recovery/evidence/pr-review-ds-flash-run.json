@@ -1,0 +1,123 @@
+{
+  "gate": "PR review",
+  "provider": "ds-flash",
+  "outer_exit": 0,
+  "report": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "**PR review gate 结论：pass**（零 material findings、零 blocker、零 needs-more-evidence，无 fix/re-review 条件）\n\n报告：`/Users/leo/workspace/code-is-cheap/docs/reviews/pr-58-review-20261013-103403.md`\n\n**实际发现**：未发现实质性问题。独立核验要点：\n\n- **交付身份**：head `2d1cbbc…f4d742` / base `991eb26…116c0` 与期望一致且全程未变（facts→post-diff→pre-report→close 四次核对），PR 保持 draft（`isDraft=true`）。我自己经 GitHub compare endpoint 取得完整 diff：53 files / 1344496 bytes / rawSHA256 `752ba590…c329efaa`，与 controller 快照逐字节一致；无截断证据（`^diff --git` 计数 53 与 API file_count 一致，末行完整）。\n- **版本冻结**：head OID 上三份工程文件 hash 恰等于 accepted 版本（collector `8a0be0d0…`、tests `394d9e69…`、README `23121d6e…`）；commit 链 `ca98d59→817f208→cfe37cb→2d1cbbc` 与裁决一致，aggregate 后唯一新 commit 为纯 docs。\n- **一致性与深挖**：全 diff 归一化对比本地精确 OID diff 为 0 差异，仅 12 处 `@@` 函数注释展示差异（非源码漂移）；用 head/base 快照对两条真实历史消息做独立 matcher 探针：head `[True,True]`、base `[False,False]`，11 组边界变异全部符合精确白名单；调用链确认降级仍只经原完整恢复证明、`result_status=not_assessed` 不变、production 仅 matcher 一个 hunk。\n- **title/body/checks**：body 与 head `draft-pr-body.md` 逐字节一致，未宣称未通过的 gate；仓库无 CI、`gh pr checks` 无 checks（如实记录，非 blocker）；V1/V2/V3 receipts 与 acceped 工作一致。\n\n**需 controller 裁决项**：无（residual risks 均已分类且有 owner：无 CI 依赖人工证据、文案三处字面量维护、C1/C2 后续必需 gate 不可豁免）。\n\n**不得由我执行**：后续 accepted PR review commit/push → draft-PR-pass → final closeout（sync + 两路 Codex 工具探针）均未执行。Metadata 与原始 diff 已存 `docs/gateflow/codex-server-retry-recovery/evidence/pr-review-ds-flash/` 与 `/private/tmp/codex-server-retry-recovery/pr-review-ds-flash.diff`；未修改产品、未提交、未读取对方 gate 报告。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 1500,
+    "wall_clock_seconds": 344.049716,
+    "usage": {
+      "input_tokens": 104362,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3038336,
+      "output_tokens": 39393,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 341834,
+      "duration_api_ms": 265994,
+      "total_cost_usd": 3.0258029999999994,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 104362,
+          "outputTokens": 39393,
+          "cacheReadInputTokens": 3038336,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 3.0258029999999994,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "94d52880-3fbb-4d76-8647-1a8b4608ad45",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 47,
+    "events": 25310,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 2839,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 1\\nPost \"https://api.github.com/graphql\": tls: failed to verify certificate: x509: OSStatus -26276', 'is_error': True, 'tool_use_id': 'call_00_t3bYC8CKw1awpKs0wFFr3019'}",
+        "message_chars": 215,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 6299,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n(eval):1: operation not permitted: /private/tmp/codex-server-retry-recovery/pr-body-from-github.txt\\n(eval):1: operation not permitted: /private/tmp/codex-server-retry-recovery/draft-pr-body-at-head.md', 'is_error': True, 'tool_use_id': 'call_00_4ZTK9am8vvTO3HA0jiaT7214'}",
+        "message_chars": 321,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 6561,
+        "message": "{'type': 'tool_result', 'content': \"Exit code 1\\n--- docs/gateflow/codex-server-retry-recovery/draft-pr-body.md\\t2026-10-13 10:25:40\\n+++ /tmp/claude-501/rev58/pr-body-from-github.txt\\t2026-10-13 10:35:37\\n@@ -9,3 +9,4 @@\\n - Independent mimo-flash and ds-flash plan, slice and aggregate reviews passed, with controller adjudication saved under `docs/gateflow/codex-server-retry-recovery/`.\\n \\n PR review, authorized live sync, and the gpt-6-sol/gpt-6-luna Codex tool probes are recorded in the final closeout artifact after their respective gates. This PR remains draft for the user's manual merge.\\n+\\n--- /tmp/claude-501/rev58/draft-pr-body-at-head.md\\t2026-10-13 10:35:37\\n+++ /tmp/claude-501/rev58/pr-body-from-github.txt\\t2026-10-13 10:35:37\\n@@ -9,3 +9,4 @@\\n - Independent mimo-flash and ds-flash plan, slice and aggregate reviews passed, with controller adjudication saved under `docs/gateflow/codex-server-retry-recovery/`.\\n \\n PR review, authorized live sync, and the gpt-6-sol/gpt-6-luna Codex tool probes are recorded in the final closeout artifact after their respective gates. This PR remains draft for the user's manual merge.\\n+\", 'is_error': True, 'tool_use_id': 'call_00_iNnjf4jqmbcP9dUjUTF71064'}",
+        "message_chars": 1218,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"deepseek/deepseek-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 93,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 3,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/private/tmp/codex-server-retry-recovery/pr-review-ds-flash.jsonl",
+      "stderr": "/private/tmp/codex-server-retry-recovery/pr-review-ds-flash.stderr",
+      "last_message": null
+    }
+  }
+}

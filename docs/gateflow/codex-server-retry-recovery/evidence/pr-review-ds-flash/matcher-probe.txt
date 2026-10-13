@@ -1,0 +1,15 @@
+head vs historical: [True, True]
+base vs historical: [False, False]
+head vs old stream-closed: True | base: True
+upper-uuid: got=False expect=False OK
+n0: got=False expect=False OK
+n6: got=False expect=False OK
+n-unicode: got=False expect=False OK
+wording: got=False expect=False OK
+prefix: got=False expect=False OK
+trailing-nl: got=False expect=False OK
+brace-uuid: got=False expect=False OK
+extra-key: got=False expect=False OK
+other-lowercase-uuid: got=True expect=True OK
+nonstring-message: got=False expect=False OK
+ALL-EXPECTATIONS-MET

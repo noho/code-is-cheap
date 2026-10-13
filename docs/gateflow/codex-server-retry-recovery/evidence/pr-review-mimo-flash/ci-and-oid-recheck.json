@@ -1,0 +1,35 @@
+{
+  "gate": "PR review (mimo-flash)",
+  "checked_at": "2026-10-13T02:42:25.613960+00:00",
+  "pr": 58,
+  "repo": "noho/code-is-cheap",
+  "head_oid_at_check": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "gh_pr_checks": {
+    "command": "gh pr checks 58 --repo noho/code-is-cheap",
+    "result": "no checks reported on the 'fix/codex-server-retry-recovery-20261013' branch"
+  },
+  "commit_check_runs": {
+    "command": "gh api repos/noho/code-is-cheap/commits/2d1cbbc.../check-runs",
+    "total_count": 0,
+    "runs": []
+  },
+  "commit_statuses": {
+    "command": "gh api repos/noho/code-is-cheap/commits/2d1cbbc.../status",
+    "state": "pending",
+    "statuses": []
+  },
+  "ci_directory": {
+    "path": ".github",
+    "exists": false,
+    "note": "仓库无 CI 配置目录，与 controller 说明一致"
+  },
+  "post_diff_oid_recheck": {
+    "command": "gh pr view 58 --json headRefOid,baseRefOid,isDraft",
+    "match": true,
+    "head": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+    "base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "isDraft": true,
+    "timing": "取得完整 diff 之后立即复核；两 OID 与 facts 锁定值一致，PR 仍为 draft"
+  },
+  "conclusion": "无 CI/checks 可核；此为仓库现状（无 .github/CI），非失败或缺失证据"
+}

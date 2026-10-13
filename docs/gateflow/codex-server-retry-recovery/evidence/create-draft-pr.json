@@ -1,0 +1,27 @@
+{
+  "gate": "create draft PR",
+  "command": [
+    "gh",
+    "pr",
+    "create",
+    "--repo",
+    "noho/code-is-cheap",
+    "--base",
+    "main",
+    "--head",
+    "fix/codex-server-retry-recovery-20261013",
+    "--draft",
+    "--title",
+    "fix: recognize recovered Codex server retry notices",
+    "--body-file",
+    "docs/gateflow/codex-server-retry-recovery/draft-pr-body.md"
+  ],
+  "chunk_id": "b50d44",
+  "wall_time_seconds": 0.000015166,
+  "exit_code": 0,
+  "original_token_count": 12,
+  "output": "https://github.com/noho/code-is-cheap/pull/58\n",
+  "pr_number": 58,
+  "url": "https://github.com/noho/code-is-cheap/pull/58",
+  "next_entry": "PR review"
+}

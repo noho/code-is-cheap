@@ -1,0 +1,14 @@
+{
+  "gate": "PR review (mimo-flash)",
+  "checked_at": "2026-10-13T02:42:53.753465+00:00",
+  "timing": "完成全部 diff 阅读、实现深挖、探针与报告撰写前的最终复核",
+  "expected_head": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "expected_base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+  "actual_head": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "actual_base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+  "isDraft": true,
+  "head_match": true,
+  "base_match": true,
+  "still_draft": true,
+  "conclusion": "head/base 全程未变化（facts锁定→diff取得后→收尾三次一致）；本报告即为当前 PR 版本的结论"
+}

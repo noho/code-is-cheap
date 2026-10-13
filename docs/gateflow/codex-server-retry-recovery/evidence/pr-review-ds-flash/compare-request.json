@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.github.com/repos/noho/code-is-cheap/compare/991eb26c082e006da80474ff85efc4cfeb1116c0...2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "request_url": "repos/noho/code-is-cheap/compare/991eb26c082e006da80474ff85efc4cfeb1116c0...2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "accept_header": "application/vnd.github.v3.diff",
+  "base_oid": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+  "head_oid": "2d1cbbc283d2bc042ba20be713246898f3f4d742",
+  "snapshot_path": "/private/tmp/codex-server-retry-recovery/pr-review-ds-flash.diff",
+  "bytes": 1344496,
+  "files": 53,
+  "sha256": "752ba59000536e904a9417f6728b00f40bf93bceb02f57e4e38eedcfc329efaa",
+  "fetch_time_note": "fetched by ds-flash reviewer route during PR gate; hash equals controller snapshot hash",
+  "checks_result": "no checks reported on the 'fix/codex-server-retry-recovery-20261013' branch"
+}
