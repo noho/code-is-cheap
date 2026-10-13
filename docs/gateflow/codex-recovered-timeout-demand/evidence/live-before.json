@@ -1,0 +1,41 @@
+{
+  "captured_at": "2026-10-13T17:32:49.079289+08:00",
+  "status": "read-only before complete PR review, deployment pending",
+  "entries": [
+    {
+      "source": "scripts/agent-run-result.py",
+      "target": "/Users/leo/.local/bin/agent-run-result.py",
+      "source_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff",
+      "installed_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "same": false
+    },
+    {
+      "source": "scripts/codex-agent-run",
+      "target": "/Users/leo/.local/bin/codex-agent-run",
+      "source_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "installed_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "same": true
+    },
+    {
+      "source": "scripts/claude-agent-run",
+      "target": "/Users/leo/.local/bin/claude-agent-run",
+      "source_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "installed_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "same": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "target": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "source_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "same": false
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "target": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "source_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "e73839dbb693a6f951fdc327265ad1294ab17029733b0d645cd3b9b5271a88a4",
+      "same": false
+    }
+  ]
+}

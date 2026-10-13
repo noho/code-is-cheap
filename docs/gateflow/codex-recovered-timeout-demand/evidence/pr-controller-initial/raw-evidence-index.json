@@ -1,0 +1,13 @@
+{
+  "packaged_at": "2026-10-13T17:48:19.397826+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-initial/raw-evidence.tar.gz",
+  "archive_sha256": "685973ebce0921a13f4a225a41101e0a501cb79090fb5dc2f5d72ec2f52b95aa",
+  "raw_files": 3,
+  "files_sha256": {
+    "exact.diff": "1be5b1e77a0403db3daac055a0a79bea83c307bc7fd0bf5362f190d11e096b00",
+    "facts-before.json": "34ea2ae46503e6386f654cfb9e125b432b1a0ccf96913f610639371daffab8e9",
+    "local-exact.diff": "2d1be12341e239c537dd207d4d6b97913c3b447bfcd865f5623252ad2e9f44dd"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

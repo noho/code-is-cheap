@@ -1,0 +1,112 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "**Conclusion: PASS** — no findings, no blockers. Exact PR head `2f0db8fb…` / base `62c3b26a…` stable before, after and at close; full 135-file compare-API diff verified complete (only known hunk-label differences vs local exact OIDs); collector `aa9b1a3e…` verified; all 7 evidence archives byte-verified from exact head (258/258 files); validation (56+7+14, native 2, both current-source replays 0/needs_review, initial failure retained) re-read at head; docs/title/body consistent; caller business acceptance remains pending for both originals.\n\n- Review artifact: `docs/reviews/pr-59-review-20261013-175536.md`\n- Evidence: `docs/gateflow/codex-recovered-timeout-demand/evidence/pr-mimo-flash/`",
+    "final_answer_truncated": false,
+    "final_answer_chars": 696,
+    "wall_clock_seconds": 1816.029861,
+    "usage": {
+      "input_tokens": 135515,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 5943232,
+      "output_tokens": 46464,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 1813846,
+      "duration_api_ms": 1390592,
+      "total_cost_usd": 4.810791000000001,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 135515,
+          "outputTokens": 46464,
+          "cacheReadInputTokens": 5943232,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 4.810791000000001,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "9e525f69-b5da-4ad5-b09d-125d48ce3b75",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 82,
+    "events": 9274,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 191,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 1\\nPost \"https://api.github.com/graphql\": tls: failed to verify certificate: x509: OSStatus -26276', 'is_error': True, 'tool_use_id': 'call_0d5588983de64306a55e3661'}",
+        "message_chars": 212,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 2397,
+        "message": "{'type': 'tool_result', 'content': 'Exit code 1\\n(eval):3: bad substitution', 'is_error': True, 'tool_use_id': 'call_6bb79f47c2f94b4db7313171'}",
+        "message_chars": 143,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 2,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.yObkzppF/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.yObkzppF/stderr.log",
+      "last_message": null
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "work_unit": "codex-recovered-timeout-demand",
-  "current_gate": "ready-to-open-draft-PR",
-  "next_entry_point": "ready-to-open-draft-PR",
+  "current_gate": "re-review",
+  "next_entry_point": "re-review",
   "goal_confirmation": "passed-user-confirmed",
   "history": [
     {
@@ -179,6 +179,56 @@
       "commit": "1bd8246a0135958816be3cd4441b59e458af7af6",
       "decision": "reviewed source checkpoint; full staged whitespace check on raw evidence needed packaging correction before ready/push, not waived",
       "artifact": "docs/gateflow/codex-recovered-timeout-demand/artifact-packaging.md"
+    },
+    {
+      "gate": "ready-to-open-draft-PR",
+      "decision": "pass; full branch whitespace check0 after byte-faithful evidence packaging; source unchanged, intended commits only",
+      "artifact": "evidence/pr-ready-current.json",
+      "head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+    },
+    {
+      "gate": "push",
+      "decision": "actual exit0; origin work branch created/upstream set, main unchanged",
+      "head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+    },
+    {
+      "gate": "create draft PR",
+      "decision": "actual exit0; new draft59 created, actual PR review required",
+      "url": "https://github.com/noho/code-is-cheap/pull/59",
+      "head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+    },
+    {
+      "gate": "PR review",
+      "decision": "controller exact GitHub compare content/file/range match; label-only render delta explained; actual dual reviews in flight",
+      "snapshot": "evidence/pr-controller-verified/snapshot.json",
+      "head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0",
+      "body": "updated to current56+7+14 validation before review launch",
+      "checks": "gh reports no PR checks; no remote CI pass claimed; actual local mandatory current-version checks green"
+    },
+    {
+      "gate": "PR review",
+      "provider": "ds-flash",
+      "decision": "artifact available; DS-PR1 accepted 未修复 (introduced empty root assistant display guard regression); await original mimo exit before source fix",
+      "artifact": "docs/reviews/pr-59-review-20261013-173833.md",
+      "actual_managed_exit": 0,
+      "runner_evidence": "evidence/pr-review-ds-run.json"
+    },
+    {
+      "gate": "PR review",
+      "decision": "fix required; DS-PR1 accepted 未修复; both original routes actual exit0",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/pr-review-decision.md",
+      "reviews": [
+        "docs/reviews/pr-59-review-20261013-173833.md",
+        "docs/reviews/pr-59-review-20261013-175536.md"
+      ],
+      "reviewed_head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+    },
+    {
+      "gate": "fix",
+      "revision": "PR DS-PR1",
+      "decision": "local implementation 已修复; current57+11+62 checks/native2/both originals pass; actual PR re-review pending",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/pr-fix.md",
+      "collector_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d"
     }
   ],
   "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
@@ -193,5 +243,12 @@
   "inflight": [],
   "accepted_plan_commit": "b5a8095a2f2c8f72596f4a393ad5c70e85ca48ca",
   "accepted_slice_commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3",
-  "accepted_deepreview_commit": "1bd8246a0135958816be3cd4441b59e458af7af6"
+  "accepted_deepreview_commit": "1bd8246a0135958816be3cd4441b59e458af7af6",
+  "pr": {
+    "number": 59,
+    "url": "https://github.com/noho/code-is-cheap/pull/59",
+    "draft": true,
+    "merge_authorized": false,
+    "opened_head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+  }
 }

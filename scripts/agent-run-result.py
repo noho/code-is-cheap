@@ -397,8 +397,9 @@ class Collection:
                     self.tool(command, block.get("content", ""))
                     if block.get("is_error") is True:
                         self.note("anomalies", block, line)
-            if kind == "assistant" and root and text:
-                self.final = "".join(text)
+            joined = "".join(text)
+            if kind == "assistant" and root and joined:
+                self.final = joined
                 self.final_line = line
         elif kind == "error" or (kind == "system" and event.get("subtype") == "api_retry"):
             self.note("anomalies", event, line)

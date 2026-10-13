@@ -318,6 +318,59 @@ ds-flash_claude() {{ python3 '{self.fake}' "$@"; }}
         report=self.assert_completion(self.run_collector(events,runtime='claude'),'rejected','failed')
         self.assertEqual(report['final_answer'],'partial root')
 
+    def test_claude_empty_assistant_text_retains_partial_and_proof_source(self):
+        invalid_results=[('missing-terminal',None),('missing-result',{}),
+            *[(repr(value),{'result':value}) for value in (None,42,[],'','  ')]]
+        for token in ('fresh-12345678','wrong'):
+            partial=f'partial root\nCANARY={token}'
+            prior=self.assistant([{'type':'text','text':partial}])
+            for count in (1,3):
+                for with_tool in (False,True):
+                    blocks=[{'type':'text','text':''} for _ in range(count)]
+                    if with_tool:
+                        blocks += self.tool_call('t')['message']['content']
+                    for name,result_fields in invalid_results:
+                        with self.subTest(token=token,count=count,with_tool=with_tool,result=name):
+                            events=[self.claude()[0],prior,self.assistant(blocks)]
+                            if with_tool:events.append(self.tool_result('t'))
+                            if result_fields is not None:
+                                events.append({'type':'result','subtype':'success','is_error':False,**result_fields})
+                            report=self.assert_completion(self.run_collector(events,
+                                '--canary-file',str(self.canary),'--canary-expected',str(self.expected),
+                                runtime='claude'),'rejected','failed')
+                            self.assertEqual((report['final_answer'],report['final_answer_chars']),
+                                (partial,len(partial)))
+                            self.assertEqual(report['terminal'],None if result_fields is None else 'failed')
+                            self.assertEqual(report['tool_results'],int(with_tool))
+                            self.assertEqual(report['canary_status'],'match' if token=='fresh-12345678' else 'mismatch')
+                            self.assertFalse(any('missing standalone canary report' in d['message'] for d in report['errors']))
+                            errors=[d for d in report['errors'] if 'canary proof does not match' in d['message']]
+                            self.assertEqual(len(errors),int(token=='wrong'))
+                            if errors:
+                                self.assertEqual((errors[0]['stream'],errors[0]['line'],errors[0]['proof_line']),
+                                    ('output',2,2))
+                                self.assertEqual(errors[0]['path'],report['logs']['output'])
+                            self.assertTrue(any('missing valid complete final answer' in d['message'] for d in report['errors']))
+        prior=self.assistant([{'type':'text','text':'partial root'}])
+        empty=self.assistant([{'type':'text','text':''}])
+        controls=[('valid-result',[empty],self.claude('authoritative')[-1],'authoritative','passed','completed'),
+            ('negative-result',[empty],self.claude('authoritative')[-1] | {'stop_reason':'content_filter'},
+                'authoritative','rejected','failed'),
+            ('tool-only',[self.tool_call('t'),self.tool_result('t')],self.claude('')[-1],
+                'partial root','rejected','failed'),
+            ('mixed-root',[self.assistant([{'type':'text','text':''},{'type':'text','text':'new root'},
+                {'type':'text','text':''}])],self.claude('')[-1],'new root','rejected','failed'),
+            ('nested',[self.tool_call('parent'),self.assistant([{'type':'text','text':''}],parent_tool_use_id='parent'),
+                self.assistant([{'type':'text','text':'child text'}],parent_tool_use_id='parent'),self.tool_result('parent')],
+                self.claude('')[-1],'partial root','rejected','failed'),
+            ('whitespace-root',[self.assistant([{'type':'text','text':' \t\n'}]),empty],
+                self.claude('')[-1],' \t\n','rejected','failed')]
+        for name,updates,terminal,display,status,agent in controls:
+            with self.subTest(control=name):
+                report=self.assert_completion(self.run_collector([self.claude()[0],prior,*updates,terminal],
+                    runtime='claude'),status,agent)
+                self.assertEqual((report['final_answer'],report['final_answer_chars']),(display,len(display)))
+
     def test_claude_root_identity_init_order_and_diagnostic_identity(self):
         frames=[self.assistant([]),{'type':'user','message':{'content':[]}},
                 {'type':'system','subtype':'api_retry'},{'type':'error'}]

@@ -1,0 +1,67 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "DS-PR1 fixed locally. No delegate blockers; controller validation and versioned PR re-review remain pending.\n\n- [Fix report](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/pr-fix.md)\n- [Validation evidence](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/pr-ds-pr1-synthetic-20261013T100056Z-ed64579b/EVIDENCE.md)",
+    "final_answer_truncated": false,
+    "final_answer_chars": 387,
+    "wall_clock_seconds": 786.49731,
+    "usage": {
+      "input_tokens": 2291259,
+      "cached_input_tokens": 2189952,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 23520,
+      "reasoning_output_tokens": 7975
+    },
+    "runtime_metrics": {},
+    "session_id": "01a134b3-b369-7c22-b97f-ff0df8acc3b0",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 42,
+    "events": 94,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 46,
+        "message": "{'id': 'item_22', 'type': 'command_execution', 'command': \"/bin/zsh -c 'python3 -B docs/gateflow/codex-recovered-timeout-demand/evidence/pr-ds-pr1-synthetic-20261013T100056Z-ed64579b/run-validation.py red-regression python3 -B -m unittest discover -s tests -p test_agent_run_results.py -k test_claude_empty_assistant_text_retains_partial_and_proof_source -v'\", 'aggregated_output': '{\"label\": \"red-regression\", \"exit_code\": 1, \"seconds\": 1.7515457498375326, \"record\": \"docs/gateflow/codex-recovered-timeout-demand/evidence/pr-ds-pr1-synthetic-20261013T100056Z-ed64579b/runs/red-regression/result.json\"}\\n\\'\")\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \"/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py\", line 341, in test_claude_empty_assistant_text_retains_partial_and_proof_source\\n    self.assertEqual((report[\\'final_answer\\'],report[\\'final_answer_chars\\']),\\nAssertionError: Tuples differ: (\\'\\', 0) != (\\'partial root\\\\nCANARY=wrong\\', 25)\\n\\nFirst differing element 0:\\n\\'\\'\\n\\'partial root\\\\nCANARY=wrong\\'\\n\\n- (\\'\\', 0)\\n+ (\\'partial root\\\\nCANARY=wrong\\', 25)\\n\\n======================================================================\\nFAIL: test_claude_empty_assistant_text_retains_partial_and_proof_source (test_agent_run_results.RunnerResults.test_claude_empty_assistant_text_retains_partial_and_proof_source) (control=\\'whitespace-root\\')\\n----------------------------------------------------------------------\\nTraceback (most recent call last):\\n  File \"/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py\", line 372, in test_claude_empty_assistant_text_retains_partial_and_proof_source\\n    self.assertEqual((report[\\'final_answer\\'],report[\\'final_answer_chars\\']),(display,len(display)))\\nAssertionError: Tuples differ: (\\'\\', 0) != (\\' \\\\t\\\\n\\', 3)\\n\\nFirst differing element 0:\\n\\'\\'\\n\\' \\\\t\\\\n\\'\\n\\n- (\\'\\', 0)\\n+ (\\' \\\\t\\\\n\\', 3)\\n\\n-------------------------------------",
+        "message_chars": 2121,
+        "truncated": true,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 75,
+        "message": "{'id': 'item_38', 'type': 'command_execution', 'command': '/bin/zsh -c \"python3 -B - <<\\'PY\\'\\nimport ast, datetime, hashlib, json, subprocess\\nfrom pathlib import Path\\nroot=Path.cwd()\\np=root/\\'docs/gateflow/codex-recovered-timeout-demand/evidence/pr-ds-pr1-synthetic-20261013T100056Z-ed64579b\\'\\nbefore=json.loads((p/\\'before-manifest.json\\').read_text())\\nsources=list(before[\\'sources\\'])\\nfor path in sources:\\n    target=p/\\'final-source\\'/path\\n    target.parent.mkdir(parents=True,exist_ok=True)\\n    target.write_bytes((root/path).read_bytes())\\nunchanged={path:hashlib.sha256((root/path).read_bytes()).hexdigest() for path in before[\\'unchanged_inputs\\']}\\nassert unchanged==before[\\'unchanged_inputs\\'], \\'An authoritative/controller input changed; investigate before delivery.\\'\\nhead=subprocess.check_output([\\'git\\',\\'rev-parse\\',\\'HEAD\\'],text=True).strip()\\nbranch=subprocess.check_output([\\'git\\',\\'branch\\',\\'--show-current\\'],text=True).strip()\\nassert (head,branch)==(before[\\'head\\'],before[\\'branch\\'])\\ndiff=subprocess.check_output([\\'git\\',\\'diff\\',\\'--\\',*sources])\\n(p/\\'source-delta.patch\\').write_bytes(diff)\\n(p/\\'git-status-final.txt\\').write_text(subprocess.check_output([\\'git\\',\\'status\\',\\'--short\\'],text=True))\\nnumstat=subprocess.check_output([\\'git\\',\\'diff\\',\\'--numstat\\',\\'--\\',*sources],text=True)\\n(p/\\'source-numstat.txt\\').write_text(numstat)\\nmanifest={\\'captured_utc\\':datetime.datetime.now(datetime.timezone.utc).isoformat(),\\'head\\':head,\\'branch\\':branch,\\n    \\'source_sha256\\':{path:hashlib.sha256((root/path).read_bytes()).hexdigest() for path in sources},\\n    \\'source_delta_sha256\\':hashlib.sha256(diff).hexdigest(),\\'numstat\\':numstat,\\n    \\'unchanged_input_sha256\\':unchanged,\\'unchanged_input_hashes_match_before\\':True,\\n    \\'unittest_methods_before\\':sum(isinstance(n,ast.FunctionDef) and n.name.startswith(\\'test_\\') for n in ast.walk(ast.parse((p/\\'before-source/tests/test_agent_run_results.py\\').read_text()))),\\n    \\'unittest_meth",
+        "message_chars": 3117,
+        "truncated": true,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 2,
+      "warnings": 0
+    },
+    "diagnostics_truncated": true,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.3UvMIsph/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.3UvMIsph/stderr.log",
+      "last_message": null
+    }
+  }
+}

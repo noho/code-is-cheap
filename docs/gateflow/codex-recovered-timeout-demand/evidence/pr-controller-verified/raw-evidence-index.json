@@ -1,0 +1,17 @@
+{
+  "packaged_at": "2026-10-13T17:48:19.460161+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-verified/raw-evidence.tar.gz",
+  "archive_sha256": "d5a012b6f8b5425d9ba650761d57c069431fb97c258bfdf2eda240cef67e9ab2",
+  "raw_files": 7,
+  "files_sha256": {
+    "checks.stderr": "a3270785af21358b2e3e56d53f7b4006d9dda24a2c26cdce78f6792cb79702c0",
+    "checks.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exact.diff": "1be5b1e77a0403db3daac055a0a79bea83c307bc7fd0bf5362f190d11e096b00",
+    "facts-after.json": "34ea2ae46503e6386f654cfb9e125b432b1a0ccf96913f610639371daffab8e9",
+    "facts-before.json": "34ea2ae46503e6386f654cfb9e125b432b1a0ccf96913f610639371daffab8e9",
+    "local-exact.diff": "2d1be12341e239c537dd207d4d6b97913c3b447bfcd865f5623252ad2e9f44dd",
+    "snapshot.json": "df3ebb59e6f4aaed254ed5d87d24e732d0ad9cbc2468e812a0cacfc2c7ebcf1f"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

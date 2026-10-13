@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_agent_sandbox_runtimes.py",
+    "-v"
+  ],
+  "env_overrides": {
+    "AGENT_SANDBOX_KERNEL_TESTS": "1",
+    "SRT_TEST_BIN": "/Users/leo/.local/bin/srt",
+    "AGENT_SANDBOX_EVIDENCE_DIR": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native-pr-fixed"
+  },
+  "actual_exit": 0,
+  "captured_at": "2026-10-13T18:14:27.413716+08:00",
+  "collector_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+  "stdout": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native-pr-fixed/suite.stdout",
+  "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native-pr-fixed/suite.stderr",
+  "kind": "Actual native binaries under srt with deterministic localhost model responses and synthetic data; no real provider/business rerun"
+}

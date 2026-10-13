@@ -45,3 +45,5 @@ The full staged whitespace check found trailing spaces in immutable raw diff/tes
 ]
 
 Full base-to-head check additionally found the initial implementation failed-test stdout contains original trailing space (`unit-suite.log:65`). It too is preserved unchanged in the implementation raw archive, with key source manifest/commands/current-era final56 log directly versioned. Initial failure remains retrievable and is not counted as pass. Checks apply to both staged and full base-to-current content before push. Additional storage commits are evidence only; five reviewed sources unchanged.
+
+PR original-review snapshots and DS-PR1 proof/native traces also archived byte-faithfully before updated-PR push. Original reviewer EVIDENCE.md indexes are retained verbatim as reviewer-original-EVIDENCE.md members and local copies; scratch extraction can restore original names for inventory checks. No raw logs erased, source mutation or results waived.

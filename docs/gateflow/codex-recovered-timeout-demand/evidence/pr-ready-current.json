@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-10-13T17:23:58.477402+08:00",
+  "head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0",
+  "accepted_deepreview_commit": "1bd8246a0135958816be3cd4441b59e458af7af6",
+  "source_hashes": {
+    "scripts/agent-run-result.py": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff",
+    "tests/test_agent_run_results.py": "6cda405c565c9ebc200885bd61c1d8fe7e480b3562330afacd63e9ac38be891b",
+    "README.md": "73141fd5ffb4268bb6b610b5e0d1f30119d549c3158e0dc0c962ccb6f94f9bed",
+    "README.zh.md": "61ff31d06e68076db92fd3a215b25dc279b097c1ffe7ed0eda1db36ae75d52ea",
+    "skills/sub-agents/SKILL.md": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db"
+  },
+  "source_unchanged_after_accepted_review": {
+    "scripts/agent-run-result.py": true,
+    "tests/test_agent_run_results.py": true,
+    "README.md": true,
+    "README.zh.md": true,
+    "skills/sub-agents/SKILL.md": true
+  },
+  "full_branch_diff_check_exit": 0,
+  "branch_clean_before_record": true,
+  "all_required_source_validation": "56-unit+7-focused+14-synthetic+2-native+Developer/Judge repository replays green",
+  "review_status": "all plan/slice/aggregate accepted findings \u5df2\u4fee\u590d, independent dual routes complete; actual PR review still pending",
+  "issue_association": "N/A bug fix; no external issue authorized/created",
+  "merge_authorized": false
+}
