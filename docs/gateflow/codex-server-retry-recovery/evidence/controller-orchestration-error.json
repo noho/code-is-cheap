@@ -1,0 +1,1 @@
+{"stage":"C1 pre-sync orchestration","error":"functions.exec JavaScript SyntaxError: Identifier r has already been declared","nested_tools_executed":false,"sync_attempt_started":false,"correction":"renamed JS bindings; same authorized pre-sync checks then actual sync exit0","provider_retry_or_business_count_change":false}

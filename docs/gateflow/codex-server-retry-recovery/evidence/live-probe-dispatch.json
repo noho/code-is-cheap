@@ -1,0 +1,87 @@
+{
+  "created_at": "2026-10-13T02:57:13.639442+00:00",
+  "runs": [
+    {
+      "provider": "gpt-6-sol",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "/Users/leo/.local/bin/codex-agent-run",
+        "--provider",
+        "gpt-6-sol",
+        "--cwd",
+        "/Users/leo/workspace/code-is-cheap",
+        "--sandbox",
+        "workspace-write",
+        "--no-persist",
+        "--prompt-file",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/prompt.md",
+        "--artifact",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json",
+        "--output",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.jsonl",
+        "--stderr",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.stderr.log",
+        "--last-message",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/final.md"
+      ],
+      "case_dir": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol",
+      "prompt_sha256": "2f55bb331c3655f364b2b4755c580cd90550141458b8ce55cc5b50326fd8cfdb",
+      "input": {
+        "probe": "gpt-6-sol",
+        "values": [
+          7,
+          11,
+          23
+        ]
+      },
+      "input_sha256": "1155699276417cff953453184655006eb145c609e581e34c07067fa502a29971",
+      "source_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+      "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "runner_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "launcher_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "no_launcher_override": true,
+      "result_absent_before_run": true
+    },
+    {
+      "provider": "gpt-6-luna",
+      "cwd": "/Users/leo/workspace/code-is-cheap",
+      "argv": [
+        "/Users/leo/.local/bin/codex-agent-run",
+        "--provider",
+        "gpt-6-luna",
+        "--cwd",
+        "/Users/leo/workspace/code-is-cheap",
+        "--sandbox",
+        "workspace-write",
+        "--no-persist",
+        "--prompt-file",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/prompt.md",
+        "--artifact",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json",
+        "--output",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.jsonl",
+        "--stderr",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.stderr.log",
+        "--last-message",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/final.md"
+      ],
+      "case_dir": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna",
+      "prompt_sha256": "0b45b33b9ce7fab78a5e7aef588c0ceeb32e44517c38d3a30955043eca71c1b7",
+      "input": {
+        "probe": "gpt-6-luna",
+        "values": [
+          7,
+          11,
+          23
+        ]
+      },
+      "input_sha256": "20ddacaab249e93aa24213190aa2859b583c6b411519376a9f68f0fcc2c35229",
+      "source_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+      "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "runner_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "launcher_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "no_launcher_override": true,
+      "result_absent_before_run": true
+    }
+  ]
+}

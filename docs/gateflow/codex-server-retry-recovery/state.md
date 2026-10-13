@@ -1,25 +1,19 @@
 # codex-server-retry-recovery gate state
 
-Current gate / next entry point: accepted PR review commit。
-Work unit status: incomplete；未创建PR/未sync/未执行live probes；未授权merge。
-Branch: fix/codex-server-retry-recovery-20261013；base: 991eb26c082e006da80474ff85efc4cfeb1116c0。
+Current gate: final closeout pass。Work unit status: completed（confirmed goal scope）。
+Next entry point: 用户手动merge draft PR #58；不自动merge或扩张新work unit。
+Branch: fix/codex-server-retry-recovery-20261013；base 991eb26c082e006da80474ff85efc4cfeb1116c0。
+PR: https://github.com/noho/code-is-cheap/pull/58，仍draft/open。
 
-| Completed gate | Artifact / decision / checkpoint |
-| --- | --- |
-| goal confirmation | goal.md；用户正式确认，授权范围不变 |
-| plan / plan review | plan.md；两路独立planreview，plan-adjudication.md pass；无fix条件；accepted plan ca98d59242cd16f8305331d310a1bdde93fc0270 |
-| implementation S1 / code review | implementation.md；V1五项/V2整文件61项/V3六组保存重放通过；两路独立deepreview，code-adjudication.md pass；无fix条件；accepted S1 817f2089ac389589a9ac0ded9d2c4d929086e8fc |
+Completed mandatory chain: 用户goal confirmation -> gpt-6-sol plan -> 两路planreview -> accepted plan ca98d59 -> gpt-6-sol S1 implementation -> 两路slice deepreview -> accepted S1 817f208 -> 两路aggregate deepreview -> accepted deepreview cfe37cb -> ready/push -> create draft PR #58 -> 两路PR deepreview -> accepted PR review 8c18464 -> actual push0 -> draft-PR-pass -> final closeout。
+每个review gate零material findings，controller裁决pass；无fix/re-review条件，未制造空loop。所有runner均实际退出并保存receipt，无Agent在途。
 
-Aggregate review completed: both routes actual exit0, zero findings; aggregate-adjudication.md pass. No fix/re-review condition.
-Reviewed source versions: collector 8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153；tests 394d9e6960553dd8b046c5653ed36aed51f23e2154fe878004e518fa42881dae；README 23121d6eddb29703fdc2cba7ab3eb7686d0c4cf6092d3f6c83ffd1d0490c6da1。
-Validation: implementation证据及独立reviews支持冻结版；controller-slice-check.json核对production除matcher外AST相同、56旧测试方法AST相同。不能用baseline或普通live代替恢复分支回归。
-Findings: 已完成gate零material findings、零blocker；aggregate已通过，PR与部署验收尚待完成。
-Docs/ownership: 原诊断/goal/plan/baseline保留，工程只变三文件；所有新artifact属于当前work unit，无无关改动。
-Residual risks: code-adjudication.md/goal.md/plan.md已分类；未来文案/服务根因/历史业务/强制真实断流归later work unit及既定owner；sync越授权漂移只有实际出现且ownership不明时需决策，当前无该阻塞。
-Next after aggregate pass: accepted deepreview commit -> ready-to-open-draft-PR -> push -> create draft PR -> PR review（两路）-> accepted PR review commit/push -> draft-PR-pass -> final closeout含授权sync与两路Codex工具probe。
+Validation: V1新5项、V2整文件61项及diff检查、V3六组保存输入正反重放通过；source/hash与全部适用review同一。production仅matcher，56旧测试方法AST不变，schema/result_status保持。八路review实际退出0，PR精确OID/完整53-file diff及close checks齐备。
+Live: 用户专属授权下sync-agent-tools实际exit0，部署前仅collector预期差异，安装后12/12等于approved source。collector8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153。gpt-6-sol/gpt-6-luna Codex各3真实shell工具exit0，outer/runtime/runner均0，实际count3/sum41且读回/输入hash验证成功，无重试。
+Retained failure: 每路MCP transport HTTP403 challenge一条，report保持needs_review；没有记录MCP工具调用，不能声明整体MCP健康。归后续独立环境work unit，owner=Codex runtime/MCP连接维护者；本次shell任务证据完整不受阻。
 
-Accepted deepreview commit: cfe37cb36c150df4385516c3ce213ac15b7768c0；ready-to-open-draft-PR pass，evidence/draft-pr-readiness.json。Remote main仍为goal base；全部intended commits、clean tree、冻结代码和diff-check已核对。PR创建后下一入口必须PR review。
-
-Draft PR #58 created: https://github.com/noho/code-is-cheap/pull/58。Head 2d1cbbc283d2bc042ba20be713246898f3f4d742，base 991eb26c082e006da80474ff85efc4cfeb1116c0；exact GitHub compare完整diff内容/范围/numstat与本地精确OID一致（只12处hunk函数注释不同），53 files/1344496 bytes；closing OID稳定。尚未PR-review-pass/draft-PR-pass。
-
-PR #58 two-route review completed: zero new findings, pass/pass-with-risks; pr-adjudication.md and controller closing check pass, stable reviewed head2d1cbbc/base991eb26, draft=true。No fix/re-review condition. Next accepted PR review commit then actual push before draft-PR-pass.
+Artifacts/decisions: goal.md、plan.md、plan-adjudication.md、implementation.md、code-adjudication.md、aggregate-adjudication.md、pr-adjudication.md、final-closeout.md；实际版本/命令/退出/日志/产物均在evidence，final-controller-check.json验证最终scope。
+Docs/ownership: 原诊断/goal/plan/baseline原样，三工程文件与accepted S1相同；其他仅本work unit artifacts，无调用方项目/计数/历史验收修改。
+Residual risks: final-closeout.md逐项classified+owner；识别缺口fixed，未来文案/历史身份业务/强制断流/MCP challenge assigned to later work unit；无未分类风险、未修复accepted finding或未完成success signal。
+Sync reminder: 当前已按授权完成live部署；适用命令./scripts/sync-agent-tools.sh。交互launcher变更source ~/.zshrc或新shell；installed runner调用无需source。本次未授权merge、未改skills/profile/shim。
+Final closeout docs/证据提交push后用户取得交付commit；产品code commit=817f2089ac389589a9ac0ded9d2c4d929086e8fc，accepted PR review/source approval=8c18464d24092d3eabb6cdce727744a755ed27ea。

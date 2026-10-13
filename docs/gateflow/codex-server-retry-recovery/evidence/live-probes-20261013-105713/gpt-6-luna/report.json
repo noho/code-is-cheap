@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "source": "subagent_report",
+  "runtime": "codex",
+  "provider": "gpt-6-luna",
+  "runtime_exit_code": 0,
+  "runner_exit_code": 0,
+  "agent_status": "completed",
+  "validation_status": "needs_review",
+  "result_status": "not_assessed",
+  "final_answer": "探针执行完成，三次工具调用均成功；结果文件已读回确认。\n\n[result.json](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json)",
+  "final_answer_truncated": false,
+  "final_answer_chars": 180,
+  "wall_clock_seconds": 34.80025,
+  "usage": {
+    "input_tokens": 65869,
+    "cached_input_tokens": 33792,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1031,
+    "reasoning_output_tokens": 433
+  },
+  "runtime_metrics": {},
+  "session_id": "01a13332-396b-7ad3-b357-fd949ce5e514",
+  "terminal": "turn.completed",
+  "tool_evidence_scope": "recorded_events_only",
+  "tool_results": 3,
+  "events": 11,
+  "canary_status": "not_run",
+  "canary_read_candidate": false,
+  "errors": [],
+  "anomalies": [
+    {
+      "stream": "stderr",
+      "line": 1,
+      "message": "2026-10-13T02:58:13.838029Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 403: {\\\"error\\\":{\\\"code\\\":\\\"challenge\\\",\\\"message\\\":\\\"This request requires a challenge to be completed.\\\",\\\"id\\\":\\\"sin1::1791860293-W6wsOJk10oL8x926LQrYFrptHWha6YCI\\\"}}\\n\")",
+      "message_chars": 318,
+      "truncated": false,
+      "path": null,
+      "proof_line": null
+    }
+  ],
+  "warnings": [],
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 1,
+    "warnings": 0
+  },
+  "diagnostics_truncated": false,
+  "artifacts": [
+    {
+      "path": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json",
+      "exists": true,
+      "regular_file": true
+    }
+  ],
+  "logs": {
+    "output": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.jsonl",
+    "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.stderr.log",
+    "last_message": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/final.md"
+  }
+}

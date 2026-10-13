@@ -1,0 +1,13 @@
+{
+  "gate": "final closeout C2",
+  "command": [
+    "codex",
+    "--version"
+  ],
+  "sandbox_context": "outside parent sandbox",
+  "chunk_id": "83132f",
+  "wall_time_seconds": 0.000008416,
+  "exit_code": 0,
+  "original_token_count": 5,
+  "output": "codex-cli 0.162.1\n"
+}

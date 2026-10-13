@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "source": "subagent_report",
+  "runtime": "codex",
+  "provider": "gpt-6-sol",
+  "runtime_exit_code": 0,
+  "runner_exit_code": 0,
+  "agent_status": "completed",
+  "validation_status": "needs_review",
+  "result_status": "not_assessed",
+  "final_answer": "执行完成：三次独立真实工具调用均成功，输出已创建并读回确认。\n\n产物：[result.json](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json)",
+  "final_answer_truncated": false,
+  "final_answer_chars": 185,
+  "wall_clock_seconds": 32.005716,
+  "usage": {
+    "input_tokens": 67768,
+    "cached_input_tokens": 50048,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 509,
+    "reasoning_output_tokens": 0
+  },
+  "runtime_metrics": {},
+  "session_id": "01a13332-35c1-71e1-be7f-c5b95ef92729",
+  "terminal": "turn.completed",
+  "tool_evidence_scope": "recorded_events_only",
+  "tool_results": 3,
+  "events": 11,
+  "canary_status": "not_run",
+  "canary_read_candidate": false,
+  "errors": [],
+  "anomalies": [
+    {
+      "stream": "stderr",
+      "line": 1,
+      "message": "2026-10-13T02:58:12.740008Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 403: {\\\"error\\\":{\\\"code\\\":\\\"challenge\\\",\\\"message\\\":\\\"This request requires a challenge to be completed.\\\",\\\"id\\\":\\\"sin1::1791860292-dX3pBRKodjNaMNmxOmnSdAu2B3wgC8HM\\\"}}\\n\")",
+      "message_chars": 318,
+      "truncated": false,
+      "path": null,
+      "proof_line": null
+    }
+  ],
+  "warnings": [],
+  "diagnostic_counts": {
+    "errors": 0,
+    "anomalies": 1,
+    "warnings": 0
+  },
+  "diagnostics_truncated": false,
+  "artifacts": [
+    {
+      "path": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json",
+      "exists": true,
+      "regular_file": true
+    }
+  ],
+  "logs": {
+    "output": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.jsonl",
+    "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.stderr.log",
+    "last_message": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/final.md"
+  }
+}

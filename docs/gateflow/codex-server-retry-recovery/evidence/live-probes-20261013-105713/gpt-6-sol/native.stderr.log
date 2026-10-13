@@ -1,0 +1,1 @@
+2026-10-13T02:58:12.740008Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse("HTTP 403: {\"error\":{\"code\":\"challenge\",\"message\":\"This request requires a challenge to be completed.\",\"id\":\"sin1::1791860292-dX3pBRKodjNaMNmxOmnSdAu2B3wgC8HM\"}}\n")

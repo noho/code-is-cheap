@@ -1,0 +1,119 @@
+{
+  "gate": "final closeout C1 post-sync",
+  "created_at": "2026-10-13T02:57:10.608944+00:00",
+  "approved_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+  "sync_exit": 0,
+  "target_count": 12,
+  "all_targets_equal_approved_source": true,
+  "targets": [
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/agent-tools.zsh",
+      "target": "/Users/leo/.config/zsh/agent-tools.zsh",
+      "source_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "installed_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "approved_git_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "all_equal": true,
+      "target_mode": "0o600"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/claude-agent-run",
+      "target": "/Users/leo/.local/bin/claude-agent-run",
+      "source_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "installed_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "approved_git_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/codex-agent-run",
+      "target": "/Users/leo/.local/bin/codex-agent-run",
+      "source_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "installed_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "approved_git_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "target": "/Users/leo/.local/bin/agent-run-result.py",
+      "source_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "installed_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "approved_git_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/sub-agent-preflight",
+      "target": "/Users/leo/.local/bin/sub-agent-preflight",
+      "source_sha256": "c90955987a6973536f3928847a567362cd31ca2340e6a6afd78d3d83b7053c2f",
+      "installed_sha256": "c90955987a6973536f3928847a567362cd31ca2340e6a6afd78d3d83b7053c2f",
+      "approved_git_sha256": "c90955987a6973536f3928847a567362cd31ca2340e6a6afd78d3d83b7053c2f",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/agent-sandbox",
+      "target": "/Users/leo/.local/bin/agent-sandbox",
+      "source_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "installed_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "approved_git_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/agent-sandbox-launch.mjs",
+      "target": "/Users/leo/.local/bin/agent-sandbox-launch.mjs",
+      "source_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "installed_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "approved_git_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/install-agent-sandbox.sh",
+      "target": "/Users/leo/.local/bin/install-agent-sandbox.sh",
+      "source_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "installed_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "approved_git_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/compose-codex-app-config.py",
+      "target": "/Users/leo/.local/bin/compose-codex-app-config.py",
+      "source_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "installed_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "approved_git_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/repair-codex-reasoning-history.py",
+      "target": "/Users/leo/.local/bin/repair-codex-reasoning-history.py",
+      "source_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "installed_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "approved_git_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/scripts/agent-endpoint.py",
+      "target": "/Users/leo/.local/bin/agent-endpoint.py",
+      "source_sha256": "1cc81e338001d1e36b0532c5b88c45f6ab87a8be4ac96140b3829f250a875f52",
+      "installed_sha256": "1cc81e338001d1e36b0532c5b88c45f6ab87a8be4ac96140b3829f250a875f52",
+      "approved_git_sha256": "1cc81e338001d1e36b0532c5b88c45f6ab87a8be4ac96140b3829f250a875f52",
+      "all_equal": true,
+      "target_mode": "0o755"
+    },
+    {
+      "source": "/Users/leo/workspace/code-is-cheap/config/endpoints.example.json",
+      "target": "/Users/leo/.local/bin/agent-endpoints.defaults.json",
+      "source_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "installed_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "approved_git_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "all_equal": true,
+      "target_mode": "0o600"
+    }
+  ],
+  "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153"
+}

@@ -1,0 +1,17 @@
+{
+  "gate": "draft-PR-pass",
+  "created_at": "2026-10-13T02:54:32.375709+00:00",
+  "pr": {
+    "baseRefOid": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "headRefOid": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+    "isDraft": true,
+    "url": "https://github.com/noho/code-is-cheap/pull/58"
+  },
+  "accepted_pr_review_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+  "both_pr_reviews_complete": true,
+  "findings_all_adjudicated": true,
+  "no_fix_or_re_review_condition": true,
+  "actual_final_review_push_exit": 0,
+  "code_unchanged_from_reviewed_head": true,
+  "next_entry": "final closeout"
+}

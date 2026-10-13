@@ -1,0 +1,13 @@
+{
+  "gate": "final closeout C1 sync",
+  "command": [
+    "./scripts/sync-agent-tools.sh"
+  ],
+  "cwd": "/Users/leo/workspace/code-is-cheap",
+  "authorization": "explicit task-specific user authorization after reviews",
+  "chunk_id": "3768db",
+  "wall_time_seconds": 0.000006417,
+  "exit_code": 0,
+  "original_token_count": 27,
+  "output": "Synced agent tools to /Users/leo/.config/zsh/agent-tools.zsh\nSynced agent runners to /Users/leo/.local/bin\n"
+}

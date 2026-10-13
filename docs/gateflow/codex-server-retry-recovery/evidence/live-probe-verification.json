@@ -1,0 +1,222 @@
+{
+  "gate": "final closeout C2",
+  "created_at": "2026-10-13T03:05:31.455828+00:00",
+  "required_routes_complete": true,
+  "runs": [
+    {
+      "gate": "final closeout C2 live probe",
+      "created_at": "2026-10-13T03:05:31.454826+00:00",
+      "provider": "gpt-6-sol",
+      "runtime": "codex",
+      "runtime_version": "codex-cli 0.162.1",
+      "actual_argv": [
+        "/Users/leo/.local/bin/codex-agent-run",
+        "--provider",
+        "gpt-6-sol",
+        "--cwd",
+        "/Users/leo/workspace/code-is-cheap",
+        "--sandbox",
+        "workspace-write",
+        "--no-persist",
+        "--prompt-file",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/prompt.md",
+        "--artifact",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json",
+        "--output",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.jsonl",
+        "--stderr",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.stderr.log",
+        "--last-message",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/final.md"
+      ],
+      "source_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+      "installed_versions_after_run": {
+        "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+        "runner_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+        "launcher_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898"
+      },
+      "outer_exit": 0,
+      "runtime_exit": 0,
+      "runner_exit": 0,
+      "terminal": "turn.completed",
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "tool_count": 3,
+      "tool_records": [
+        {
+          "native_line": 5,
+          "id": "item_1",
+          "type": "command_execution",
+          "command": "/bin/zsh -c 'cat /Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/input.json'",
+          "aggregated_output": "{\n  \"probe\": \"gpt-6-sol\",\n  \"values\": [\n    7,\n    11,\n    23\n  ]\n}\n",
+          "exit_code": 0,
+          "status": "completed"
+        },
+        {
+          "native_line": 7,
+          "id": "item_2",
+          "type": "command_execution",
+          "command": "/bin/zsh -c \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nsource = Path('/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/input.json')\ntarget = Path('/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json')\nwith source.open('r', encoding='utf-8') as stream:\n    data = json.load(stream)\nvalues = data['values']\nresult = {'probe': data['probe'], 'count': len(values), 'sum': sum(values)}\nwith target.open('x', encoding='utf-8') as stream:\n    json.dump(result, stream, ensure_ascii=False, indent=2)\n    stream.write('\\\\n')\nprint(json.dumps({'created': str(target), 'result': result}, ensure_ascii=False))\nPY\"",
+          "aggregated_output": "{\"created\": \"/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json\", \"result\": {\"probe\": \"gpt-6-sol\", \"count\": 3, \"sum\": 41}}\n",
+          "exit_code": 0,
+          "status": "completed"
+        },
+        {
+          "native_line": 9,
+          "id": "item_3",
+          "type": "command_execution",
+          "command": "/bin/zsh -c 'cat /Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/result.json'",
+          "aggregated_output": "{\n  \"probe\": \"gpt-6-sol\",\n  \"count\": 3,\n  \"sum\": 41\n}\n",
+          "exit_code": 0,
+          "status": "completed"
+        }
+      ],
+      "recorded_mcp_tool_call_count": 0,
+      "input_unchanged": true,
+      "expected": {
+        "probe": "gpt-6-sol",
+        "count": 3,
+        "sum": 41
+      },
+      "actual": {
+        "probe": "gpt-6-sol",
+        "count": 3,
+        "sum": 41
+      },
+      "result_sha256": "2875798cbd1f141131c82809a7027928269a9973c848c4817f010d4df736cbd8",
+      "raw_logs": {
+        "native": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.jsonl",
+        "native_sha256": "fa433106d39157b35a0ee728270f0786ba7ca691cac16c68a497c3c0328580af",
+        "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/native.stderr.log",
+        "stderr_sha256": "5eb3f0e8a761ee03070f49c905b172263715ce8177b385156c0a4888c9fd3326",
+        "report": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-sol/report.json"
+      },
+      "anomaly": {
+        "stream": "stderr",
+        "line": 1,
+        "message": "2026-10-13T02:58:12.740008Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 403: {\\\"error\\\":{\\\"code\\\":\\\"challenge\\\",\\\"message\\\":\\\"This request requires a challenge to be completed.\\\",\\\"id\\\":\\\"sin1::1791860292-dX3pBRKodjNaMNmxOmnSdAu2B3wgC8HM\\\"}}\\n\")",
+        "message_chars": 318,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      "anomaly_adjudication": "Retained real MCP transport HTTP403 challenge. Three builtin shell command executions exit0 and correct input/calculation/write/readback are independently verified; no recorded MCP tool invocation. Exact MCP server/endpoint and challenge cause are not identified in provided stderr. This probe passes the authorized shell task; it does not prove all MCP connections healthy.",
+      "verdict": "pass for required real shell read/write probe, with retained environment risk",
+      "residual_risk": {
+        "classification": "assigned to later work unit",
+        "owner": "Codex runtime/MCP integration maintainer",
+        "destination": "separate MCP transport challenge diagnosis if its connector is needed; no config/auth/permission changes or issue creation in this work unit"
+      }
+    },
+    {
+      "gate": "final closeout C2 live probe",
+      "created_at": "2026-10-13T03:05:31.455606+00:00",
+      "provider": "gpt-6-luna",
+      "runtime": "codex",
+      "runtime_version": "codex-cli 0.162.1",
+      "actual_argv": [
+        "/Users/leo/.local/bin/codex-agent-run",
+        "--provider",
+        "gpt-6-luna",
+        "--cwd",
+        "/Users/leo/workspace/code-is-cheap",
+        "--sandbox",
+        "workspace-write",
+        "--no-persist",
+        "--prompt-file",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/prompt.md",
+        "--artifact",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json",
+        "--output",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.jsonl",
+        "--stderr",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.stderr.log",
+        "--last-message",
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/final.md"
+      ],
+      "source_commit": "8c18464d24092d3eabb6cdce727744a755ed27ea",
+      "installed_versions_after_run": {
+        "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+        "runner_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+        "launcher_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898"
+      },
+      "outer_exit": 0,
+      "runtime_exit": 0,
+      "runner_exit": 0,
+      "terminal": "turn.completed",
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "tool_count": 3,
+      "tool_records": [
+        {
+          "native_line": 5,
+          "id": "item_1",
+          "type": "command_execution",
+          "command": "/bin/zsh -c 'cat /Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/input.json'",
+          "aggregated_output": "{\n  \"probe\": \"gpt-6-luna\",\n  \"values\": [\n    7,\n    11,\n    23\n  ]\n}\n",
+          "exit_code": 0,
+          "status": "completed"
+        },
+        {
+          "native_line": 7,
+          "id": "item_2",
+          "type": "command_execution",
+          "command": "/bin/zsh -c \"python3 -c 'import json; from pathlib import Path; input_path=Path(\\\"/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/input.json\\\"); output_path=Path(\\\"/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json\\\"); data=json.loads(input_path.read_text(encoding=\\\"utf-8\\\")); values=data[\\\"values\\\"]; result={\\\"probe\\\":data[\\\"probe\\\"],\\\"count\\\":len(values),\\\"sum\\\":sum(values)}; f=output_path.open(\\\"x\\\", encoding=\\\"utf-8\\\"); json.dump(result, f, ensure_ascii=False, indent=2); f.write(\\\"\\\\n\\\"); f.close(); print(\\\"computed and wrote:\\\"); print(json.dumps(result, ensure_ascii=False))'\"",
+          "aggregated_output": "computed and wrote:\n{\"probe\": \"gpt-6-luna\", \"count\": 3, \"sum\": 41}\n",
+          "exit_code": 0,
+          "status": "completed"
+        },
+        {
+          "native_line": 9,
+          "id": "item_3",
+          "type": "command_execution",
+          "command": "/bin/zsh -c 'cat /Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/result.json'",
+          "aggregated_output": "{\n  \"probe\": \"gpt-6-luna\",\n  \"count\": 3,\n  \"sum\": 41\n}\n",
+          "exit_code": 0,
+          "status": "completed"
+        }
+      ],
+      "recorded_mcp_tool_call_count": 0,
+      "input_unchanged": true,
+      "expected": {
+        "probe": "gpt-6-luna",
+        "count": 3,
+        "sum": 41
+      },
+      "actual": {
+        "probe": "gpt-6-luna",
+        "count": 3,
+        "sum": 41
+      },
+      "result_sha256": "bb0aa0f47dd1301b698244d02965a8874c6bafefa8fb419b32cd09aced3a73d0",
+      "raw_logs": {
+        "native": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.jsonl",
+        "native_sha256": "be4f692108c9851b797f21271b3cb219794d2c8a5568410408d32681ad2d7390",
+        "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/native.stderr.log",
+        "stderr_sha256": "1907ff121aaa492a79fc7a70a3ed4a9d9cd36fc0fad4e3ee61ff0ab3fe88edfd",
+        "report": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/evidence/live-probes-20261013-105713/gpt-6-luna/report.json"
+      },
+      "anomaly": {
+        "stream": "stderr",
+        "line": 1,
+        "message": "2026-10-13T02:58:13.838029Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 403: {\\\"error\\\":{\\\"code\\\":\\\"challenge\\\",\\\"message\\\":\\\"This request requires a challenge to be completed.\\\",\\\"id\\\":\\\"sin1::1791860293-W6wsOJk10oL8x926LQrYFrptHWha6YCI\\\"}}\\n\")",
+        "message_chars": 318,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      "anomaly_adjudication": "Retained real MCP transport HTTP403 challenge. Three builtin shell command executions exit0 and correct input/calculation/write/readback are independently verified; no recorded MCP tool invocation. Exact MCP server/endpoint and challenge cause are not identified in provided stderr. This probe passes the authorized shell task; it does not prove all MCP connections healthy.",
+      "verdict": "pass for required real shell read/write probe, with retained environment risk",
+      "residual_risk": {
+        "classification": "assigned to later work unit",
+        "owner": "Codex runtime/MCP integration maintainer",
+        "destination": "separate MCP transport challenge diagnosis if its connector is needed; no config/auth/permission changes or issue creation in this work unit"
+      }
+    }
+  ],
+  "live_server_disconnect_branch_observed": false,
+  "proof_limit": "ordinary real shell tools only; recovered notification branch is separately validated by V1-V3",
+  "failed_shell_commands": 0,
+  "real_retained_mcp_transport_failures": 2,
+  "no_probe_retry": true
+}
