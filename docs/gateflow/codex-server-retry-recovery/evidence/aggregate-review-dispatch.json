@@ -1,0 +1,26 @@
+[
+  {
+    "provider": "mimo-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/aggregate-review-mimo-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261013-101110.md",
+    "target_commit": "817f2089ac389589a9ac0ded9d2c4d929086e8fc",
+    "base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "versions": {
+      "scripts/agent-run-result.py": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "tests/test_agent_run_results.py": "394d9e6960553dd8b046c5653ed36aed51f23e2154fe878004e518fa42881dae",
+      "README.md": "23121d6eddb29703fdc2cba7ab3eb7686d0c4cf6092d3f6c83ffd1d0490c6da1"
+    }
+  },
+  {
+    "provider": "ds-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/aggregate-review-ds-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261013-101111.md",
+    "target_commit": "817f2089ac389589a9ac0ded9d2c4d929086e8fc",
+    "base": "991eb26c082e006da80474ff85efc4cfeb1116c0",
+    "versions": {
+      "scripts/agent-run-result.py": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+      "tests/test_agent_run_results.py": "394d9e6960553dd8b046c5653ed36aed51f23e2154fe878004e518fa42881dae",
+      "README.md": "23121d6eddb29703fdc2cba7ab3eb7686d0c4cf6092d3f6c83ffd1d0490c6da1"
+    }
+  }
+]

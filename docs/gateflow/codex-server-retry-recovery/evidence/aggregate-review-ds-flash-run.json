@@ -1,0 +1,95 @@
+{
+  "gate": "aggregate deepreview",
+  "provider": "ds-flash",
+  "outer_exit": 0,
+  "report": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "Aggregate deepreview 完成。\n\n**结论:pass,未发现实质性问题。** 本路独立复核(禁止递归派发,全部自验):HEAD 精确 `817f2089ac389589a9ac0ded9d2c4d929086e8fc`;三份工程文件 SHA256 与派发一致且工作树无影子改动;plan/goal/plan-baseline 冻结 hash 实测吻合;以当前冻结 collector 对 V3 六组保存输入独立重放(私有 $TMPDIR),结果与期望逐项一致(两条历史通知 rejected/errors2 → passed/warnings2,未恢复仍 errors4,未知仍 fatal,`result_status=not_assessed`);独立 matcher 探针确认精确文案/N/UUID/envelope 边界、旧分支保留、两分支互斥、无回溯;恢复证明/report/exit/机械检查顺序逐项未放宽,`result_status` 未代判业务;G4–G6(PR/sync/两路 probe)未执行且未被误判失败;sync-agent-tools.sh 为 collector 唯一部署者、C1/C2 交接充分(含 gpt-6-sol/gpt-6-luna 两路);无 CI 全仓门槛;两份 slice 证据与运行 receipt 已核对(两路 outer_exit=0)。未读取本 aggregate gate 对方报告或共享结论。\n\n**报告(唯一仓库写入)**:`/Users/leo/workspace/code-is-cheap/docs/reviews/code-review-20261013-101111.md`\n\n**Controller 需裁决/执行项**:\n1. 接受 aggregate deepreview pass(零 material finding、零 blocker、零 needs-more-evidence),无 fix/re-review 条件。\n2. Next entry:accepted deepreview commit → ready-to-open-draft-PR;不得跳 PR review(PR 需按冻结 OID/完整 diff 事实重核)。\n3. G4–G6(保持 draft、C1 `./scripts/sync-agent-tools.sh` 含部署前 manifest/ownership 重查、C2 两路 installed 工具 probe)为后续必需工作,不可延期豁免;residual risks 均已按 later work unit 分类并附 owner。\n\n未做:未修代码、未提交、未部署、未派任何 Agent、未触碰产品与既有证据(仅新增上述报告文件)。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 1186,
+    "wall_clock_seconds": 281.70666,
+    "usage": {
+      "input_tokens": 104133,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2981376,
+      "output_tokens": 35897,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 279423,
+      "duration_api_ms": 254371,
+      "total_cost_usd": 2.9087779999999994,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 104133,
+          "outputTokens": 35897,
+          "cacheReadInputTokens": 2981376,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 2.9087779999999994,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "dfdb5bdf-b282-448f-afb4-c40f4e6e3f81",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 49,
+    "events": 23917,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"deepseek/deepseek-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 93,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/private/tmp/codex-server-retry-recovery/aggregate-review-ds-flash.jsonl",
+      "stderr": "/private/tmp/codex-server-retry-recovery/aggregate-review-ds-flash.stderr",
+      "last_message": null
+    }
+  }
+}
