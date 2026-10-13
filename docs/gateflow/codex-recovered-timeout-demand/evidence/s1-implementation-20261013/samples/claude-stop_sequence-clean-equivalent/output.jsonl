@@ -1,2 +1,0 @@
-{"type": "system", "subtype": "init", "session_id": "synthetic-root"}
-{"type": "result", "subtype": "success", "is_error": false, "result": "Synthetic protocol final.", "stop_reason": "stop_sequence", "terminal_reason": "completed", "api_error_status": null, "session_id": "synthetic-root"}

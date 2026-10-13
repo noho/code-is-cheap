@@ -1,0 +1,11 @@
+*
+!.gitignore
+!EVIDENCE.md
+!raw-evidence.tar.gz
+!raw-evidence-index.json
+!source-manifest.json
+!commands.json
+!static-checks.json
+!synthetic-samples.json
+!evidence-sha256.json
+!unit-suite-final-source.log

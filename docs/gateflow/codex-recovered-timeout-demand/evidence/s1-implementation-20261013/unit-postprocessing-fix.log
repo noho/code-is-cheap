@@ -1,6 +1,0 @@
-test_recovered_diagnostics_keep_native_and_postprocessing_failures (test_agent_run_results.RunnerResults.test_recovered_diagnostics_keep_native_and_postprocessing_failures) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.499s
-
-OK

@@ -1,8 +1,0 @@
-{
-  "exit_code": 71,
-  "wrapper_stderr": "agent-sandbox: state=/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox._2onng1c\nagent-sandbox: seatbelt_profile=/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-sandbox._2onng1c/seatbelt.sb bytes=19795 source_bytes=19795 profile_sha256=f53be05fc1918b2b64eaadbded590d5a1c5843fc0947ca60fc748b74875e6af7 source_sha256=f53be05fc1918b2b64eaadbded590d5a1c5843fc0947ca60fc748b74875e6af7 file-backed\nsandbox-exec: sandbox_apply: Operation not permitted\n",
-  "runtime_stderr": "",
-  "trace": "",
-  "requests": [],
-  "server_errors": []
-}
