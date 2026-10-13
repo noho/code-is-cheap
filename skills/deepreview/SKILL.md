@@ -96,14 +96,15 @@ docs/reviews/repo-review-[0-9]{8}-[0-9]{6}.md
 
 ## Review Method
 
-明确作为 Gateflow gate 派发时，按该 gate 的职责实质应用下方方法、Review Requirements 和 mode scope：
-slice 检查当前 approved 增量的 correctness/契约/失败路径/验证；aggregate 检查 slices 交互、整体目标与遗漏；
-PR 检查实际交付版本、完整 diff 与 accepted 工作一致性、title/body、CI/checks 及新增变化。
-单个未变 slice 的 aggregate/PR 可引用适用证据，无需重复同范围全面 correctness review；每位 reviewer 仍须独立审查证据和
-具体疑点，形成当前 gate 判断。新增变化、交互风险或证据反例须沿受影响的实现、依赖和 tests 深挖。
-验证复用按 Gateflow 核对实际来源/结果、版本/范围及代码/依赖/配置/相关环境，重验受影响部分并满足 mandatory checks。
-PR 的精确 OID、完整 diff 快照/hash、同版深挖对象与收尾核对仍须实际执行，不能用旧 metadata 代替。
+明确作为 Gateflow 完整代码审核派发时，对所有 slices 的最终组合版本实质应用下方方法、Review Requirements 和 mode scope：
+完整审核包含 correctness、整体目标覆盖与遗漏、契约/状态、边界/失败路径、验证有效性，以及多 slice 接口/状态/共享假设交互，
+承担原 aggregate 职责，不另设逐 slice 或 aggregate 审核轮次。每位 reviewer 独立审查证据和具体疑点，形成当前判断。
+按 Gateflow 条件提前审核中间决策时，明确该决策范围；其结论供最终完整审核复用，不能替代完整审核。
+必要 re-review 聚焦已裁决 findings 和实际变更影响；仅因影响扩大或新的有证据反例扩大范围，并沿受影响实现、依赖和 tests 深挖。
+验证复用按 Gateflow 核对实际来源/结果、版本/范围及代码/依赖/配置/相关环境，重验受影响部分并满足 mandatory checks，旧 pass 不替代判断。
+Gateflow 的 PR 交付核对由总控执行；相同内容不重复派完整代码审核，版本/内容/base/diff 变化按 Gateflow 补受影响面审核。
 独立调用 Current Changes、PR 或 All Repository Mode 时，原 strict/exhaustive 方法与范围不变。
+独立 PR Review Mode 的精确 OID、完整 diff 快照/hash、同版深挖对象与收尾核对仍须实际执行，不能用旧 metadata 代替。
 
 Current Changes Mode：
 
@@ -388,7 +389,8 @@ All Repository Mode 默认应使用 Large Scope Parallel Review。每个 subagen
 
 ## Review Artifact Format
 
-在 Gateflow 中，Scope 明确当前 gate 职责、目标版本与实际覆盖；未变事实可按 Gateflow 的可取回版本引用规则提供。
+在 Gateflow 中，Scope 明确最终组合版本及整体目标/交互覆盖，或提前审核的中间决策、受影响面 re-review 的依据和范围；
+未变事实可按 Gateflow 的可取回版本引用规则提供。
 当前判断/findings、验证适用性、Open Questions 和 Residual Risk 仍须实质记录，不照抄历史 pass。
 
 使用这个结构：

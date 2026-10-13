@@ -44,8 +44,8 @@ Codex / Claude Code 的默认沙箱、工作目录或 prompt 中的禁读约定�
 ### 大型 feature 开发的自动化 AI Coding 工程控制框架
 
 先准备架构设计和实施总控计划，完成 preflight，再由 `phaseflow` 推进 phase / work unit，按 `gateflow` 的固定 gate 顺序执行。
-流程包括目标与非目标确认、plan、plan review、按 slice 实施、code review、fix / re-review、aggregate deepreview、
-accepted commits、draft PR 和 final closeout。
+目标确认后，简单计划由总控核对，重要决策执行 Planreview。默认一个 slice 实施与验证，对最终组合版本做一轮完整代码审核，
+必要修复及受影响面复审后按需提交、创建 draft PR，由总控核对交付并完成 final closeout。
 
 每一步留下可追踪的 artifact、审核裁决、剩余风险及下一步入口，让长流程在明确边界内推进。
 PR 合并由用户手工完成；跨会话继续时，可依据总控文档与已验收成果恢复进度。
@@ -58,9 +58,9 @@ merge、approve、mark ready for review、request reviewers、delete branch、�
 
 | Skill | 职责 |
 | --- | --- |
-| `gateflow` | 定义单个 work unit 的 gated workflow：preflight、goal confirmation、固定 gate order、artifacts、residual risks、accepted commits、draft PR gate 和 final closeout。它不定义项目级总控文档，也不定义多 Agent 路由。 |
-| `phaseflow` | 项目分步总控。读取 `design_doc` 和 `control_doc`，识别当前 `phase = work unit`，和用户完成 preflight / goal confirmation，读取 Gateflow 的 `Gate Order`，逐 gate 派发 Agent，裁决结果，更新 `control_doc`，并 reconcile residual risks。 |
-| `planreview` | 需要 adversarial review 一个 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow plan。 |
+| `gateflow` | 定义单个 work unit 的 gated workflow：preflight、goal confirmation、最小必要计划与适用计划审核、实现/验证、一轮完整代码审核、必要修复、draft PR 交付核对和 final closeout。它不定义项目级总控文档，也不定义多 Agent 路由。 |
+| `phaseflow` | 项目分步总控。读取 `design_doc` 和 `control_doc`，识别当前 `phase = work unit`，完成 preflight / goal confirmation、简单计划及 PR 交付核对，派发 Agent 做 plan / implementation / fix 和适用独立 review，裁决结果，更新 `control_doc`，并 reconcile residual risks。 |
+| `planreview` | 对重要契约、架构、迁移或状态机决策，以及显式指定的 plan 做 adversarial review。 |
 | `deepreview` | 需要严格 review 当前 workspace 改动、GitHub PR 或整个仓库。 |
 | `tmux-agents` | 只定义 tmux 通信：Agent CLI 类型、`/skill` vs `$skill`、pane discovery、clear/session 规则、`tmux-cli send/wait_idle/capture` 和发送安全规则。它不分配角色。 |
 | `sub-agents` | 通过 runner 子进程启动外部 Claude Code 或 Codex 子 Agent，校验结构化结果，并支持隔离的并行派发；它不分配角色。 |
@@ -85,16 +85,16 @@ $phaseflow design_doc=docs/host/design.md control_doc=docs/host/issues-implement
 1. 先写好设计真源文档，例如 `docs/design.md` 或 `docs/host/design.md`。
 2. 再写好实施总控文档，例如 `docs/implementation-control.md`，记录 phases/work units、状态、验证要求、artifacts、residual risks 和 next entry point。
 3. 使用 `phaseflow` 读取这两个文档，识别当前 `phase = work unit`，并和用户完成 preflight 与 goal confirmation。
-4. `phaseflow` 读取 Gateflow 的 `Gate Order`，逐 gate 把 plan / implementation / review / fix 等具体任务派发给 Agent。
+4. `phaseflow` 读取 Gateflow 的 `Gate Order`，派发 plan，亲自核对简单计划；重要契约、架构、迁移或状态机决策，以及显式审核要求，派发 Planreview。
 5. 每个 Agent 返回后，`phaseflow` 读取 artifact、裁决 findings、更新 `control_doc`，再进入下一个 gate。
-6. 所有 slices 完成后执行 aggregate deepreview；修复并复核通过后，记录 draft PR readiness 和 residual-risk owner。
-7. draft PR gate 自动 push、创建 draft PR、执行 PR review；若有 accepted findings，则自动 fix、re-review、提交 accepted PR review commit 并再次 push，直到 `draft-PR-pass`。
+6. 派发实现/验证，默认一个 slice。所有必要 slices 完成后，对最终组合版本做一轮完整 Deepreview，包含整体目标覆盖和 slice 交互；accepted findings 实际修复并做受影响面复审，通过后记录 readiness 和 residual-risk owner。
+7. 按需提交、push 并创建 draft PR；总控核对实际 PR 身份、head/base 版本、完整 diff 与已审版本对应关系、title/body、必要 CI 和最终 push，再进入 `draft-PR-pass`。内容或 base/diff 变化须补受影响面审核/验证，相同内容不重复完整审核。
 8. final closeout 随后记录变更内容、验证结果、文档更新、finding 状态、剩余风险和 owner、draft PR URL，以及 next entry point。
 9. 如果 work unit 是 issue，draft PR body 应关联 issue；final closeout 应确认 issue closeout comment 和 merge 后关闭预期。
 10. final closeout 通过后，用户手工 merge PR，拉取最新目标 base branch，按需 `/clear`，再从 `control_doc` 的 next entry point 恢复 `phaseflow`。
 
-这个流程的目标不是让 Agent 自行发明架构，而是让 Agent 在已经明确的设计边界和总控计划内稳定执行，并把每一步的证据、
-review 结论、修复状态和 residual risks 留在可追踪 artifact 中。
+计划达到足以指导正确实现即可，Agent 在已确认范围内决定局部实现。记录可同文件维护或引用已有证据，不要求每个 gate
+独立 artifact 或 commit。
 
 ## 环境要求
 
@@ -547,8 +547,8 @@ python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.
 ### Gateflow
 
 `gateflow` 用于单个 work unit：feature、issue、bug fix、migration、refactor、schema/public contract change 或
-architecture-sensitive task。Gateflow 只定义 gates：preflight、goal confirmation、plan、review、implementation slices、
-fixes、aggregate deepreview、accepted commits、draft PR gate 和 final closeout。
+architecture-sensitive task。Gateflow 只定义 gates：preflight、goal confirmation、最小必要计划与适用计划审核、实现/验证、
+一轮完整代码审核、必要修复及受影响面复审、draft PR 交付核对和 final closeout。
 
 单独使用 Gateflow 示例：
 
@@ -563,7 +563,7 @@ Gateflow + `tmux-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，CodexAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review / re-review。
+$tmux-agents 路由 Agents，CodexAgent-GPT-6-Astra 负责 plan / implement / fix，CodexAgent-MiMo / ClaudeAgent-DS-Flash 并行完成所需独立审核和必要受影响面复审。
 每次发送前重新 discovery pane，clear 新任务 session，避免裸 #数字。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -572,7 +572,7 @@ Gateflow + `sub-agents` 示例：
 
 ```text
 按照 $gateflow 开发 <work-unit>。
-$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Codex mimo / Claude ds-flash 负责两路 review / re-review。
+$sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / implement / fix，Codex mimo / Claude ds-flash 并行完成所需独立审核和必要受影响面复审。
 所有调用显式传入 workspace 绝对路径，并使用独立 output / stderr 文件；总控检查结构化结果后自行裁决。
 严格遵循 AGENTS.md 的约束。
 ```
@@ -580,8 +580,8 @@ $sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / impl
 ### Phaseflow
 
 当项目有设计真源文档和实施总控文档时，使用 `phaseflow`。Phaseflow 是项目分步总控：读取当前 `phase = work unit`，
-和用户完成 preflight / goal confirmation，读取 Gateflow 的 `Gate Order`，逐 gate 派发 Agent，裁决结果，更新
-`control_doc`，并 reconcile residual risks。
+和用户完成 preflight / goal confirmation，读取 Gateflow 的 `Gate Order`，亲自核对简单计划和 PR 交付，派发 Agent 做具体任务与
+适用审核，裁决结果，更新 `control_doc`，并 reconcile residual risks。
 
 单独使用 Phaseflow 示例：
 
@@ -590,7 +590,7 @@ $sub-agents 通过 runner 子进程派发：Codex gpt-6-astra 负责 plan / impl
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
 先读取 control_doc 识别当前 phase/work unit，再读取 design_doc。
-总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 逐 gate 派发 Agent 完成具体任务。
+总控 Agent 先完成 preflight 和 goal confirmation；用户确认后，按 Gateflow 的 Gate Order 核对简单计划和 PR 交付，派发具体任务与适用独立审核。
 每个 gate 返回后更新 control_doc、记录 artifact / finding 裁决 / residual risk。
 final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
@@ -600,8 +600,8 @@ Phaseflow + `tmux-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$tmux-agents 路由 Agents，CodexAgent-MiMo / ClaudeAgent-DS-Flash 负责两路同时 review，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
-总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 逐 gate 派发。
+$tmux-agents 路由 Agents，CodexAgent-MiMo / ClaudeAgent-DS-Flash 并行完成所需独立审核和必要受影响面复审，CodexAgent-GPT-6-Astra 负责 plan / implement / fix。
+总控 Agent 先做 preflight 和 goal confirmation；确认后按 Gateflow 的 Gate Order 推进，亲自核对简单计划和 PR 交付。
 每个 Agent 返回后，总控读取 artifact、裁决 finding、更新 control_doc、收集 residual risk、关闭已解决 risk。
 final closeout 后说明用户 merge PR、拉取目标 base branch，并从 control_doc 的 next entry point 继续下一轮。
 严格遵循 AGENTS.md 的约束。
@@ -611,14 +611,15 @@ Phaseflow + `sub-agents` 示例：
 
 ```text
 按照 $phaseflow 推进，设计真源在 docs/host/design.md，总控文档是 docs/host/issues-implementation-control.md。
-$sub-agents 通过 runner 子进程派发，Codex mimo / Claude ds-flash 负责两路 review，Codex gpt-6-astra 负责 plan / implement / fix。
-总控按 Gateflow 的 Gate Order 推进，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
+$sub-agents 通过 runner 子进程派发，Codex mimo / Claude ds-flash 并行完成所需独立审核和必要受影响面复审，Codex gpt-6-astra 负责 plan / implement / fix。
+总控按 Gateflow 的 Gate Order 推进，亲自核对简单计划和 PR 交付，检查每个子进程的退出状态和结构化输出，并更新 control_doc。
 严格遵循 AGENTS.md 的约束。
 ```
 
 ### Planreview
 
-使用 `planreview` 检查 plan 是否具体、可直接实施、切片合理、架构边界清晰，并且没有过度设计。
+重要决策或显式审核请求使用 `planreview`，判断 plan 是否足以指导正确实现、切片和机制是否必要、是否解决已证实的根因，
+不替实现者预写局部代码细节。
 
 Codex:
 
@@ -857,7 +858,7 @@ publish、create PR，也不会修改远程仓库。
 ## 说明
 
 - `gateflow` 定义单个 work unit 的 gates。
-- `phaseflow` 是项目分步总控；具体 plan / implementation / review / fix 任务交给 Agent 完成。
+- `phaseflow` 核对简单计划和 PR 交付；具体 plan / implementation / fix 及适用独立 review 交给 Agent 完成。
 - `planreview` 和 `deepreview` 是 review skills。它们应该输出 durable artifacts，而不是只在聊天里给结论。
 - 只有在通过 tmux 路由多个 CLI Agent 时才需要 `tmux-agents`。
 - 总控通过 runner 子进程启动外部子 Agent 时使用 `sub-agents`。

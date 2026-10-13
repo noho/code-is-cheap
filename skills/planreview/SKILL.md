@@ -1,29 +1,18 @@
 ---
 name: planreview
-description: "用于对 plan、implementation plan、migration phase plan、feature slice plan 或 Gateflow handoff plan 做 adversarial review；重点挑战 plan assumptions、反例、scope、sequencing、implementation slices、architecture boundaries、过度耦合、state machines、testing gaps 和 residual risks，并产出基于证据的 plan review artifact。"
+description: "对重要契约、架构、迁移或状态机决策，以及显式指定的 plan 做 evidence-based adversarial review；判断是否足以指导已确认目标的正确实现，挑战假设、范围、切分、目标实现方案和过度设计，产出 plan review artifact。"
 ---
 
 # Planreview
 
-Planreview 是 adversarial plan review skill。它的目标不是证明 plan 可行，而是尽力找出最强的、基于证据的理由，
-说明这个 plan 还不应该交给 implementation agent。
-
-默认假设 plan 可能在微妙、高成本或用户可见的地方失败，直到证据证明它足够可靠。主动寻找可信反例、隐藏耦合、
-错误假设、不安全 sequencing、欠规格 slices 和 review gaps。
+Planreview 通过可信反例和直接证据，判断 plan 是否有实际阻止正确实现已确认目标的问题。主动挑战隐藏耦合、错误假设、
+不安全 sequencing、必要信息缺失和过度设计；允许无 material finding 直接通过，不以发现问题的数量衡量审核质量。
 
 ## When To Use
 
-适用于：
-
-- implementation plan；
-- migration phase plan；
-- feature slice plan；
-- Gateflow handoff plan；
-- schema/storage plan；
-- public contract plan；
-- state-machine plan；
-- concurrency/recovery plan；
-- 任何 implementation 前必须 code-generation-ready 的 plan。
+重要契约、架构、迁移或状态机决策在 implementation 前使用本 skill，包括涉及这些决策的 implementation、migration phase、
+feature slice、schema/storage、concurrency/recovery 或 Gateflow handoff plan。用户或项目显式要求的 plan review 仍执行。
+Gateflow 中简单计划由总控核对，不因它是 plan 就自动增加独立审核。
 
 不要用它 review 已经写好的代码；代码或 PR review 使用 `deepreview`。
 
@@ -44,16 +33,16 @@ docs 和 code facts 来判断。
 
 保持 constructively adversarial：
 
-- 默认怀疑。除非证据支持，否则假设 plan 至少有一个重要问题。
+- 主动尝试证伪关键假设，以当前证据判断是否有 material issue，不预设一定存在重要问题。
 - 不因为 good intent、partial fixes 或可能的 follow-up work 给 plan 加分。
 - 如果方案只覆盖 happy path，把它视为真实弱点。
-- 重点判断问题是否实际阻止正确实现已确认目标与对外行为；code-generation-ready 要明确必要契约/identity 语义、
-  architecture/ownership、state transitions/invariants 与验收依据，不要求穷举代码或局部实现。
+- 判断 plan 是否已明确目标行为、实现方向、必要职责/架构边界、重要契约与状态语义、影响范围和验证依据；
+  缺陷类任务还须明确根因。函数拆分、局部数据结构、分支和算法留给实现者，需要实际代码判断的问题交完整代码审核。
 - 找 failure modes，不做风格偏好 review。
 - 挑战 motivation、scope、sequencing 和 hidden assumptions。
 - 优先使用 plan artifact、source docs、code、tests、schemas、state machines 和 existing behavior 的直接证据。
 - 不制造 blocker。可信但未证实的问题放到 `Open Questions` 或 `Residual Risk`。
-- 除非证据显示当前方向结构性不安全，不要提出大范围重写。
+- 对已证实的错误模型或职责边界检查是否解决根因；必要内部重构不因修改较大被否定。非必要机制优先删除或简化。
 
 ## Attack Surface
 
@@ -61,7 +50,7 @@ docs 和 code facts 来判断。
 
 - scope、non-goals、ownership、file boundaries 或 implementation slice boundaries 不清；
 - goal drift：plan 增加 Goal Confirmation 未确认的目标、验收标准、设计强化、风险修复或 future-slice work；
-- plan 不够 code-generation-ready，迫使 implementation agent 重新设计；
+- plan 缺少正确实现所需的目标行为、关键契约、职责、状态语义或验证依据；
 - 过度耦合：plan 把本应独立的层、模块、状态机、数据模型、工具、测试或 rollout 步骤绑在一起，导致局部变更需要跨层联动；
 - auth、permissions、tenant isolation、trust boundaries、privilege escalation；
 - data loss、corruption、duplication、stale facts、irreversible state changes；
@@ -83,15 +72,18 @@ docs 和 code facts 来判断。
    schema/storage contracts、external protocol boundaries，以及是否引入过度耦合。
 5. 压测 execution semantics：state transitions、lifecycle、cancellation、retry、idempotency、concurrency、
    recovery、ordering、durability 和 partial failure。
-6. 压测 implementation sequencing：slices 是否过粗、顺序不合理，或容易让 implementation agent 提前做 future-slice work。
+6. 压测 implementation sequencing：默认一个 slice；只因必要验证依赖或安全迁移步骤拆分，每个 slice 有可独立验证的
+   行为结果。检查是否过多、过细、按文件/层/角色机械拆分，或依赖顺序不安全、提前做 future-slice work。
+   多文件、多模块或代码量本身不构成拆分理由，代码/测试/文档不能机械拆开；通常至多两个，三个及以上须有不可合并的
+   具体依赖依据，不仅因数量重新请示。显式项目/用户切分约束按 handoff 执行。
 7. 压测 validation：tests 是否证明目标行为、覆盖 failure paths 和 regressions，是否为了贴合实现而削弱 assertions。
 8. 如果用户给了 focus area，重点 review 该区域，但仍报告其它有证据支撑的 material issue。
 9. 区分 true blockers、deferred risks 和 questions。
 
 ## Special Review Lenses
 
-首次 review 任何非平凡 plan 时，必须显式应用这些 lenses；re-review 按已裁决 findings 与实际变更影响应用 review method / 相关 lenses，
-仅因实际变更影响或新的有证据反例扩大范围。复用对当前版本仍有效且未受影响的既有证据；artifact 变更即新版本，受影响的旧证据须重新验证：
+按当前目标和实际风险应用相关 lenses，不逐项填写无关检查。re-review 聚焦已裁决 findings 和实际变更影响，
+仅因影响扩大或新的有证据反例扩大范围。复用对当前版本仍有效且未受影响的证据；artifact 变更即新版本，受影响的旧证据须重新验证：
 
 - **Goal-bound minimal design review**：检查每个 slice、design decision、验收标准和 validation 是否能直接映射到
   Goal Confirmation 已确认的 goal、success signal 或必要 correctness/safety 条件。若 plan 把实现中发现的潜在风险升级成
@@ -99,19 +91,21 @@ docs 和 code facts 来判断。
   deferred follow-up、open question，或重新做 goal confirmation。
 - **Architecture boundary review**：验证 layering、ownership、dependency direction、public contracts、
   schema/storage boundaries、external protocol boundaries，以及 implementation details 是否泄漏到错误层级。
-- **Best-practice review**：把 plan 与该问题类型的工程最佳实践对照，包括 testability、maintainability、
-  observability、failure handling 和 minimal dependency exposure。优先使用 project-local conventions。
-- **Optimal-solution review**：判断 plan 是否是 credible alternatives 中最实际的路径。挑战“能工作但不够好”的方案：
-  是否忽略了更简单、更安全、更可维护或更可演进的选择。
-- **Overengineering review**：挑战无当前需求、风险或明确扩展压力支撑的 abstractions、layers、builders、
-  wrappers、protocols、migrations 或 generalization。plan 即使技术上自洽，也可能因太聪明、太宽或太贵而失败。
+- **Best-practice review**：用当前需求、具体风险和代码证据判断 testability、maintainability、observability、failure handling
+  和 dependency exposure，优先适用的项目惯例；不以“最佳实践”要求更多架构或保留已证实的结构性问题。
+- **Optimal-solution review**：只比较有当前问题证据和具体收益的可信替代方案；检查是否遗漏更简单、安全、可维护的路径。
+  不以个人架构偏好、假设未来需求或无界替代方案搜索阻塞实施，也不以少改行数保留错误模型或职责边界。
+- **Overengineering review**：检查新增 abstraction、layer、wrapper、protocol、配置、migration 或 generalization 是否为
+  当前目标与实际风险所必需；非必要机制建议删除或简化，必要机制才继续修正。范围内的根因重构不因改动较大被否定。
 - **Overcoupling review**：挑战 plan 是否把可独立演进的概念、层、模块、协议、状态、测试或 rollout 绑定成一个
   必须同步修改的整体；检查是否出现跨层穿透、双向依赖、共享可变状态、过宽公共契约、为了一个 slice 修改太多 ownership
-  边界、测试只能通过大集成链路证明、把本应基于 Protocol / interface 的结构设计成基于具体实现，或 future work
+  边界且有具体联动风险、测试只能通过大集成链路证明、把本应基于 Protocol / interface 的结构设计成基于具体实现，或 future work
   被当前实现结构锁死。
 
 当这些 lenses 发现问题时，按普通 finding 写出直接证据。不要把 “best practice” 或 “optimal” 当成抽象偏好；
 必须说明具体风险、tradeoff 和更安全的替代方案。
+
+审核建议本身也须保持已确认范围：只提出解决已证实问题所需的调整，不新增无依据的机制、切片、局部实现规格或验收要求。
 
 ## Finding Rules
 
@@ -148,7 +142,7 @@ blocker 仍阻塞，不得靠改名、延期或豁免放行。
 ```markdown
 ### 编号-未修复-[严重程度（低/中/高/严重）]-finding简述
 - **位置**: 相关章节、slice、目标、非目标、契约、状态机、测试或 open question 位置
-- **问题类型**: 动机不成立 / 目标漂移 / 范围漂移 / 过度验收标准 / 架构边界 / 过度耦合 / 最佳实践偏离 / 非最优方案 / 过度设计 / 契约缺失 / 状态机漏洞 / 并发恢复风险 / 切片过粗 / 不可直接实施 / 测试缺口 / open question 未收敛 / 其它
+- **问题类型**: 动机不成立 / 目标漂移 / 范围漂移 / 过度验收标准 / 架构边界 / 过度耦合 / 最佳实践偏离 / 非最优方案 / 过度设计 / 契约缺失 / 状态机漏洞 / 并发恢复风险 / 不必要切片 / 切片依赖不安全 / 缺少必要实现依据 / 测试缺口 / open question 未收敛 / 其它
 - **当前写法**: 当前 plan 如何描述
 - **反例/失败场景**: 什么场景会让该方案失败或跑偏
 - **为什么有问题**: 与用户目标、设计真源、项目约束、代码事实或可实施性要求的冲突

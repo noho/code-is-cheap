@@ -1,0 +1,13 @@
+{
+  "baseline": "501599da155c77d456d661b2e0f941b86ddecec7",
+  "branch": "feat/gateflow-planreview-simplification",
+  "source_sha256": {
+    "skills/gateflow/SKILL.md": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+    "skills/planreview/SKILL.md": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+    "skills/deepreview/SKILL.md": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+    "skills/phaseflow/SKILL.md": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+    "README.md": "59b67ea84ec027bb4648e3a2df07182b4beda25993675ea783aaf1d55d6abc62",
+    "README.zh.md": "a6a936ad319457b66ef0140d75fdfe5fb704ae32503824081bfb03cf129e9d20"
+  },
+  "controller_checks": "Source scope, metadata, Gate Order equality, standalone Deepreview strict modes/OID rules and Phaseflow routes/lifecycle preserved."
+}

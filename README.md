@@ -48,9 +48,9 @@ This connects existing CLI sessions; it does not inject instructions into a runn
 ### Engineering controls for automated coding of large features
 
 Prepare the architecture and implementation control plan first, then complete preflight. `phaseflow` advances phases /
-work units according to `gateflow`'s fixed gate order. The workflow includes goal and non-goal confirmation, planning,
-plan review, implementation by slices, code review, fixes and re-review, aggregate deep review, accepted commits,
-draft PRs, and final closeout.
+work units according to `gateflow`'s gate order. After goal confirmation, the controller checks simple plans and uses
+Planreview for important decisions. Implementation defaults to one slice, followed by one complete review of the final
+combined version, necessary fixes and affected re-review, commits as needed, a draft PR, controller delivery checks, and final closeout.
 
 Each step leaves traceable artifacts, review decisions, residual risks, and a next entry point, so a long workflow can
 proceed within explicit boundaries. The user merges PRs manually. Across sessions, the control document and accepted
@@ -67,9 +67,9 @@ targets for project code. Edit and validate sources here, then sync them out. Th
 
 | Skill | Responsibility |
 | --- | --- |
-| `gateflow` | Defines the gated workflow for one work unit: preflight, goal confirmation, fixed gate order, artifacts, residual risks, accepted commits, draft PR gate, and final closeout. It does not define project-level control documents or multi-agent routing. |
-| `phaseflow` | Project step controller. It reads `design_doc` and `control_doc`, identifies the current `phase = work unit`, performs preflight and goal confirmation with the user, reads Gateflow's `Gate Order`, dispatches concrete gates to Agents, adjudicates results, updates `control_doc`, and reconciles residual risks. |
-| `planreview` | You want adversarial review of a plan, implementation plan, migration phase plan, feature slice plan, or Gateflow plan. |
+| `gateflow` | Defines the gated workflow for one work unit: preflight, goal confirmation, necessary planning and applicable plan review, implementation/validation, one complete code review, necessary fixes, draft PR delivery checks, and final closeout. It does not define project-level control documents or multi-agent routing. |
+| `phaseflow` | Project step controller. It reads `design_doc` and `control_doc`, identifies the current `phase = work unit`, performs preflight and goal confirmation, checks simple plans and PR delivery, dispatches plan / implementation / fix and applicable independent reviews to Agents, adjudicates results, updates `control_doc`, and reconciles residual risks. |
+| `planreview` | Adversarial review of important contract, architecture, migration or state-machine decisions, or an explicitly requested plan review. |
 | `deepreview` | You want strict code review of current workspace changes, a GitHub PR, or the whole repository. |
 | `tmux-agents` | Defines tmux communication only: Agent CLI type, `/skill` vs `$skill`, pane discovery, clear/session rules, `tmux-cli send/wait_idle/capture`, and send-safety rules. It does not assign roles. |
 | `sub-agents` | Launches external Claude Code or Codex child agents through runner subprocesses, validates structured results, and supports isolated parallel dispatch without assigning roles. |
@@ -94,17 +94,16 @@ A typical flow is:
 1. Prepare the design source document, such as `docs/design.md` or `docs/host/design.md`.
 2. Prepare the implementation control document, such as `docs/implementation-control.md`, with phases/work units, status, validation requirements, artifacts, residual risks, and the next entry point.
 3. Use `phaseflow` to read both documents, identify the current `phase = work unit`, and perform preflight plus goal confirmation with the user.
-4. `phaseflow` reads Gateflow's `Gate Order` and dispatches concrete plan / implementation / review / fix gates to Agents.
+4. `phaseflow` reads Gateflow's `Gate Order`, dispatches planning, checks simple plans itself, and dispatches Planreview for important contract, architecture, migration or state-machine decisions or explicit review requirements.
 5. After each Agent return, `phaseflow` reads the artifact, adjudicates findings, updates `control_doc`, and advances to the next gate.
-6. After all slices are complete, run aggregate deep review; after fixes and re-review pass, record draft PR readiness and residual-risk ownership.
-7. The draft PR gate pushes, creates a draft PR, runs PR review, fixes accepted findings, re-reviews, creates an accepted PR review commit, and pushes again until `draft-PR-pass`.
+6. Dispatch implementation/validation, defaulting to one slice. After all necessary slices finish, run one complete Deepreview of the final combined version, including overall goal coverage and slice interactions. Repair accepted findings and re-review affected paths; record readiness and residual-risk ownership when the review passes.
+7. Commit as needed, push, and create a draft PR. The controller checks PR identity, head/base versions, the complete diff against the reviewed version, title/body, necessary CI, and final push status before `draft-PR-pass`. Changed content or base/diff requires affected review/validation; identical content does not trigger another complete review.
 8. Final closeout then records what changed, what was verified, docs updates, finding status, remaining risks and owners, the draft PR URL, and the next entry point.
 9. For issue work units, the draft PR body should link the issue; final closeout should confirm the issue closeout comment and the merge-time closing expectation.
 10. After final closeout passes, the user manually merges the PR, pulls the latest target base branch, clears the agent session if desired, and resumes `phaseflow` from the `control_doc` next entry point.
 
-The point is not to let the agent invent architecture on the fly. The point is to let agents execute reliably inside
-explicit design boundaries and implementation plans, while leaving durable artifacts for every review conclusion, fix
-status, validation result, and residual risk.
+Plans give enough direction for correct implementation, while agents choose local implementation details within the
+confirmed scope. Records may share a file or reference existing evidence; separate artifacts and commits for every gate are not required.
 
 ## Requirements
 
@@ -598,8 +597,9 @@ running). For a per-model exception, set `sandbox_mode` in that model's card to 
 ### Gateflow
 
 Use `gateflow` for one work unit: a feature, issue, bug fix, migration, refactor, schema/public contract change, or
-architecture-sensitive task. Gateflow defines the gates only: preflight, goal confirmation, plan, review, implementation
-slices, fixes, aggregate deep review, accepted commits, draft PR gate, and final closeout.
+architecture-sensitive task. Gateflow defines the gates only: preflight, goal confirmation, necessary planning and
+applicable plan review, implementation/validation, one complete code review, necessary fixes and affected re-review,
+draft PR delivery checks, and final closeout.
 
 Standalone Gateflow example:
 
@@ -614,7 +614,7 @@ Gateflow with `tmux-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while CodexAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review / re-review passes.
+$tmux-agents routes Agents: CodexAgent-GPT-6-Astra handles plan / implement / fix, while CodexAgent-MiMo / ClaudeAgent-DS-Flash run required independent reviews in parallel and affected re-review when needed.
 Re-discover panes before every send, clear the session for new tasks, and avoid bare #numbers.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -623,7 +623,7 @@ Gateflow with `sub-agents` example:
 
 ```text
 Develop <work-unit> with $gateflow.
-$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Codex mimo / Claude ds-flash run the two review / re-review passes.
+$sub-agents dispatches through runner subprocesses: Codex gpt-6-astra handles plan / implement / fix, while Codex mimo / Claude ds-flash run required independent reviews in parallel and affected re-review when needed.
 Pass the workspace absolute path explicitly in every call and use separate output / stderr files; the controller checks the structured results and adjudicates itself.
 Strictly follow the constraints in AGENTS.md.
 ```
@@ -632,8 +632,8 @@ Strictly follow the constraints in AGENTS.md.
 
 Use `phaseflow` when a project has a design source document and an implementation control document. Phaseflow is the
 project step controller: it reads the current `phase = work unit`, performs preflight and goal confirmation with the user,
-reads Gateflow's `Gate Order`, dispatches concrete gates to Agents, adjudicates results, updates `control_doc`, and
-reconciles residual risks.
+reads Gateflow's `Gate Order`, checks simple plans and PR delivery itself, dispatches concrete work and applicable reviews
+to Agents, adjudicates results, updates `control_doc`, and reconciles residual risks.
 
 Standalone Phaseflow example:
 
@@ -643,7 +643,7 @@ already-running tmux panes.
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
 Read control_doc first to identify the current phase/work unit, then read design_doc.
-The controller Agent completes preflight and goal confirmation first; after user confirmation, dispatch Agents gate by gate following Gateflow's Gate Order to do the concrete work.
+The controller Agent completes preflight and goal confirmation first; after user confirmation, follow Gateflow's Gate Order, check simple plans and PR delivery, and dispatch concrete work and applicable independent reviews to Agents.
 After each gate returns, update control_doc and record the artifact / finding adjudication / residual risk.
 After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
 Strictly follow the constraints in AGENTS.md.
@@ -653,8 +653,8 @@ Phaseflow with `tmux-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$tmux-agents routes Agents: CodexAgent-MiMo / ClaudeAgent-DS-Flash run two parallel review passes, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
-The controller Agent completes preflight and goal confirmation first; after confirmation, dispatch gate by gate following Gateflow's Gate Order.
+$tmux-agents routes Agents: CodexAgent-MiMo / ClaudeAgent-DS-Flash run required independent reviews in parallel and affected re-review when needed, while CodexAgent-GPT-6-Astra handles plan / implement / fix.
+The controller Agent completes preflight and goal confirmation first; after confirmation, follow Gateflow's Gate Order, checking simple plans and PR delivery itself.
 After each Agent returns, the controller reads the artifact, adjudicates findings, updates control_doc, collects residual risks, and closes resolved risks.
 After final closeout, explain that the user merges the PR, pulls the target base branch, and continues the next round from the next entry point in control_doc.
 Strictly follow the constraints in AGENTS.md.
@@ -664,14 +664,15 @@ Phaseflow with `sub-agents` example:
 
 ```text
 Proceed with $phaseflow; the design source of truth is docs/host/design.md, and the control document is docs/host/issues-implementation-control.md.
-$sub-agents dispatches through runner subprocesses: Codex mimo / Claude ds-flash run the two review passes, while Codex gpt-6-astra handles plan / implement / fix.
-The controller advances through Gateflow's Gate Order, checks each subprocess's exit status and structured output, and updates control_doc.
+$sub-agents dispatches through runner subprocesses: Codex mimo / Claude ds-flash run required independent reviews in parallel and affected re-review when needed, while Codex gpt-6-astra handles plan / implement / fix.
+The controller follows Gateflow's Gate Order, checks simple plans and PR delivery, checks each subprocess's exit status and structured output, and updates control_doc.
 Strictly follow the constraints in AGENTS.md.
 ```
 
 ### Planreview
 
-Use `planreview` to challenge whether a plan is specific, implementable, correctly sliced, architecturally sound, and not over-designed.
+Use `planreview` for important decisions or explicit review requests. Check whether the plan gives enough direction for
+correct implementation, uses only necessary slices and mechanisms, and addresses proven root causes without prescribing local code details.
 
 Codex:
 
@@ -913,7 +914,7 @@ repositories.
 ## Notes
 
 - `gateflow` defines the gates for one work unit.
-- `phaseflow` is the project step controller; concrete plan / implementation / review / fix work is delegated to Agents.
+- `phaseflow` checks simple plans and PR delivery; concrete plan / implementation / fix and applicable independent review work is delegated to Agents.
 - `planreview` and `deepreview` are review skills. They should produce durable artifacts, not just chat-only conclusions.
 - `tmux-agents` is only needed when you route work to multiple CLI agents through tmux.
 - `sub-agents` is used when the controller launches external child agents through the runner subprocesses.

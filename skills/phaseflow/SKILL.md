@@ -1,6 +1,6 @@
 ---
 name: phaseflow
-description: "项目分步总控。基于 design_doc 和 control_doc 推进 phase/work unit；phase = work unit，每个 phase 可是 feature、issue 或 bug fix；总控读取 Gateflow 的 Gate Order 和 Gate State Machine，自己完成 preflight 和 goal confirmation，然后按固定 gate 顺序派发 Agent 完成具体 plan/implementation/review/fix，裁决结果、更新 control_doc、追踪 residual risk。"
+description: "项目分步总控。基于 design_doc 和 control_doc 推进 phase/work unit；总控读取 Gateflow 的 Gate Order 和 Gate State Machine，完成 preflight、goal confirmation、简单计划核对和 PR 交付核对，派发 Agent 做 plan/implementation/fix 与适用独立 review，裁决结果、更新 control_doc、追踪 residual risk。"
 ---
 
 # Phaseflow
@@ -38,21 +38,21 @@ $phaseflow docs/host/design.md docs/host/implementation-control.md
 - 识别当前 phase/work unit、当前 gate、next entry point；
 - 执行 preflight；
 - 执行 goal confirmation；
+- 核对简单计划，判断 Planreview 是否适用；
+- 执行 draft PR 交付身份/版本/diff、title/body、必要 CI 和 push 核对；
 - 复述当前目标、非目标、约束、风险和下一步；
 - 生成交给 Agent 的任务说明；
 - 派发 Agent、等待结果、读取结果；
 - 裁决 accepted / rejected / deferred / needs-more-evidence findings；
 - 更新 `control_doc` 的状态、artifact、commit hash、PR 信息、finding 裁决、residual risk、next entry point；
-- 做 branch/status 检查、创建 accepted local commit、记录验证结果等 gate bookkeeping。
+- 做 branch/status 检查、必要 commit / push / create draft PR、记录验证结果等交付 bookkeeping。
 
 必须交给 Agent 的具体任务：
 
-- code-generation-ready plan；
+- 足以指导正确实现的 plan；
 - implementation；
 - fix；
-- review / re-review；
-- aggregate deepreview；
-- PR review / re-review；
+- 适用 Planreview、一轮最终组合版本的完整 Deepreview，以及必要受影响面 re-review；
 - source code、tests、migration、schema、配置、运行时行为或产品功能文档修改。
 
 如果具体任务没有可用 Agent 或职责不清，先停下来报告，不要自己补做。
@@ -66,7 +66,7 @@ $phaseflow docs/host/design.md docs/host/implementation-control.md
 - 当前 gate / next entry point；
 - Gateflow `Gate Order` 中下一步对应的 gate；
 - 将使用的 Agent 派发协议；
-- 将派发给哪个 Agent 做下一步具体任务；
+- 下一步由总控执行，或将派发给哪个 Agent 做具体任务；
 - 将如何使用 `design_doc` 和 `control_doc` 裁决结果；
 - blocking open questions（如有）。
 
@@ -117,13 +117,12 @@ git status --short
 
 | Agent gate | 必需的可定位输入与身份 |
 | --- | --- |
-| plan review | 待审 target plan artifact 的路径/版本，以及已确认 goal 与适用的 Slice 原则。 |
+| plan review（适用时） | 待审 target plan artifact 的路径/版本，以及已确认 goal 与适用的 Slice 原则。 |
 | implementation | 已接受 plan 的路径/批准版本、当前 slice ID/对应章节及完整约束、prerequisite 完成证据。两个草稿并存时必须唯一指向已批准者。 |
-| code review / aggregate deepreview | 冻结的代码范围与版本（适用的 base/head、commit 或工作树 diff 身份），以及本 gate 相关的实现/review/validation artifact 来源版本。 |
-| fix / re-review | 来源 review 与裁决 artifact 路径/版本、accepted finding IDs、待修版本；re-review 还需已修版本与修复证据。 |
-| PR review | repository、PR number、head/base OID 与需审核的 PR 版本；深挖与收尾按 Deepreview 的 PR 版本核对规则。 |
+| 完整 code review | 最终组合代码范围与版本（适用的 base/head、commit 或工作树 diff 身份），以及相关实现/review/validation artifact 来源版本。 |
+| fix / re-review | 来源核对/review 与裁决记录的路径/版本、accepted finding IDs（如有）、待修版本；re-review 还需已修版本与修复证据。 |
 
-代码审核 handoff 交接 Gateflow 定义的 slice/aggregate/PR 实质职责、既有验证来源版本及适用性或重验范围；
+代码审核 handoff 交接 Gateflow 定义的完整审核（含整体目标和多 slice 交互）、获准的中间决策审核或受影响面复审职责，及既有验证来源版本与适用性或重验范围；
 引用未变事实按 Gateflow Artifacts 规则，不重复交接无关历史，也不以旧 pass 替代当前独立判断。
 
 某 gate 的输入尚未产生或版本不可定位时，总控不派发；子 Agent 发现输入缺失、不可访问或身份不符时报告
@@ -177,9 +176,9 @@ validation 核对任务返回；不要求 CLI 进程退出。用户明确要求�
 
 - 派发 `plan` gate 时，必须把 Slice 切分原则作为 planning constraints 写入 Agent 任务说明；
 - plan artifact 必须说明 implementation slice 数量、切分依据，以及是否符合该 Slice 切分原则；
-- 如果 plan 的 implementation slices 超过 `control_doc` 中定义的建议上限或阈值（例如 3 个），plan artifact 必须说明为什么不能合并或减少；
-- 派发 `plan review` gate 时，必须把 `control_doc` 中的 Slice 切分原则和具体阈值（如有）列为 checklist 项；
-- 通用 slice 数量、机械切分和 gate 成本审查由 Gateflow / Planreview 规则定义，phaseflow 只负责传递 `control_doc`
+- 如果 plan 的 implementation slices 超过 `control_doc` 中定义的建议上限或阈值，plan artifact 必须说明为什么不能合并或减少；
+- 总控核对计划或派发适用 `plan review` 时，核对 `control_doc` 中的 Slice 切分原则和具体阈值（如有）；
+- 默认一个 slice、必要依赖下拆分及数量依据由 Gateflow / Planreview 规则定义，phaseflow 只负责传递 `control_doc`
   中的项目级覆盖约束，不另行定义额外阈值。
 
 ## Gate Order Dispatch
@@ -187,42 +186,34 @@ validation 核对任务返回；不要求 CLI 进程退出。用户明确要求�
 phaseflow 必须读取 Gateflow 中 `Gate Order` 和 `Gate State Machine` 定义，并按其中固定顺序总控当前 phase/work unit。
 不要把整个 work unit 交给其它 Agent 启动完整 Gateflow；phaseflow 自己维护 current gate，并逐 gate 派发具体任务。
 
-以读取到的 Gateflow `Gate Order` 为准；方括号内的 fix/re-review 仅在有实际修复时执行：
+以读取到的 Gateflow `Gate Order` 为准；总控亲自核对简单计划，重要决策派发 Planreview；fix/re-review 仅在有实际修复时执行：
 
 ```text
 goal confirmation
 -> plan
--> plan review
--> [fix -> re-review]
--> accepted plan commit
--> implementation
+   （总控核对；重要决策执行 plan review）
+-> [fix -> 受影响面 re-review]
+-> implementation / validation（按必要 slices）
 -> code review
--> [fix -> re-review]
--> accepted slice commit
--> aggregate deepreview
--> [fix -> re-review]
--> accepted deepreview commit
+   （一轮完整审核，含整体目标与多 slice 交互）
+-> [fix -> 受影响面 re-review]
 -> ready-to-open-draft-PR
--> push
+-> 必要提交 / push
 -> create draft PR
--> PR review
--> [fix -> re-review]
--> accepted PR review commit
--> push
+-> 总控交付核对
 -> draft-PR-pass
 -> final closeout
 ```
 
-`plan review` gate 必须使用 `planreview` skill；`code review`、`aggregate deepreview` 和 `PR review` gates 必须使用 `deepreview` skill。
+适用计划审核使用 `planreview`；最终组合版本的完整代码审核使用 `deepreview`，保留要求的独立审核数量与双路并行。
+总控交付核对按 Gateflow 的 draft PR gate 执行，不对相同内容重派完整双审。内容或 base/diff 变化时，判断证据适用性，
+派发受影响面审核/验证及必要修复/复审，再提交/push 并重新核对；身份、版本、diff 或必要 CI 缺项不得放行。
 
 `final closeout` gate 在下方 `## Gate: final closeout` 定义。不得把 `draft-PR-pass` 当作 phase/work unit 完成；必须继续执行
 `final closeout` gate。
 
-多 slice 时重复：
-
-```text
-implementation -> code review -> [fix -> re-review] -> accepted slice commit
-```
+多 slice 时按依赖派发 implementation / validation，所有 slices 完成后审核最终组合版本；slice 不自动产生独立审核或 commit。
+仅按 Gateflow 的明确返工风险条件提前审核中间决策，最终审核复用仍适用的结论。
 
 每次派发 Agent 的任务说明只包含该 gate 所需的信息：
 
@@ -262,11 +253,12 @@ Gate Order 推进，直到当前 phase/work unit 到达 `final closeout pass`。
 4. 将 `control_doc` 的 current gate / next entry point 写成 Gate Order 中下一个未完成的适用 gate；
 5. 继续执行总控 gate，或派发下一个具体 gate 给 Agent。
 
-所有 review loops 按 Gateflow 的全部通过条件裁决；无需实际 fix 时记录 pass -> 对应 accepted commit，有实际修复才派发
+所有适用 review loops 按 Gateflow 的全部通过条件裁决；无需实际 fix 时记录 pass 并进入下一适用步骤，有实际修复才派发
 fix -> re-review。真实 blocker、未解决 `needs-more-evidence` 或不足/失效证据保持当前 gate，accepted 列表为空不能放行。
 `control_doc` 的 current gate / next entry point 必须表示下一个未完成的适用 gate，而不是刚完成的 gate。不得 invent、skip、
-collapse 或 reorder 必需或适用 gates；不执行条件不成立的 fix/re-review 不属于 skip。PR gate chain 必须遵守 Gateflow 状态不变量；`create draft PR`
-成功后，`control_doc` 必须进入 `PR review`，不得写成 `draft-PR-pass`。
+collapse 或 reorder 必需或适用 gates；不执行条件不成立的审核或 fix/re-review 不属于 skip。简单计划总控核对后不等待
+plan review artifact；范围内必要实现选择和可修复验证失败继续处理，不按 architecture / strategy 字样自动停报。
+PR gate chain 必须遵守 Gateflow 状态不变量；`create draft PR` 成功后，`control_doc` 必须进入 `总控交付核对`，不得写成 `draft-PR-pass`。
 
 ## Judgment
 
@@ -291,30 +283,32 @@ collapse 或 reorder 必需或适用 gates；不执行条件不成立的 fix/re-
 
 每个关键点都要更新或准备更新 `control_doc`：
 
-- plan review（有修复时含 re-review）通过后：plan artifact、plan review artifacts、accepted plan commit hash；
-- 每个 slice commit 后：slice 状态、artifact、review 结论、commit hash、未覆盖项；
-- aggregate deepreview（有修复时含 re-review）通过后：aggregate review artifact、accepted deepreview commit hash；
+- 计划核对/适用审核通过后：accepted plan 路径/版本、总控核对与审核适用性、适用 review/re-review 结果；
+- slice 实现/验证完成后：实际改动、验证、完成状态和未覆盖项；
+- 完整代码审核及必要 fix/re-review 通过后：review/裁决结果、修复最终状态和当前版本的有效证据；
 - ready-to-open-draft-PR 前：draft PR readiness、剩余风险、owner、后续 phase/work unit destination；
-- final closeout gate：按 `## Gate: final closeout` 写入 draft PR、review、commit、risk、issue、final closeout summary、
+- PR 交付核对后：实际 PR 身份/版本/diff、描述、必要 CI、最终 push 与交付结论；
+- final closeout gate：按 `## Gate: final closeout` 写入 draft PR、review、实际 commit、risk、issue、final closeout summary、
   final closeout pass、completion 和 next entry point 状态。
 
-如果 `control_doc` 没有合适位置记录这些内容，先提出具体写入位置或结构。
+如果 `control_doc` 没有合适位置记录这些内容，按现有文档结构选择位置写入。
+可在同一文件维护或引用可取回的既有记录，不要求每 gate 独立文件、固定字段表或 accepted commit。
 
 ## Gate: final closeout
 
 `draft-PR-pass` 后，phaseflow 不得直接结束。必须先执行 `final closeout` gate。
 
-`final closeout` 是总控任务，由 phaseflow 自己完成，不派发给 Agent。缺少必须 artifact、issue 状态需要外部授权，或
-`control_doc` 没有合适位置记录结果时，停止并询问用户。
+`final closeout` 是总控任务，由 phaseflow 自己完成，不派发给 Agent。缺少必需记录/证据时先在允许范围内补足；
+无法补足、必要外部授权缺失或其它 Gateflow stop condition 成立时，停止并报告。
 
 `final closeout` gate 必须按顺序完成：
 
-1. 重新读取 `control_doc`，确认当前 phase/work unit、当前 gate、draft PR URL、PR review artifacts、accepted PR review
-   commit hash、follow-up push 状态和 next entry point。
+1. 重新读取 `control_doc`，确认当前 phase/work unit、当前 gate、draft PR URL、完整代码审核及必要复审结果、
+   总控交付核对、实际 head/base 与最终 push 状态和 next entry point。
 2. 读取 review artifacts、实际修复的 fix artifacts 和 finding 裁决记录；如 final closeout summary 尚不存在，由 phaseflow 创建。
 3. 汇总 what changed、what was verified、docs updates、finding status、draft PR URL。
 4. 执行 residual risk reconciliation：收集所有 remaining risks，确认每项都有 owner 和 destination。
-5. 更新 `control_doc`：draft PR URL、PR review artifacts、accepted PR review commit hash、follow-up push 状态、remaining
+5. 更新 `control_doc`：draft PR URL、完整审核/必要复审及交付核对结果、实际交付 commit 与最终 push 状态、remaining
    risks / owners、final closeout summary、final closeout pass、当前 phase/work unit completed 状态、issue 关联/评论/关闭预期
    （如当前 work unit 是 issue）、next entry point。
 6. 如果当前 work unit 是 issue，确认 PR body 已关联 issue、issue closeout comment 已添加，并在 `control_doc` 记录 merge 后是否会通过
