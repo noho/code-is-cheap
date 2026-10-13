@@ -1,0 +1,7 @@
+*
+!.gitignore
+!EVIDENCE.md
+!raw-evidence.tar.gz
+!raw-evidence-index.json
+!summary.json
+!suite.stderr

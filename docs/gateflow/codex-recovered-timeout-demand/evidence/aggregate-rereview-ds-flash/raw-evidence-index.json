@@ -1,0 +1,26 @@
+{
+  "packaged_at": "2026-10-13T17:21:55.309090+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-rereview-ds-flash/raw-evidence.tar.gz",
+  "archive_sha256": "9414cf27493471355617b8db0862293e60774294e38bbc37f4ed3c0de2dcba4b",
+  "raw_files": 16,
+  "files_sha256": {
+    "README.md": "e111c8b30172a8ffffc720acb24813567f2d0b0d3b2297fe6b3639390d1470f5",
+    "before/c1-blank-result-cannot-be-rescued-by-canary-match-and-valid-artifact.report.json": "c5ca02f32ba049a9b15c881b64317eea2ef7d3fdf4cf44038d00795c1154798f",
+    "before/c2-blank-result-with-canary-mismatch-and-valid-artifact.report.json": "ce369f4a991d7ed802ff458354406946fbb95d621a2aa09273e10aded825d23c",
+    "before/c3-duplicate-result-late-text-never-displays-over-retained-partial.report.json": "129a93a33a2788652c7c10029e6fcdab8eb9f42950e2faef7e3f5480e177fb0c",
+    "before/c4-postterminal-assistant-cannot-overwrite-retained-partial.report.json": "93d3b6283e71e9542341b702dcb827ab9ad141c6ede5ca7e60b62d06f68247c3",
+    "before/c6-whitespace-partial-then-blank-result-retained.report.json": "6d968baeac6ce30fc90c307f6d7f5d0b3d37371508d48ca484b3419ec369cb8d",
+    "current/c1-blank-result-cannot-be-rescued-by-canary-match-and-valid-artifact.report.json": "a455c4673276a20af7f6d70737f7b0e6a657ab32f7e661b61acbe671764a1783",
+    "current/c2-blank-result-with-canary-mismatch-and-valid-artifact.report.json": "8893d62647602735df29756f961325ab5deb46c61b3a57d37f015ae96b4ca740",
+    "current/c3-duplicate-result-late-text-never-displays-over-retained-partial.report.json": "6e449df627a2c63e49c881a03f2b4f100cfe51e892e24eb56f8095a1ca8962f6",
+    "current/c4-postterminal-assistant-cannot-overwrite-retained-partial.report.json": "f522ada5eb04cc6e272f7ff2580044c1f7d90a025076bdde1b89e6ca63191d30",
+    "current/c6-whitespace-partial-then-blank-result-retained.report.json": "941803c784fb82981f71604f7519a93547aa8c5487952c85bc53351a41b17448",
+    "live-current-3methods.log": "e6794d785c5b19faa66bcf2b28e97f8c311fde04591dd7dea17f531c9683b4f4",
+    "probe-results.json": "167493925a6b0de3dbb9f03f191860d310fd7eae3a4cd8a0a5596966eb42e52e",
+    "probe_rereview.py": "7bb25e8434ff1369acb70fe8684693e3409544c36a7ad8e9c6a1480bded6e981",
+    "unit-differential-after.log": "d0a8cf256057b4c08eed74ab48f16e630cfa3239dc1ef9f1afb06369b7820629",
+    "unit-differential-before.log": "4107fbc6b183bb60652d34ae71de7d6ad639e840abd4b448c3df707123b7c446"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

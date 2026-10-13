@@ -1,7 +1,7 @@
 {
   "work_unit": "codex-recovered-timeout-demand",
-  "current_gate": "accepted deepreview commit",
-  "next_entry_point": "accepted deepreview commit",
+  "current_gate": "ready-to-open-draft-PR",
+  "next_entry_point": "ready-to-open-draft-PR",
   "goal_confirmation": "passed-user-confirmed",
   "history": [
     {
@@ -173,6 +173,12 @@
         "docs/reviews/code-review-20261013-171623.md"
       ],
       "collector_sha256": "aa9b1a3eef7f048e6d8e8a06e06510da9178fcba9097270d422cf2eafc2dd7ff"
+    },
+    {
+      "gate": "accepted deepreview commit",
+      "commit": "1bd8246a0135958816be3cd4441b59e458af7af6",
+      "decision": "reviewed source checkpoint; full staged whitespace check on raw evidence needed packaging correction before ready/push, not waived",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/artifact-packaging.md"
     }
   ],
   "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
@@ -186,5 +192,6 @@
   "goal_contract": "goal-confirmation-v2.md",
   "inflight": [],
   "accepted_plan_commit": "b5a8095a2f2c8f72596f4a393ad5c70e85ca48ca",
-  "accepted_slice_commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3"
+  "accepted_slice_commit": "edd3d7bc937752d4ecab1e63cc6ba8599f17dac3",
+  "accepted_deepreview_commit": "1bd8246a0135958816be3cd4441b59e458af7af6"
 }

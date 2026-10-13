@@ -1,0 +1,17 @@
+{
+  "packaged_at": "2026-10-13T17:21:55.277219+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-ds-flash/raw-evidence.tar.gz",
+  "archive_sha256": "e423438fde1b1b5e1a125a74301c75b3a2d2e88ccb43acf97da38ecfc1b96979",
+  "raw_files": 7,
+  "files_sha256": {
+    "blank-result-probe.json": "58e478d7fa5c1067338c6662a0c71d44dbe92a23e17c72c12b345544d0330f3f",
+    "probe-b-events.jsonl": "2b5105168b4c8b354e9c572b1bb50c485e66856fbd19362172450a51525971c1",
+    "probe-run.log": "2d2cc1ba519baa4d3a90fadc366f380e8746b444793a9bcc6ce43bfd38399de9",
+    "probe_aggregate_ds.py": "c91258145586167c9064ecc70cf732b5d45702296e8aaae98790d648d423ce97",
+    "results.json": "9df7165d9654fe17b94906e61b49a57f465feab1cfab7b055d87cf252229cc65",
+    "source-diff-main-head.patch": "e2f56b5f41c4b5f6717803b6ac235573e4b99b8af6771aeb519a5efb5dce6952",
+    "v1-base-collector.py": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

@@ -1,0 +1,15 @@
+{
+  "packaged_at": "2026-10-13T17:21:55.373839+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native-fixed/raw-evidence.tar.gz",
+  "archive_sha256": "dde8fe203557c99b5bd84b934649a3717354b4f13f0c8ec2e0943dcec36c6c35",
+  "raw_files": 5,
+  "files_sha256": {
+    "claude-probe.json": "07648da9ed9d129b0bb563f6d3e1608b06716e336c123db280ab3b87ad72a737",
+    "codex-probe.json": "148646e2d85643ecf9f59a2425ec3f4e8246b0f8847f98d2ebd52e7635339f9f",
+    "suite.stderr": "2960d89a69fbc2bbe3730ed903b5e81258247b8682ecd160e2a3512b0b06684a",
+    "suite.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "summary.json": "f4c5871aecccc3217edd207c665c035b93b3b93f131244e84dae749890114151"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

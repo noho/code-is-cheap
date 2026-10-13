@@ -16,3 +16,30 @@ Controller delivery preparation only, no source or result change. With per-case 
 ]
 
 The initial index-only packaging step was sandbox-denied (EPERM), not a review rejection; authorized index operation completed separately with escalation. No working-copy raw file was removed. Scope ownership is controller evidence packaging, separate from gpt-6-sol source fix. Reviewers verify archive/index/current raw byte identity before reusing evidence.
+
+## Ready gate packaging correction
+
+The full staged whitespace check found trailing spaces in immutable raw diff/test-failure output, and the controller mistakenly created checkpoint1bd8246 before reacting to its nonzero result. Source-only checks and all reviewed source hashes remained passing and unchanged. No PR had been pushed/created. These exact raw bytes and bulky synthetic native traces were then byte-verified into archives; raw files remain locally and in accepted history. Native summaries and tiny native-suite stderr logs stay directly versioned. This fixes evidence storage, not implementation, results or scope. Full repository check is rerun before push; no unresolved validation waived.
+
+[
+  {
+    "directory": "docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-ds-flash",
+    "archive_sha256": "e423438fde1b1b5e1a125a74301c75b3a2d2e88ccb43acf97da38ecfc1b96979",
+    "files": 7
+  },
+  {
+    "directory": "docs/gateflow/codex-recovered-timeout-demand/evidence/aggregate-rereview-ds-flash",
+    "archive_sha256": "9414cf27493471355617b8db0862293e60774294e38bbc37f4ed3c0de2dcba4b",
+    "files": 16
+  },
+  {
+    "directory": "docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native",
+    "archive_sha256": "9a148c99b0e1729c1d14c23e2c50188e24f8dcf08a7f84200a4e45502d55de9e",
+    "files": 5
+  },
+  {
+    "directory": "docs/gateflow/codex-recovered-timeout-demand/evidence/controller-native-fixed",
+    "archive_sha256": "dde8fe203557c99b5bd84b934649a3717354b4f13f0c8ec2e0943dcec36c6c35",
+    "files": 5
+  }
+]
