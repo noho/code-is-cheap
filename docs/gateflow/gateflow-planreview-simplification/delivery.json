@@ -1,0 +1,32 @@
+{
+  "repository": "noho/code-is-cheap",
+  "facts": {
+    "baseRefName": "main",
+    "baseRefOid": "501599da155c77d456d661b2e0f941b86ddecec7",
+    "body": "## Summary\n\nGateflow currently requires plan review, separate slice and aggregate reviews, and another PR review even when the code is unchanged. The updated workflow checks simple plans in the controller, reviews important decisions with Planreview, defaults to one implementation slice, and performs one complete review of the final combined version. Actual fixes receive affected re-review; the controller verifies draft PR identity, version, full diff, description and necessary CI.\n\nPlans need enough direction to correctly implement the confirmed goal without prewriting local code. Features cover new behavior and appropriate architecture; defects require root-cause solutions; migration/refactor work covers target state, invariants and compatibility. Planreview checks unnecessary mechanisms, slices, detail and scope introduced by review recommendations. Records may be co-located and commits follow actual work.\n\nSource changes are limited to Gateflow, Planreview and necessary Deepreview/Phaseflow/English and Chinese README linkage. Standalone Deepreview strict modes and precise PR OID rules, Phaseflow dispatch/lifecycle protocols, and runner/runtime/business behavior remain intact.\n\n## Validation and review\n\n- gpt-6-sol via Codex runner produced the controller-accepted plan, implementation and user-requested generic-goal wording correction.\n- mimo-flash and ds-flash via independent parallel Claude runners performed one complete final text Deepreview; both passed without material findings. Controller checked evidence and adjudicated the non-blocking actor-terminology question; no repair re-review was required.\n- Existing skill metadata validation, whitespace checks, exact Gate Order equality, preserved-boundary comparisons and representative workflow scenarios passed.\n- Evidence and controller adjudication: `docs/gateflow/gateflow-planreview-simplification/`; full independent reports in `docs/reviews/code-review-20261013-195607.md` and `docs/reviews/code-review-20261013-200007.md`.\n\nDraft for the user to merge manually. No merge or model live probe. Reviewed skill sync and installed-text comparison are explicitly authorized and will be recorded in final closeout; no runtime enforcement or measured speed improvement is claimed. No linked issue for this workflow-text optimization.\n",
+    "headRefName": "feat/gateflow-planreview-simplification",
+    "headRefOid": "f4da2f47e81a88544684e447eadaf5aa025527f1",
+    "headRepository": {
+      "id": "R_kgDOSd8g6w",
+      "name": "code-is-cheap",
+      "nameWithOwner": "noho/code-is-cheap"
+    },
+    "isDraft": true,
+    "number": 60,
+    "state": "OPEN",
+    "statusCheckRollup": [],
+    "title": "docs: simplify Gateflow planning and review workflow",
+    "url": "https://github.com/noho/code-is-cheap/pull/60"
+  },
+  "compare_endpoint": "repos/noho/code-is-cheap/compare/501599da155c77d456d661b2e0f941b86ddecec7...f4da2f47e81a88544684e447eadaf5aa025527f1",
+  "complete_diff_sha256": "f77537bc40c7e27cd78bd18a892cbb26f09f2ffc5be330803c22f3b722d56e6e",
+  "complete_diff_bytes": 146026,
+  "remote_diff_equals_exact_local_oid_diff": true,
+  "reviewed_source_hashes_match_head": true,
+  "closing_oid_check": {
+    "baseRefOid": "501599da155c77d456d661b2e0f941b86ddecec7",
+    "headRefOid": "f4da2f47e81a88544684e447eadaf5aa025527f1"
+  },
+  "required_ci": "No workflow/checks configured or reported; local skill validator and whitespace checks passed.",
+  "diff_retrieval": "Exact immutable head/base Git objects and compare endpoint above preserve retrievable versions and full diff."
+}

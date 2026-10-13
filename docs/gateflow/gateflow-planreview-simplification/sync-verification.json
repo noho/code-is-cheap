@@ -1,0 +1,192 @@
+{
+  "checked_at": "2026-10-13T20:06:00.504275+08:00",
+  "source_commit": "f4da2f47e81a88544684e447eadaf5aa025527f1",
+  "sync_command": "./scripts/sync-skills.sh",
+  "sync_exit_code": 0,
+  "reviewed_sources_unchanged": true,
+  "matched_pairs": 26,
+  "pairs": [
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/deepreview/SKILL.md",
+      "sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "bytes": 27949,
+      "equal": true
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/deepreview/SKILL.md",
+      "sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "bytes": 27949,
+      "equal": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/deepreview/agents/openai.yaml",
+      "sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "bytes": 168,
+      "equal": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/deepreview/agents/openai.yaml",
+      "sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "bytes": 168,
+      "equal": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/gateflow/SKILL.md",
+      "sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "bytes": 19085,
+      "equal": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/gateflow/SKILL.md",
+      "sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "bytes": 19085,
+      "equal": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/gateflow/agents/openai.yaml",
+      "sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "bytes": 204,
+      "equal": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/gateflow/agents/openai.yaml",
+      "sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "bytes": 204,
+      "equal": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/phaseflow/SKILL.md",
+      "sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "bytes": 20902,
+      "equal": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/phaseflow/SKILL.md",
+      "sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "bytes": 20902,
+      "equal": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/phaseflow/agents/openai.yaml",
+      "sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "bytes": 286,
+      "equal": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/phaseflow/agents/openai.yaml",
+      "sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "bytes": 286,
+      "equal": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/planreview/SKILL.md",
+      "sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "bytes": 12548,
+      "equal": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/planreview/SKILL.md",
+      "sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "bytes": 12548,
+      "equal": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/planreview/agents/openai.yaml",
+      "sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "bytes": 147,
+      "equal": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/planreview/agents/openai.yaml",
+      "sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "bytes": 147,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "bytes": 10896,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "bytes": 10896,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/sub-agents/agents/openai.yaml",
+      "sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "bytes": 261,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/sub-agents/agents/openai.yaml",
+      "sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "bytes": 261,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/references/advanced.md",
+      "sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "bytes": 9337,
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/references/advanced.md",
+      "sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "bytes": 9337,
+      "equal": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/SKILL.md",
+      "sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "bytes": 4692,
+      "equal": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/SKILL.md",
+      "sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "bytes": 4692,
+      "equal": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/agents/openai.yaml",
+      "sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "bytes": 250,
+      "equal": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/agents/openai.yaml",
+      "sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "bytes": 250,
+      "equal": true
+    }
+  ]
+}
