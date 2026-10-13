@@ -1,0 +1,36 @@
+[
+  {
+    "call_line": 18,
+    "id": "call_cd021627d19a410a8cf2981d",
+    "name": "Read",
+    "input": {
+      "file_path": "/private/tmp/codex-recovered-timeout-demand/probes/claude/input.json"
+    },
+    "result_line": 19,
+    "content": "1\t{\"nonce\": \"native-probe-308b6ad8eb85fde456a8f0ad\", \"values\": [-13, -2, -7, -7, -12]}\n2\t",
+    "is_error": false
+  },
+  {
+    "call_line": 31,
+    "id": "call_a9e94e764b4940a4b97d067a",
+    "name": "Bash",
+    "input": {
+      "command": "python3 -I - <<'PY'\nimport json, hashlib, os\n\ninput_path = \"/private/tmp/codex-recovered-timeout-demand/probes/claude/input.json\"\nresult_path = \"/private/tmp/codex-recovered-timeout-demand/probes/claude/result.json\"\n\nwith open(input_path, \"rb\") as f:\n    raw = f.read()\n\ndata = json.loads(raw.decode(\"utf-8\"))\nvalues = data[\"values\"]\n\nresult = {\n    \"count\": len(values),\n    \"sum\": sum(values),\n    \"sum_squares\": sum(v * v for v in values),\n    \"nonce\": data[\"nonce\"],\n    \"input_sha256\": hashlib.sha256(raw).hexdigest(),\n}\n\nwith open(result_path, \"x\") as f:  # exclusive create: fail if exists\n    json.dump(result, f)\n    f.write(\"\\n\")\n\nprint(json.dumps(result, indent=2))\nPY",
+      "description": "Compute stats and write result.json exclusively"
+    },
+    "result_line": 34,
+    "content": "{\n  \"count\": 5,\n  \"sum\": -41,\n  \"sum_squares\": 415,\n  \"nonce\": \"native-probe-308b6ad8eb85fde456a8f0ad\",\n  \"input_sha256\": \"03dd742d0b390db8fae4c160a2ee03406ac43509927b25c74ac9d8b460db8882\"\n}",
+    "is_error": false
+  },
+  {
+    "call_line": 39,
+    "id": "call_4b754d96d06c43a3b6f029ac",
+    "name": "Read",
+    "input": {
+      "file_path": "/private/tmp/codex-recovered-timeout-demand/probes/claude/result.json"
+    },
+    "result_line": 40,
+    "content": "1\t{\"count\": 5, \"sum\": -41, \"sum_squares\": 415, \"nonce\": \"native-probe-308b6ad8eb85fde456a8f0ad\", \"input_sha256\": \"03dd742d0b390db8fae4c160a2ee03406ac43509927b25c74ac9d8b460db8882\"}\n2\t",
+    "is_error": false
+  }
+]

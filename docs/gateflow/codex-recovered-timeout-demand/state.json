@@ -1,7 +1,7 @@
 {
   "work_unit": "codex-recovered-timeout-demand",
-  "current_gate": "accepted PR review commit",
-  "next_entry_point": "accepted PR review commit",
+  "current_gate": "completed",
+  "next_entry_point": "user manual merge of draft59; caller separate business acceptance of Developer/Judge",
   "goal_confirmation": "passed-user-confirmed",
   "history": [
     {
@@ -262,6 +262,47 @@
         "docs/reviews/pr-59-review-20261013-184446.md"
       ],
       "reviewed_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
+    },
+    {
+      "gate": "accepted PR review commit",
+      "commit": "0feb4498aaa624c9984c1e705f04e75d808bd2c3",
+      "decision": "checkpoint; independent reviewed source aa7bcb7, artifact-only delta/source equality checked",
+      "artifact": "evidence/pr-review-artifact-delta.json"
+    },
+    {
+      "gate": "push",
+      "decision": "actual exit0; accepted PR review checkpoint published",
+      "head": "0feb4498aaa624c9984c1e705f04e75d808bd2c3"
+    },
+    {
+      "gate": "draft-PR-pass",
+      "decision": "pass; all criteria met, actual stable current PR snapshot and artifact-only bridge verified",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/draft-pr-pass.md"
+    },
+    {
+      "gate": "final closeout",
+      "decision": "authorized sync2 actual0; installed source equality verified, CLI versions0.162.1/2.1.296, both originals installed0/needs_review",
+      "sync": "evidence/live-sync/summary.json",
+      "replays": [
+        "evidence/original-replay-installed.json",
+        "evidence/judge-replay-installed.json"
+      ]
+    },
+    {
+      "gate": "final closeout",
+      "decision": "delivery validation pass: actual native/runner/managed0 both real probes, ordered3 tools and independent calculation verified",
+      "live_source_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+      "probe_audits": [
+        "evidence/live-probes/codex/controller-audit.json",
+        "evidence/live-probes/claude/controller-audit.json"
+      ],
+      "original_business_acceptance": "both pending caller; result_statusnot_assessed"
+    },
+    {
+      "gate": "final closeout",
+      "decision": "pass; substantive closeout/source/delivery/risks/PR/IssueN/A recorded, no merge",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/final-closeout.md",
+      "installed_collector_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d"
     }
   ],
   "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
@@ -284,5 +325,8 @@
     "merge_authorized": false,
     "opened_head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0",
     "current_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
-  }
+  },
+  "accepted_pr_review_commit": "0feb4498aaa624c9984c1e705f04e75d808bd2c3",
+  "delivery_status": "passed: installed406ec869, both original replays0needs_review, both mimo-flash3step probes0passed",
+  "work_unit_status": "completed"
 }

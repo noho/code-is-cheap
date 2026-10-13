@@ -1,0 +1,54 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "已按顺序执行三个工具步骤。读回 `result.json` 与程序输出一致：`count=5`、`sum=6`、`sum_squares=374`，并包含复制的 nonce 与输入 SHA-256。产物：`/private/tmp/codex-recovered-timeout-demand/probes/codex/result.json`。\n\nCANARY=native-probe-1adf67108d653c20f6713644",
+    "final_answer_truncated": false,
+    "final_answer_chars": 219,
+    "wall_clock_seconds": 63.223098,
+    "usage": {
+      "input_tokens": 526164,
+      "cached_input_tokens": 12032,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1308,
+      "reasoning_output_tokens": 606
+    },
+    "runtime_metrics": {},
+    "session_id": "01a134e6-3953-7503-927e-9819591cb001",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 3,
+    "events": 11,
+    "canary_status": "match",
+    "canary_read_candidate": true,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [
+      {
+        "path": "/private/tmp/codex-recovered-timeout-demand/probes/codex/result.json",
+        "exists": true,
+        "regular_file": true
+      }
+    ],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.IHs5IAhy/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.IHs5IAhy/stderr.log",
+      "last_message": null
+    }
+  }
+}

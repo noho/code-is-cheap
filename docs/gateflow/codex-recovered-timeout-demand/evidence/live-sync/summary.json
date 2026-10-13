@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-13T18:52:54.601514+08:00",
+  "checkout": "/Users/leo/workspace/code-is-cheap",
+  "deployment_commit": "0feb4498aaa624c9984c1e705f04e75d808bd2c3",
+  "commands": [
+    {
+      "argv": [
+        "./scripts/sync-agent-tools.sh"
+      ],
+      "actual_exit": 0
+    },
+    {
+      "argv": [
+        "./scripts/sync-skills.sh"
+      ],
+      "actual_exit": 0
+    }
+  ],
+  "installed_equality": [
+    {
+      "source": "scripts/agent-run-result.py",
+      "installed": "/Users/leo/.local/bin/agent-run-result.py",
+      "source_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+      "installed_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+      "equal": true
+    },
+    {
+      "source": "scripts/codex-agent-run",
+      "installed": "/Users/leo/.local/bin/codex-agent-run",
+      "source_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "installed_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "equal": true
+    },
+    {
+      "source": "scripts/claude-agent-run",
+      "installed": "/Users/leo/.local/bin/claude-agent-run",
+      "source_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "installed_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "source_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "equal": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "source_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "equal": true
+    }
+  ],
+  "runtime_versions": {
+    "codex": {
+      "entry": "/opt/homebrew/bin/codex",
+      "version": "codex-cli 0.162.1",
+      "version_exit": 0
+    },
+    "claude": {
+      "entry": "/Users/leo/.local/bin/claude",
+      "version": "2.1.296 (Claude Code)",
+      "version_exit": 0
+    }
+  },
+  "actual_runner_PATH_entries": {
+    "codex-agent-run": "/Users/leo/.local/bin/codex-agent-run",
+    "claude-agent-run": "/Users/leo/.local/bin/claude-agent-run"
+  },
+  "sync_codex_agent": "not selected; no profiles/catalog/routes/shim changes",
+  "authorization": "user explicit after full review; no merge",
+  "next": "installed Developer/Judge read-only replay and real mimo-flash Codex/Claude three-step probes"
+}

@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-13T18:54:21.879136+08:00",
+  "installed_collector_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+  "fixtures": [
+    {
+      "runtime": "codex",
+      "input": "/private/tmp/codex-recovered-timeout-demand/probes/codex/input.json",
+      "input_sha256": "ff300eac8661fe70653d6283f1742b7b69cb4618df28cca440aedc50fc32a70a",
+      "result_new": true,
+      "expected_math": {
+        "count": 5,
+        "input_sha256": "ff300eac8661fe70653d6283f1742b7b69cb4618df28cca440aedc50fc32a70a",
+        "nonce": "native-probe-1adf67108d653c20f6713644",
+        "sum": 6,
+        "sum_squares": 374
+      },
+      "selected_provider": "mimo-flash"
+    },
+    {
+      "runtime": "claude",
+      "input": "/private/tmp/codex-recovered-timeout-demand/probes/claude/input.json",
+      "input_sha256": "03dd742d0b390db8fae4c160a2ee03406ac43509927b25c74ac9d8b460db8882",
+      "result_new": true,
+      "expected_math": {
+        "count": 5,
+        "input_sha256": "03dd742d0b390db8fae4c160a2ee03406ac43509927b25c74ac9d8b460db8882",
+        "nonce": "native-probe-308b6ad8eb85fde456a8f0ad",
+        "sum": -41,
+        "sum_squares": 415
+      },
+      "selected_provider": "mimo-flash"
+    }
+  ],
+  "ordinary_probes_not_fault_reproduction": true
+}

@@ -1,0 +1,33 @@
+{
+  "reviewed_source_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba",
+  "accepted_PR_review_commit": "0feb4498aaa624c9984c1e705f04e75d808bd2c3",
+  "source_equality": {
+    "scripts/agent-run-result.py": true,
+    "tests/test_agent_run_results.py": true,
+    "README.md": true,
+    "README.zh.md": true,
+    "skills/sub-agents/SKILL.md": true
+  },
+  "all_new_delta_is_review_artifacts": true,
+  "delta_files": [
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-ds-pr1/.gitignore",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-ds-pr1/EVIDENCE.md",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-ds-pr1/raw-evidence-index.json",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-controller-ds-pr1/raw-evidence.tar.gz",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-ds-flash/.gitignore",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-ds-flash/EVIDENCE.md",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-ds-flash/raw-evidence-index.json",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-ds-flash/raw-evidence.tar.gz",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-ds-run.json",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-flash/.gitignore",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-flash/EVIDENCE.md",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-flash/raw-evidence-index.json",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-flash/raw-evidence.tar.gz",
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-run.json",
+    "docs/gateflow/codex-recovered-timeout-demand/pr-review-decision.md",
+    "docs/gateflow/codex-recovered-timeout-demand/state.json",
+    "docs/reviews/pr-59-review-20261013-182754.md",
+    "docs/reviews/pr-59-review-20261013-184446.md"
+  ],
+  "review_scope_note": "Independent reviews target aa7bcb7, not the subsequent logging commit; controller verified artifact-only bridge. No source/tests/doc contract changes, applicable tests still current."
+}

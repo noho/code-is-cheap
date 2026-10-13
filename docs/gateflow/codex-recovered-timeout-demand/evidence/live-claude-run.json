@@ -1,0 +1,99 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "三步均已完成，工具结果如下：\n\n1. **读取输入**：`input.json` 含 nonce `native-probe-308b6ad8eb85fde456a8f0ad` 和 values `[-13, -2, -7, -7, -12]`。\n2. **程序计算**：实际 Python 程序（`-I` 隔离模式）以独占新建（`open(..., \"x\")`）写入 `result.json`。\n3. **读回核对**：读回内容与程序输出完全一致 — count=5, sum=-41, sum_squares=415, nonce 与输入一致, input_sha256=`03dd742d0b390db8fae4c160a2ee03406ac43509927b25c74ac9d8b460db8882`（输入文件原始字节的 SHA-256）。\n\n产物路径：`/private/tmp/codex-recovered-timeout-demand/probes/claude/result.json`\n\nCANARY=native-probe-308b6ad8eb85fde456a8f0ad",
+    "final_answer_truncated": false,
+    "final_answer_chars": 499,
+    "wall_clock_seconds": 29.544265,
+    "usage": {
+      "input_tokens": 11295,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 130304,
+      "output_tokens": 686,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 26284,
+      "duration_api_ms": 20766,
+      "total_cost_usd": 0.13877699999999998,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 11295,
+          "outputTokens": 686,
+          "cacheReadInputTokens": 130304,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.13877699999999998,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "9fb11b06-ca4a-481f-b31d-b2bdb625f588",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 3,
+    "events": 47,
+    "canary_status": "match",
+    "canary_read_candidate": true,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [
+      {
+        "path": "/private/tmp/codex-recovered-timeout-demand/probes/claude/result.json",
+        "exists": true,
+        "regular_file": true
+      }
+    ],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.QzSpN3l6/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.QzSpN3l6/stderr.log",
+      "last_message": null
+    }
+  }
+}

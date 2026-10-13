@@ -1,0 +1,31 @@
+{
+  "captured_at": "2026-10-13T18:57:18.395617+08:00",
+  "runtime": "codex",
+  "provider": "mimo-flash",
+  "managed_exit": 0,
+  "native_exit": 0,
+  "runner_exit": 0,
+  "validation_status": "passed",
+  "result_status": "not_assessed",
+  "terminal": "turn.completed",
+  "math_result_verified": true,
+  "input_unchanged": true,
+  "regular_new_artifact": true,
+  "canary_match": true,
+  "read_candidate": true,
+  "recorded_tools": 3,
+  "logs": {
+    "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.IHs5IAhy/output.jsonl",
+    "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.IHs5IAhy/stderr.log",
+    "last_message": null
+  },
+  "kind": "ordinary real provider tool I/O and computation, not a reproduced network fault",
+  "three_steps_verified": true,
+  "actual_program_execution_verified": true,
+  "no_other_input_read_or_delegation": true,
+  "controller_review": "Actual tool commands/results inspected; expected values/source SHA checked, no reliance on final prose alone",
+  "raw_log_sha256": {
+    "output": "f8fa4601dc41264d7b95fe50d329541d1f7d77259714c8e0f5e5b18b9302daf7",
+    "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
