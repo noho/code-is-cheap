@@ -1,0 +1,41 @@
+{
+  "gate": "ready-to-open-draft-PR",
+  "decision": "pass",
+  "checks": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "9cdbff",
+        "wall_time_seconds": 0.529771458,
+        "exit_code": 0,
+        "original_token_count": 11,
+        "output": "991eb26c082e006da80474ff85efc4cfeb1116c0\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "365b8b",
+        "wall_time_seconds": 0.000007084,
+        "exit_code": 0,
+        "original_token_count": 227,
+        "output": "{\n  \"branch\": \"fix/codex-server-retry-recovery-20261013\",\n  \"head\": \"cfe37cb36c150df4385516c3ce213ac15b7768c0\",\n  \"origin_identity\": {\n    \"host\": \"github.com\",\n    \"path\": \"noho/code-is-cheap.git\",\n    \"credential_in_url\": false\n  },\n  \"clean\": true,\n  \"source_sha256\": {\n    \"scripts/agent-run-result.py\": \"8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153\",\n    \"tests/test_agent_run_results.py\": \"394d9e6960553dd8b046c5653ed36aed51f23e2154fe878004e518fa42881dae\",\n    \"README.md\": \"23121d6eddb29703fdc2cba7ab3eb7686d0c4cf6092d3f6c83ffd1d0490c6da1\"\n  },\n  \"intended_commits\": [\n    \"cfe37cb36c150df4385516c3ce213ac15b7768c0 gateflow: accept deepreview for codex-server-retry-recovery\",\n    \"817f2089ac389589a9ac0ded9d2c4d929086e8fc gateflow: accept codex-server-retry-recovery S1\",\n    \"ca98d59242cd16f8305331d310a1bdde93fc0270 gateflow: accept plan for codex-server-retry-recovery\"\n  ]\n}\n"
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "fb07cb",
+        "wall_time_seconds": 0.000007958,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    }
+  ],
+  "accepted_deepreview_commit": "cfe37cb36c150df4385516c3ce213ac15b7768c0",
+  "source_and_tests_unchanged_from_accepted_slice": true,
+  "issue_link_status": "N/A: bug-fix work unit; no GitHub issue supplied or created",
+  "pr_summary": "draft-pr-body.md matches frozen implementation; PR/sync/live remain explicit later gates",
+  "next_entry": "push"
+}

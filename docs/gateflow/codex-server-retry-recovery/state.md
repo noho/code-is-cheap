@@ -1,6 +1,6 @@
 # codex-server-retry-recovery gate state
 
-Current gate / next entry point: accepted deepreview commit。
+Current gate / next entry point: push。
 Work unit status: incomplete；未创建PR/未sync/未执行live probes；未授权merge。
 Branch: fix/codex-server-retry-recovery-20261013；base: 991eb26c082e006da80474ff85efc4cfeb1116c0。
 
@@ -17,3 +17,5 @@ Findings: 已完成gate零material findings、零blocker；aggregate已通过，
 Docs/ownership: 原诊断/goal/plan/baseline保留，工程只变三文件；所有新artifact属于当前work unit，无无关改动。
 Residual risks: code-adjudication.md/goal.md/plan.md已分类；未来文案/服务根因/历史业务/强制真实断流归later work unit及既定owner；sync越授权漂移只有实际出现且ownership不明时需决策，当前无该阻塞。
 Next after aggregate pass: accepted deepreview commit -> ready-to-open-draft-PR -> push -> create draft PR -> PR review（两路）-> accepted PR review commit/push -> draft-PR-pass -> final closeout含授权sync与两路Codex工具probe。
+
+Accepted deepreview commit: cfe37cb36c150df4385516c3ce213ac15b7768c0；ready-to-open-draft-PR pass，evidence/draft-pr-readiness.json。Remote main仍为goal base；全部intended commits、clean tree、冻结代码和diff-check已核对。PR创建后下一入口必须PR review。
