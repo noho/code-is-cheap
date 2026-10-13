@@ -1,0 +1,312 @@
+[
+  {
+    "case": "codex-novel-after-final",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "codex",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-novel-after-final/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-novel-after-final/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "input_sha256": "fe241e2d03e360730e618296880917a36305482b6787babc70c125dc5e0c1f57",
+    "report_sha256": "6a7c3d1afd8112653ed5c1ded182fe1b18b029b42e0e94c2fb08b18d3b2fa267"
+  },
+  {
+    "case": "codex-many-startup",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "codex",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-many-startup/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-many-startup/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 3,
+      "warnings": 0
+    },
+    "input_sha256": "6dddc7b2c96ea1a9909ecde80880d12921a97c506e5d06a5ef303a34b7dc62b2",
+    "report_sha256": "9b34c0e02b349070b56e0323fecf002fda31b5af077dd4823b1bd12c23d8c04f"
+  },
+  {
+    "case": "codex-missing-terminal",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "codex",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-missing-terminal/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-missing-terminal/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 1,
+    "agent_status": "failed",
+    "validation_status": "rejected",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 1,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "input_sha256": "dbe77121ce50d7de3a0d7d743a00fc2b0891b779efe3db58b6ad0989a689482a",
+    "report_sha256": "295824056f60e8de2da0430e82b6080958f4f8bf44afa451d67048cbecd5fb2e"
+  },
+  {
+    "case": "codex-parse-error-with-proof",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "codex",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-parse-error-with-proof/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/codex-parse-error-with-proof/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 1,
+    "agent_status": "completed",
+    "validation_status": "rejected",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 1,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "input_sha256": "78c4a4a10e51b03795e2641d9da14bf3d92922a02c90c09770b00133c5c52fa5",
+    "report_sha256": "b15488036d1d9f44e978b40caa65834d74f2765795166b8293500a01e0a27183"
+  },
+  {
+    "case": "claude-end_turn-clean-equivalent",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-clean-equivalent/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-clean-equivalent/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "input_sha256": "5a692f7539d1844ae00934cb64b1705fac31baedd37c7dcc3cc97aa03247482d",
+    "report_sha256": "7923adcc8240390ce0d8414f5faec694c6211d3243786bd983b5da4ba5a54c91"
+  },
+  {
+    "case": "claude-end_turn-unknown-diagnostics",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-unknown-diagnostics/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-unknown-diagnostics/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 3,
+      "warnings": 0
+    },
+    "input_sha256": "6abbe9084a951ca4bc08fb028199643f4105bb92b6bf90c1c8f6d9b045f3144f",
+    "report_sha256": "4d6d6ab87c3aa7312e950d28824a3cb8987eefbfff2eea6d1d2abcf6972c7dff"
+  },
+  {
+    "case": "claude-end_turn-negative-overrides-success",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-negative-overrides-success/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-end_turn-negative-overrides-success/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 1,
+    "agent_status": "failed",
+    "validation_status": "rejected",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 2,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "input_sha256": "23154ada59f5514daa93ccfb62ae58f838909a1de86fafce3c9bfae88746cedc",
+    "report_sha256": "252b668a822ac8a87e14000bcf1db4c9d968ad660556050b3f3815f8e8ea5e25"
+  },
+  {
+    "case": "claude-stop_sequence-clean-equivalent",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-clean-equivalent/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-clean-equivalent/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 0
+    },
+    "input_sha256": "152734ae96c6a81aaf3020dfdd1ee81057ac2d07bc7e75af5e78994d8bdd30b6",
+    "report_sha256": "347a6641ae6efb0ba547f6fa500ecd6305011be6d896ae1c60b91f6eb3106cb9"
+  },
+  {
+    "case": "claude-stop_sequence-unknown-diagnostics",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-unknown-diagnostics/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-unknown-diagnostics/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 0,
+      "anomalies": 3,
+      "warnings": 0
+    },
+    "input_sha256": "8616ebaec77c9b2495a58b522b4ac01863e72f44d83f8e983de4b2c6079853f6",
+    "report_sha256": "6418621c3610ccc34bd69de012592b0009d4a916e526b284a0cabdcd2a71686f"
+  },
+  {
+    "case": "claude-stop_sequence-negative-overrides-success",
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-B",
+      "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "--runtime",
+      "claude",
+      "--provider",
+      "synthetic",
+      "--output",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-negative-overrides-success/output.jsonl",
+      "--stderr",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/samples/claude-stop_sequence-negative-overrides-success/stderr.log",
+      "--exit-code",
+      "0",
+      "--runner-exit-code",
+      "0"
+    ],
+    "exit_code": 1,
+    "agent_status": "failed",
+    "validation_status": "rejected",
+    "result_status": "not_assessed",
+    "counts": {
+      "errors": 2,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "input_sha256": "23154ada59f5514daa93ccfb62ae58f838909a1de86fafce3c9bfae88746cedc",
+    "report_sha256": "85d13c3bc0a49636d2fd772847878a2c8e2c7d65f338293ecfb2ea44ccbf8a7f"
+  }
+]

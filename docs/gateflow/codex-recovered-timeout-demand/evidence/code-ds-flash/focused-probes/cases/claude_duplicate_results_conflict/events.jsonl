@@ -1,0 +1,3 @@
+{"type": "system", "subtype": "init", "model": "synthetic", "session_id": "s"}
+{"type": "result", "subtype": "success", "is_error": false, "result": "first"}
+{"type": "result", "subtype": "success", "is_error": false, "result": "second"}

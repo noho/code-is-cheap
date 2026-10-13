@@ -1,0 +1,114 @@
+{
+  "collector_path": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+  "collector_sha256": "9b44ac33099f49e8d4904e561e63f4e5dee43a6e177548cbb2edb5226f35ce5b",
+  "argv": [
+    "python3",
+    "-B",
+    "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+    "--runtime",
+    "codex",
+    "--provider",
+    "gpt-6-astra",
+    "--output",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/output.jsonl",
+    "--stderr",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/stderr.log",
+    "--exit-code",
+    "0",
+    "--runner-exit-code",
+    "0",
+    "--canary-file",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.txt",
+    "--canary-expected",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.expected",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02.md",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-001-completeness-02.yaml",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-002-completeness-02.yaml",
+    "--artifact",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-003-completeness-02.yaml"
+  ],
+  "actual_exit": 0,
+  "summary": {
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "terminal": "turn.completed",
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 10,
+      "warnings": 0
+    },
+    "canary_status": "match",
+    "canary_read_candidate": false,
+    "events": 61,
+    "tool_results": 24
+  },
+  "unique_terminal_line": 61,
+  "final_line": 60,
+  "final_sha256": "4d6448109bcda5538978801664230d62396ece301eee9f757c77e179303c0f71",
+  "retained_notices": [
+    {
+      "line": 49,
+      "message": "Reconnecting... 2/5 (stream disconnected before completion: IO error: peer closed connection without sending TLS close_notify: https://docs.rs/rustls/latest/rustls/manual/_03_howto/index.html#unexpected-eof)"
+    },
+    {
+      "line": 50,
+      "message": "Reconnecting... 3/5 (stream disconnected before completion: tls handshake eof)"
+    },
+    {
+      "line": 51,
+      "message": "Reconnecting... 4/5 (stream disconnected before completion: tls handshake eof)"
+    },
+    {
+      "line": 52,
+      "message": "Reconnecting... 5/5 (stream disconnected before completion: tls handshake eof)"
+    }
+  ],
+  "checks": {
+    "exit_zero": true,
+    "stderr_empty": true,
+    "expected_completion": true,
+    "no_fatal_errors": true,
+    "native_unique_success": true,
+    "four_unknown_TLS_notices_retained": true,
+    "original_anomalies_retained": false,
+    "final_unchanged": true,
+    "statistics_unchanged": true,
+    "selected_artifacts_unchanged": true,
+    "original_inputs_unchanged": true
+  },
+  "sources_sha256": {
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/runner-summary.json": "7a68760432268b53ce9434a057dfe89feb26ad182b0044d346466ec6de0cd07e",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/collector-tls-notice-diagnostic.json": "907bbfcfe00775f53e4a2598ec8ce68df7dd7a14d4df49e719ca74e7fca663d2",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/controller-failure-record.json": "b01899c49ddffd7c7c7f45704c6cb4fe4dae341dc9b15e787772530b18c7372c",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/actual-exit.json": "6705c93d580e3b7afbe9172793c1328c8de1c10815f9fd545d7bbaea9cd79ac1",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/output.jsonl": "c19d281986383838d95d832820c4b1a3c6dbe1e31e8c2f621515c09d3a3a453d",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/stderr.log": "f5f9e6c2ebebdf008f3ec20d1695f959d6b518b8bb2871c80cbbd6d8549717c1",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.txt": "d3dea32b594c5c5855c6d15afc4dd473e2c442ff4747889f1e9946b834bcff94",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.expected": "d3dea32b594c5c5855c6d15afc4dd473e2c442ff4747889f1e9946b834bcff94",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02.md": "f4c44c9a859bbb5a34e1249d01ea5915add58e42f8ad2686f86789be63542e08",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-001-completeness-02.yaml": "764b41b6f3105d6e3f04f23d7084e71e0937cd08ac15541ae38de86589cd9dbb",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-002-completeness-02.yaml": "37f0a03674a3a939feb2989040771ca2f2c2c96e134656ed6aea68e1eae04c75",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-003-completeness-02.yaml": "9fa0b068acfcc9ac4b9640ff2d3ff95fbca73d7a3be3d803532bc1bf30eebf4b"
+  },
+  "source_integrity_after": {
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/runner-summary.json": "7a68760432268b53ce9434a057dfe89feb26ad182b0044d346466ec6de0cd07e",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/collector-tls-notice-diagnostic.json": "907bbfcfe00775f53e4a2598ec8ce68df7dd7a14d4df49e719ca74e7fca663d2",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/controller-failure-record.json": "b01899c49ddffd7c7c7f45704c6cb4fe4dae341dc9b15e787772530b18c7372c",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/actual-exit.json": "6705c93d580e3b7afbe9172793c1328c8de1c10815f9fd545d7bbaea9cd79ac1",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/output.jsonl": "c19d281986383838d95d832820c4b1a3c6dbe1e31e8c2f621515c09d3a3a453d",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/stderr.log": "f5f9e6c2ebebdf008f3ec20d1695f959d6b518b8bb2871c80cbbd6d8549717c1",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.txt": "d3dea32b594c5c5855c6d15afc4dd473e2c442ff4747889f1e9946b834bcff94",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02-evidence/canary.expected": "d3dea32b594c5c5855c6d15afc4dd473e2c442ff4747889f1e9946b834bcff94",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judge-02.md": "f4c44c9a859bbb5a34e1249d01ea5915add58e42f8ad2686f86789be63542e08",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-001-completeness-02.yaml": "764b41b6f3105d6e3f04f23d7084e71e0937cd08ac15541ae38de86589cd9dbb",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-002-completeness-02.yaml": "37f0a03674a3a939feb2989040771ca2f2c2c96e134656ed6aea68e1eae04c75",
+    "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-judgment-item-003-completeness-02.yaml": "9fa0b068acfcc9ac4b9640ff2d3ff95fbca73d7a3be3d803532bc1bf30eebf4b"
+  },
+  "business_disposition": "Developer and Judge remain caller-unaccepted candidates; collector replay is technical completion only, not business validation"
+}

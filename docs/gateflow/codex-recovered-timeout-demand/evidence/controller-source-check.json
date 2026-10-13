@@ -1,0 +1,28 @@
+{
+  "captured_at": "2026-10-13T16:09:34.618216+08:00",
+  "manifest": "evidence/s1-implementation-20261013/source-manifest.json",
+  "all_equal": true,
+  "checks": {
+    "scripts/agent-run-result.py": true,
+    "tests/test_agent_run_results.py": true,
+    "README.md": true,
+    "README.zh.md": true,
+    "skills/sub-agents/SKILL.md": true,
+    "scripts/codex-agent-run": true,
+    "scripts/claude-agent-run": true,
+    "tests/test_agent_sandbox_runtimes.py": true,
+    "docs/gateflow/codex-recovered-timeout-demand/goal-confirmation-v2.md": true,
+    "docs/gateflow/codex-recovered-timeout-demand/plan-v2.md": true,
+    "docs/gateflow/codex-recovered-timeout-demand/plan-v2-review-decision.md": true,
+    "docs/gateflow/codex-recovered-timeout-demand/plan-v2-fix.md": true,
+    "docs/gateflow/codex-recovered-timeout-demand/plan-v2-rereview-decision.md": true,
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-local-end_turn-minimal.jsonl": true,
+    "docs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-local-stop_sequence-minimal.jsonl": true
+  },
+  "skills_validation_exit": 0,
+  "implementation_saved_evidence_verified": {
+    "entries": 58,
+    "mismatches": 0,
+    "path": "evidence/s1-implementation-20261013/evidence-sha256.json"
+  }
+}

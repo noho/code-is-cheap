@@ -1,0 +1,11 @@
+test_claude_nested_ownership_and_scoped_tool_pairing (test_agent_run_results.RunnerResults.test_claude_nested_ownership_and_scoped_tool_pairing) ... ok
+test_terminal_order_and_trailing_metadata_cannot_change_proof (test_agent_run_results.RunnerResults.test_terminal_order_and_trailing_metadata_cannot_change_proof) ... ok
+test_claude_core_message_tool_shapes_remain_strict (test_agent_run_results.RunnerResults.test_claude_core_message_tool_shapes_remain_strict) ... ok
+test_codex_start_and_final_fences_apply_with_or_without_diagnostics (test_agent_run_results.RunnerResults.test_codex_start_and_final_fences_apply_with_or_without_diagnostics) ... ok
+test_recovered_diagnostics_keep_selected_checks_for_both_runtimes (test_agent_run_results.RunnerResults.test_recovered_diagnostics_keep_selected_checks_for_both_runtimes) ... ok
+test_recovered_diagnostics_detail_keeps_raw_and_bypasses_checks (test_agent_run_results.RunnerResults.test_recovered_diagnostics_detail_keeps_raw_and_bypasses_checks) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 4.271s
+
+OK

@@ -1,0 +1,149 @@
+[
+  {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_agent_run_results.py",
+      "-v"
+    ],
+    "exit": 1,
+    "tests": 55,
+    "passed": 54,
+    "failed": 1,
+    "log": "unit-suite.log",
+    "applicability": "interim implementation, not approval"
+  },
+  {
+    "command": [
+      "env",
+      "PYTHONPATH=tests",
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "test_agent_run_results.RunnerResults.test_recovered_diagnostics_keep_native_and_postprocessing_failures",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 1,
+    "passed": 1,
+    "log": "unit-postprocessing-fix.log"
+  },
+  {
+    "command": [
+      "env",
+      "PYTHONPATH=tests",
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "test_agent_run_results.RunnerResults.test_claude_nested_ownership_and_scoped_tool_pairing",
+      "test_agent_run_results.RunnerResults.test_terminal_order_and_trailing_metadata_cannot_change_proof",
+      "test_agent_run_results.RunnerResults.test_claude_core_message_tool_shapes_remain_strict",
+      "test_agent_run_results.RunnerResults.test_codex_start_and_final_fences_apply_with_or_without_diagnostics",
+      "test_agent_run_results.RunnerResults.test_recovered_diagnostics_keep_selected_checks_for_both_runtimes",
+      "test_agent_run_results.RunnerResults.test_recovered_diagnostics_detail_keeps_raw_and_bypasses_checks",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 6,
+    "passed": 6,
+    "log": "unit-ownership-fix.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_agent_run_results.py",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 56,
+    "passed": 56,
+    "log": "unit-suite-final.log",
+    "collector_sha256": "9b44ac33099f49e8d4904e561e63f4e5dee43a6e177548cbb2edb5226f35ce5b",
+    "tests_sha256": "24781e08fae8d4d614f4e4eed3f461224f86c438e136f89b04f4a5c8f71a216f",
+    "applicability": "before two additional test-only matrix assertions"
+  },
+  {
+    "command": "AGENT_SANDBOX_KERNEL_TESTS=1 SRT_TEST_BIN=\"$(command -v srt)\" AGENT_SANDBOX_EVIDENCE_DIR=\"$PWD/docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/native\" python3 -B -m unittest discover -s tests -p 'test_agent_sandbox_runtimes.py' -v",
+    "exit": 1,
+    "tests": 2,
+    "failed": 2,
+    "wrapper_exits": {
+      "claude": 71,
+      "codex": 71
+    },
+    "log": "native-suite.log",
+    "blocker": "sandbox-exec: sandbox_apply: Operation not permitted",
+    "native_started": false
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/synthetic-samples.py"
+    ],
+    "exit": 0,
+    "cases": 10,
+    "passed": 10,
+    "log": "synthetic-samples.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/static-checks.py"
+    ],
+    "exit": 0,
+    "checks": 13,
+    "log": "static-checks.log"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_agent_run_results.py",
+      "-v"
+    ],
+    "exit": 0,
+    "tests": 56,
+    "passed": 56,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 28.675,
+    "log": "unit-suite-final-source.log",
+    "collector_sha256": "9b44ac33099f49e8d4904e561e63f4e5dee43a6e177548cbb2edb5226f35ce5b",
+    "tests_sha256": "6a237ba6338c9f3c04c5825606e3d75e03d2d053f6c6246665b1486d2beec8c4",
+    "applicability": "final current source and complete acceptance matrix"
+  },
+  {
+    "command": [
+      "python3",
+      "-B",
+      "docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/static-checks.py"
+    ],
+    "exit": 0,
+    "checks": 13,
+    "log": "static-checks-final.log",
+    "applicability": "final source/report diff and syntax"
+  }
+]

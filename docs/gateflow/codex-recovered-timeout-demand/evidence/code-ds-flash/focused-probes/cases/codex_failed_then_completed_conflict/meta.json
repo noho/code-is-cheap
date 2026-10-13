@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "-B",
+    "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+    "--runtime",
+    "codex",
+    "--provider",
+    "synthetic",
+    "--output",
+    "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/code-ds-flash/focused-probes/cases/codex_failed_then_completed_conflict/events.jsonl",
+    "--stderr",
+    "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/code-ds-flash/focused-probes/cases/codex_failed_then_completed_conflict/stderr.log",
+    "--exit-code",
+    "0",
+    "--runner-exit-code",
+    "0"
+  ],
+  "exit": 1,
+  "stderr": ""
+}

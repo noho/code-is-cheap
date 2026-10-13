@@ -1,0 +1,320 @@
+{
+  "total": 7,
+  "passed": 7,
+  "failed": 0,
+  "results": [
+    {
+      "name": "P1-preamble-garbage-before-thread-start",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-08y_pfn3/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-08y_pfn3/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "exit": 1,
+      "stderr": "",
+      "report": {
+        "validation_status": "rejected",
+        "agent_status": "failed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 1,
+        "runtime_exit_code": 0,
+        "terminal": "turn.completed",
+        "session_id": "probe",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [
+          "invalid event: Expecting value: line 1 column 1 (char 0)",
+          "invalid thread start identity, shape or order"
+        ],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_nonzero": true,
+        "rejected": true,
+        "failed": true,
+        "start_order_error": true
+      }
+    },
+    {
+      "name": "P2-midturn-rate-limit-inert",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-7xb1occ_/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-7xb1occ_/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "exit": 0,
+      "stderr": "",
+      "report": {
+        "validation_status": "passed",
+        "agent_status": "completed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 0,
+        "runtime_exit_code": 0,
+        "terminal": "turn.completed",
+        "session_id": "probe",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_zero": true,
+        "passed": true,
+        "completed": true,
+        "final_ok": true
+      }
+    },
+    {
+      "name": "P3-equal-nonzero-native-and-postprocessing",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-e5y00y91/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-e5y00y91/stderr.log",
+        "--exit-code",
+        "7",
+        "--runner-exit-code",
+        "7"
+      ],
+      "exit": 1,
+      "stderr": "",
+      "report": {
+        "validation_status": "rejected",
+        "agent_status": "failed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 7,
+        "runtime_exit_code": 7,
+        "terminal": "turn.completed",
+        "session_id": "probe",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [
+          "runtime process exited 7"
+        ],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_nonzero": true,
+        "rejected": true,
+        "failed": true,
+        "runner_code_preserved": true,
+        "native_code_preserved": true,
+        "no_duplicate_runner_note": true
+      }
+    },
+    {
+      "name": "P4-public-runner-success-content-filter-rejects",
+      "command": [
+        "/Users/leo/workspace/code-is-cheap/scripts/claude-agent-run",
+        "--provider",
+        "ds-flash",
+        "--cwd",
+        "/tmp/claude-501/mimo-e2e-2d9obd9t",
+        "--prompt",
+        "synthetic probe"
+      ],
+      "exit": 1,
+      "stderr": "",
+      "report": {
+        "validation_status": "rejected",
+        "agent_status": "failed",
+        "result_status": "not_assessed",
+        "terminal": "failed",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 2,
+          "anomalies": 0,
+          "warnings": 0
+        }
+      },
+      "checks": {
+        "exit_nonzero": true,
+        "rejected": true,
+        "failed": true,
+        "failed_terminal": true,
+        "not_assessed": true,
+        "text_retained": true
+      }
+    },
+    {
+      "name": "P5-trailing-rate-limit-then-diagnostic-fences",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-oj9g0gr2/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-oj9g0gr2/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "exit": 1,
+      "stderr": "",
+      "report": {
+        "validation_status": "rejected",
+        "agent_status": "failed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 1,
+        "runtime_exit_code": 0,
+        "terminal": "turn.completed",
+        "session_id": "probe",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [
+          "event after runtime terminal"
+        ],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_nonzero": true,
+        "rejected": true,
+        "final_preserved": true,
+        "fence_error": true
+      }
+    },
+    {
+      "name": "P6-explicit-null-parent-is-root",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "claude",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-_j1wphg3/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-_j1wphg3/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "exit": 0,
+      "stderr": "",
+      "report": {
+        "validation_status": "passed",
+        "agent_status": "completed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 0,
+        "runtime_exit_code": 0,
+        "terminal": "success",
+        "session_id": null,
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 0,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_zero": true,
+        "passed": true,
+        "completed": true
+      }
+    },
+    {
+      "name": "P7-preturn-nonstring-diagnostic-hard-error",
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-B",
+        "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+        "--runtime",
+        "codex",
+        "--provider",
+        "synthetic",
+        "--output",
+        "/tmp/claude-501/mimo-probe-oqx_e_wo/output.jsonl",
+        "--stderr",
+        "/tmp/claude-501/mimo-probe-oqx_e_wo/stderr.log",
+        "--exit-code",
+        "0",
+        "--runner-exit-code",
+        "0"
+      ],
+      "exit": 1,
+      "stderr": "",
+      "report": {
+        "validation_status": "rejected",
+        "agent_status": "completed",
+        "result_status": "not_assessed",
+        "runner_exit_code": 1,
+        "runtime_exit_code": 0,
+        "terminal": "turn.completed",
+        "session_id": "probe",
+        "final_answer": "done",
+        "diagnostic_counts": {
+          "errors": 1,
+          "anomalies": 0,
+          "warnings": 0
+        },
+        "error_messages": [
+          "invalid error diagnostic message"
+        ],
+        "anomaly_lines": []
+      },
+      "checks": {
+        "exit_nonzero": true,
+        "rejected": true,
+        "is_error_not_anomaly": true
+      }
+    }
+  ]
+}

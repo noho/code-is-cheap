@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source": "subagent_report",
+  "runtime": "codex",
+  "provider": "synthetic",
+  "runtime_exit_code": 0,
+  "runner_exit_code": 1,
+  "agent_status": "failed",
+  "validation_status": "rejected",
+  "result_status": "not_assessed",
+  "final_answer": "done",
+  "final_answer_truncated": false,
+  "final_answer_chars": 4,
+  "wall_clock_seconds": null,
+  "usage": {},
+  "runtime_metrics": {},
+  "session_id": "t1",
+  "terminal": "turn.completed",
+  "tool_evidence_scope": "recorded_events_only",
+  "tool_results": 0,
+  "events": 4,
+  "canary_status": "not_run",
+  "canary_read_candidate": false,
+  "errors": [
+    {
+      "stream": "output",
+      "line": 3,
+      "message": "invalid or empty completed agent message",
+      "message_chars": 40,
+      "truncated": false,
+      "path": null,
+      "proof_line": null
+    },
+    {
+      "stream": "output",
+      "line": null,
+      "message": "missing valid complete final answer",
+      "message_chars": 35,
+      "truncated": false,
+      "path": null,
+      "proof_line": null
+    }
+  ],
+  "anomalies": [],
+  "warnings": [],
+  "diagnostic_counts": {
+    "errors": 2,
+    "anomalies": 0,
+    "warnings": 0
+  },
+  "diagnostics_truncated": false,
+  "artifacts": [],
+  "logs": {
+    "output": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/code-ds-flash/focused-probes/cases/codex_item_extra_field_rejects/events.jsonl",
+    "stderr": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/evidence/code-ds-flash/focused-probes/cases/codex_item_extra_field_rejects/stderr.log",
+    "last_message": null
+  }
+}

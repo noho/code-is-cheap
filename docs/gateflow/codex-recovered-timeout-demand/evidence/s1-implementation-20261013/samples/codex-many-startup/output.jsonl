@@ -1,0 +1,7 @@
+{"type": "thread.started", "thread_id": "synthetic-s1"}
+{"type": "item.completed", "item": {"id": "d0", "type": "error", "message": "Unfamiliar startup 0"}}
+{"type": "item.completed", "item": {"id": "d1", "type": "error", "message": "Unfamiliar startup 1"}}
+{"type": "item.completed", "item": {"id": "d2", "type": "error", "message": "Unfamiliar startup 2"}}
+{"type": "turn.started"}
+{"type": "item.completed", "item": {"id": "final", "type": "agent_message", "text": "Synthetic final."}}
+{"type": "turn.completed", "usage": {"input_tokens": 0, "output_tokens": 2}}

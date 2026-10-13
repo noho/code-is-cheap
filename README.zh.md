@@ -365,7 +365,20 @@ codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md -
 需要时核对相关证据。无工具记录的工具语法也只作诊断，不能仅凭文本区分示例和执行声明。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
 退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
 
-已识别的 Codex 连接重试通知，只有在同一次执行中随后有效完成且所选检查通过后才列为 warnings；未知或未恢复的错误仍属致命错误。
+收集模式在原生执行及必要后处理均退出 0、同一次执行有唯一有效成功终态、最终答复完整且非空、日志结构完整且
+所选检查通过时返回 0。两种 runtime 都将结构有效的中间错误/重试诊断保留为 `anomalies`，不依赖措辞是否已知，
+Claude 非证明性诊断载荷也不决定能否完成；完成后仍会提示 `needs_review`。失败、缺失、重复、冲突或无效的
+终态/最终答复/身份、损坏的日志和所选检查失败仍会拒收。
+
+Codex 要求有序的 thread/turn start、已完成的 agent message 和 `turn.completed`；最后一条已完成消息拥有最终答复。
+其协议没有独立的拒答/finish-reason 字段，最终文本交由调用方判断。Claude 唯一的根 `result` 拥有最终答复，
+中间或嵌套 assistant 文本不能替代它。原生负面完成字段会拒收，即使 result 标为成功。正常 result `stop_reason`
+为 `end_turn` 和 `stop_sequence`；历史流中缺失/null 的 stop 元数据及缺失的 terminal 元数据仍受支持。
+中间 assistant/工具/重试元数据不提供整次执行完成的证明。
+
+`agent_status=completed` 表示观察到原生执行完成：进程/后处理退出均为 0，且有同次执行的有效终态/最终答复证明。
+独立的解析或所选检查错误仍可使其同时出现 `validation_status=rejected` 和非零调用退出码；完成证明无效则不能
+标为 completed。可读的最终/部分文本仍保留用于诊断，`result_status=not_assessed` 始终将任务正确性交由调用方判断。
 
 `session_id` 返回原生 Codex thread_id 或 Claude session_id，缺失/冲突为 null。只有显式持久化的会话才可
 resume；ID 不代表默认一次性运行已保存。

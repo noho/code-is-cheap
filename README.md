@@ -393,7 +393,23 @@ execution claims cannot be distinguished from text alone; inspect relevant evide
 exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
 task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
 
-Recognized Codex connection retry notices become warnings only after valid later completion in the same execution and successful selected checks; unknown or unrecovered errors remain fatal. Supported notices are the exact native `stream closed before response.completed` text and the server-request text `An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID UUID in your message.`, each inside `Reconnecting... N/5 (stream disconnected before completion: ...)`. `N` must be one ASCII digit from 1 to 5; the server request ID must have lowercase hexadecimal UUID shape (`8-4-4-4-12`). Other wording or shapes remain unsupported.
+Collected calls return 0 when native execution and necessary postprocessing exit 0, one valid successful terminal belongs
+to that execution, its final answer is complete and nonempty, the log is intact, and selected checks pass. Both runtimes
+retain structurally valid intermediate error/retry diagnostics as `anomalies`, regardless of unfamiliar wording or
+non-proof Claude diagnostic payloads; these produce `needs_review` even after completion. Failed, missing, duplicate,
+conflicting or invalid terminals/finals/identities, damaged logs and failed selected checks still reject.
+
+Codex requires ordered thread/turn starts, a completed agent message and `turn.completed`; the latest completed message
+owns final. Its protocol provides no independent refusal/finish-reason field, so final prose is delivered for caller
+judgment. Claude's unique root `result` owns final; intermediate or nested assistant text cannot replace it. Native
+negative completion fields reject even a success-labeled result. Normal result `stop_reason` values are `end_turn` and
+`stop_sequence`; absent/null stop metadata and absent terminal metadata remain supported for historical streams.
+Intermediate assistant/tool/retry metadata supplies no execution completion proof.
+
+`agent_status=completed` records observed native execution completion with zero process/postprocessing exits and valid
+same-execution terminal/final proof. It can coexist with `validation_status=rejected` and a nonzero call exit when a
+separate parser or selected-check error remains. Invalid completion proof prevents `completed`; readable final/partial
+text is still retained for diagnosis. `result_status=not_assessed` always leaves task correctness to the caller.
 
 `session_id` exposes the native Codex thread_id or Claude session_id, or null when unavailable/conflicting.
 Only explicitly persisted sessions can be resumed; an ID does not imply an ephemeral run was saved.

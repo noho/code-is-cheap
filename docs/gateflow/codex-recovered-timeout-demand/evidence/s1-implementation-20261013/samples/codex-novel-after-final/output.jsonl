@@ -1,0 +1,5 @@
+{"type": "thread.started", "thread_id": "synthetic-s1"}
+{"type": "turn.started"}
+{"type": "item.completed", "item": {"id": "final", "type": "agent_message", "text": "Synthetic final."}}
+{"type": "error", "message": "Novel recovered demand Ω\nindependent second line", "future": {"code": 42}}
+{"type": "turn.completed", "usage": {"input_tokens": 0, "output_tokens": 2}}

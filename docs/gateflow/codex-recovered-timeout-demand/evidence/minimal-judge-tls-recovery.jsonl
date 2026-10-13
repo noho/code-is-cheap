@@ -1,0 +1,8 @@
+{"type": "thread.started", "thread_id": "synthetic-tls-thread"}
+{"type": "turn.started"}
+{"type": "error", "message": "Reconnecting... 2/5 (stream disconnected before completion: IO error: peer closed connection without sending TLS close_notify: https://docs.rs/rustls/latest/rustls/manual/_03_howto/index.html#unexpected-eof)"}
+{"type": "error", "message": "Reconnecting... 3/5 (stream disconnected before completion: tls handshake eof)"}
+{"type": "error", "message": "Reconnecting... 4/5 (stream disconnected before completion: tls handshake eof)"}
+{"type": "error", "message": "Reconnecting... 5/5 (stream disconnected before completion: tls handshake eof)"}
+{"type": "item.completed", "item": {"id": "synthetic-final", "type": "agent_message", "text": "Synthetic complete reply; caller-owned business acceptance."}}
+{"type": "turn.completed"}

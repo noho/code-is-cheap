@@ -71,19 +71,30 @@ Claude 原始 stream-json、Codex JSONL 和 stderr 保留，路径在 `logs` 中
 汇总还包含：
 
 - `runtime_exit_code` / `runner_exit_code` / `terminal`：进程与结构化终态。
+- `agent_status`：`completed` 要求原生进程/必要后处理退出均为 0，且有同次执行的有效成功终态和完整非空最终答复。
+  独立解析/所选检查错误仍可使 completed 与 rejected 及非零调用退出码并存；完成证明无效则为 failed。
+  可读的最终/部分文本在拒收时仍保留用于诊断，不证明任务正确。
 - `session_id`：原生事件中的会话 ID（Codex thread_id / Claude session_id）；缺失或冲突为 null。
   只有显式持久化的会话才可续接；ID 不证明默认一次性会话已保存。
 - `validation_status`：`passed` 是机械检查通过；`needs_review` 提醒存在工具异常或可见性缺项；
-  `rejected` 是结构损坏、终态/最终答复缺失、进程失败或显式检查未满足。runtime 非零保留原码，否则机械拒收返回 1。
+  `rejected` 是结构损坏、终态/最终答复/身份缺失或无效、原生负面完成字段、进程失败或显式检查未满足。
+  历史 Claude 缺失身份仍可受支持；显式无效/冲突身份拒收。runtime 非零保留原码，否则机械拒收返回 1。
 - `errors` / `anomalies` / `warnings`：最多每类 20 条、每条 2000 字符，附计数、截断和日志位置。
   普通工具失败列入 anomalies，成功 runtime 仍返回 0；并不自动判 Agent 或任务失败。
-  已识别的 Codex 连接重试通知，只有在同一次执行中随后有效完成且所选检查通过后才列为 warnings；未知或未恢复的错误仍属致命错误。
+  两种 runtime 的结构有效中间错误/重试诊断均留在 anomalies，不依赖已知措辞；Claude 非证明性诊断载荷也不决定
+  能否完成。完整日志、唯一有效成功终态、完整非空最终答复及所选检查通过后，含这些诊断的调用返回 0/needs_review。
+  失败/缺失/重复/冲突/无效终态及原生负面完成信号仍拒收，成功标签不能覆盖它们。
 - `wall_clock_seconds`：runner 启动至调用结果收集器的实测秒数，含 setup/runtime/最终消息处理，
   不含收集器序列化、调用方预检和等待开销。`usage` 是单一终态的原始用量对象，不累计流式片段。
   `runtime_metrics` 保留 Claude 报告的时长、费用和 modelUsage；缺失数据为 null/空对象，不估算。
   重复或缺失终态不提供可信用量；失败终态有真实用量时仍保留。完整原始统计也在日志中。
 - `artifacts` / `canary_status`：只在调用方显式声明对应检查时有检查结果。
   `result_status=not_assessed` 表示 runner 不替调用方判定任务正确性。
+
+Codex 要求有序 thread/turn start、已完成 agent message 和 turn.completed，最后一条已完成消息拥有最终答复；
+协议没有独立拒答/finish-reason 字段，不能从 prose 推断任务正确。Claude 唯一根 result 拥有最终答复，中间/嵌套
+assistant 文本和工具/重试元数据不能代替完成证明。正常 result stop_reason 为 end_turn/stop_sequence；历史流缺失/null
+stop 元数据及缺失 terminal 元数据仍受支持，显式负面/无效完成字段拒收。
 
 传错参数、探索无匹配、权限错误等工具失败在 Agent 执行中常见。默认不要求逐事件裁决报告或固定 YAML。
 结合最终答复和任务目的判断结果是否可用；有未解决且影响结论的缺项时，核对相关日志/文件或要求补足。

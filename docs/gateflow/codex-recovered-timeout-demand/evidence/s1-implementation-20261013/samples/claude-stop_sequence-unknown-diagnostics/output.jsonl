@@ -1,0 +1,5 @@
+{"type": "system", "subtype": "init", "session_id": "synthetic-root"}
+{"type": "error", "message": "Novel recovered demand Ω\nindependent second line", "future": {"code": 42}}
+{"type": "system", "subtype": "api_retry", "attempt": {"future": true}, "error": null}
+{"type": "assistant", "error": null, "message": {"content": [{"type": "text", "text": "Synthetic intermediate."}]}}
+{"type": "result", "subtype": "success", "is_error": false, "result": "Synthetic protocol final.", "stop_reason": "stop_sequence", "terminal_reason": "completed", "api_error_status": null, "session_id": "synthetic-root"}

@@ -1,0 +1,135 @@
+{
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "checks": [
+    {
+      "command": [
+        "ast.parse",
+        "scripts/agent-run-result.py"
+      ],
+      "exit_code": 0,
+      "stdout": "syntax OK",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ast.parse",
+        "tests/test_agent_run_results.py"
+      ],
+      "exit_code": 0,
+      "stdout": "syntax OK",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ast.parse",
+        "docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/static-checks.py"
+      ],
+      "exit_code": 0,
+      "stdout": "syntax OK",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "ast.parse",
+        "docs/gateflow/codex-recovered-timeout-demand/evidence/s1-implementation-20261013/synthetic-samples.py"
+      ],
+      "exit_code": 0,
+      "stdout": "syntax OK",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "zsh",
+        "-n",
+        "scripts/codex-agent-run",
+        "scripts/claude-agent-run"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "unknown or unrecovered errors remain fatal|Other wording or shapes remain unsupported|\u672a\u77e5\u6216\u672a\u6062\u590d\u7684\u9519\u8bef\u4ecd\u5c5e\u81f4\u547d|recognized_codex_connection_notice|recognized_codex_startup_diagnostic|codex_connection_recovery_failure|finalize_codex_connection_notices",
+        "README.md",
+        "README.zh.md",
+        "skills/sub-agents/SKILL.md",
+        "scripts/agent-run-result.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.11.15\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "zsh",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "zsh 5.9 (arm64-apple-darwin25.0)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "codex-cli 0.162.1\n",
+      "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n"
+    },
+    {
+      "command": [
+        "claude",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "2.1.296 (Claude Code)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "srt",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "0.0.79\n",
+      "stderr": ""
+    },
+    {
+      "check": "bilingual/generic semantics manual inspection",
+      "outcome": "matched",
+      "topics": [
+        "native/process/final/identity/check predicate",
+        "wording-independent intermediate anomalies",
+        "negative completion signal rejects",
+        "root-result ownership",
+        "end_turn/stop_sequence and optional historical metadata",
+        "completed execution versus rejected call validation",
+        "partial visibility and not_assessed",
+        "statistics/detail/optional checks unchanged"
+      ]
+    }
+  ]
+}
