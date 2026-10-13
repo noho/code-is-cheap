@@ -1,0 +1,25 @@
+{
+  "packaged_at": "2026-10-13T18:50:53.250522+08:00",
+  "archive": "docs/gateflow/codex-recovered-timeout-demand/evidence/pr-rereview-mimo-flash/raw-evidence.tar.gz",
+  "archive_sha256": "72f0fb462093eabdd5aae2b5ac14ee815a4dce422e86dcd17d5ec63f42c074ef",
+  "raw_files": 15,
+  "files_sha256": {
+    "original-root-evidence/pr-requery-after.json": "dcc630f18e68329b1976559615ebc6a484ae575cf8e029742490cb7a3eeef29c",
+    "original-root-evidence/pr-rereview-mimo-flash/EVIDENCE.md": "de61cbf6e69eb09499a034a19169bff47007d0825ed71ba24838441822928a0d",
+    "original-root-evidence/pr-rereview-mimo-flash/MANIFEST.sha256": "a32fb2cb7470f02b6f09ade0e1f91ca5b1fb5929c2b90de5d47e690f16aae9b4",
+    "original-root-evidence/pr-rereview-mimo-flash/ci-checks.txt": "45654d57c5f322594286b77733a1920789b4f978403c9ec7e8b2ea580ba3dbe0",
+    "original-root-evidence/pr-rereview-mimo-flash/close-requery.json": "dcc630f18e68329b1976559615ebc6a484ae575cf8e029742490cb7a3eeef29c",
+    "original-root-evidence/pr-rereview-mimo-flash/compare-request-url.txt": "b68e9fd8d798b61ee6f983303bf75ab6f2db203b19a0a5e5a0493b1a8cd54b16",
+    "original-root-evidence/pr-rereview-mimo-flash/diff-identity.txt": "229ae27b5a7dfb50399b46ef5ba49b2b079f210b7dea4b1e53f24bcd2d7cb0e6",
+    "original-root-evidence/pr-rereview-mimo-flash/independent-new-method.exit": "19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061",
+    "original-root-evidence/pr-rereview-mimo-flash/independent-new-method.stderr": "b8494e4bdf72f626655c6bd2f4c978d1c7ce95eab672b75edbe5d5b253a1067e",
+    "original-root-evidence/pr-rereview-mimo-flash/independent-new-method.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "original-root-evidence/pr-rereview-mimo-flash/local-62c3b26-aa7bcb7.diff": "b71dd88e3a6f74c8fac0f5f161a7b6ed1c1c02f166c36077f012a019d2200c33",
+    "original-root-evidence/pr-rereview-mimo-flash/pr59-compare-62c3b26..aa7bcb7.diff": "c19f9e4b9c927061b8fbb32c34b2ff9385afd5ec5f7712e2a7c3e10cf1decd6f",
+    "original-root-evidence/pr-rereview-mimo-flash/pr59-facts-20261013-181816.json": "e4e4f24ebe17855d044877b10cbf8029c4b1799f75601192f7d8c6f830aa9914",
+    "original-root-evidence/pr-rereview-mimo-flash/source-hashes-after-run.txt": "59165b2362012c9a21625aee099699697ed1c569d24331f3fc0bea9703249164",
+    "provenance.json": "64cd8476a542e78dcebc5e08c9addc5189afaa6ccd5bdfd026a8c3ed3a9a78d9"
+  },
+  "purpose": "Keep complete immutable synthetic review/validation evidence retrievable with a bounded PR file manifest; no original business data/logs changed",
+  "local_raw_files_retained": true
+}

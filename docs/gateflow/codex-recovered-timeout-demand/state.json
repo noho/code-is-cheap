@@ -1,7 +1,7 @@
 {
   "work_unit": "codex-recovered-timeout-demand",
-  "current_gate": "re-review",
-  "next_entry_point": "re-review",
+  "current_gate": "accepted PR review commit",
+  "next_entry_point": "accepted PR review commit",
   "goal_confirmation": "passed-user-confirmed",
   "history": [
     {
@@ -229,6 +229,39 @@
       "decision": "local implementation 已修复; current57+11+62 checks/native2/both originals pass; actual PR re-review pending",
       "artifact": "docs/gateflow/codex-recovered-timeout-demand/pr-fix.md",
       "collector_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d"
+    },
+    {
+      "gate": "fix",
+      "revision": "PR DS-PR1",
+      "decision": "fix commit/source current406ec869; push actual0 to same draft59, required actual versioned re-review pending",
+      "commit": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
+    },
+    {
+      "gate": "re-review",
+      "revision": "PR DS-PR1",
+      "decision": "actual versioned dual PR re-review in flight; controller exact compare173 files stable and complete",
+      "snapshot": "evidence/pr-controller-ds-pr1/snapshot.json",
+      "head": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
+    },
+    {
+      "gate": "re-review",
+      "revision": "PR DS-PR1",
+      "provider": "ds-flash",
+      "decision": "artifact available, DS-PR1 已修复; actual exit0, dual adjudication pending",
+      "artifact": "docs/reviews/pr-59-review-20261013-182754.md",
+      "reviewed_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba",
+      "runner_evidence": "evidence/pr-rereview-ds-run.json"
+    },
+    {
+      "gate": "re-review",
+      "revision": "PR DS-PR1",
+      "decision": "pass; DS-PR1 已修复, both actual exit0, source reviewed at aa7bcb7",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/pr-review-decision.md",
+      "reviews": [
+        "docs/reviews/pr-59-review-20261013-182754.md",
+        "docs/reviews/pr-59-review-20261013-184446.md"
+      ],
+      "reviewed_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
     }
   ],
   "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
@@ -249,6 +282,7 @@
     "url": "https://github.com/noho/code-is-cheap/pull/59",
     "draft": true,
     "merge_authorized": false,
-    "opened_head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0"
+    "opened_head": "2f0db8fb5fdfca02d90a69503b943aee348a81a0",
+    "current_head": "aa7bcb747f41bba1ee1504005df5f938e8571aba"
   }
 }
