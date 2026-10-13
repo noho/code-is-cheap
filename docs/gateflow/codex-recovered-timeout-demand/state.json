@@ -1,0 +1,89 @@
+{
+  "work_unit": "codex-recovered-timeout-demand",
+  "current_gate": "accepted plan commit",
+  "next_entry_point": "accepted plan commit",
+  "goal_confirmation": "passed-user-confirmed",
+  "history": [
+    {
+      "gate": "plan",
+      "decision": "artifact ready for independent review",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/plan.md",
+      "sha256": "0586f7d9528e7114efdad0b05680e6c0b48f63b56eff6db058b43361c2f40f04",
+      "validation": "plan-run.json: actual managed/native/runner exit0, final artifact checked; two recovered exploration tool anomalies do not invalidate plan facts"
+    },
+    {
+      "gate": "plan review",
+      "decision": "ds artifact available; mimo initial attempt invalid as review evidence (upstream content_filter, no artifact); same-provider single corrective retry in flight",
+      "evidence": [
+        "evidence/plan-review-mimo-run.json",
+        "evidence/plan-review-ds-run.json"
+      ],
+      "findings": "no controller adjudication/pass until both required artifacts"
+    },
+    {
+      "gate": "goal confirmation",
+      "revision": "v2",
+      "decision": "user explicitly replaced v1 goal and confirmed terminal-driven both-runtime contract",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/goal-confirmation-v2.md",
+      "superseded": "v1 plan/reviews cannot pass new goal",
+      "old_reviewer_handle": 15652
+    },
+    {
+      "gate": "plan review",
+      "revision": "v1 historical",
+      "decision": "both historical reviews completed; v1 superseded by user before acceptance; no v2 pass inferred",
+      "artifacts": [
+        "docs/reviews/plan-review-20261013-130943.md",
+        "docs/reviews/plan-review-20261013-131652.md"
+      ],
+      "mimo_attempts": "initial content_filter plus one completed corrective retry",
+      "next": "plan v2"
+    },
+    {
+      "gate": "plan",
+      "revision": "v2",
+      "decision": "artifact ready; managed/native/runner exit0, two exploration anomalies do not invalidate plan; independent review pending",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/plan-v2.md",
+      "sha256": "a674f5ff78efd35a4d71e68d6a32b5055ee553ec4fee1bf2cb097f339d6fbefd",
+      "evidence": "evidence/plan-v2-run.json"
+    },
+    {
+      "gate": "plan review",
+      "revision": "v2",
+      "decision": "fix required",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/plan-v2-review-decision.md",
+      "accepted_findings": [
+        "DS-F1",
+        "DS-F2",
+        "C1",
+        "OQ1/OQ3/agent-status clarifications"
+      ],
+      "fix_status": "\u672a\u4fee\u590d"
+    },
+    {
+      "gate": "fix",
+      "revision": "v2 plan",
+      "decision": "plan artifact fixed and native0; old collector false rejection managed1 independently diagnosed, see native proof; review not yet passed",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/plan-v2-fix.md",
+      "sha256": "13748c8ceb3e84dfd6ee3764ad7dfb534d3221d1401f15a11a09654412c039f4",
+      "supplement": "evidence/plan-v2-fix-native-proof.json"
+    },
+    {
+      "gate": "re-review",
+      "revision": "v2 plan",
+      "decision": "pass; all accepted plan fixes \u5df2\u4fee\u590d",
+      "artifact": "docs/gateflow/codex-recovered-timeout-demand/plan-v2-rereview-decision.md",
+      "source_plan_sha256": "13748c8ceb3e84dfd6ee3764ad7dfb534d3221d1401f15a11a09654412c039f4"
+    }
+  ],
+  "base_commit": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
+  "authorization": {
+    "goal": "explicitly confirmed",
+    "draft_pr": true,
+    "merge": false,
+    "sync_after_full_review": true,
+    "mimo_flash_codex_and_claude_probes": true
+  },
+  "goal_contract": "goal-confirmation-v2.md",
+  "inflight": []
+}

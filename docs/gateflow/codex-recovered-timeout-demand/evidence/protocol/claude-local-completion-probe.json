@@ -1,0 +1,93 @@
+{
+  "captured_at": "2026-10-13T13:54:45.477452+08:00",
+  "cli_version": "2.1.296",
+  "cases": [
+    {
+      "api_response_stop_reason": "end_turn",
+      "argv": [
+        "/Users/leo/.local/bin/claude",
+        "--print",
+        "--output-format",
+        "stream-json",
+        "--verbose",
+        "--no-session-persistence",
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--setting-sources",
+        "",
+        "--tools",
+        "",
+        "--disable-slash-commands",
+        "--model",
+        "test-model",
+        "--",
+        "Reply with synthetic text."
+      ],
+      "actual_native_exit": 0,
+      "requests": 1,
+      "native_terminals": [
+        {
+          "type": "result",
+          "subtype": "success",
+          "is_error": false,
+          "result": "Synthetic protocol final.",
+          "stop_reason": "end_turn",
+          "terminal_reason": "completed",
+          "api_error_status": null
+        }
+      ],
+      "raw_output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/terminal-protocol-m_zb3_gh/end_turn/output.jsonl",
+      "output_sha256": "ba24f7eb373cbbae688407d93cb52acef711badac932fd0c784175dd54b92f73",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/terminal-protocol-m_zb3_gh/end_turn/stderr.log",
+      "stderr_bytes": 77,
+      "kind": "Deterministic localhost native-protocol observation; no real model/service/business data; not a transient-fault or installed live probe",
+      "synthetic_equivalent": "docs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-local-end_turn-minimal.jsonl"
+    },
+    {
+      "api_response_stop_reason": "stop_sequence",
+      "argv": [
+        "/Users/leo/.local/bin/claude",
+        "--print",
+        "--output-format",
+        "stream-json",
+        "--verbose",
+        "--no-session-persistence",
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--setting-sources",
+        "",
+        "--tools",
+        "",
+        "--disable-slash-commands",
+        "--model",
+        "test-model",
+        "--",
+        "Reply with synthetic text."
+      ],
+      "actual_native_exit": 0,
+      "requests": 1,
+      "native_terminals": [
+        {
+          "type": "result",
+          "subtype": "success",
+          "is_error": false,
+          "result": "Synthetic protocol final.",
+          "stop_reason": "stop_sequence",
+          "terminal_reason": "completed",
+          "api_error_status": null
+        }
+      ],
+      "raw_output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/terminal-protocol-m_zb3_gh/stop_sequence/output.jsonl",
+      "output_sha256": "621630a7f39db37f4f2c414ea29b41499f31cde1d8dc77a1f7fe318230d81c58",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/terminal-protocol-m_zb3_gh/stop_sequence/stderr.log",
+      "stderr_bytes": 77,
+      "kind": "Deterministic localhost native-protocol observation; no real model/service/business data; not a transient-fault or installed live probe",
+      "synthetic_equivalent": "docs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-local-stop_sequence-minimal.jsonl"
+    }
+  ],
+  "script_snapshot": "docs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-local-completion-probe.py",
+  "script_sha256": "ff787a5256a569e7be3400f8dfeb6d94d45d61857e0c2fa257aae677a469ad74",
+  "actual_managed_exit": 0
+}

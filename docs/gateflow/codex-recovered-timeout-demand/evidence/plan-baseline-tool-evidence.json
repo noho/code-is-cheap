@@ -1,0 +1,20 @@
+{
+  "source_log": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.B4t8Klw6/output.jsonl",
+  "source_sha256": "4e840121e8f0d87f7f84a8da5388126c8a25eb68b869d446948b8acf71944722",
+  "events": [
+    {
+      "line": 44,
+      "command": "/bin/zsh -c \"python3 -B - <<'PY'\nimport importlib.util\nimport json\nimport subprocess\nimport tempfile\nfrom pathlib import Path\nroot = Path.cwd()\nsource = root / 'scripts/agent-run-result.py'\nsample = root / 'docs/gateflow/codex-recovered-timeout-demand/evidence/minimal-events.jsonl'\nspec = importlib.util.spec_from_file_location('synthetic_baseline_collector', source)\nadapter = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(adapter)\nevents = [json.loads(line) for line in sample.read_text().splitlines()]\nprint(json.dumps({'recognized_notices': [adapter.recognized_codex_connection_notice(event) for event in events if event['type'] == 'error']}, ensure_ascii=False))\nwith tempfile.TemporaryDirectory(prefix='codex-timeout-plan-baseline-') as directory:\n    stderr = Path(directory) / 'empty.stderr'\n    stderr.write_text('')\n    argv = ['python3', '-B', str(source), '--runtime', 'codex', '--provider', 'mimo', '--output', str(sample), '--stderr', str(stderr), '--exit-code', '0', '--runner-exit-code', '0']\n    result = subprocess.run(argv, capture_output=True, text=True)\n    report = json.loads(result.stdout)\n    print(json.dumps({'collector_exit': result.returncode, **{key: report[key] for key in ('agent_status', 'validation_status', 'result_status', 'runtime_exit_code', 'runner_exit_code', 'terminal', 'diagnostic_counts')}, 'diagnostic_lines': [item['line'] for item in report['errors']]}, ensure_ascii=False))\n    if result.stderr:\n        print(result.stderr)\nPY\"",
+      "exit_code": 0,
+      "status": "completed",
+      "output": "{\"recognized_notices\": [false, false, false, false, false]}\n{\"collector_exit\": 1, \"agent_status\": \"completed\", \"validation_status\": \"rejected\", \"result_status\": \"not_assessed\", \"runtime_exit_code\": 0, \"runner_exit_code\": 1, \"terminal\": \"turn.completed\", \"diagnostic_counts\": {\"errors\": 5, \"anomalies\": 0, \"warnings\": 0}, \"diagnostic_lines\": [3, 4, 5, 6, 7]}\n"
+    },
+    {
+      "line": 47,
+      "command": "/bin/zsh -c \"python3 -B -m unittest discover -s tests -p 'test_agent_run_results.py'\"",
+      "exit_code": 0,
+      "status": "completed",
+      "output": ".............................................................\n----------------------------------------------------------------------\nRan 61 tests in 46.131s\n\nOK\n"
+    }
+  ]
+}

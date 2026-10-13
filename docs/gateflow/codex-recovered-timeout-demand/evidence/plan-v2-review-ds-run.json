@@ -1,0 +1,93 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "ds-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "**Conclusion: `pass-with-risks`** — plan-v2 is goal-aligned (both runtimes native-terminal completion, failure fences preserved, Claude negative completion fields, bounded diagnostics, one minimal slice), code-generation-ready, with no structural blocker. Two material findings for adjudication: F1 (medium — `README.zh.md:368` carries the same obsolete contract but is missing from the plan's affected/allowed files, so the Chinese README would keep the fatal-notice claim), F2 (medium, needs-evidence — hard-reject shape rules for unobserved Claude `system/api_retry` / `assistant.error`-null frames rest on an SDK snapshot the plan itself says isn't an exact CLI match, risking a new false-rejection path; verification or anomaly-downgrade needed). Plus OQ1–OQ3 (between-starts frame policy, root-identity wording, affected-suite scope).\n\n**Artifact:** `docs/reviews/plan-review-20261013-134557.md` (recorded: route ds-flash; plan SHA-256 `a674f5ff…fbefd`, goal SHA-256 `a68fd2c4…49b6` matching the plan's own record; base `62c3b26`; 61/61 baseline suite verified green; 17 synthetic probes of the current collector confirming the plan's code-fact claims; raw logs/business files/other reviewer artifacts not read).\n\n**Blockers:** none blocking implementation once the controller adjudicates F1/F2 and folds OQ1–OQ3 wording into the plan; no new goal confirmation required. Next entry: controller adjudication.",
+    "final_answer_truncated": false,
+    "final_answer_chars": 1413,
+    "wall_clock_seconds": 645.03212,
+    "usage": {
+      "input_tokens": 113923,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 2718336,
+      "output_tokens": 96271,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 642822,
+      "duration_api_ms": 584329,
+      "total_cost_usd": 4.335558,
+      "modelUsage": {
+        "deepseek/deepseek-flash[1m]": {
+          "inputTokens": 113923,
+          "outputTokens": 96271,
+          "cacheReadInputTokens": 2718336,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 4.335558,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "deepseek/deepseek-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "a3310543-714b-4bb1-b30f-00fd9968181e",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 30,
+    "events": 85192,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"deepseek/deepseek-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 93,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.7d0zAFmI/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.7d0zAFmI/stderr.log",
+      "last_message": null
+    }
+  }
+}

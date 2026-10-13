@@ -1,0 +1,54 @@
+[
+  {
+    "source_summary": "plan-review-mimo-run.json",
+    "raw_log": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.lnduUXmI/output.jsonl",
+    "raw_log_sha256": "e3469fadcfc2905be02cbc0572a5a380a1527708483c95203accc55cb8a7713f",
+    "native_terminal_fields": {
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "stop_reason": "content_filter",
+      "terminal_reason": "completed",
+      "api_error_status": null
+    },
+    "current_collector_outcome": {
+      "runner_exit_code": 0,
+      "validation_status": "passed"
+    },
+    "synthetic_equivalent": {
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "stop_reason": "content_filter",
+      "terminal_reason": "completed",
+      "api_error_status": null,
+      "result": "Synthetic final answer."
+    }
+  },
+  {
+    "source_summary": "plan-review-ds-run.json",
+    "raw_log": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.ENPQ1Dcm/output.jsonl",
+    "raw_log_sha256": "544873dc47783918ccc7c8b67f1d96e795f934b3ff07497ca3b7235034e2e4be",
+    "native_terminal_fields": {
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "stop_reason": "end_turn",
+      "terminal_reason": "completed",
+      "api_error_status": null
+    },
+    "current_collector_outcome": {
+      "runner_exit_code": 0,
+      "validation_status": "needs_review"
+    },
+    "synthetic_equivalent": {
+      "type": "result",
+      "subtype": "success",
+      "is_error": false,
+      "stop_reason": "end_turn",
+      "terminal_reason": "completed",
+      "api_error_status": null,
+      "result": "Synthetic final answer."
+    }
+  }
+]

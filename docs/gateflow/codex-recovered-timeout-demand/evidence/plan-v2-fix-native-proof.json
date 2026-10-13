@@ -1,0 +1,27 @@
+{
+  "actual_managed_exit": 1,
+  "actual_native_exit": 0,
+  "old_collector_exit": 1,
+  "raw_log": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.bP1alkGZ/output.jsonl",
+  "raw_log_sha256": "39e76eede1c85336ae3902c0c149425f6c7aa40bf0645e896d3fe55f6342a61f",
+  "notice": {
+    "line": 32,
+    "event": {
+      "type": "error",
+      "message": "Reconnecting... 2/5 (stream disconnected before completion: websocket closed by server before response.completed)"
+    }
+  },
+  "final_line": 53,
+  "completed_line": 54,
+  "checks": {
+    "native_exit0": true,
+    "one_valid_initial_thread": true,
+    "one_valid_turn": true,
+    "one_success_terminal": true,
+    "final_valid_and_ordered": true,
+    "only_one_unknown_diagnostic_fatal_in_old_report": true,
+    "corrected_plan_hash": true
+  },
+  "selected_runner_checks": "none explicitly requested; postprocessing flags not used",
+  "decision": "old collector false rejection retained, native/structural/final and delivered artifact evidence supports targeted plan re-review; not a production v2 implementation pass; actual replay required after implementation"
+}

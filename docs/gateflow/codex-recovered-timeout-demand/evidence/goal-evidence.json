@@ -1,0 +1,125 @@
+{
+  "base_commit": "62c3b26",
+  "collector_sha256": "8a0be0d0e7d472ff145ee1c691f1849f7480cadd239a9f2dfb4e43900e3a0153",
+  "original_sources": [
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/output.jsonl",
+      "bytes": 744832,
+      "sha256": "66427f66da39f5a19eb3a378ba1ccc2ed10d515bdf28615bb2897cceaa43196c"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/diagnosis.json",
+      "bytes": 2525,
+      "sha256": "79a3b2aa4bdc35ab206aa68833d754161d146d61d21484e7fc27cf75f4a90414"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.json",
+      "bytes": 9045,
+      "sha256": "854e3262b25e1568160f6a3c6b043a3757a0dd43b8a341a30e2e98d6ac85f0a7"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/workpapers/run-monitor-tencent-20261010/shaanxi-collector-timeout-demand-20261013/replay.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.txt",
+      "bytes": 48,
+      "sha256": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace"
+    },
+    {
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261012-601225.SH-01/g1-code-dev-01-evidence/canary.expected",
+      "bytes": 48,
+      "sha256": "3acb5571c5107281306fd4bd1b2a2bb9c6490f62ddfc4ed87fbf35ef62165ace"
+    }
+  ],
+  "baseline": {
+    "actual_collector_exit": 1,
+    "stderr_bytes": 0,
+    "summary": {
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "agent_status": "completed",
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "terminal": "turn.completed",
+      "diagnostic_counts": {
+        "errors": 5,
+        "anomalies": 3,
+        "warnings": 0
+      },
+      "canary_status": "match",
+      "canary_read_candidate": false,
+      "events": 187,
+      "tool_results": 85
+    }
+  },
+  "in_memory_counterfactual": {
+    "label": "Exploratory exact recognition only; no production code changed; not implementation acceptance",
+    "summary": {
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "agent_status": "completed",
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "terminal": "turn.completed",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 3,
+        "warnings": 5
+      },
+      "canary_status": "match",
+      "canary_read_candidate": false,
+      "events": 187,
+      "tool_results": 85
+    },
+    "notices": [
+      {
+        "stream": "output",
+        "line": 3,
+        "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (request timed out)'}"
+      },
+      {
+        "stream": "output",
+        "line": 176,
+        "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+      },
+      {
+        "stream": "output",
+        "line": 177,
+        "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 3/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+      },
+      {
+        "stream": "output",
+        "line": 178,
+        "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 4/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+      },
+      {
+        "stream": "output",
+        "line": 179,
+        "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 5/5 (We’re currently experiencing high demand, which may cause temporary errors.)'}"
+      }
+    ]
+  },
+  "selected_checks": {
+    "native_exit_argument": 0,
+    "precollection_runner_exit_argument": 0,
+    "canary_selected": true,
+    "artifacts_selected": 2,
+    "artifact_checks": [
+      {
+        "exists": true,
+        "regular_file": true
+      },
+      {
+        "exists": true,
+        "regular_file": true
+      }
+    ]
+  }
+}

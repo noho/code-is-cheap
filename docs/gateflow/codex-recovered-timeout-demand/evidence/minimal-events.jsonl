@@ -1,0 +1,9 @@
+{"type": "thread.started", "thread_id": "synthetic-thread"}
+{"type": "turn.started"}
+{"type": "error", "message": "Reconnecting... 2/5 (request timed out)"}
+{"type": "error", "message": "Reconnecting... 2/5 (We’re currently experiencing high demand, which may cause temporary errors.)"}
+{"type": "error", "message": "Reconnecting... 3/5 (We’re currently experiencing high demand, which may cause temporary errors.)"}
+{"type": "error", "message": "Reconnecting... 4/5 (We’re currently experiencing high demand, which may cause temporary errors.)"}
+{"type": "error", "message": "Reconnecting... 5/5 (We’re currently experiencing high demand, which may cause temporary errors.)"}
+{"type": "item.completed", "item": {"id": "synthetic-final", "type": "agent_message", "text": "Synthetic task completed."}}
+{"type": "turn.completed", "usage": {}}

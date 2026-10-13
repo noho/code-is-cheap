@@ -1,0 +1,11 @@
+# Scope revision and evidence applicability
+
+Gate/work unit: user redirect / goal confirmation v2, codex-recovered-timeout-demand. Explicit user instruction replaces the v1 allowlist-only binding scope while preserving branch/work unit and role/PR/deployment authorization. V2 is confirmed; no implementation or accepted-plan commit exists for v1.
+
+Authoritative contract: goal-confirmation-v2.md. State: revised plan in flight. Old goal is preserved at superseded/v1-goal-confirmation.md; old plan preserved at superseded/v1-plan.md (and plan.md until revised plan completion). V1 independent planreview reports are docs/reviews/plan-review-20261013-130943.md and docs/reviews/plan-review-20261013-131652.md. Both original managed handles exited; no interruption. Mimo first content_filter attempt and its single corrective retry remain recorded.
+
+No old review conclusion is applied to v2. Still-applicable evidence: base source identity; native/postprocessing runner dataflow; strict parsing/check behavior; original read-only input hashes and error/terminal frame observations; old suite run only as a baseline of what will be deliberately revised versus preserved. The old counterfactual allowlist replay is historical root-cause evidence only, not proof of v2 behavior. Original v1 fixed diagnostic category counts are superseded by v2 diagnostic preservation and needs_review requirements.
+
+New actual protocol evidence: evidence/protocol/ codex0.162.1 native schema; local Claude SDK0.2.138 snippets with version caveat; actual Claude2.1.296 success/end_turn versus success/content_filter terminal fields, with sanitized synthetic equivalents and retrievable source-log hashes. The content_filter record directly proves the existing collector masks a native negative completion signal; word heuristics are not proposed.
+
+Old investigations' wording variants and strict notice-order predicates do not define v2 acceptance. New plan and every affected review must independently assess terminal/completeness/structure/check distinctions for both runtimes. Owner/controller will classify findings, dispatch accepted fixes to gpt-6-sol and preserve evidence applicability after changes. No production/live changes yet; current next entry point revised plan, then new-goal plan review.

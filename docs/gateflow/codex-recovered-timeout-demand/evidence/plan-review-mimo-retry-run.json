@@ -1,0 +1,93 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "**Conclusion: `pass`**\n\n**Artifact:** `docs/reviews/plan-review-20261013-131652.md`\n\nIndependent review completed from repository code, the user-confirmed goal, and synthetic evidence only. All material plan claims verified: hashes/HEAD match (`plan 0586f7d9…`, goal `ad1a4d79…`, base `62c3b26`), line citations accurate, sole recognizer entry point confirmed, all four preserved proof/exit predicates match code, proposed regexes reproduce the recorded baseline (`false×5` today), fullmatch the five sample notices, and reject the near-miss battery while old families stay recognized; static test count (61) corroborates the recorded baseline. No material findings, no blocking open questions; residual risks (controller-owned replay/probes, out-of-scope wording variants, suite not re-executed by this reviewer) are classified with destinations. No code/plan/test/state edits; the review artifact is the only write.",
+    "final_answer_truncated": false,
+    "final_answer_chars": 917,
+    "wall_clock_seconds": 416.16618,
+    "usage": {
+      "input_tokens": 87928,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 745984,
+      "output_tokens": 20087,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 413918,
+      "duration_api_ms": 403600,
+      "total_cost_usd": 1.314807,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 87928,
+          "outputTokens": 20087,
+          "cacheReadInputTokens": 745984,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 1.314807,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "bf1884df-89dd-4060-acf2-2c39b6be4401",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 17,
+    "events": 4848,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.KzQ4hm7s/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.KzQ4hm7s/stderr.log",
+      "last_message": null
+    }
+  }
+}

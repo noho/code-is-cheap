@@ -1,0 +1,67 @@
+{
+  "managed_exit": 0,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "Created [plan-v2.md](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/plan-v2.md).\n\nOne slice covers native completion validation, retained intermediate diagnostics, Claude completion metadata, identity/final ownership, regression tests and documentation.\n\nNo blocking questions. Production code, tests, state and v1 artifacts remain unchanged. Next: revised plan review.",
+    "final_answer_truncated": false,
+    "final_answer_chars": 402,
+    "wall_clock_seconds": 834.969233,
+    "usage": {
+      "input_tokens": 1229813,
+      "cached_input_tokens": 1115776,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 20796,
+      "reasoning_output_tokens": 9581
+    },
+    "runtime_metrics": {},
+    "session_id": "01a133b4-904b-7350-b6d5-581fb7fdb6bc",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 31,
+    "events": 72,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 16,
+        "message": "{'id': 'item_7', 'type': 'command_execution', 'command': \"/bin/zsh -c 'rg --files docs/gateflow/codex-recovered-timeout-demand/evidence/protocol docs/gateflow/codex-recovered-timeout-demand/evidence/snapshots; rg --files -g AGENTS.md scripts tests docs skills'\", 'aggregated_output': 'rg: docs/gateflow/codex-recovered-timeout-demand/evidence/snapshots: No such file or directory (os error 2)\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/codex-items.ts\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-sdk-excerpts.txt\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/observed-terminal-fields.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/codex-native-events.rs\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/sources.json\\n', 'exit_code': 1, 'status': 'failed'}",
+        "message_chars": 857,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      },
+      {
+        "stream": "output",
+        "line": 30,
+        "message": "{'id': 'item_14', 'type': 'command_execution', 'command': \"/bin/zsh -c 'rg --files docs/gateflow/codex-recovered-timeout-demand/evidence; rg --files -g AGENTS.md scripts tests docs skills'\", 'aggregated_output': 'docs/gateflow/codex-recovered-timeout-demand/evidence/minimal-events.jsonl\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/plan-review-ds-run.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/plan-review-mimo-retry-run.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/plan-baseline-tool-evidence.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/plan-review-mimo-run.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/plan-run.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/codex-items.ts\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/claude-sdk-excerpts.txt\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/observed-terminal-fields.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/codex-native-events.rs\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/protocol/sources.json\\ndocs/gateflow/codex-recovered-timeout-demand/evidence/goal-evidence.json\\n', 'exit_code': 1, 'status': 'failed'}",
+        "message_chars": 1230,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 2,
+      "warnings": 0
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.8DQc3W5Y/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.8DQc3W5Y/stderr.log",
+      "last_message": null
+    }
+  }
+}

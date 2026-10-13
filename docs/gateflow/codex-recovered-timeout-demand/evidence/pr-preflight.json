@@ -1,0 +1,16 @@
+{
+  "captured_at": "2026-10-13T13:38:24.648087+08:00",
+  "repository": "noho/code-is-cheap",
+  "repository_url": "https://github.com/noho/code-is-cheap",
+  "remote_main_oid": "62c3b26adeb994e81043d7b1afbcd4c6eb8974ae",
+  "commands": [
+    "gh repo view noho/code-is-cheap --json nameWithOwner,url",
+    "git ls-remote origin refs/heads/main"
+  ],
+  "actual_exits": [
+    0,
+    0
+  ],
+  "scope": "read-only access/base facts, not draft PR approval or a PR review",
+  "next": "refresh exact PR identity/compare at actual PR review"
+}

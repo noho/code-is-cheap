@@ -1,0 +1,74 @@
+Lines 2473-2493:
+    type: 'system';
+    subtype: 'api_retry';
+    attempt: number;
+    max_retries: number;
+    retry_delay_ms: number;
+    error_status: number | null;
+    error: SDKAssistantMessageError;
+    uuid: UUID;
+    session_id: string;
+};
+
+export declare type SDKAssistantMessage = {
+    type: 'assistant';
+    message: BetaMessage;
+    parent_tool_use_id: string | null;
+    error?: SDKAssistantMessageError;
+    uuid: UUID;
+    session_id: string;
+};
+
+export declare type SDKAssistantMessageError = 'authentication_failed' | 'oauth_org_not_allowed' | 'billing_error' | 'rate_limit' | 'invalid_request' | 'server_error' | 'unknown' | 'max_output_tokens';
+
+Lines 3297-3343:
+export declare type SDKResultError = {
+    type: 'result';
+    subtype: 'error_during_execution' | 'error_max_turns' | 'error_max_budget_usd' | 'error_max_structured_output_retries';
+    duration_ms: number;
+    duration_api_ms: number;
+    is_error: boolean;
+    num_turns: number;
+    stop_reason: string | null;
+    total_cost_usd: number;
+    usage: NonNullableUsage;
+    modelUsage: Record<string, ModelUsage>;
+    permission_denials: SDKPermissionDenial[];
+    errors: string[];
+    terminal_reason?: TerminalReason;
+    fast_mode_state?: FastModeState;
+    origin?: SDKMessageOrigin;
+    uuid: UUID;
+    session_id: string;
+};
+
+export declare type SDKResultMessage = SDKResultSuccess | SDKResultError;
+
+export declare type SDKResultSuccess = {
+    type: 'result';
+    subtype: 'success';
+    duration_ms: number;
+    duration_api_ms: number;
+    is_error: boolean;
+    api_error_status?: number | null;
+    num_turns: number;
+    result: string;
+    stop_reason: string | null;
+    total_cost_usd: number;
+    usage: NonNullableUsage;
+    modelUsage: Record<string, ModelUsage>;
+    permission_denials: SDKPermissionDenial[];
+    structured_output?: unknown;
+    deferred_tool_use?: SDKDeferredToolUse;
+    terminal_reason?: TerminalReason;
+    fast_mode_state?: FastModeState;
+    origin?: SDKMessageOrigin;
+    uuid: UUID;
+    session_id: string;
+};
+
+/**
+ * V2 API - UNSTABLE
+
+Lines 5575-5575:
+export declare type TerminalReason = 'blocking_limit' | 'rapid_refill_breaker' | 'prompt_too_long' | 'image_error' | 'model_error' | 'aborted_streaming' | 'aborted_tools' | 'stop_hook_prevented' | 'hook_stopped' | 'tool_deferred' | 'max_turns' | 'completed';

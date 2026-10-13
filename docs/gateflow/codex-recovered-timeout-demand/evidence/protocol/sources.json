@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-10-13T13:19:38.173970+08:00",
+  "runtime_versions": {
+    "codex": "0.162.1",
+    "claude": "2.1.296"
+  },
+  "codex_schema_source": "https://raw.githubusercontent.com/openai/codex/rust-v0.162.1/codex-rs/exec/src/exec_events.rs",
+  "codex_items_source": "https://raw.githubusercontent.com/openai/codex/rust-v0.162.1/sdk/typescript/src/items.ts",
+  "claude_sdk_source": "/opt/homebrew/lib/node_modules/kanban/node_modules/@anthropic-ai/claude-agent-sdk/sdk.d.ts",
+  "claude_sdk_version": "0.2.138",
+  "claude_sdk_sha256": "c3d434ccc4da840b7dbe85df4b4e79bcc0af59384c66784f20e5fcfedff586f1",
+  "caveat": "SDK excerpts are available local schema evidence, not a claim that SDK version exactly matches live Claude CLI; observed terminal fields supplement them."
+}

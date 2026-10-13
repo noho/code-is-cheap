@@ -1,0 +1,68 @@
+{
+  "managed_exit": 1,
+  "summary": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 1,
+    "agent_status": "completed",
+    "validation_status": "rejected",
+    "result_status": "not_assessed",
+    "final_answer": "Applied the accepted plan fixes, preserving the confirmed goal and single S-1 slice.\n\n- [Corrected plan](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/plan-v2.md)\n- [Fix report with hashes and validation](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-recovered-timeout-demand/plan-v2-fix.md)\n\nArtifact checks passed. No production changes, commits, or deployment. Native tests were specified but not run.\n\nNo plan-fix blockers. Next: independent targeted plan re-review before implementation.",
+    "final_answer_truncated": false,
+    "final_answer_chars": 535,
+    "wall_clock_seconds": 631.171437,
+    "usage": {
+      "input_tokens": 981815,
+      "cached_input_tokens": 891520,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 16301,
+      "reasoning_output_tokens": 3958
+    },
+    "runtime_metrics": {},
+    "session_id": "01a133d8-0882-79e1-8aca-e8be77596351",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 22,
+    "events": 54,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [
+      {
+        "stream": "output",
+        "line": 32,
+        "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: websocket closed by server before response.completed)'}",
+        "message_chars": 145,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 44,
+        "message": "{'id': 'item_22', 'type': 'command_execution', 'command': \"/bin/zsh -c 'git diff --no-index --check -- docs/gateflow/codex-recovered-timeout-demand/evidence/plan-v2-reviewed-a674f5ff.md docs/gateflow/codex-recovered-timeout-demand/plan-v2.md'\", 'aggregated_output': '', 'exit_code': 1, 'status': 'failed'}",
+        "message_chars": 305,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 1,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.bP1alkGZ/output.jsonl",
+      "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.bP1alkGZ/stderr.log",
+      "last_message": null
+    }
+  }
+}

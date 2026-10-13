@@ -1,0 +1,34 @@
+Source: /opt/homebrew/lib/node_modules/kanban/node_modules/@anthropic-ai/sdk/resources/messages/messages.d.ts
+API message stop_reason documentation and enum, same local SDK dependency. A message reason is not by itself a runner result terminal.
+    model: Model;
+    /**
+     * Conversational role of the generated message.
+     *
+     * This will always be `"assistant"`.
+     */
+    role: 'assistant';
+    /**
+     * The reason that we stopped.
+     *
+     * This may be one the following values:
+     *
+     * - `"end_turn"`: the model reached a natural stopping point
+     * - `"max_tokens"`: we exceeded the requested `max_tokens` or the model's maximum
+     * - `"stop_sequence"`: one of your provided custom `stop_sequences` was generated
+     * - `"tool_use"`: the model invoked one or more tools
+     * - `"pause_turn"`: we paused a long-running turn. You may provide the response
+     *   back as-is in a subsequent request to let the model continue.
+     * - `"refusal"`: when streaming classifiers intervene to handle potential policy
+     *   violations
+     *
+     * In non-streaming mode this value is always non-null. In streaming mode, it is
+     * null in the `message_start` event and non-null otherwise.
+     */
+    stop_reason: StopReason | null;
+    /**
+     * Which custom stop sequence was generated, if any.
+     *
+     * This value will be a non-null string if one of your custom stop sequences was
+     * generated.
+     */
+export type StopReason = 'end_turn' | 'max_tokens' | 'stop_sequence' | 'tool_use' | 'pause_turn' | 'refusal';
