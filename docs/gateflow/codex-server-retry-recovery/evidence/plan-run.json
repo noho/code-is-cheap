@@ -1,0 +1,81 @@
+{
+  "gate": "plan",
+  "cwd": "/Users/leo/workspace/code-is-cheap",
+  "command": [
+    "codex-agent-run",
+    "--provider",
+    "gpt-6-sol",
+    "--cwd",
+    "/Users/leo/workspace/code-is-cheap",
+    "--prompt-file",
+    "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/plan.md",
+    "--output",
+    "/private/tmp/codex-server-retry-recovery/plan.jsonl",
+    "--stderr",
+    "/private/tmp/codex-server-retry-recovery/plan.stderr",
+    "--artifact",
+    "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/plan.md"
+  ],
+  "outer_exit": 0,
+  "report": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "codex",
+    "provider": "gpt-6-sol",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "needs_review",
+    "result_status": "not_assessed",
+    "final_answer": "已产出 [plan.md](/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/plan.md)。\n\n- 关键决策：一个行为 slice；新增精确文案白名单，限定 retry `1–5/5` 与小写 UUID 形状，沿用恢复门槛和 schema。\n- 验证事实：6 组离线 baseline 保存；4 项现有测试通过；复现案例 `rejected/errors=2`。源码、tests、goal、原诊断未改。\n- 缺项：独立 plan review、实现后回归及后续 controller 的审核、sync、两路 Codex 真实工具探针。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 321,
+    "wall_clock_seconds": 641.457297,
+    "usage": {
+      "input_tokens": 1201839,
+      "cached_input_tokens": 1092864,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 21843,
+      "reasoning_output_tokens": 6606
+    },
+    "runtime_metrics": {},
+    "session_id": "01a132d8-502b-7aa2-837a-f44271844637",
+    "terminal": "turn.completed",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 29,
+    "events": 67,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [
+      {
+        "stream": "output",
+        "line": 34,
+        "message": "{'id': 'item_16', 'type': 'command_execution', 'command': '/bin/zsh -c \"rg --files .github; rg -n \\'unittest|pytest|compileall|bash -n|zsh -n|test_agent_run_results|sync-agent-tools|recognized.*notice\\' README.md scripts/sync-agent-tools.sh .github docs/gateflow/codex-recovery-startup-diagnostics/plan.md\"', 'aggregated_output': \"rg: .github: IO error for operation on .github: No such file or directory (os error 2)\\nrg: .github: No such file or directory (os error 2)\\nREADME.md:213:Both helper commands are deployed by `scripts/sync-agent-tools.sh`. Tested with Codex 0.161.0 and Claude Code 2.1.294 on macOS.\\nREADME.md:292:`sync-agent-tools.sh` also installs the URL helper, default URL resources and `repair-codex-reasoning-history.py` to `~/.local/bin`.\\nREADME.md:308:./scripts/sync-agent-tools.sh\\nREADME.md:444:Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Bare `resume` and Codex resume options\\nREADME.md:534:python3 -m unittest discover -s tests -p 'test_model_catalog_generation.py'\\nREADME.md:535:OFFICIAL_CATALOG_RUNTIME_TESTS=1 python3 -m unittest discover -s tests -p 'test_official_catalog_runtime.py'\\nREADME.md:819:  sync-agent-tools.sh\\nREADME.md:869:python3 -m unittest discover -s tests\\nREADME.md:881:./scripts/sync-agent-tools.sh\\ndocs/gateflow/codex-recovery-startup-diagnostics/plan.md:34:| [`recognized_codex_connection_notice`, lines 49–53](../../../scripts/agent-run-result.py#L49) checks exact keys and a full message match. | Leave reconnect recognition unchanged; use similarly exact shape/text matching for the startup frame. |\\ndocs/gateflow/codex-recovery-startup-diagnostics/plan.md:42:| [`RunnerResults`, lines 55–113](../../../tests/test_agent_run_results.py#L55) supplies fake runtimes, collector replay, report-contract and connection-result assertions. | Extend these deterministic tools; no new provider/test infrastructure. |\\ndocs/gateflow/codex-recovery-startup-diagnostics/plan.md:60:| `tests/test_agent_run_result",
+        "message_chars": 2743,
+        "truncated": true,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "warnings": [],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 1,
+      "warnings": 0
+    },
+    "diagnostics_truncated": true,
+    "artifacts": [
+      {
+        "path": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/plan.md",
+        "exists": true,
+        "regular_file": true
+      }
+    ],
+    "logs": {
+      "output": "/private/tmp/codex-server-retry-recovery/plan.jsonl",
+      "stderr": "/private/tmp/codex-server-retry-recovery/plan.stderr",
+      "last_message": null
+    }
+  }
+}

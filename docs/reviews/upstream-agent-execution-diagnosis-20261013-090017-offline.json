@@ -1,0 +1,403 @@
+{
+  "created_at": "2026-10-13T00:59:30.184932+00:00",
+  "scope": "offline synthetic envelopes; exact case10 error events only; not historical full-log replay",
+  "inputs": {
+    "request.md": "b4c1efeb544537b7051f4b87779bd61c18d16c9ee8cb823d1af61bf1c8c2b881",
+    "cases.json": "73e996b0f02585d1d252fe9c1c36951e6ae7e39f311f09f76ea4347e4960abbd",
+    "native-excerpts.json": "d268971431449daaf3438de03b33f743f752426bade7880866943a4674a19790"
+  },
+  "runs": [
+    {
+      "adapter": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "case10_exact_notices_valid_finish",
+      "outer_exit": 1,
+      "recognized_notices": [
+        false,
+        false
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 2,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 4,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "adapter": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "recognized_closed_valid_finish",
+      "outer_exit": 0,
+      "recognized_notices": [
+        true
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+          "message_chars": 167,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ]
+    },
+    {
+      "adapter": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "recognized_closed_tool_anomaly",
+      "outer_exit": 0,
+      "recognized_notices": [
+        true
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 1
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+          "message_chars": 167,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ]
+    },
+    {
+      "adapter": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "case10_exact_notices_no_finish",
+      "outer_exit": 1,
+      "recognized_notices": [
+        false,
+        false
+      ],
+      "agent_status": "failed",
+      "terminal": null,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 4,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 4,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": null,
+          "message": "missing successful runtime terminal",
+          "message_chars": 35,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": null,
+          "message": "missing final answer",
+          "message_chars": 20,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "adapter": "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "unknown_error_valid_finish",
+      "outer_exit": 1,
+      "recognized_notices": [],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 1,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'synthetic unrelated error'}",
+          "message_chars": 57,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "adapter": "/Users/leo/.local/bin/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "case10_exact_notices_valid_finish",
+      "outer_exit": 1,
+      "recognized_notices": [
+        false,
+        false
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 2,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 4,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "adapter": "/Users/leo/.local/bin/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "recognized_closed_valid_finish",
+      "outer_exit": 0,
+      "recognized_notices": [
+        true
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "passed",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 0,
+        "warnings": 1
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+          "message_chars": 167,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ]
+    },
+    {
+      "adapter": "/Users/leo/.local/bin/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "recognized_closed_tool_anomaly",
+      "outer_exit": 0,
+      "recognized_notices": [
+        true
+      ],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 0,
+      "validation_status": "needs_review",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 0,
+        "anomalies": 1,
+        "warnings": 1
+      },
+      "errors": [],
+      "warnings": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "Recovered Codex connection notice: {'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)'}",
+          "message_chars": 167,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ]
+    },
+    {
+      "adapter": "/Users/leo/.local/bin/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "case10_exact_notices_no_finish",
+      "outer_exit": 1,
+      "recognized_notices": [
+        false,
+        false
+      ],
+      "agent_status": "failed",
+      "terminal": null,
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 4,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": 4,
+          "message": "{'type': 'error', 'message': 'Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)'}",
+          "message_chars": 333,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": null,
+          "message": "missing successful runtime terminal",
+          "message_chars": 35,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        },
+        {
+          "stream": "output",
+          "line": null,
+          "message": "missing final answer",
+          "message_chars": 20,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "adapter": "/Users/leo/.local/bin/agent-run-result.py",
+      "adapter_sha256": "ea836b684381420045b064c7ba865ac2b1cf6fa5501b308d0379661253df7301",
+      "scenario": "unknown_error_valid_finish",
+      "outer_exit": 1,
+      "recognized_notices": [],
+      "agent_status": "completed",
+      "terminal": "turn.completed",
+      "runtime_exit_code": 0,
+      "runner_exit_code": 1,
+      "validation_status": "rejected",
+      "result_status": "not_assessed",
+      "diagnostic_counts": {
+        "errors": 1,
+        "anomalies": 0,
+        "warnings": 0
+      },
+      "errors": [
+        {
+          "stream": "output",
+          "line": 3,
+          "message": "{'type': 'error', 'message': 'synthetic unrelated error'}",
+          "message_chars": 57,
+          "truncated": false,
+          "path": null,
+          "proof_line": null
+        }
+      ],
+      "warnings": []
+    }
+  ]
+}

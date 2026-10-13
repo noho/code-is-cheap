@@ -1,0 +1,14 @@
+[
+  {
+    "provider": "mimo-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/plan-review-mimo-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/plan-review-20261013-093111.md",
+    "plan_sha256": "b886991abda482b959e90344188c703734d346b20b4a6654fe4195818d4c83be"
+  },
+  {
+    "provider": "ds-flash",
+    "prompt": "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/plan-review-ds-flash.md",
+    "artifact": "/Users/leo/workspace/code-is-cheap/docs/reviews/plan-review-20261013-093112.md",
+    "plan_sha256": "b886991abda482b959e90344188c703734d346b20b4a6654fe4195818d4c83be"
+  }
+]

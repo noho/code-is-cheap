@@ -1,0 +1,18 @@
+{
+  "source": "docs/reviews/upstream-agent-execution-diagnosis-20261013-090017-offline.json",
+  "source_sha256": "c77980660e0a758a92bc0fe51bbf1529ee56375a2840ab3b437ebe7764732711",
+  "original_native_lines": [
+    135,
+    136
+  ],
+  "events": [
+    {
+      "type": "error",
+      "message": "Reconnecting... 2/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 4324720a-d6d1-4f28-ab30-43742ac44125 in your message.)"
+    },
+    {
+      "type": "error",
+      "message": "Reconnecting... 3/5 (stream disconnected before completion: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. Please include the request ID 0e6e96e9-f41d-457f-8df2-0d8d4d366d47 in your message.)"
+    }
+  ]
+}

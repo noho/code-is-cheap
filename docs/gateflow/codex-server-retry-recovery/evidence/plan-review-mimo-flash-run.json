@@ -1,0 +1,95 @@
+{
+  "gate": "plan review",
+  "provider": "mimo-flash",
+  "outer_exit": 0,
+  "report": {
+    "schema_version": 1,
+    "source": "subagent_report",
+    "runtime": "claude",
+    "provider": "mimo-flash",
+    "runtime_exit_code": 0,
+    "runner_exit_code": 0,
+    "agent_status": "completed",
+    "validation_status": "passed",
+    "result_status": "not_assessed",
+    "final_answer": "## Plan Review 结论：**pass**\n\n- **报告路径**：`/Users/leo/workspace/code-is-cheap/docs/reviews/plan-review-20261013-093111.md`\n- **冻结 target 哈希**：`b886991abda482b959e90344188c703734d346b20b4a6654fe4195818d4c83be`（实测一致），base `991eb26c` 已核对\n- **Findings**：无。goal binding、D1 形状（固定文案三方字符级相等、regex 对两条真实事件 fullmatch）、完整恢复证明不放宽（`:309–328` 逐条对应）、单一 slice、独立测试 oracle、受影响拒收门槛覆盖均经代码与离线证据验证成立；无 goal drift / 过度耦合 / 过度设计\n\n**需 controller 裁决项**：无。可直接汇总双路 review 并按 Gate Order 推进 accepted plan → S1 implementation。",
+    "final_answer_truncated": false,
+    "final_answer_chars": 493,
+    "wall_clock_seconds": 551.74577,
+    "usage": {
+      "input_tokens": 85918,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 562560,
+      "output_tokens": 17209,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "runtime_metrics": {
+      "duration_ms": 549557,
+      "duration_api_ms": 549194,
+      "total_cost_usd": 1.141095,
+      "modelUsage": {
+        "mimo-v2.6-flash[1m]": {
+          "inputTokens": 85918,
+          "outputTokens": 17209,
+          "cacheReadInputTokens": 562560,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 1.141095,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 32000,
+          "thinkingTokens": 0,
+          "canonicalModel": "mimo-v2.6-flash[1m]",
+          "provider": "firstParty",
+          "costBasis": "unknown"
+        }
+      }
+    },
+    "session_id": "23510136-45da-4b10-9f20-be8fc286af35",
+    "terminal": "success",
+    "tool_evidence_scope": "recorded_events_only",
+    "tool_results": 20,
+    "events": 3815,
+    "canary_status": "not_run",
+    "canary_read_candidate": false,
+    "errors": [],
+    "anomalies": [],
+    "warnings": [
+      {
+        "stream": "stderr",
+        "line": 1,
+        "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}",
+        "message_chars": 85,
+        "truncated": false,
+        "path": null,
+        "proof_line": null
+      }
+    ],
+    "diagnostic_counts": {
+      "errors": 0,
+      "anomalies": 0,
+      "warnings": 1
+    },
+    "diagnostics_truncated": false,
+    "artifacts": [],
+    "logs": {
+      "output": "/private/tmp/codex-server-retry-recovery/plan-review-mimo-flash.jsonl",
+      "stderr": "/private/tmp/codex-server-retry-recovery/plan-review-mimo-flash.stderr",
+      "last_message": null
+    }
+  }
+}

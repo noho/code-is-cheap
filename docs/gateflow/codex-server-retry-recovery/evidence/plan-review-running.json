@@ -1,0 +1,36 @@
+[
+  {
+    "provider": "mimo-flash",
+    "session_id": 41659,
+    "command": [
+      "claude-agent-run",
+      "--provider",
+      "mimo-flash",
+      "--cwd",
+      "/Users/leo/workspace/code-is-cheap",
+      "--prompt-file",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/plan-review-mimo-flash.md",
+      "--output",
+      "/private/tmp/codex-server-retry-recovery/plan-review-mimo-flash.jsonl",
+      "--stderr",
+      "/private/tmp/codex-server-retry-recovery/plan-review-mimo-flash.stderr"
+    ]
+  },
+  {
+    "provider": "ds-flash",
+    "session_id": 68212,
+    "command": [
+      "claude-agent-run",
+      "--provider",
+      "ds-flash",
+      "--cwd",
+      "/Users/leo/workspace/code-is-cheap",
+      "--prompt-file",
+      "/Users/leo/workspace/code-is-cheap/docs/gateflow/codex-server-retry-recovery/tasks/plan-review-ds-flash.md",
+      "--output",
+      "/private/tmp/codex-server-retry-recovery/plan-review-ds-flash.jsonl",
+      "--stderr",
+      "/private/tmp/codex-server-retry-recovery/plan-review-ds-flash.stderr"
+    ]
+  }
+]
