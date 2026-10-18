@@ -1,0 +1,15 @@
+All three steps completed successfully.
+
+**Result file:** `/private/tmp/subagent-native-exit-contract/live-probes/claude/result.json`
+
+**Values written (verified by reading the file):**
+- `nonce`: `c40ee8a352c034a1f14ab30b` (matches input)
+- `input_sha256`: `1996124f47465ca48f29398f74a999b4540d7e8c583e1d60a6ea70cc7d53074a`
+- `count`: 9
+- `sum`: -761
+- `sum_squares`: 3830989
+- `weighted_sum`: -4098 (1-based index × value)
+
+**Execution details:** The program ran via `/opt/homebrew/opt/python@3.11/bin/python3.11 -c ...`, read the exact input bytes for SHA256, and created `result.json` with `open(..., "x")` — mode `x` succeeded, so the file was new (no overwrite occurred). It printed the absolute path shown above.
+
+**Issues:** none — no retries, no delegation, no network/git/financial activity; all work confined to the probe directory.

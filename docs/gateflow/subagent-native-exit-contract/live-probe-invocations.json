@@ -1,0 +1,50 @@
+{
+  "invocations": [
+    {
+      "runtime": "codex",
+      "argv": [
+        "codex-agent-run",
+        "--provider",
+        "mimo-flash",
+        "--cwd",
+        "/private/tmp/subagent-native-exit-contract/live-probes/codex",
+        "--skip-git-repo-check",
+        "--prompt-file",
+        "/private/tmp/subagent-native-exit-contract/live-probes/codex/prompt.md",
+        "--output",
+        "/private/tmp/subagent-native-exit-contract/live-probe-codex.jsonl",
+        "--stderr",
+        "/private/tmp/subagent-native-exit-contract/live-probe-codex.stderr"
+      ],
+      "controller_workdir": "/Users/leo/workspace/code-is-cheap",
+      "sandbox_permissions": "require_escalated",
+      "managed_handle": 10962,
+      "receipt": "live-probe-codex-receipt.json",
+      "outer_exit": 0,
+      "native_exit": 0
+    },
+    {
+      "runtime": "claude",
+      "argv": [
+        "claude-agent-run",
+        "--provider",
+        "mimo-flash",
+        "--cwd",
+        "/private/tmp/subagent-native-exit-contract/live-probes/claude",
+        "--prompt-file",
+        "/private/tmp/subagent-native-exit-contract/live-probes/claude/prompt.md",
+        "--output",
+        "/private/tmp/subagent-native-exit-contract/live-probe-claude.jsonl",
+        "--stderr",
+        "/private/tmp/subagent-native-exit-contract/live-probe-claude.stderr"
+      ],
+      "controller_workdir": "/Users/leo/workspace/code-is-cheap",
+      "sandbox_permissions": "require_escalated",
+      "managed_handle": 15159,
+      "receipt": "live-probe-claude-receipt.json",
+      "outer_exit": 0,
+      "native_exit": 0
+    }
+  ],
+  "controller_attempts_per_runtime": 1
+}

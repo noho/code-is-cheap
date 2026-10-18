@@ -1,0 +1,22 @@
+{
+  "observed_at": "2026-10-18T11:31:26.375442+08:00",
+  "pr": 61,
+  "url": "https://github.com/noho/code-is-cheap/pull/61",
+  "head_repository": "noho/code-is-cheap",
+  "base_repository": "noho/code-is-cheap",
+  "head": "812aceced5e2a5a72cf7ca3eea63a0e974f205b2",
+  "base": "32a244d1e286086be86dba837976d3d72fdd6c1f",
+  "draft": true,
+  "source_review_commit": "781a239982631ab0ba8baf0bf6dd72069f3cee68",
+  "source_bundle_sha256": "b580c570bdd9e43bfc79861440f4ff48f2cb8bc2b1b22bb7cddd4b8cef512502",
+  "all15_source_files_match_reviewed_and_pushed": true,
+  "complete_diff_files": 80,
+  "diff_path": "/private/tmp/subagent-native-exit-contract/pr61-32a244d-812acec.diff",
+  "diff_sha256": "4ed0a9a6ecb23a0f6098c0b5c4f071961e49a1b2be89d39d21c6f56444236e02",
+  "statusCheckRollup": [],
+  "main_rules": [],
+  "required_local_checks": "passed;236 tests24 conditional skips",
+  "push_exit": 0,
+  "draft_PR_gate": "pass",
+  "next_gate": "final closeout with authorized sync and two live probes"
+}

@@ -1,0 +1,313 @@
+{
+  "observed_at": "2026-10-18T11:32:13.527576+08:00",
+  "source_commit": "812aceced5e2a5a72cf7ca3eea63a0e974f205b2",
+  "reviewed_source_commit": "781a239982631ab0ba8baf0bf6dd72069f3cee68",
+  "source_bundle_sha256": "b580c570bdd9e43bfc79861440f4ff48f2cb8bc2b1b22bb7cddd4b8cef512502",
+  "files": [
+    {
+      "source": "scripts/claude-agent-run",
+      "installed": "/Users/leo/.local/bin/claude-agent-run",
+      "source_sha256": "d2e47517a36dadbc72f125b63a57e0c1bf6dbfe64ede24c461c5a8205554c52d",
+      "installed_sha256": "d2e47517a36dadbc72f125b63a57e0c1bf6dbfe64ede24c461c5a8205554c52d",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/codex-agent-run",
+      "installed": "/Users/leo/.local/bin/codex-agent-run",
+      "source_sha256": "bb4f61e0d07fe74b74f9023abb95ba3194fd2a5d4ec75705635001223a0884d1",
+      "installed_sha256": "bb4f61e0d07fe74b74f9023abb95ba3194fd2a5d4ec75705635001223a0884d1",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/agent-run-result.py",
+      "installed": "/Users/leo/.local/bin/agent-run-result.py",
+      "source_sha256": "0f473f12d70b9c2c3bc29e83250f97bbf2c6aceeb9539ec35fa3a0d64494ae74",
+      "installed_sha256": "0f473f12d70b9c2c3bc29e83250f97bbf2c6aceeb9539ec35fa3a0d64494ae74",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/sub-agent-preflight",
+      "installed": "/Users/leo/.local/bin/sub-agent-preflight",
+      "source_sha256": "b547a2a85a67fd812d71b5c45763d25184603cf3d5c90e256530fed2cc20480e",
+      "installed_sha256": "b547a2a85a67fd812d71b5c45763d25184603cf3d5c90e256530fed2cc20480e",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/agent-sandbox",
+      "installed": "/Users/leo/.local/bin/agent-sandbox",
+      "source_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "installed_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/agent-sandbox-launch.mjs",
+      "installed": "/Users/leo/.local/bin/agent-sandbox-launch.mjs",
+      "source_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "installed_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/install-agent-sandbox.sh",
+      "installed": "/Users/leo/.local/bin/install-agent-sandbox.sh",
+      "source_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "installed_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/compose-codex-app-config.py",
+      "installed": "/Users/leo/.local/bin/compose-codex-app-config.py",
+      "source_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "installed_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/repair-codex-reasoning-history.py",
+      "installed": "/Users/leo/.local/bin/repair-codex-reasoning-history.py",
+      "source_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "installed_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/agent-endpoint.py",
+      "installed": "/Users/leo/.local/bin/agent-endpoint.py",
+      "source_sha256": "ae9e34b45a749c057a3c1074c0d450c7350903bb657af0f54baa68fb27644a59",
+      "installed_sha256": "ae9e34b45a749c057a3c1074c0d450c7350903bb657af0f54baa68fb27644a59",
+      "matches": true,
+      "mode": "0o755"
+    },
+    {
+      "source": "scripts/agent-tools.zsh",
+      "installed": "/Users/leo/.config/zsh/agent-tools.zsh",
+      "source_sha256": "f9b736191b83d89cb1dd64b9433c444afd836cb234ed57646c79c87f2f40aa1b",
+      "installed_sha256": "f9b736191b83d89cb1dd64b9433c444afd836cb234ed57646c79c87f2f40aa1b",
+      "matches": true,
+      "mode": "0o600"
+    },
+    {
+      "source": "config/endpoints.example.json",
+      "installed": "/Users/leo/.local/bin/agent-endpoints.defaults.json",
+      "source_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "installed_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "matches": true,
+      "mode": "0o600"
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/deepreview/SKILL.md",
+      "source_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "installed_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/deepreview/SKILL.md",
+      "source_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "installed_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/deepreview/agents/openai.yaml",
+      "source_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "installed_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/deepreview/agents/openai.yaml",
+      "source_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "installed_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/gateflow/SKILL.md",
+      "source_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "installed_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/gateflow/SKILL.md",
+      "source_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "installed_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/gateflow/agents/openai.yaml",
+      "source_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "installed_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/gateflow/agents/openai.yaml",
+      "source_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "installed_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/phaseflow/SKILL.md",
+      "source_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "installed_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/phaseflow/SKILL.md",
+      "source_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "installed_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/phaseflow/agents/openai.yaml",
+      "source_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "installed_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/phaseflow/agents/openai.yaml",
+      "source_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "installed_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/planreview/SKILL.md",
+      "source_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "installed_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/planreview/SKILL.md",
+      "source_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "installed_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/planreview/agents/openai.yaml",
+      "source_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "installed_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/planreview/agents/openai.yaml",
+      "source_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "installed_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "source_sha256": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+      "installed_sha256": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "source_sha256": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+      "installed_sha256": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/sub-agents/agents/openai.yaml",
+      "source_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "installed_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/sub-agents/agents/openai.yaml",
+      "source_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "installed_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/references/advanced.md",
+      "source_sha256": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+      "installed_sha256": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/references/advanced.md",
+      "source_sha256": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+      "installed_sha256": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/SKILL.md",
+      "source_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "installed_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/SKILL.md",
+      "source_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "installed_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/agents/openai.yaml",
+      "source_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "installed_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "matches": true,
+      "mode": "0o644"
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/agents/openai.yaml",
+      "source_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "installed_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "matches": true,
+      "mode": "0o644"
+    }
+  ],
+  "all38_installed_files_match_source": true
+}

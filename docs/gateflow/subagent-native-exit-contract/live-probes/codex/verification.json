@@ -1,0 +1,44 @@
+{
+  "runtime": "codex",
+  "provider": "mimo-flash",
+  "outer_exit": 0,
+  "native_exit": 0,
+  "schema_version": 2,
+  "native_final_exactly_matches_summary": true,
+  "native_final_line": 11,
+  "terminal_line": 12,
+  "tool_steps_completed_lines": [
+    4,
+    7,
+    9
+  ],
+  "independent_math": {
+    "nonce": "bb7fa872976eba74649cf776",
+    "input_sha256": "3ddfd7aeac7285fd3ab7a845024c5bb0f416dc474b6293019a53974675e2d68d",
+    "count": 9,
+    "sum": -2675,
+    "sum_squares": 1365847,
+    "weighted_sum": -14008
+  },
+  "result_sha256": "95767581827511a8251d2042ee12c16c1fd59877f40ba84056480fa8dbddda7f",
+  "input_unchanged": true,
+  "raw_jsonl": "/private/tmp/subagent-native-exit-contract/live-probe-codex.jsonl",
+  "raw_jsonl_sha256": "093fe7d8e4bb88478cade49ef9a036c2f62b7012b7de24bc419a01739cfbd052",
+  "stderr_diagnostics_exact": [],
+  "diagnostics": [
+    {
+      "message": "Reconnecting... 1/5 (stream disconnected before completion: failed to parse ResponseCompleted: missing field `cached_tokens`)",
+      "path": "/private/tmp/subagent-native-exit-contract/live-probe-codex.jsonl",
+      "line": 5
+    },
+    {
+      "message": "Reconnecting... 1/5 (stream disconnected before completion: idle timeout waiting for SSE)",
+      "path": "/private/tmp/subagent-native-exit-contract/live-probe-codex.jsonl",
+      "line": 10
+    }
+  ],
+  "jsonl_diagnostic_event_lines": [
+    5,
+    10
+  ]
+}

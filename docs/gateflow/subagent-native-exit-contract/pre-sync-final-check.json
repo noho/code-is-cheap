@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-10-18T11:31:26.375442+08:00",
+  "files_checked": 38,
+  "drift": [],
+  "target_overrides": {
+    "AGENT_TOOLS_TARGET": null,
+    "AGENT_RUN_BIN_DIR": null
+  },
+  "source_commit": "812aceced5e2a5a72cf7ca3eea63a0e974f205b2",
+  "sync_scripts_match_base": true
+}

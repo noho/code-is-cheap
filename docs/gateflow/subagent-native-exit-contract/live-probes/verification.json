@@ -1,0 +1,18 @@
+{
+  "observed_at": "2026-10-18T11:41:39.430434+08:00",
+  "source_commit": "812aceced5e2a5a72cf7ca3eea63a0e974f205b2",
+  "reviewed_source_commit": "781a239982631ab0ba8baf0bf6dd72069f3cee68",
+  "source_bundle_sha256": "b580c570bdd9e43bfc79861440f4ff48f2cb8bc2b1b22bb7cddd4b8cef512502",
+  "both_real_native_and_outer_exits_zero": true,
+  "both_three_sequential_tool_steps_proven": true,
+  "both_independent_math_nonce_hash_new_file_checks_passed": true,
+  "both_full_finals_equal_native_events": true,
+  "schema2_exact_keys_no_legacy_verdicts": true,
+  "stderr_text_preserved_exactly": true,
+  "all38_installed_files_still_match_reviewed_checkout_after_probes": true,
+  "probe_verifications": {
+    "codex": "docs/gateflow/subagent-native-exit-contract/live-probes/codex/verification.json",
+    "claude": "docs/gateflow/subagent-native-exit-contract/live-probes/claude/verification.json"
+  },
+  "scope": "new caller-owned math probes; not old financial replay or A business review"
+}

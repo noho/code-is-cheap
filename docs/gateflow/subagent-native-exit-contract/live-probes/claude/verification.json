@@ -1,0 +1,42 @@
+{
+  "runtime": "claude",
+  "provider": "mimo-flash",
+  "outer_exit": 0,
+  "native_exit": 0,
+  "schema_version": 2,
+  "native_final_exactly_matches_summary": true,
+  "native_final_line": 351,
+  "tool_steps": {
+    "read_input_call_result": [
+      10,
+      11
+    ],
+    "execute_exclusive_program_call_result": [
+      324,
+      327
+    ],
+    "readback_call_result": [
+      335,
+      336
+    ]
+  },
+  "independent_math": {
+    "nonce": "c40ee8a352c034a1f14ab30b",
+    "input_sha256": "1996124f47465ca48f29398f74a999b4540d7e8c583e1d60a6ea70cc7d53074a",
+    "count": 9,
+    "sum": -761,
+    "sum_squares": 3830989,
+    "weighted_sum": -4098
+  },
+  "result_sha256": "ff8f361092e61087c37e29b07812db9d36ddd6d8b7c00c6cdfb48e1d6e3f65a4",
+  "input_unchanged": true,
+  "raw_jsonl": "/private/tmp/subagent-native-exit-contract/live-probe-claude.jsonl",
+  "raw_jsonl_sha256": "6517d67526735b40f3de94d0383c2ee0428173ed1b09c3db7035e8a6edd478bb",
+  "stderr_diagnostics_exact": [
+    {
+      "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}\n",
+      "path": "/private/tmp/subagent-native-exit-contract/live-probe-claude.stderr",
+      "line": 1
+    }
+  ]
+}

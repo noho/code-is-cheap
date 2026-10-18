@@ -1,0 +1,24 @@
+{
+  "observed_at": "2026-10-18T11:32:13.527576+08:00",
+  "identity_manifest": "live-installed-identity.json",
+  "runners": {
+    "codex-agent-run": "/Users/leo/.local/bin/codex-agent-run",
+    "claude-agent-run": "/Users/leo/.local/bin/claude-agent-run"
+  },
+  "probes": [
+    {
+      "runtime": "codex",
+      "input": "/private/tmp/subagent-native-exit-contract/live-probes/codex/input.json",
+      "input_sha256": "3ddfd7aeac7285fd3ab7a845024c5bb0f416dc474b6293019a53974675e2d68d",
+      "output": "/private/tmp/subagent-native-exit-contract/live-probes/codex/result.json",
+      "output_absent_before_launch": true
+    },
+    {
+      "runtime": "claude",
+      "input": "/private/tmp/subagent-native-exit-contract/live-probes/claude/input.json",
+      "input_sha256": "1996124f47465ca48f29398f74a999b4540d7e8c583e1d60a6ea70cc7d53074a",
+      "output": "/private/tmp/subagent-native-exit-contract/live-probes/claude/result.json",
+      "output_absent_before_launch": true
+    }
+  ]
+}

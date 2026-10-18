@@ -1,0 +1,10 @@
+Result: `/private/tmp/subagent-native-exit-contract/live-probes/codex/result.json`
+
+- Nonce: `bb7fa872976eba74649cf776`
+- `input_sha256`: `3ddfd7aeac7285fd3ab7a845024c5bb0f416dc474b6293019a53974675e2d68d`
+- Count: `9`
+- Sum: `-2675`
+- Sum of squares: `1365847`
+- 1-based weighted sum: `-14008`
+
+All three sequential steps completed successfully; no issues encountered.
