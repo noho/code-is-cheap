@@ -5,7 +5,7 @@
 - Confirmed goal: [goal.md](goal.md)
 - Base: 32a244d1e286086be86dba837976d3d72fdd6c1f
 - Goal confirmation: pass; user confirmed branch and inclusion of two existing investigation files.
-- Current gate / next entry point: ready-to-open-draft-PR
+- Current gate / next entry point: controller PR delivery verification
 - Roles: gpt-6-sol Codex runner for plan/implementation/fix; mimo and ds-flash Claude runners for independent parallel reviews; controller adjudicates.
 - Plan review applicability: required, public exit/status contract; use Planreview on both review routes.
 - Historical initial plan: plan.md and its two old-target reviews are superseded by user clarification; preserved for audit, not implementation authority.
@@ -28,3 +28,4 @@
 - Fixed snapshot committed as781a239982631ab0ba8baf0bf6dd72069f3cee68. Independent parallel reviews now in flight: Mimo complete combined review handle95991 → docs/reviews/code-review-20261018-105547.md; DS affected re-review handle54903 → docs/reviews/code-review-20261018-105548.md. Source remains frozen. Current gate: code review; no PR/sync/probe yet.
 - DS fixed-source affected re-review delivered actual0 and pass, no new finding; DS-C1/DS-C2/clean independently closed. Controller adjudication/provenance in decisions.md. Mimo complete combined review handle95991 still in flight; code gate stays open, approved user delivery authorization unchanged.
 - Mimo complete fixed-source report received actual0, no material finding; controller read full report/native tool evidence and verified all15 files identical to781a239. Both review routes satisfied, all accepted obligations fixed/re-reviewed; code gate pass. Classified malformed-final-frame residual and rejected old after-merge sync premise documented in decisions.md. Current next entry: commit review records/push/create draft PR then controller delivery verification; no deployment yet, final closeout not passed.
+- Draft PR created: https://github.com/noho/code-is-cheap/pull/61 after successful HTTPS push of570993b407c06efc482996f6ec5415ce219580b2. SSH first attempt exited128 (connection closed), preserved transport fact; invocation-local HTTPS rewrite succeeded without persistent remote changes. Current next entry is controller delivery verification, not draft-PR-pass. Live sync/probes remain pending.
