@@ -1,0 +1,25 @@
+# Authorized live sync and caller handoff supplement
+
+User supplied the existing SubAgents upstream-fix follow-up protocol during revised-plan review. This is a supplement to this work unit, not a new report, clear, cancellation or permission to duplicate in-flight work. The latest direct user requirements remain binding: thin CLI wrapper; actual exit; complete untruncated final; warning text opaque; caller owns business acceptance.
+
+## Authorization change
+
+The initial goal/plan prohibited live sync and probes. The user's explicit later instruction **authorizes controller live sync after the reviewed fix passes**, followed by two `mimo-flash` live probes, one through Codex runtime and one through Claude runtime. This supersedes that prior no-sync/no-probe delivery boundary only. It does not authorize merge, approval, marking ready, reviewer requests, external comments, issue mutation, financial-task replay or semantic task classification.
+
+User's caller-side controller will check this directory and probe evidence, then notify the caller that SKILL is updated. The follow-up was described as included in their half-hour patrol; this controller does not create a duplicate schedule or independently send external messages. This directory remains the patrol artifact entry point.
+
+## Sequence and concrete next steps
+
+1. Continue current revised-plan review through its existing handles; no re-opening the confirmed goal or duplicating dispatches. Controller adjudicates, gpt-6-sol implements/fixes, and mimo + ds-flash perform independent parallel final code review. Required checks and accepted-finding closures remain mandatory.
+2. Complete reviewed-source commits/push, draft PR and controller delivery verification (actual repository/head/base, complete OID diff, reviewed-version correspondence and required checks). No merge.
+3. Sync reviewed components from this checkout containing the approved changes. Source inspection confirms scripts/sync-agent-tools.sh and scripts/sync-skills.sh derive repo_root from their own location and **do not require merge**; approved work-branch deployment is technically supported. Save the actual command, exit, source commit/content hashes and installed-byte comparisons. Check for unrelated installed/source drift before a broad sync; do not silently overwrite unrelated local work. If a safe authorized sync is unavailable, report a concrete blocker, not merge.
+4. Applicable commands are `./scripts/sync-agent-tools.sh` and `./scripts/sync-skills.sh`; no profiles/catalogs/routes/shim change is planned, so `sync-codex-agent.sh` is not applicable. Runner callers already on PATH need not source zshrc. Interactive launcher users reload with `source ~/.zshrc` or a new shell; fresh Agent sessions load updated skills.
+5. Only after sync, launch independent `mimo-flash` probes through **codex-agent-run** and **claude-agent-run**, explicit cwd and new independent logs/input/result paths. Each child must actually do the ordered tool steps: read supplied input → execute a program that computes and exclusively writes a NEW result → tool-read the result back. No old report/model-task rerun. Preserve real outer/native exits, full final, native tool-event step anchors and new result provenance.
+6. Controller independently recomputes the requested math, verifies the input/nonce/content hashes, confirms the three actual tool steps and readback, and compares live installed components with the reviewed source. These are this explicit probe's caller-owned acceptance checks, not runner business-success logic. Record exact commands, runtime/provider identities, real observations, failures/recovery if any, and uncovered areas honestly. Do not infer success from labels or fabricate unknown exits.
+7. Final closeout must include what changed, commit/draft PR, reviews/fixes/validation, risks/owners, actual sync steps/results and installed-vs-reviewed correspondence, both probe outcomes/evidence and next entry point (manual merge / caller SKILL refresh as appropriate). No final closeout pass if the authorized required live evidence remains missing or blocking.
+
+## Current constraints and risks
+
+Current gate is still revised-plan independent review (DS delivered; Mimo in flight). No implementation, final code pass, PR, sync or probe is yet claimed. No merge prerequisite was found in the selected scripts. If later user instructions prohibit sync/probe, or permission/installed drift prevents safe authorized deployment, follow those instructions/report the specific blocker. No speculative infrastructure is added.
+
+Risks: reviewed-vs-installed skew and probe coverage are now **covered by later approved slice/delivery steps**, owner controller, destination live-sync/probe evidence and final closeout (not a second implementation slice). External caller adaptation remains **assigned to later work unit**, owner caller/user after the verified handoff. Historical host-handle recovery remains **requiring new issue or explicit user decision**, owner maintainer; no recovery system is implemented. No unclassified risk.

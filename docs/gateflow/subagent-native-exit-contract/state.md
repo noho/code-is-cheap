@@ -5,15 +5,18 @@
 - Confirmed goal: [goal.md](goal.md)
 - Base: 32a244d1e286086be86dba837976d3d72fdd6c1f
 - Goal confirmation: pass; user confirmed branch and inclusion of two existing investigation files.
-- Current gate / next entry point: plan (independent review of plan-v2.md)
+- Current gate / next entry point: implementation / validation
 - Roles: gpt-6-sol Codex runner for plan/implementation/fix; mimo and ds-flash Claude runners for independent parallel reviews; controller adjudicates.
 - Plan review applicability: required, public exit/status contract; use Planreview on both review routes.
-- Controller plan check: plan.md covers root exit/acceptance coupling and one slice; independent review must challenge wrapper exit precedence and necessity of narrow launcher changes. Not approved for implementation yet.
-- Plan delivery: plan.md; plan-receipt.json, actual outer/native/runner 0/0/0. One ordinary diff --no-index exit-1 diagnostic is retained, not a failed plan interaction.
-- Implementation: not started.
+- Historical initial plan: plan.md and its two old-target reviews are superseded by user clarification; preserved for audit, not implementation authority.
+- Current implementation authority: plan-v2.md + scope-amendment.md + decisions.md; delivery-amendment.md governs later authorized sync/probes.
+- Implementation: authorized approved S1, gpt-6-sol via Codex runner; no implementation result received yet.
 - User steering: scope-amendment.md explicitly rejects multiple status verdicts/new wrapper status and requires thin CLI/native-final behavior; remove custom 12000 final cap and associated fields. Initial plan/reviews are superseded for conflicting contract, not current approval.
-- Initial independent Planreview: ds-flash pass-with-risks delivered; mimo still in flight on old target. Do not cancel or misstate its result; it may complete as historical evidence while a separate plan-v2.md is authored.
-- Revised plan delivered: plan-v2.md; plan-v2-receipt.json, actual outer/native/runner 0/0/0. Controller check: matches thin CLI + full untruncated final, removes all competing verdict fields, one concise slice; independent revised-plan review still required. User reiterated thin CLI and no final truncation.
-- Findings: none adjudicated yet.
-- Residual risk: see goal.md; no unclassified risk.
+- Delivery authorization supplement: delivery-amendment.md supersedes earlier no-live boundary. After reviewed fix/draft-PR delivery checks, controller must sync reviewed tools/skills and execute mimo-flash probes through both Codex and Claude runtimes with real read → compute/write → readback evidence. Merge remains unauthorized. Scripts support work-branch sync; no merge prerequisite. Current review is not interrupted.
+- Initial independent Planreview: both old-target reports delivered, actual 0; superseded scope clearly adjudicated in decisions.md. No old-target process in flight.
+- Revised plan delivered: plan-v2.md; plan-v2-receipt.json, actual outer/native/runner 0/0/0. Controller check and both revised independent reviews passed with classified risks; user reiterated thin CLI, no final truncation, no warning-text judgment.
+- Plan gate pass: both revised independent reports pass-with-risks and controller adjudication in decisions.md. M-v2-1 is formally deferred to approved S1 tests, owner gpt-6-sol, nonblocking public-contract already explicit; all implementation obligations remain required at final code gate. No blocking question/unclassified risk.
+- Findings: C-P1–C-P3 plan corrections verified; C-P4/M-01/M-02 and M-v2-1 implementation/test obligations tracked in decisions.md. No code-stage fix or review pass claimed.
+- Implementation managed handle: 97310; raw log/prompt stem /private/tmp/subagent-native-exit-contract/implementation; actual exit pending.
+- Residual risk: current classifications in plan-v2.md, decisions.md and delivery-amendment.md; no unclassified risk.
 - Completion: active; no PR or deployment yet.

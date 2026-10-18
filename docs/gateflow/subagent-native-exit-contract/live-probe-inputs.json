@@ -1,0 +1,66 @@
+{
+  "codex": {
+    "cwd": "/private/tmp/subagent-native-exit-contract/live-probes/codex",
+    "input": "/private/tmp/subagent-native-exit-contract/live-probes/codex/input.json",
+    "output": "/private/tmp/subagent-native-exit-contract/live-probes/codex/result.json",
+    "prompt": "/private/tmp/subagent-native-exit-contract/live-probes/codex/prompt.md",
+    "input_data": {
+      "probe": "thin-cli-live-v2",
+      "runtime": "codex",
+      "nonce": "bb7fa872976eba74649cf776",
+      "numbers": [
+        -439,
+        138,
+        -241,
+        -381,
+        -294,
+        -757,
+        -99,
+        -525,
+        -77
+      ]
+    },
+    "expected": {
+      "nonce": "bb7fa872976eba74649cf776",
+      "input_sha256": "3ddfd7aeac7285fd3ab7a845024c5bb0f416dc474b6293019a53974675e2d68d",
+      "count": 9,
+      "sum": -2675,
+      "sum_squares": 1365847,
+      "weighted_sum": -14008
+    },
+    "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "stage": "prepared only; no sync/probe executed"
+  },
+  "claude": {
+    "cwd": "/private/tmp/subagent-native-exit-contract/live-probes/claude",
+    "input": "/private/tmp/subagent-native-exit-contract/live-probes/claude/input.json",
+    "output": "/private/tmp/subagent-native-exit-contract/live-probes/claude/result.json",
+    "prompt": "/private/tmp/subagent-native-exit-contract/live-probes/claude/prompt.md",
+    "input_data": {
+      "probe": "thin-cli-live-v2",
+      "runtime": "claude",
+      "nonce": "c40ee8a352c034a1f14ab30b",
+      "numbers": [
+        476,
+        -654,
+        -503,
+        797,
+        -306,
+        267,
+        -844,
+        -837,
+        843
+      ]
+    },
+    "expected": {
+      "nonce": "c40ee8a352c034a1f14ab30b",
+      "input_sha256": "1996124f47465ca48f29398f74a999b4540d7e8c583e1d60a6ea70cc7d53074a",
+      "count": 9,
+      "sum": -761,
+      "sum_squares": 3830989,
+      "weighted_sum": -4098
+    },
+    "python": "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "stage": "prepared only; no sync/probe executed"
+  }
+}
