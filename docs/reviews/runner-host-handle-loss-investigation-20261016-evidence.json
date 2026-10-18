@@ -1,0 +1,485 @@
+{
+  "observed_at": "2026-10-16T00:13:33.410457+00:00",
+  "method": "read-only file inspection; no collector/runtime invocation",
+  "installed_comparison": [
+    {
+      "repo": "scripts/codex-agent-run",
+      "installed": "/Users/leo/.local/bin/codex-agent-run",
+      "equal": true,
+      "sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01"
+    },
+    {
+      "repo": "scripts/claude-agent-run",
+      "installed": "/Users/leo/.local/bin/claude-agent-run",
+      "equal": true,
+      "sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9"
+    },
+    {
+      "repo": "scripts/agent-run-result.py",
+      "installed": "/Users/leo/.local/bin/agent-run-result.py",
+      "equal": true,
+      "sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d"
+    },
+    {
+      "repo": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "equal": true,
+      "sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db"
+    }
+  ],
+  "calls": [
+    {
+      "label": "g1-review-a-01",
+      "managed_session_id": 33799,
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261014-MSFT-01/g1-review-a-01-evidence/output.jsonl",
+      "sha256": "eab0aa7a1edc0d86936803907e3946bc2d2a024562cf5070190aa93fc067aa2f",
+      "lines": 103,
+      "ends_with_newline": true,
+      "parse_errors": [],
+      "starts": [
+        {
+          "line": 1,
+          "event": {
+            "type": "thread.started",
+            "thread_id": "01a14195-1fc1-7ff0-91b1-a64505200ee9"
+          }
+        },
+        {
+          "line": 2,
+          "event": {
+            "type": "turn.started"
+          }
+        }
+      ],
+      "terminals": [
+        {
+          "line": 103,
+          "event": {
+            "type": "turn.completed",
+            "usage": {
+              "input_tokens": 6101290,
+              "cached_input_tokens": 5852416,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 41700,
+              "reasoning_output_tokens": 11586
+            }
+          }
+        }
+      ],
+      "agent_messages": [
+        {
+          "line": 3,
+          "chars": 65,
+          "sha256": "480afb41e262c2853ee6c64f0b30766640e1ab6642b89fa8f41941dedf94bf31"
+        },
+        {
+          "line": 18,
+          "chars": 87,
+          "sha256": "5dbbf7d80f3bbb3e27f0f41182fd484b24faec08bd4c3144ccb1d5d4bea2ee64"
+        },
+        {
+          "line": 35,
+          "chars": 72,
+          "sha256": "479c40ec53a557e48563ecf57ae78d0e61ff59ee7efe485f3909f47d8760fb63"
+        },
+        {
+          "line": 50,
+          "chars": 96,
+          "sha256": "3b31770ec13334d9b729194c22cf26ec765321c5edba8cf84cf4d64c8605d6d7"
+        },
+        {
+          "line": 73,
+          "chars": 122,
+          "sha256": "0a9f10a66ca24c5f0cf2941f740e15b6b66e0ac4c410e50a317c4431e91bf1ff"
+        },
+        {
+          "line": 76,
+          "chars": 137,
+          "sha256": "02b364f70d31970c56e270ae93d247d3d8a59a2696d496cd4b4bb2a728b8f618"
+        },
+        {
+          "line": 93,
+          "chars": 115,
+          "sha256": "98b464e7e95c1ddaadce7af413f13968360c6f6e6eb3d28b39c48484380ec004"
+        },
+        {
+          "line": 102,
+          "chars": 328,
+          "sha256": "9e6b70b11a07d0d3f460ce1be0ca6443962f97514517878706b643bdf27e113d"
+        }
+      ],
+      "runner_result_file_exists": false,
+      "stderr_sha256": "e3e5e3477997a1d75d4dc20724765b27f5cc673bd4a68aa5f1ac7e9dd23e0866",
+      "stderr_lines": 2
+    },
+    {
+      "label": "g1-review-b-01",
+      "managed_session_id": 79319,
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261014-MSFT-01/g1-review-b-01-evidence/output.jsonl",
+      "sha256": "ca58f6ff0666aad3fa579634fa254eb0123562771aab8dfccf248859336983b9",
+      "lines": 172,
+      "ends_with_newline": true,
+      "parse_errors": [],
+      "starts": [
+        {
+          "line": 1,
+          "event": {
+            "type": "thread.started",
+            "thread_id": "01a14195-28d6-7c91-a954-feb28c6e9ec5"
+          }
+        },
+        {
+          "line": 2,
+          "event": {
+            "type": "turn.started"
+          }
+        }
+      ],
+      "terminals": [
+        {
+          "line": 172,
+          "event": {
+            "type": "turn.completed",
+            "usage": {
+              "input_tokens": 12179750,
+              "cached_input_tokens": 5516160,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 183429,
+              "reasoning_output_tokens": 147249
+            }
+          }
+        }
+      ],
+      "agent_messages": [],
+      "runner_result_file_exists": false,
+      "stderr_sha256": "7c656ab9daabf354bf7fd7c0ae9e28fd7c81a4ed82b6e8fa299203448d1ac6e0",
+      "stderr_lines": 3
+    },
+    {
+      "label": "g1-location-dev-01",
+      "managed_session_id": 49796,
+      "path": "/Users/leo/workspace/portfolio-manager-v2/orch/jobs/20261014-MSFT-01/g1-location-dev-01-evidence/output.jsonl",
+      "sha256": "c05b515a758b6347551674f451e798a19be2f1a624e08c7d6ea2bd989bb91756",
+      "lines": 104,
+      "ends_with_newline": true,
+      "parse_errors": [],
+      "starts": [
+        {
+          "line": 1,
+          "event": {
+            "type": "thread.started",
+            "thread_id": "01a14196-60b8-7211-bd43-2dce2e6d3f88"
+          }
+        },
+        {
+          "line": 2,
+          "event": {
+            "type": "turn.started"
+          }
+        }
+      ],
+      "terminals": [
+        {
+          "line": 104,
+          "event": {
+            "type": "turn.completed",
+            "usage": {
+              "input_tokens": 5635625,
+              "cached_input_tokens": 5454592,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 46565,
+              "reasoning_output_tokens": 17316
+            }
+          }
+        }
+      ],
+      "agent_messages": [
+        {
+          "line": 3,
+          "chars": 97,
+          "sha256": "2c38e52afe5449438aeaf923c6581fc765a26965c9281941f95bef8bf28fc570"
+        },
+        {
+          "line": 18,
+          "chars": 110,
+          "sha256": "6806548669756ee96e07293ae95c6618901e27b5a188f187a6c1ee50bf1c07be"
+        },
+        {
+          "line": 39,
+          "chars": 124,
+          "sha256": "9dbf145d89eb92525ed2c691c4ac0ef62bf8f6b1e53086088f2d2ade022ee49e"
+        },
+        {
+          "line": 54,
+          "chars": 104,
+          "sha256": "ed010b3fbf20c3959386785ea20595db6976b3630a8d4629a7c108bc9c89bc21"
+        },
+        {
+          "line": 71,
+          "chars": 124,
+          "sha256": "93a5d32f5612095b798724d80fe66f2ea703d706b33dc31d11ae0b545ed1fdd2"
+        },
+        {
+          "line": 90,
+          "chars": 119,
+          "sha256": "7b5a6fd044ba11bf8a3172a51bf922aead76bced224abc3c05aa80fc363a8f81"
+        },
+        {
+          "line": 103,
+          "chars": 576,
+          "sha256": "287ef3f1a5fe56601e1f5a69966de26213e3926552d147111e6fd1c63b8596a0"
+        }
+      ],
+      "runner_result_file_exists": false,
+      "stderr_sha256": "cb4e113a841e73ad431e8b39b07ce8b8b0962eb9f97cfe00a2e91159a00fc860",
+      "stderr_lines": 5
+    }
+  ],
+  "parent_excerpts": [
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1900,
+      "record": {
+        "timestamp": "2026-10-15T22:00:57.716Z",
+        "ordinal": 1899,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a14195-2c73-71e3-8833-353967bc8d0b",
+          "call_id": "call_8ed4371412a84a9f93cbe36475be8739",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 5.3 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"route\":\"a\",\"chunk_id\":\"cd48ef\",\"wall_time_seconds\":1.002737667,\"session_id\":33799,\"original_token_count\":0,\"output\":\"\"}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"route\":\"b\",\"chunk_id\":\"2dc25a\",\"wall_time_seconds\":1.002833917,\"session_id\":79319,\"original_token_count\":0,\"output\":\"\"}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de",
+            "create_time": 1792101657.715977
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1929,
+      "record": {
+        "timestamp": "2026-10-15T22:02:16.678Z",
+        "ordinal": 1928,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a14196-60e6-7e13-8a35-66f7c5a99e4a",
+          "call_id": "call_09eb16a8e15d4416a06f42e2db9634f2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 3.1 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"chunk_id\":\"7b871e\",\"wall_time_seconds\":1.003212916,\"session_id\":49796,\"original_token_count\":0,\"output\":\"\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de",
+            "create_time": 1792101736.678705
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1940,
+      "record": {
+        "timestamp": "2026-10-15T22:03:27.965Z",
+        "ordinal": 1939,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a14197-775d-7263-9d65-df130777d23b",
+          "call_id": "call_c60d517924a74e3bab5861728cb8e8c2",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 50.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"review-a\",\"session_id\":33799,\"running\":true}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"review-b\",\"session_id\":79319,\"running\":true}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"dev\",\"session_id\":49796,\"running\":true}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de",
+            "create_time": 1792101807.965607
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1948,
+      "record": {
+        "timestamp": "2026-10-15T22:04:30.744Z",
+        "ordinal": 1947,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a14198-6c98-73a0-b82c-62eb6f432ca5",
+          "call_id": "call_7bd2d961781e453a9203f5166c6b05ed",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 50.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"review-a\",\"session_id\":33799,\"running\":true}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"review-b\",\"session_id\":79319,\"running\":true}}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"fulfilled\",\"value\":{\"name\":\"dev\",\"session_id\":49796,\"running\":true}}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de",
+            "create_time": 1792101870.744207
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1983,
+      "record": {
+        "timestamp": "2026-10-15T22:07:21.043Z",
+        "ordinal": 1982,
+        "type": "event_msg",
+        "payload": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1419b-0497-7442-9cc1-c4dadc218e46",
+            "turn_trigger": "daemon_recovery",
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de"
+          },
+          "turn_id": "01a1419b-0497-7442-9cc1-c4dadc218e46",
+          "root_turn_id": "01a1417f-7933-7f52-a1e8-64239e3ca2de",
+          "started_at": 1792102041,
+          "model_context_window": 475000,
+          "collaboration_mode_kind": "default"
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 1985,
+      "record": {
+        "timestamp": "2026-10-15T22:07:23.779Z",
+        "ordinal": 1984,
+        "type": "response_item",
+        "payload": {
+          "type": "message",
+          "id": "msg_01a1419b-1083-7d61-bc0d-01ebb5c6662a",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "<codex_internal_context source=\"daemon_recovery\">\nThe server restarted and interrupted the previous turn. Continue the unfinished work from the saved conversation. Check the current state before repeating actions that may already have completed.\n</codex_internal_context>"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1419b-0497-7442-9cc1-c4dadc218e46",
+            "create_time": 1792102043.779649,
+            "content_item_kinds": [
+              "daemon_recovery.internal_context"
+            ]
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "mcp_attribution": {
+            "status": "none"
+          }
+        }
+      }
+    },
+    {
+      "path": "/Users/leo/.codex/sessions/2026/10/14/rollout-2026-10-14T16-59-08-01a139a3-0b08-7840-8a13-0f1e050d84ab.jsonl",
+      "line": 2000,
+      "record": {
+        "timestamp": "2026-10-15T22:07:41.933Z",
+        "ordinal": 1999,
+        "type": "response_item",
+        "payload": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a1419b-576c-7803-b848-e0575cf4b8f0",
+          "call_id": "call_237b8f5d03574bce90feb89055927d2e",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"rejected\",\"reason\":\"write_stdin failed: Unknown process id 33799\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"rejected\",\"reason\":\"write_stdin failed: Unknown process id 79319\"}"
+            },
+            {
+              "type": "input_text",
+              "text": "{\"status\":\"rejected\",\"reason\":\"write_stdin failed: Unknown process id 49796\"}"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1419b-0497-7442-9cc1-c4dadc218e46",
+            "create_time": 1792102061.932952
+          }
+        },
+        "metadata": {
+          "client_authored": false,
+          "fallback_token_limit_override": 12000
+        }
+      }
+    }
+  ]
+}
