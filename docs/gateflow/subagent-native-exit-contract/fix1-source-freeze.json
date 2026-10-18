@@ -1,0 +1,29 @@
+{
+  "head": "381fe24b50eae00661e6c60677efdee3f178c752",
+  "original_source_freeze_sha256": "606fb685bc5227f09fb65298d82b5e92aa4c80f30e09be48096c79023521e0c7",
+  "bundle_sha256": "b580c570bdd9e43bfc79861440f4ff48f2cb8bc2b1b22bb7cddd4b8cef512502",
+  "files": {
+    "README.md": "50aa8a4c9cce53b191db1d1375da5877b1d467da883d252691b88d74559644a5",
+    "README.zh.md": "04781f1d15443c71030170b82162a9b07b414e4a4744719d47ae84eeb323af09",
+    "scripts/agent-endpoint.py": "ae9e34b45a749c057a3c1074c0d450c7350903bb657af0f54baa68fb27644a59",
+    "scripts/agent-run-result.py": "0f473f12d70b9c2c3bc29e83250f97bbf2c6aceeb9539ec35fa3a0d64494ae74",
+    "scripts/agent-tools.zsh": "f9b736191b83d89cb1dd64b9433c444afd836cb234ed57646c79c87f2f40aa1b",
+    "scripts/claude-agent-run": "d2e47517a36dadbc72f125b63a57e0c1bf6dbfe64ede24c461c5a8205554c52d",
+    "scripts/codex-agent-run": "bb4f61e0d07fe74b74f9023abb95ba3194fd2a5d4ec75705635001223a0884d1",
+    "scripts/sub-agent-preflight": "b547a2a85a67fd812d71b5c45763d25184603cf3d5c90e256530fed2cc20480e",
+    "skills/sub-agents/SKILL.md": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+    "skills/sub-agents/references/advanced.md": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+    "tests/test_agent_run_results.py": "8b2e240a535c26c16137424abe41ee8f7ab282a1156bf3e30ee4d11ce80d8660",
+    "tests/test_agent_sandbox_runtimes.py": "245d960312dd9c9ebf4d93c521675b1d4f813f9894b271d7ffdb7ea4b47072aa",
+    "tests/test_install_endpoints.py": "eca12585e202f0d1ebce03e6d29c24576d0db9579464af4707f9cbe15dd42405",
+    "tests/test_official_catalog_runtime.py": "75bf6f0a3cff1656f2a99aff151d8046ccc57c9481c5eba3c65a2722acf7fa32",
+    "tests/test_sub_agent_preflight.py": "b7025dd9947f02a43e3d2943bc3fdf2399044d26e9930fbe89f260eb518b97e3"
+  },
+  "changed_from_original": [
+    "README.md",
+    "README.zh.md",
+    "scripts/agent-run-result.py",
+    "tests/test_agent_run_results.py",
+    "tests/test_official_catalog_runtime.py"
+  ]
+}

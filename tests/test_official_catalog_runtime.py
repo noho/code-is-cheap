@@ -398,7 +398,7 @@ class OfficialRuntimeTests(unittest.TestCase):
             else:self.assertFalse(items); self.assertIn('tools',original)
         return ingress
 
-    def check_success(self,fixture,done,clean=True):
+    def check_success(self,fixture,done):
         self.assertEqual(done.returncode,0,(str(fixture.root),done.stderr,done.stdout,(fixture.root/'sinks/native.stderr').read_text()))
         result=json.loads(done.stdout)
         self.assertEqual(result['runtime_exit_code'],done.returncode)
@@ -487,7 +487,7 @@ class OfficialRuntimeTests(unittest.TestCase):
 
     @unittest.skipUnless(platform.system()=='Darwin' and os.environ.get('AGENT_SANDBOX_KERNEL_TESTS')=='1','explicit macOS kernel-test opt-in')
     def test_mimo_code_host_outer_kernel_boundary(self):
-        f=self.fixture('mimo-kernel','mimo',kernel=True); self.check_success(f,f.run(),clean=False)
+        f=self.fixture('mimo-kernel','mimo',kernel=True); self.check_success(f,f.run())
         wrapper=(f.root/'runner.stderr').read_text()
         state_match=re.search(r'agent-sandbox: state=(.+)',wrapper)
         self.assertIsNotNone(state_match,wrapper)

@@ -11,6 +11,9 @@ All calls use explicit cwd `/Users/leo/workspace/code-is-cheap`, separate escala
 | Revised plan review A | mimo / claude-agent-run | plan-v2-review-mimo-prompt.md / plan-v2-review-mimo | 84455 | Actual 0; plan-v2-review-mimo-receipt.json; docs/reviews/plan-review-20261018-091226.md; pass-with-risks adjudicated in decisions.md |
 | Revised plan review B | ds-flash / claude-agent-run | plan-v2-review-ds-flash-prompt.md / plan-v2-review-ds-flash | 59854 | Actual 0; plan-v2-review-ds-flash-receipt.json; docs/reviews/plan-review-20261018-091227.md; pass-with-risks adjudicated in decisions.md |
 | Implementation / validation | gpt-6-sol / codex-agent-run | implementation-prompt.md / implementation | 97310 | Actual 0; implementation.md, implementation-receipt.json, source-freeze.json and retained validation evidence; complete code review pending |
+| Complete code review A | mimo / claude-agent-run | code-review-mimo-prompt.md / code-review-mimo | 38045 | Actual outer1/native0; code-review-mimo-receipt.json; native content_filter final, no report; no code approval |
+| Complete code review B | ds-flash / claude-agent-run | code-review-ds-flash-prompt.md / code-review-ds-flash | 3629 | Actual 0; code-review-ds-flash-receipt.json; docs/reviews/code-review-20261018-100303.md; accepted findings pending combined fix |
+| Accepted fixes / validation | gpt-6-sol / codex-agent-run | fix1-prompt-draft.md (authorized final section) / fix1 | 44460 | Actual0; fix1-receipt.json, fix1.md, fix1-source-freeze.json;236 tests/24 conditional skips/exit0; independent reviews pending |
 
 No invocation is accepted as task completion merely because it exits 0. Here the controller reads the delivered artifact and adjudicates it under Gateflow; the thin runner itself must not own that decision. No original task replay, kill, resume, provider fallback or live sync was performed.
 

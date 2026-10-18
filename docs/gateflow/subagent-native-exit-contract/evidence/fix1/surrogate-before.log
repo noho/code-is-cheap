@@ -1,0 +1,165 @@
+FFFEEEEEFFFEEEEE
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\ud800"', native=7, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 256, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    report = self.assert_report(result, native=native,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 101, in assert_report
+    report = json.loads(result.stdout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\udcff"', native=0, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36558: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\udcff"', native=0, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36591: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\udcff"', native=7, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36558: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\udcff"', native=7, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36590: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\ud800"', native=7, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 256, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    report = self.assert_report(result, native=native,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 101, in assert_report
+    report = json.loads(result.stdout)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\udcff"', native=0, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36556: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\udcff"', native=0, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36589: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\udcff"', native=7, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36556: invalid start byte
+
+======================================================================
+ERROR: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\udcff"', native=7, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 255, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    result.stdout = result.stdout.decode('utf-8')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 36589: invalid start byte
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\ud800"', native=0, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24558: surrogates not allowed\n'
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\ud800"', native=0, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24591: surrogates not allowed\ncodex-agent-run: primary result delivery failed (collector exit 1); known native exit=0; output=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpd3fk9u7c/agent-run.T27SkXKH/output.jsonl; stderr=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpd3fk9u7c/agent-run.T27SkXKH/stderr.log\n'
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='codex', key='"\\ud800"', native=7, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24558: surrogates not allowed\n'
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\ud800"', native=0, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24556: surrogates not allowed\n'
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\ud800"', native=0, entry='runner')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24589: surrogates not allowed\nclaude-agent-run: primary result delivery failed (collector exit 1); known native exit=0; output=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpd3fk9u7c/agent-run.9bxyMmN5/output.jsonl; stderr=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpd3fk9u7c/agent-run.9bxyMmN5/stderr.log\n'
+
+======================================================================
+FAIL: test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text (test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text) (runtime='claude', key='"\\ud800"', native=7, entry='collector')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_agent_run_results.py", line 253, in test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text
+    self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+AssertionError: 1 != 0 : b'Traceback (most recent call last):\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 443, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File "/Users/leo/workspace/code-is-cheap/scripts/agent-run-result.py", line 438, in main\n    print(json.dumps(report, ensure_ascii=False, allow_nan=False))\nUnicodeEncodeError: \'utf-8\' codec can\'t encode character \'\\ud800\' in position 24556: surrogates not allowed\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 1.094s
+
+FAILED (failures=6, errors=10)

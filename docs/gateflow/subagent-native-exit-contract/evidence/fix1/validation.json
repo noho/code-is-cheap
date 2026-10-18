@@ -1,0 +1,137 @@
+{
+  "commands": [
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=0 AGENT_SANDBOX_KERNEL_TESTS=0 PYTHONPATH=tests python3 -m unittest test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text",
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/surrogate-before.log",
+      "returncode": 1,
+      "result": "Pre-fix: 1 test, 16 failing subcases (6 failures, 10 errors); expected counterexample",
+      "log_sha256": "1de86ea829c47bb2a79869f3df9e12837c598f7653111a1c35601b91baa08035"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=0 AGENT_SANDBOX_KERNEL_TESTS=0 PYTHONPATH=tests python3 -m unittest test_agent_run_results.RunnerResults.test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text",
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/surrogate-after.log",
+      "returncode": 0,
+      "result": "Post-fix: 1 test, all 16 subcases pass",
+      "log_sha256": "9985c0aa95e6d36cea46d49905835c27f9adb003fbb936a5366462c87a5eb880"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=0 AGENT_SANDBOX_KERNEL_TESTS=0 python3 -m unittest discover -s tests -p 'test_agent_run_results.py'",
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/result-suite.log",
+      "returncode": 0,
+      "result": "26 tests pass; 36.676s",
+      "log_sha256": "233964f0b66c106d37818d3212d714aed2d0a2b23fef770f7e9d9ec3a59a57d3"
+    },
+    {
+      "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=0 AGENT_SANDBOX_KERNEL_TESTS=0 python3 -m unittest discover -s tests",
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/full-offline-suite.log",
+      "returncode": 0,
+      "result": "236 tests, 24 conditional skips; 119.312s",
+      "log_sha256": "ff6ce7ad1b116ac20f1bcf5a42a02980b7758c4c7b804988b4f3ac371f50bec5"
+    }
+  ],
+  "other_checks": "checks.json",
+  "source_manifest": "source-after.json",
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-c",
+        "import ast; from pathlib import Path; [ast.parse(Path(p).read_text(), filename=p) for p in ('scripts/agent-run-result.py','tests/test_agent_run_results.py','tests/test_official_catalog_runtime.py')]; print('3 Python files parse successfully')"
+      ],
+      "returncode": 0,
+      "seconds": 0.034,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/python-syntax.log",
+      "log_sha256": "c5a12597b9c9a60f249ea758ed9cd657c5080785fe8052e94f6761e2c8cfa17b"
+    },
+    {
+      "argv": [
+        "zsh",
+        "-n",
+        "scripts/codex-agent-run"
+      ],
+      "returncode": 0,
+      "seconds": 0.01,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/codex-syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "zsh",
+        "-n",
+        "scripts/claude-agent-run"
+      ],
+      "returncode": 0,
+      "seconds": 0.008,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/claude-syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "zsh",
+        "-n",
+        "scripts/agent-tools.zsh"
+      ],
+      "returncode": 0,
+      "seconds": 0.005,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/tools-syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "scripts/sub-agent-preflight"
+      ],
+      "returncode": 0,
+      "seconds": 0.004,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/preflight-syntax.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "./scripts/validate-skills.sh"
+      ],
+      "returncode": 0,
+      "seconds": 0.218,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/skills.log",
+      "log_sha256": "09d2025436961c37206407353492d096d7a091904da4232bf7c5eb745435d3da"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.017,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "git diff --check",
+      "returncode": 0,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/final-diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "git diff --no-index --check -- /dev/null docs/gateflow/subagent-native-exit-contract/fix1.md",
+      "returncode": 1,
+      "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/report-diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "Expected new-file difference; empty diagnostic output, no whitespace errors"
+    }
+  ],
+  "source_unchanged_after_full_suite": true,
+  "original_source_freeze_unchanged": true,
+  "report": {
+    "path": "docs/gateflow/subagent-native-exit-contract/fix1.md",
+    "sha256": "19a98f36595f6d3ac3bd01b0609235d81d7e52bb79278357dfde5ff9a5550b00"
+  },
+  "active_docs_scan": {
+    "returncode": 0,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/active-docs-scan.log",
+    "log_sha256": "449194cc6b000e2fa3ad059a0119140ac1fdf0e6620cd95dd04245552d6b781b",
+    "result": "Only correct no-fixed-count skill policy matches"
+  }
+}

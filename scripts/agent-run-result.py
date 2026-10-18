@@ -435,7 +435,9 @@ def main():
     if bool(args.canary_file) != bool(args.canary_expected):
         parser.error("canary-file and canary-expected must be supplied together")
     report = Collection(args).collect()
-    print(json.dumps(report, ensure_ascii=False, allow_nan=False))
+    # Exception diagnostics can contain lone surrogates from malformed JSON keys.
+    # Escape at delivery so UTF-8 JSON preserves every decoded string verbatim.
+    print(json.dumps(report, ensure_ascii=True, allow_nan=False))
     return 0
 
 

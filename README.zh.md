@@ -701,7 +701,8 @@ Agent-to-agent chat 使用 `tmux-cli send` + `wait_idle` + `capture`。`tmux-cli
 ### Sub Agents
 
 总控需要通过已安装的 runner 启动外部 Claude Code 或 Codex 子进程时，使用 `sub-agents`。该 skill 说明独立 prompt
-上下文、显式 workspace、托管并行执行、最终答复收取、重试上限及可选检查/隔离；具体任务的验证由调用方决定。
+上下文、显式 workspace、托管并行执行、最终答复收取及可选检查/隔离；具体任务的验证，以及在现有用户/项目授权与指定路由下
+是否继续或重试，均由调用方决定。runner 不自动重试或切换 provider。
 
 Codex:
 

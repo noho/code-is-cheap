@@ -1,0 +1,162 @@
+{
+  "source": "/private/tmp/subagent-native-exit-contract/code-review-mimo.jsonl",
+  "source_sha256": "fcc8c6b9f9f013b3ffd55b8201ea85f54ebdfa258306e0d9b20faf06f0ad1632",
+  "events": [
+    {
+      "line": 14059,
+      "event": {
+        "type": "user",
+        "message": {
+          "role": "user",
+          "content": [
+            {
+              "tool_use_id": "call_320d567989214a0cab1fcfb7",
+              "type": "tool_result",
+              "content": "outer=0\nruntime_exit_code: 0\nfinal: done\nlogs: {'output': '/tmp/claude-501/e2e-trap/agent-run.3Ffi3M2R/output.jsonl', 'stderr': '/tmp/claude-501/e2e-trap/agent-run.3Ffi3M2R/stderr.log', 'last_message': '/private/tmp/claude-501/e2e-trap/saved-final'}\nsaved-final: 'done'\n--- all diagnostics ---\n--- raw stderr log ---",
+              "is_error": false
+            }
+          ]
+        },
+        "parent_tool_use_id": null,
+        "session_id": "f532f463-75bb-40f3-911d-dec76ebcf411",
+        "uuid": "25733642-a89c-443c-880e-8bfdb80b6fe0",
+        "timestamp": "2026-10-18T02:28:01.852Z",
+        "tool_use_result": {
+          "stdout": "outer=0\nruntime_exit_code: 0\nfinal: done\nlogs: {'output': '/tmp/claude-501/e2e-trap/agent-run.3Ffi3M2R/output.jsonl', 'stderr': '/tmp/claude-501/e2e-trap/agent-run.3Ffi3M2R/stderr.log', 'last_message': '/private/tmp/claude-501/e2e-trap/saved-final'}\nsaved-final: 'done'\n--- all diagnostics ---\n--- raw stderr log ---",
+          "stderr": "",
+          "interrupted": false,
+          "isImage": false,
+          "noOutputExpected": false
+        },
+        "tool_result_meta": [
+          {
+            "id": "call_320d567989214a0cab1fcfb7",
+            "permission_decision": {
+              "decision": "accept",
+              "source": "config",
+              "reason_type": "classifier"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "line": 20693,
+      "event": {
+        "type": "assistant",
+        "message": {
+          "id": "msg_372f0d10ac024f7abbf4d12a",
+          "type": "message",
+          "role": "assistant",
+          "model": "mimo-v2.6-pro",
+          "content": [
+            {
+              "type": "text",
+              "text": "The request was rejected because it was considered high risk"
+            }
+          ],
+          "usage": {
+            "input_tokens": 1402,
+            "output_tokens": 0,
+            "cache_read_input_tokens": 195328
+          },
+          "context_management": null
+        },
+        "parent_tool_use_id": null,
+        "session_id": "f532f463-75bb-40f3-911d-dec76ebcf411",
+        "uuid": "0d453bee-6e73-493c-92df-692aac97a883",
+        "timestamp": "2026-10-18T02:45:10.464Z"
+      }
+    },
+    {
+      "line": 20694,
+      "event": {
+        "duration_api_ms": 2308198,
+        "stop_reason": "content_filter",
+        "session_id": "f532f463-75bb-40f3-911d-dec76ebcf411",
+        "total_cost_usd": 5.791641,
+        "usage": {
+          "input_tokens": 175084,
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 5966592,
+          "output_tokens": 77317,
+          "output_tokens_details": {
+            "thinking_tokens": 0
+          },
+          "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+          },
+          "service_tier": "standard",
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "inference_geo": "",
+          "iterations": [],
+          "speed": "standard",
+          "fallback_credit": null
+        },
+        "modelUsage": {
+          "mimo-v2.6-pro[1m]": {
+            "inputTokens": 175084,
+            "outputTokens": 77317,
+            "cacheReadInputTokens": 5966592,
+            "cacheCreationInputTokens": 0,
+            "webSearchRequests": 0,
+            "costUSD": 5.791641,
+            "contextWindow": 1000000,
+            "maxOutputTokens": 32000,
+            "thinkingTokens": 0,
+            "canonicalModel": "mimo-v2.6-pro[1m]",
+            "provider": "firstParty",
+            "costBasis": "unknown"
+          }
+        },
+        "permission_denials": [],
+        "terminal_reason": "completed",
+        "fast_mode_state": "off",
+        "fast_mode_disabled_reason": "sdk_opt_in_required",
+        "subagent_stats": {
+          "spawned": 0,
+          "requested": {
+            "background": 0,
+            "foreground": 0,
+            "unset": 0
+          },
+          "started_in_background": 0,
+          "max_depth": 0,
+          "spawned_by_subagents": 0,
+          "completed": 0,
+          "failed": 0,
+          "killed": {
+            "parent": 0,
+            "user": 0,
+            "system": 0
+          },
+          "refused": {
+            "depth_limit": 0,
+            "concurrency_limit": 0,
+            "budget": 0
+          },
+          "by_type": {}
+        },
+        "safety_stops": 0,
+        "is_error": false,
+        "num_turns": 62,
+        "subtype": "success",
+        "api_error_status": null,
+        "result": "The request was rejected because it was considered high risk",
+        "ttft_ms": 6110,
+        "type": "result",
+        "duration_ms": 2509802,
+        "uuid": "c939c0a6-cdb3-4a68-a0fd-bb0cdb9a67d2",
+        "ttft_stream_ms": 4600,
+        "time_to_request_ms": 24,
+        "first_content_frame_ms": 4661,
+        "queued_turn_count": 0,
+        "result_index": 0
+      }
+    }
+  ]
+}

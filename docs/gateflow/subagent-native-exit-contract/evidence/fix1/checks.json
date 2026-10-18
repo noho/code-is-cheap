@@ -1,0 +1,71 @@
+[
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "-c",
+      "import ast; from pathlib import Path; [ast.parse(Path(p).read_text(), filename=p) for p in ('scripts/agent-run-result.py','tests/test_agent_run_results.py','tests/test_official_catalog_runtime.py')]; print('3 Python files parse successfully')"
+    ],
+    "returncode": 0,
+    "seconds": 0.034,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/python-syntax.log"
+  },
+  {
+    "argv": [
+      "zsh",
+      "-n",
+      "scripts/codex-agent-run"
+    ],
+    "returncode": 0,
+    "seconds": 0.01,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/codex-syntax.log"
+  },
+  {
+    "argv": [
+      "zsh",
+      "-n",
+      "scripts/claude-agent-run"
+    ],
+    "returncode": 0,
+    "seconds": 0.008,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/claude-syntax.log"
+  },
+  {
+    "argv": [
+      "zsh",
+      "-n",
+      "scripts/agent-tools.zsh"
+    ],
+    "returncode": 0,
+    "seconds": 0.005,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/tools-syntax.log"
+  },
+  {
+    "argv": [
+      "bash",
+      "-n",
+      "scripts/sub-agent-preflight"
+    ],
+    "returncode": 0,
+    "seconds": 0.004,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/preflight-syntax.log"
+  },
+  {
+    "argv": [
+      "./scripts/validate-skills.sh"
+    ],
+    "returncode": 0,
+    "seconds": 0.218,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/skills.log"
+  },
+  {
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "returncode": 0,
+    "seconds": 0.017,
+    "log": "/tmp/subagent-native-exit-fix1.vyO8eRyB/diff-check.log"
+  }
+]

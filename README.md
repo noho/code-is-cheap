@@ -758,7 +758,8 @@ It uses `tmux-cli send` + `wait_idle` + `capture` for agent-to-agent chat. `tmux
 
 Use `sub-agents` when the controller should launch external Claude Code or Codex child processes through the installed
 runners. The skill covers independent prompt context, explicit workspace, managed parallel execution, final-answer collection,
-bounded retries and optional checks/isolation. Task-specific verification remains with the caller.
+and optional checks/isolation. The caller owns task-specific verification and decides continuations/retries under existing
+user/project authorization and routes. Runners do not automatically retry or switch providers.
 
 Codex:
 

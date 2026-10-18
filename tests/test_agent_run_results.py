@@ -52,11 +52,11 @@ ds-flash_claude() {{ exec python3 '{ROOT / 'scripts/agent-endpoint.py'}' --exec-
         self.expected = self.root / 'expected.txt'
         self.expected.write_text('fresh-12345678')
 
-    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None, workdir=None, prompt="bounded test"):
+    def run_agent(self, runtime, events, *args, exit_code=0, err='', final='done', runner_path=None, workdir=None, prompt="bounded test", text=True):
         fixture = self.root / 'events'
         fixture.write_text('\n'.join(json.dumps(e) if isinstance(e, dict) else e for e in events)+'\n')
         env = self.env | {'FIXTURE': str(fixture), 'RUNTIME_EXIT': str(exit_code), 'ERR': err, 'FINAL': final}
-        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(workdir or ROOT), '--prompt', prompt, *args], env=env, capture_output=True, text=True)
+        result = subprocess.run([str(runner_path or ROOT/f'scripts/{runtime}-agent-run'), '--provider', 'mimo' if runtime=='codex' else 'ds-flash', '--cwd', str(workdir or ROOT), '--prompt', prompt, *args], env=env, capture_output=True, text=text)
         return result
 
     def codex(self, text='done'):
@@ -87,14 +87,14 @@ ds-flash_claude() {{ exec python3 '{ROOT / 'scripts/agent-endpoint.py'}' --exec-
         if startup:events.insert(1,self.startup_diagnostic())
         return events
 
-    def run_collector(self, events, *args, runtime="codex", native=0, err=""):
+    def run_collector(self, events, *args, runtime="codex", native=0, err="", text=True):
         output=self.root/'collector.jsonl';stderr=self.root/'collector.stderr'
         output.write_text('\n'.join(json.dumps(e) if isinstance(e,dict) else e for e in events)+'\n')
         stderr.write_text(err)
         return subprocess.run(['python3','-B',str(ROOT/'scripts/agent-run-result.py'),
             '--runtime',runtime,'--provider','mimo' if runtime=='codex' else 'ds-flash','--output',str(output),'--stderr',str(stderr),
             '--exit-code',str(native),*args],
-            capture_output=True,text=True)
+            env=self.env,capture_output=True,text=text)
 
     def assert_report(self, result, native=0, outer=None, final='done'):
         self.assertEqual(result.returncode, native if outer is None else outer, result.stderr)
@@ -225,6 +225,44 @@ ds-flash_claude() {{ exec python3 '{ROOT / 'scripts/agent-endpoint.py'}' --exec-
             report = self.assert_report(self.run_agent(runtime, events), final='done' if runtime=='codex' else None)
             self.assertIsNone(report['terminal']); self.assertIsNone(report['usage'])
             self.assertEqual(report['runtime_metrics'], {})
+
+    def test_surrogate_duplicate_keys_preserve_utf8_json_native_exit_and_text(self):
+        # Only these utilities and the fail-closed fake CLIs are reachable.
+        for name in ('python3', 'jq', 'git', 'mktemp'):
+            executable = shutil.which(name)
+            self.assertIsNotNone(executable, name)
+            (self.bin / name).symlink_to(executable)
+        self.env['PATH'] = str(self.bin)
+        final = ' \n\t' + ('完整 final Ω 😀\r\n' * 1500) + '\n \t\r\n'
+        warning = ' \t原文 warning Ω 😀\nsecond line\t '
+        stderr = '\t原文 stderr Ω 😀\r\n'
+        self.assertGreater(len(final), 12000)
+        for runtime in ('codex', 'claude'):
+            for surrogate in ('\ud800', '\udcff'):
+                key = json.dumps(surrogate)
+                damage = '{"type":"error",' + key + ':1,' + key + ':2}'
+                events = getattr(self, runtime)(final)
+                events[1:1] = [damage, dict(type='warning', message=warning)]
+                for native in (0, 7):
+                    for entry in ('collector', 'runner'):
+                        with self.subTest(runtime=runtime, key=key, native=native, entry=entry):
+                            if entry == 'collector':
+                                result = self.run_collector(events, runtime=runtime, native=native, err=stderr, text=False)
+                            else:
+                                result = self.run_agent(runtime, events, exit_code=native, err=stderr, final=final, text=False)
+                            self.assertEqual(result.returncode, 0 if entry == 'collector' else native, result.stderr)
+                            # Decode strictly before JSON parsing: surrogateescape output is invalid UTF-8.
+                            result.stdout = result.stdout.decode('utf-8')
+                            report = self.assert_report(result, native=native,
+                                outer=0 if entry == 'collector' else native, final=final)
+                            self.assertEqual(report['terminal'], 'turn.completed' if runtime == 'codex' else 'success')
+                            output = report['logs']['output']
+                            self.assertIn(dict(message='invalid event: duplicate JSON key: ' + surrogate,
+                                path=output, line=2), report['diagnostics'])
+                            self.assertIn(dict(message=warning, path=output, line=3), report['diagnostics'])
+                            self.assertIn(dict(message=stderr, path=report['logs']['stderr'], line=1), report['diagnostics'])
+                            self.assertEqual(Path(output).read_bytes().splitlines()[1], damage.encode('utf-8'))
+                            self.assertEqual(Path(report['logs']['stderr']).read_bytes(), stderr.encode('utf-8'))
 
     def test_collector_unreadable_missing_and_binary_sources_are_observations(self):
         for mode in ('missing', 'directory', 'permission', 'binary'):
