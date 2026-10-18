@@ -372,7 +372,7 @@ are created. The token is never printed or embedded in the prompt.
 
 ### Runner results
 
-After actual runtime exit, the runner returns one JSON report on stdout with status, `final_answer`, diagnostics, full log
+After actual runtime exit, the runner returns one schema-v2 JSON report on stdout with `final_answer`, diagnostics, full log
 paths and statistics. `--output` / `--stderr` retain raw logs, even when stdout returns the summary; omitted destinations
 get private files. Explicit `-` destinations (`--output`, `--stderr`, Codex `--last-message`) require `--detail`;
 collected mode rejects them instead of silently replacing them. Claude uses stream-json internally. Wait for the managed process handle's exit, then consume the final
@@ -385,54 +385,59 @@ claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
 ```
 
-`validation_status` is `passed`, `needs_review` or `rejected`; `result_status` is always `not_assessed`. Ordinary tool errors
-are recorded in `anomalies` and do not automatically fail the Agent or require a per-event adjudication report. Judge
-unresolved issues by their impact on the task; tool-like text without recorded tools is an anomaly, since examples and
-execution claims cannot be distinguished from text alone; inspect relevant evidence when needed. Runtime failure retains its nonzero
-exit code; otherwise mechanical rejection returns 1, and `needs_review` returns 0. Neither exit 0 nor a final answer proves
-task correctness or grants user authorization. Explicit project audit/workflow requirements still apply.
+The outer exit is the actual native CLI exit, including nonzero 1/2/126/127. Final prose explaining missing input,
+blocked work or inability is a normal reply. Missing artifacts, canary mismatches, tool errors, damaged logs and protocol
+observations never change a known native exit. The caller owns task acceptance and any further interactions under its
+user/project authorizations and routing rules. Preserve attempts/logs and measurement batch membership/concurrency;
+a retry must not replace a failed measured sample. No automatic retry or provider switch is added.
 
-Collected calls return 0 when native execution and necessary postprocessing exit 0, one valid successful terminal belongs
-to that execution, its final answer is complete and nonempty, the log is intact, and selected checks pass. Both runtimes
-retain structurally valid intermediate error/retry diagnostics as `anomalies`, regardless of unfamiliar wording or
-non-proof Claude diagnostic payloads; these produce `needs_review` even after completion. Failed, missing, duplicate,
-conflicting or invalid terminals/finals/identities, damaged logs and failed selected checks still reject.
+Collected schema version **2** has these fields:
 
-Codex requires ordered thread/turn starts, a completed agent message and `turn.completed`; the latest completed message
-owns final. Its protocol provides no independent refusal/finish-reason field, so final prose is delivered for caller
-judgment. Claude's unique root `result` owns final; intermediate or nested assistant text cannot replace it. Native
-negative completion fields reject even a success-labeled result. Normal result `stop_reason` values are `end_turn` and
-`stop_sequence`; absent/null stop metadata and absent terminal metadata remain supported for historical streams.
-Intermediate assistant/tool/retry metadata supplies no execution completion proof.
+| Fields | Meaning |
+| --- | --- |
+| `schema_version`, `source`, `runtime`, `provider` | `2`, `subagent_report`, selected runtime/provider. |
+| `runtime_exit_code`, `final_answer` | Actual native exit and **full, untruncated** native text, preserving whitespace and Unicode. |
+| `session_id`, `terminal` | Observed native identity and terminal type/subtype; null when unavailable/ambiguous. |
+| `wall_clock_seconds`, `usage`, `runtime_metrics` | Measured time to collection invocation; single-terminal native totals and Claude duration/cost/modelUsage. Missing values are null/empty, genuine zero remains zero; streaming fragments are not summed. |
+| `logs` | Absolute `output`, `stderr`, optional `last_message` paths. Raw partial material remains in logs. |
+| `diagnostics` | One list of `{message, path, line}` facts. Warning text is opaque and preserved verbatim with its source; wording never changes behavior. No severity/status classifier or text-based recovery inference. |
+| `checks` | `artifacts: [{path, exists, regular_file}]`; `canary: null` unless requested, otherwise `{proof_observed, proof_matches_expected, read_candidate_observed}`. Matching is null when no comparable proof is available. |
 
-`agent_status=completed` records observed native execution completion with zero process/postprocessing exits and valid
-same-execution terminal/final proof. It can coexist with `validation_status=rejected` and a nonzero call exit when a
-separate parser or selected-check error remains. Invalid completion proof prevents `completed`; readable final/partial
-text is still retained for diagnosis. `result_status=not_assessed` always leaves task correctness to the caller.
+Migration from v1: remove dependencies on `agent_status`, `validation_status`, `result_status`, `runner_exit_code`,
+`final_answer_chars`, `final_answer_truncated`, the three diagnostic classes/counts/truncation fields and tool/event
+rollups. Use `runtime_exit_code`, `final_answer`, source diagnostics and `checks`; missing files/check observations no
+longer produce rejection exits. No replacement wrapper verdict exists. The collector itself exits 0 when it successfully
+serializes observations, including missing/malformed sources; its process exit is not task acceptance.
 
-`session_id` exposes the native Codex thread_id or Claude session_id, or null when unavailable/conflicting.
-Only explicitly persisted sessions can be resumed; an ID does not imply an ephemeral run was saved.
+Codex's latest completed agent message owns final; Claude's unique root `result` string owns final. Claude assistant
+text and nested results never substitute. Missing/nontext/ambiguous final is null; an observed empty string stays empty.
+An identifiable final remains available despite negative native metadata or unrelated damaged frames. Missing/conflicting
+identity or terminal is diagnostic information. Only explicitly persisted sessions can be resumed; an ID does not imply
+an ephemeral run was saved. Usage/metrics require an unambiguous native terminal.
 
-`wall_clock_seconds` measures runner startup through collection invocation, including setup/runtime/final-message handling;
-it excludes adapter serialization and caller preflight/wait overhead. `usage` copies the single terminal runtime object,
-without normalizing or summing streaming fragments. `runtime_metrics` retains Claude's reported `duration_ms`,
-`duration_api_ms`, `total_cost_usd` and `modelUsage` when available. Missing usage/time is null, missing metrics an empty
-object, and genuine zero values remain zero. Failed terminals can retain reported statistics; absent/conflicting terminals
-supply no trusted usage. Full raw statistics remain in logs. The additive report fields keep schema_version=1.
+Before native exec, argument/input/path/dependency/launcher failures return setup code 2, with cause and allocated log
+paths on stderr and no invented native report. If the wrapper cannot execute/serialize/write the primary result after
+native exit, stderr reports that delivery failure, known native code and retained paths; outer exit is 1 for native 0,
+or the exact native nonzero. Codex auxiliary `--last-message` missing/copy/race/cleanup problems preserve native exit,
+retain available temporary source and report its location; existing destinations are never clobbered. `--detail` returns
+raw streams, skips collection and optional post-run checks, and keeps the same native exit behavior.
 
-Final answers display up to 12,000 characters with a truncation flag; diagnostic categories display at most 20 entries of
-2,000 characters, with full counts and source locations. Consult retained logs for truncated content or necessary evidence.
-`tool_evidence_scope=recorded_events_only` does not guarantee every tool channel has a trace.
+`AGENT_TOOLS_FILE` remains supported, but custom launchers must explicitly implement **pre-exec-error-v1**. After sourcing,
+`_agent_tools_runner_contract` must print exactly `pre-exec-error-v1` and return 0 only when its terminal helper supports
+that contract. Under runner invocation, `AGENT_RUN_ERROR_FD` names an internal error-only pipe: report any return/failure
+before native exec there, and close it on successful exec (CLOEXEC), removing that variable from the native environment.
+No success messages or post-exit protocol are used. Repository launchers use `agent-endpoint.py` for terminal exec; the
+capability check detects helper skew before launch. Unsupported/stale custom launchers fail as setup before running.
+Ordinary interactive launcher calls without the internal descriptor retain their behavior. Sync runners, launchers and
+helper together; native attribution is never inferred from missing events, numeric sentinels or warning prose.
 
-Optional repeatable `--artifact /path/to/new-file` checks new regular task files; existing files/directories/symlinks are
-rejected before dispatch. Post-run checks reject hard links/log aliases; a new pathname does not prove inode provenance
-or correct content. Without it, no final-answer path extraction or extra report is required. Optional paired runner
-`--canary-file` / `--canary-expected` validate readable, nonempty regular inputs and a valid expected token before launch,
-then check a reported proof; preflight `--canary` supplies the pair. Proofs are standalone,
-unindented `CANARY=<token>` lines outside code blocks; unrelated proof examples must be fenced/indented or inline to avoid
-conflicting proofs. A match and candidate read trace do not prove the whole task. Under `agent-sandbox`, checks stay within
-existing write/read boundaries. `--detail` restores raw output and skips automatic collection/canary/artifact checks;
-`text` output and Claude `json` are available there. It does not impose extra audit ceremony.
+Optional repeatable `--artifact /path/to/new-file` requires a fresh path before dispatch. Post-run existence, file type,
+hard links/log aliases and read errors are observations; they do not prove provenance or content. No artifact option
+means no automatic extraction of final-answer paths. Paired `--canary-file` / `--canary-expected` validate readable,
+nonempty regular inputs and a valid token before launch; preflight `--canary` supplies the pair. Proofs are standalone,
+unindented `CANARY=<token>` lines outside code blocks. A match and candidate read trace do not prove task correctness;
+secondary proof-line offsets are included in diagnostic messages. Under `agent-sandbox`, checks stay within existing
+boundaries. `text` output and Claude `json` are available with `--detail`.
 See [advanced sub-agent calls](skills/sub-agents/references/advanced.md) when selecting these capabilities.
 
 ## Codex Agent Profiles

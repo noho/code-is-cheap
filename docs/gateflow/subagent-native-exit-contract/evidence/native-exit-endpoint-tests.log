@@ -1,0 +1,25 @@
+.....................FF
+======================================================================
+FAIL: test_real_native_1_2_126_127_and_no_protocol_are_exact (test_install_endpoints.RunnerNativeBoundaryTests.test_real_native_1_2_126_127_and_no_protocol_are_exact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_install_endpoints.py", line 1054, in test_real_native_1_2_126_127_and_no_protocol_are_exact
+    self.assertEqual(done.returncode,code,done.stderr)
+AssertionError: 2 != 0 : codex-agent-run: /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmps_vbdyoj 不在 git 仓库内，已自动追加 --skip-git-repo-check
+codex-agent-run: native CLI not executed: launcher returned before native exec (exit 0)
+launcher returned before native exec (exit 0)
+launcher returned before native exec (exit 0); output=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmps_vbdyoj/agent-run.C4y6Niyn/output.jsonl; stderr=/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmps_vbdyoj/agent-run.C4y6Niyn/stderr.log
+
+
+======================================================================
+FAIL: test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause (test_install_endpoints.RunnerNativeBoundaryTests.test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_install_endpoints.py", line 1076, in test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause
+    self.assertIn('cannot exec '+runtime,Path(log_path).read_text())
+AssertionError: 'cannot exec codex' not found in 'WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmprjwe_cba" (codex_home: AbsolutePathBuf("/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmprjwe_cba/.codex"))\n2026-10-18T01:46:53.262383Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:46:54.755616Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:46:57.593359Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:46:59.175897Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:47:02.126736Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:47:06.333658Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n2026-10-18T01:47:12.550610Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://api.openai.com/v1/responses\n'
+
+----------------------------------------------------------------------
+Ran 23 tests in 54.502s
+
+FAILED (failures=2)

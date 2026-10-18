@@ -1,3 +1,10 @@
+# Runner-only pre-exec error contract. Ordinary interactive calls do not use it.
+_agent_tools_runner_contract() {
+  local helper
+  helper="$(_agent_tools_connection_helper)" || return 1
+  python3 "$helper" --runner-error-contract
+}
+
 # Agent launchers use private JSON connections. Loading this file exports no keys.
 # Remove inherited credentials before helpers/Agents run; this is environment
 # isolation, not protection against same-user reads of the private JSON file.
@@ -81,6 +88,16 @@ _local_agent_require_service() {
 _claude_agent_launch() (
   emulate -L zsh
   unsetopt xtrace verbose
+  if [[ -n "${AGENT_RUN_ERROR_FD:-}" ]]; then
+    # Command substitutions inherit traps; only this launch subshell owns errors.
+    local launch_subshell=$ZSH_SUBSHELL
+    TRAPEXIT() {
+      local launch_return=$?
+      if (( ZSH_SUBSHELL == launch_subshell )); then
+        print -r -u${AGENT_RUN_ERROR_FD} -- "launcher returned before native exec (exit $launch_return)"
+      fi
+    }
+  fi
   local agent_id="$1"
   shift
   local title="$(_claude_agent_title "$agent_id")" || return 1
@@ -115,8 +132,13 @@ _claude_agent_launch() (
   if [[ "${AGENT_SANDBOX_CLAUDE:-}" == 1 ]]; then
     claude_args=(--safe-mode --setting-sources "" --strict-mcp-config --mcp-config '{"mcpServers":{}}' --tools 'Bash,Read,Write,Edit,Glob,Grep' "${claude_args[@]}")
   fi
-  python3 "$helper" "${helper_args[@]}" --launch-claude "$agent_id" --compact-window "$compact_window" \
-    --max-context "$max_context" --api-timeout "$api_timeout" -- "${claude_args[@]}"
+  if [[ -n "${AGENT_RUN_ERROR_FD:-}" ]]; then
+    exec python3 "$helper" "${helper_args[@]}" --launch-claude "$agent_id" --compact-window "$compact_window" \
+      --max-context "$max_context" --api-timeout "$api_timeout" -- "${claude_args[@]}"
+  else
+    python3 "$helper" "${helper_args[@]}" --launch-claude "$agent_id" --compact-window "$compact_window" \
+      --max-context "$max_context" --api-timeout "$api_timeout" -- "${claude_args[@]}"
+  fi
 )
 
 ds-flash_claude() { _claude_agent_launch ds-flash "$@"; }
@@ -313,6 +335,16 @@ _codex_agent_app() (
 _codex_agent_launch() (
   emulate -L zsh
   unsetopt xtrace verbose
+  if [[ -n "${AGENT_RUN_ERROR_FD:-}" ]]; then
+    # Command substitutions inherit traps; only this launch subshell owns errors.
+    local launch_subshell=$ZSH_SUBSHELL
+    TRAPEXIT() {
+      local launch_return=$?
+      if (( ZSH_SUBSHELL == launch_subshell )); then
+        print -r -u${AGENT_RUN_ERROR_FD} -- "launcher returned before native exec (exit $launch_return)"
+      fi
+    }
+  fi
   local agent_id="$1"
   shift
 
@@ -445,7 +477,13 @@ _codex_agent_launch() (
     esac
   fi
   [[ "$full_access" == true ]] && codex_args=(--dangerously-bypass-approvals-and-sandbox "${codex_args[@]}")
-  CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
+  if [[ -n "${AGENT_RUN_ERROR_FD:-}" ]]; then
+    local helper
+    helper="$(_agent_tools_connection_helper)" || return 1
+    CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" exec python3 "$helper" --exec-native -- codex "${codex_args[@]}"
+  else
+    CODEX_HOME="$codex_home" CODEX_SQLITE_HOME="$codex_home" command codex "${codex_args[@]}"
+  fi
 )
 
 ds-flash_codex() { _codex_agent_launch ds-flash "$@"; }

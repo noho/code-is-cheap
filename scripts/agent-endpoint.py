@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import stat
+import shutil
 from urllib.parse import urlsplit
 
 FIELDS = {"base_url", "upstream_model", "api_key"}
@@ -166,6 +167,22 @@ def initialize():
         stream.write(data)
 
 
+class NativeExecError(OSError):
+    pass
+
+
+def exec_native(command, env):
+    try:
+        # Resolve once. execvpe can silently try a later PATH entry if the first
+        # executable has a missing interpreter; that is a different CLI instance.
+        executable = shutil.which(command[0], path=env.get("PATH", os.defpath))
+        if executable is None:
+            raise FileNotFoundError(2, "executable not found", command[0])
+        os.execve(executable, command, env)
+    except OSError as error:
+        raise NativeExecError(f"cannot exec {command[0]}: {error}") from None
+
+
 class FullAccessConflict(ValueError):
     pass
 
@@ -228,11 +245,13 @@ def launch_claude(provider, args, compact_window, max_context, api_timeout, full
     if full_access:
         document.update(sandbox={"enabled": False}, skipDangerousModePermissionPrompt=True)
         args = ["--permission-mode", "bypassPermissions", *args]
-    os.execvpe("claude", ["claude", "--settings", json.dumps(document), *args], env)
+    exec_native(["claude", "--settings", json.dumps(document), *args], env)
 
 
-def main():
+def main(error_fd=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--runner-error-contract", action="store_true")
+    parser.add_argument("--exec-native", action="store_true")
     parser.add_argument("--provider")
     parser.add_argument("--runtime", choices=["claude", "codex"])
     parser.add_argument(
@@ -246,9 +265,25 @@ def main():
     parser.add_argument("--max-context", default="")
     parser.add_argument("--api-timeout", default="")
     parser.add_argument("args", nargs=argparse.REMAINDER)
-    args = parser.parse_args()
     try:
-        if args.initialize:
+        args = parser.parse_args()
+    except SystemExit:
+        if error_fd is not None:
+            os.write(error_fd, b"helper argument parsing failed before native exec; see stderr\n")
+        raise
+    # Connection queries intentionally return to the launcher during setup.
+    # Only the terminal exec invocation owns the error handoff.
+    if not (args.exec_native or args.launch_claude):
+        error_fd = None
+    try:
+        if args.runner_error_contract:
+            print("pre-exec-error-v1")
+        elif args.exec_native:
+            command = args.args[1:] if args.args[:1] == ["--"] else args.args
+            if not command:
+                parser.error("native command required")
+            exec_native(command, os.environ)
+        elif args.initialize:
             initialize()
         elif args.launch_claude:
             launch_claude(
@@ -269,6 +304,8 @@ def main():
             )
             if not args.check:
                 print(value[args.field])
+    except NativeExecError as error:
+        parser.exit(1, str(error) + "\n")
     except FullAccessConflict as error:
         parser.exit(2, str(error) + "\n")
     except (OSError, ValueError, KeyError, TypeError):
@@ -276,7 +313,15 @@ def main():
             1,
             "Cannot use connection settings; check JSON fields, mode 600 and selected api_key.\n",
         )
+    finally:
+        if error_fd is not None:
+            os.write(error_fd, b"helper returned before native exec; see stderr for cause\n")
 
 
 if __name__ == "__main__":
-    main()
+    # Error-only pipe: never send success or expose the descriptor to native tools.
+    error_fd = os.environ.pop("AGENT_RUN_ERROR_FD", None)
+    if error_fd is not None:
+        error_fd = int(error_fd)
+        os.set_inheritable(error_fd, False)
+    main(error_fd)

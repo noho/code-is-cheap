@@ -26,7 +26,7 @@ class PreflightTests(unittest.TestCase):
         (home / ".codex").mkdir(parents=True)
         (home / ".codex/mimo.config.toml").write_text("", encoding="utf-8")
         tools = self.root / "agent-tools.zsh"
-        tools.write_text("mimo_codex() { :; }\nds-flash_claude() { :; }\n", encoding="utf-8")
+        tools.write_text("_agent_tools_runner_contract() { print -r -- pre-exec-error-v1; }\nmimo_codex() { :; }\nds-flash_claude() { :; }\n", encoding="utf-8")
         bin_dir = self.root / "bin"
         bin_dir.mkdir()
         for name in ("codex-agent-run", "claude-agent-run"):

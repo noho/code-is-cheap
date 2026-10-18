@@ -28,7 +28,7 @@ Optional:
   --label <label>           Safe filename component; defaults to task-<fresh run suffix>.
   --canary                  Create fresh proof files and request/check a file-read proof.
                             No canary files, arguments or instructions by default.
-  --artifact <path>         NEW regular task file; repeatable. Checked by runner after exit.
+  --artifact <path>         NEW regular task file; repeatable. Observed by runner after exit; caller decides acceptance.
   --full-access             Disable runtime inner sandbox and approvals (opt-in).
   --deny-list <json>        Prefix with agent-sandbox; implies --full-access.
                             macOS/srt required. Setup validation is not a kernel test.
@@ -130,10 +130,10 @@ agent_tools_file="${AGENT_TOOLS_FILE:-$HOME/.config/zsh/agent-tools.zsh}"
 launcher="${provider}_${runtime}"       # <provider>_codex / <provider>_claude
 if [[ -r "$agent_tools_file" ]]; then
   if AGENT_TOOLS_CHECK_FILE="$agent_tools_file" AGENT_TOOLS_CHECK_FN="$launcher" \
-     zsh -c 'source "$AGENT_TOOLS_CHECK_FILE" >/dev/null 2>&1 || exit 1; (( $+functions[$AGENT_TOOLS_CHECK_FN] ))'; then
+     zsh -c 'source "$AGENT_TOOLS_CHECK_FILE" >/dev/null 2>&1 || exit 1; (( $+functions[$AGENT_TOOLS_CHECK_FN] && $+functions[_agent_tools_runner_contract] )) || exit 1; contract="$(_agent_tools_runner_contract)" || exit 1; [[ "$contract" == pre-exec-error-v1 ]]'; then
     :
   else
-    failures+=("launcher 函数 $launcher 未在 $agent_tools_file 中定义（是否忘了同步？）")
+    failures+=("launcher 函数 $launcher 或 pre-exec-error-v1 契约不可用: $agent_tools_file（是否忘了同步？）")
   fi
 else
   failures+=("launcher 文件不可读: $agent_tools_file")

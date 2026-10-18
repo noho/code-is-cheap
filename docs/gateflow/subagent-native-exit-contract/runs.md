@@ -10,7 +10,7 @@ All calls use explicit cwd `/Users/leo/workspace/code-is-cheap`, separate escala
 | Revised plan | gpt-6-sol / codex-agent-run | plan-v2-prompt.md / plan-v2 | 56993 | Actual 0; plan-v2-receipt.json; plan-v2.md preserved in 9599bf7 |
 | Revised plan review A | mimo / claude-agent-run | plan-v2-review-mimo-prompt.md / plan-v2-review-mimo | 84455 | Actual 0; plan-v2-review-mimo-receipt.json; docs/reviews/plan-review-20261018-091226.md; pass-with-risks adjudicated in decisions.md |
 | Revised plan review B | ds-flash / claude-agent-run | plan-v2-review-ds-flash-prompt.md / plan-v2-review-ds-flash | 59854 | Actual 0; plan-v2-review-ds-flash-receipt.json; docs/reviews/plan-review-20261018-091227.md; pass-with-risks adjudicated in decisions.md |
-| Implementation / validation | gpt-6-sol / codex-agent-run | implementation-prompt.md / implementation | 97310 | In flight; implementation.md and actual receipt pending |
+| Implementation / validation | gpt-6-sol / codex-agent-run | implementation-prompt.md / implementation | 97310 | Actual 0; implementation.md, implementation-receipt.json, source-freeze.json and retained validation evidence; complete code review pending |
 
 No invocation is accepted as task completion merely because it exits 0. Here the controller reads the delivered artifact and adjudicates it under Gateflow; the thin runner itself must not own that decision. No original task replay, kill, resume, provider fallback or live sync was performed.
 

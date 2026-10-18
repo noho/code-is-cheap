@@ -24,16 +24,32 @@ sub-agent-preflight --runtime codex --provider mimo --cwd /absolute/workspace --
 子 Agent 将读取内容报告为单独、不缩进的一行 CANARY=<token>，不附说明、不放代码块；证明可在 final answer
 或显式 --artifact 文本文件中。比较只剥离常见成对引号/句末排版标点，token 仍严格比较。
 显式启用 canary 后，讨论旧 token 的示例须放围栏/缩进代码块或行内示例中；其它独立 CANARY 行会被当作
-当前证明并可能造成冲突拒收。普通任务正文可以讨论 canary，不再按宽泛 regex 拒绝。
+当前证明并记录冲突观察。普通任务正文可以讨论 canary，不再按宽泛 regex 拒绝。
 直接 runner 在启动前检查成对输入是可读、非空普通文件，expected token 非空且内部无空白；不满足时不启动 runtime。
 运行后仍核对证明。匹配只证明指定 token 被报告；candidate read 是路径和工具输出的候选记录，不能证明其它输入或整个任务正确。
 
 需要机械检查交付文件时，重复传 --artifact /absolute/new-file。文件必须是本轮新建普通文件，不是既有源码、
-目录、符号链接或日志路径别名。预检把路径加入任务并传给 runner；收尾检查不存在/非普通文件时拒收。
-收尾拒绝多硬链接及 retained log 的文件别名；“新建”只检查调用前该路径不存在，不证明 inode 来源或文件内容。
+目录、符号链接或日志路径别名。预检把路径加入任务并传给 runner；收尾记录不存在/非普通文件观察。
+收尾记录多硬链接及 retained log 的文件别名；“新建”只检查调用前该路径不存在，不证明 inode 来源或文件内容。
 需要硬链接产物的任务可不声明 --artifact，由调用方按任务核对。
 不声明时 runner 不从 final answer 自动抽取路径，调用方按任务需要直接使用其中的文件。
---detail 不进行这些自动收尾检查。所选显式检查未满足不能悄悄视为通过。
+--detail 不进行这些自动收尾检查。所选检查仅提供观察，不改写原生退出，调用方负责验收。
+
+## 自定义 launcher 与版本偏差
+
+`AGENT_TOOLS_FILE` 可选择自定义 zsh launcher。schema v2 runner 要求 source 后存在所选函数和
+`_agent_tools_runner_contract`；该函数必须在终端 helper 支持时输出恰好 `pre-exec-error-v1` 并返回 0。
+能力不支持/版本偏差在执行前退出 2，不先运行再从日志或特殊退出数字猜归属。
+仓库函数通过 `agent-endpoint.py --runner-error-contract` 检查配套 helper；部署时一起同步 runner、launcher 和 helper。
+
+runner 仅在本次调用设置 `AGENT_RUN_ERROR_FD` 指向内部 error-only pipe。launcher 的 exec 前失败/返回必须写入原因，
+终端 exec 必须设置描述符 CLOEXEC 并移除原生环境中的变量，禁止原生 CLI/工具继承。成功时不写握手，无退出后协议。
+仓库 Claude helper 已实现；自定义终端命令可使用 `exec python3 /absolute/agent-endpoint.py --exec-native -- command ...`，
+并为调用此 exec 前的 setup 分支安装错误 trap。契约声明者负责完整实现；不能仅返回版本字符串而忽略错误边界。
+普通交互调用没有该内部描述符，保持既有行为。无需复制 provider 配置或添加 supervisor/store。
+
+外层退出与 `runtime_exit_code` 保留真实 CLI 码；主结果交付故障是唯一执行后的例外：原生 0 返回 1，非零保留原码，
+stderr 给出已知原生事实与日志。附加 last-message 复制/清理故障仅报告诊断及保留临时源，不覆盖原生退出。
 
 ### 可选的任务禁读边界（macOS）
 
@@ -82,7 +98,7 @@ setup 不证明 endpoint trust、内核隔离或全部原生 parser/算法兼容
 export CODEX_CA_CERTIFICATE=/absolute/path/to/permitted-ca.pem
 ```
 
-原任务恢复及大禁读名单验证由调用方在部署后负责；本次工作不 merge 或 sync 到在线安装。
+部署、原任务恢复及大禁读名单验证由调用方按现有授权负责。
 
 封装必须从总控沙箱外启动：Codex 总控仍使用独立 `exec_command(require_escalated)`；Claude 总控须将
 `agent-sandbox` 加入自己的 `sandbox.excludedCommands`，并以独立裸命令派发。内层 Full Access 无法解除

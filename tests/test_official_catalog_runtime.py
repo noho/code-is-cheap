@@ -401,16 +401,14 @@ class OfficialRuntimeTests(unittest.TestCase):
     def check_success(self,fixture,done,clean=True):
         self.assertEqual(done.returncode,0,(str(fixture.root),done.stderr,done.stdout,(fixture.root/'sinks/native.stderr').read_text()))
         result=json.loads(done.stdout)
-        self.assertEqual(result['agent_status'],'completed')
-        self.assertEqual(result['canary_status'],'match')
-        self.assertTrue(result['canary_read_candidate'])
+        self.assertEqual(result['runtime_exit_code'],done.returncode)
+        self.assertEqual(result['schema_version'],2)
+        self.assertTrue(result['checks']['canary']['proof_matches_expected'])
+        self.assertTrue(result['checks']['canary']['read_candidate_observed'])
         self.assertEqual(result['terminal'],'turn.completed')
         self.assertGreater(result['usage']['input_tokens'],0)
         self.assertGreater(result['usage']['output_tokens'],0)
-        self.assertEqual(result['validation_status'],'passed' if clean else 'needs_review')
-        self.assertEqual(result['result_status'],'not_assessed')
-        self.assertGreater(result['tool_results'],0)
-        self.assertEqual(result['tool_evidence_scope'],'recorded_events_only')
+        self.assertIsInstance(result['diagnostics'],list)
         self.assertEqual((fixture.root/'work/result.txt').read_text(),fixture.token+'\n')
         self.assertEqual((fixture.root/'sinks/final.txt').read_text().strip(),'CANARY='+fixture.token)
         self.assertEqual(result['final_answer'].strip(),'CANARY='+fixture.token)
@@ -452,19 +450,22 @@ class OfficialRuntimeTests(unittest.TestCase):
         (f.root/'context-evidence.json').write_text(json.dumps(dict(rollout=str(matches[0]),turn_context=context,token_count=counts),indent=2))
         self.check_success(f,done)
 
-    def test_mimo_explicit_host_false_fails_visibly(self):
+    def test_mimo_explicit_host_false_reports_observed_native_outcome(self):
         f=self.fixture('mimo-host-false','mimo',host_false=True); done=f.run()
-        self.assertNotEqual(done.returncode,0)
+        result=json.loads(done.stdout)
+        self.assertEqual(done.returncode,result['runtime_exit_code'])
+        self.assertEqual(result['schema_version'],2)
         self.assertFalse((f.root/'work/result.txt').exists())
         combined=(f.root/'sinks/events.jsonl').read_text()+(f.root/'sinks/native.stderr').read_text()+done.stdout
         self.assertRegex(combined,r'(?i)(host|code.mode).*(disabled|unavailable|not enabled|requires|not available|failed)')
         self.check_hops(f)
-        self.assertNotEqual(json.loads(done.stdout)['validation_status'],'passed')
+        self.assertEqual(result['logs']['output'],str(f.root/'sinks/events.jsonl'))
+        self.assertIn('final_answer',result)
 
     def approval_case(self,profile,outcome):
         f=self.fixture(profile+'-'+outcome,profile,approval=outcome); done=f.run()
         self.assertEqual(done.returncode,0,(str(f.root),done.stdout,done.stderr))
-        result=json.loads(done.stdout); self.assertEqual(result['agent_status'],'completed')
+        result=json.loads(done.stdout); self.assertEqual(result['runtime_exit_code'],done.returncode)
         self.assertGreater(f.guardian_requests,0)
         self.assertEqual((f.root/'approval-result').exists(),outcome=='allow')
         if outcome=='allow':self.assertEqual((f.root/'approval-result').read_text(),'synthetic-approved')

@@ -1009,3 +1009,118 @@ fi
             self.assertEqual(direct.returncode, 0, direct.stderr)
             self.assertFalse(endpoint.exists())
             self.assertEqual(keys.read_bytes(), before[1])
+
+class RunnerNativeBoundaryTests(unittest.TestCase):
+    """Real launcher/functions/helper, private configuration, fake native processes."""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.home = Path(self.temp.name).resolve()
+        self.bins = self.home/'bin'
+        stage_helper(self.bins)
+        (self.home/'.codex').mkdir()
+        (self.home/'.codex/gpt-6-sol.config.toml').write_text('model="fake"\n')
+        self.config = private_doc(self.home, {'default':{},'override':{'ds-flash':{'claude':conn()}}})
+        (self.bins/'jq').symlink_to(shutil.which('jq'))
+        self.marker = self.home/'entered'
+        self.env = fixture_env(HOME=str(self.home),PATH=str(self.bins)+':/usr/bin:/bin',
+            AGENT_TOOLS_FILE=str(ROOT/'scripts/agent-tools.zsh'),TMPDIR=str(self.home),NATIVE_MARKER=str(self.marker))
+        for runtime in ('codex','claude'):
+            native=self.bins/runtime
+            native.write_text('#!'+sys.executable+'''\nimport os,sys,json
+from pathlib import Path
+assert 'AGENT_RUN_ERROR_FD' not in os.environ
+for fd in range(3, 256):
+ try: os.fstat(fd)
+ except OSError: pass
+ else: raise AssertionError('internal descriptor leaked: '+str(fd))
+Path(os.environ['NATIVE_MARKER']).write_text(json.dumps(sys.argv[1:]))
+# Deliberately no native protocol frames: exit attribution cannot depend on events.
+sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
+''')
+            native.chmod(0o755)
+
+    def run_runner(self,runtime,*args,env=None,provider=None):
+        return subprocess.run([str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',
+            provider or ('gpt-6-sol' if runtime=='codex' else 'ds-flash'),'--cwd',str(self.home),'--prompt','fake only',*args],
+            env=env or self.env,capture_output=True,text=True)
+
+    def test_real_native_1_2_126_127_and_no_protocol_are_exact(self):
+        for runtime in ('codex','claude'):
+            for detail in (False,True):
+                for code in (0,1,2,7,126,127):
+                    self.marker.unlink(missing_ok=True)
+                    done=self.run_runner(runtime,*(['--detail'] if detail else []),env=self.env|{'NATIVE_EXIT':str(code)})
+                    self.assertTrue(self.marker.exists(),done.stderr)
+                    self.assertEqual(done.returncode,code,done.stderr)
+                    if not detail:
+                        report=json.loads(done.stdout)
+                        self.assertEqual(report['runtime_exit_code'],code)
+                        self.assertIsNone(report['final_answer'])
+                    else:self.assertEqual(done.stdout,'')
+
+    def test_cloud_codex_setup_queries_do_not_signal_terminal_exec_failure(self):
+        (self.home/'.codex/ds-flash.config.toml').write_text('model="fake"\n')
+        private_doc(self.home, {'default':{},'override':{'ds-flash':{'codex':conn(),'claude':conn()}}})
+        # Exercise the existing sandbox route's shim-check bypass; no socket or model.
+        env=self.env|{'AGENT_SANDBOX_CODEX_HOME':str(self.home/'.codex')}
+        done=self.run_runner('codex',env=env,provider='ds-flash')
+        self.assertTrue(self.marker.exists(),done.stderr)
+        self.assertEqual(done.returncode,0,done.stderr)
+        self.assertEqual(json.loads(done.stdout)['runtime_exit_code'],0)
+
+    def test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause(self):
+        for runtime in ('codex','claude'):
+            # Real launcher setup failure before terminal exec, despite native code 1 being valid.
+            target=self.home/'.codex/gpt-6-sol.config.toml' if runtime=='codex' else self.config
+            data=target.read_text();target.write_text('{invalid') if runtime=='claude' else target.unlink()
+            done=self.run_runner(runtime)
+            self.assertEqual(done.returncode,2,done.stderr);self.assertEqual(done.stdout,'')
+            self.assertFalse(self.marker.exists());self.assertIn('not executed',done.stderr)
+            target.write_text(data);target.chmod(0o600)
+            # Executable exists, but kernel cannot exec its missing interpreter.
+            native=self.bins/runtime;native.write_text('#!/nonexistent/synthetic-interpreter\n')
+            done=self.run_runner(runtime)
+            self.assertEqual(done.returncode,2,done.stderr);self.assertEqual(done.stdout,'')
+            self.assertFalse(self.marker.exists());self.assertIn('not executed',done.stderr)
+            log_path=done.stderr.split('stderr=')[-1].strip()
+            self.assertIn('cannot exec '+runtime,Path(log_path).read_text())
+            self.assertIn('No such file',Path(log_path).read_text())
+
+    def test_custom_and_stale_launchers_are_detected_before_entry(self):
+        tools=self.home/'custom.zsh'
+        for contract in ('', '_agent_tools_runner_contract() { print -r -- stale; }\n',
+                         '_agent_tools_runner_contract() { print -r -- pre-exec-error-v1; return 1; }\n'):
+            tools.write_text(contract+'gpt-6-sol_codex() { touch "$NATIVE_MARKER"; return 127; }\n')
+            done=self.run_runner('codex',env=self.env|{'AGENT_TOOLS_FILE':str(tools)})
+            self.assertEqual(done.returncode,2);self.assertFalse(self.marker.exists())
+            self.assertEqual(done.stdout,'');self.assertIn('contract' if contract else 'support',done.stderr)
+        tools.write_text('_agent_tools_runner_contract() { print -r -- pre-exec-error-v1; }\n'
+            'gpt-6-sol_codex() { print -r -u${AGENT_RUN_ERROR_FD} -- "custom setup failure"; return 127; }\n')
+        done=self.run_runner('codex',env=self.env|{'AGENT_TOOLS_FILE':str(tools)})
+        self.assertEqual(done.returncode,2);self.assertFalse(self.marker.exists())
+        self.assertEqual(done.stdout,'');self.assertIn('custom setup failure',done.stderr)
+        tools.write_text('_agent_tools_runner_contract() { print -r -- pre-exec-error-v1; }\n'
+            'gpt-6-sol_codex() { exec python3 "'+str(HELPER)+'" --exec-native -- codex "$@"; }\n')
+        done=self.run_runner('codex',env=self.env|{'AGENT_TOOLS_FILE':str(tools),'NATIVE_EXIT':'127'})
+        self.assertTrue(self.marker.exists());self.assertEqual(done.returncode,127,done.stderr)
+        self.assertEqual(json.loads(done.stdout)['runtime_exit_code'],127)
+        self.marker.unlink()
+        # Installed helper/launcher version skew must fail during capability check.
+        (self.bins/'agent-endpoint.py').write_text('import sys\nsys.exit(1)\n')
+        done=self.run_runner('codex')
+        self.assertEqual(done.returncode,2);self.assertFalse(self.marker.exists());self.assertEqual(done.stdout,'')
+
+    def test_ordinary_interactive_launchers_keep_returns_args_and_no_internal_fd(self):
+        for runtime in ('codex','claude'):
+            for code in (0,2,126,127):
+                launcher='gpt-6-sol_codex' if runtime=='codex' else 'ds-flash_claude'
+                done=subprocess.run(['zsh','-f','-c','source "$1"; '+launcher+' -- literal-arg','_',
+                    str(ROOT/'scripts/agent-tools.zsh')],env=self.env|{'NATIVE_EXIT':str(code)},capture_output=True,text=True)
+                self.assertEqual(done.returncode,code,done.stderr)
+                self.assertIn('literal-arg',json.loads(self.marker.read_text()))
+
+
+if __name__ == "__main__":
+    unittest.main()

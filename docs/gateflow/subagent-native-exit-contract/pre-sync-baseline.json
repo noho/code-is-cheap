@@ -1,0 +1,312 @@
+{
+  "observed_at": "2026-10-18T09:42:08.496985+08:00",
+  "purpose": "read-only pre-deployment baseline, not a sync or live probe",
+  "repo_base": "32a244d1e286086be86dba837976d3d72fdd6c1f",
+  "files": [
+    {
+      "source": "scripts/claude-agent-run",
+      "installed": "/Users/leo/.local/bin/claude-agent-run",
+      "exists": true,
+      "base_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "installed_sha256": "4cdd1700708b0cdeeed82af13fd5215df6c40888d7c83f711503b95a6338dda9",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/codex-agent-run",
+      "installed": "/Users/leo/.local/bin/codex-agent-run",
+      "exists": true,
+      "base_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "installed_sha256": "45baef1f77019a09c2c7d92567de8e9447eea5f8708cea838f2cf89daf954f01",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/agent-run-result.py",
+      "installed": "/Users/leo/.local/bin/agent-run-result.py",
+      "exists": true,
+      "base_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+      "installed_sha256": "406ec8697cd516f335d3334b8a554353c9cc587d5e60428c4b9ba21e5817891d",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/sub-agent-preflight",
+      "installed": "/Users/leo/.local/bin/sub-agent-preflight",
+      "exists": true,
+      "base_sha256": "c90955987a6973536f3928847a567362cd31ca2340e6a6afd78d3d83b7053c2f",
+      "installed_sha256": "c90955987a6973536f3928847a567362cd31ca2340e6a6afd78d3d83b7053c2f",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/agent-sandbox",
+      "installed": "/Users/leo/.local/bin/agent-sandbox",
+      "exists": true,
+      "base_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "installed_sha256": "2fc5c03e7ed069e032860c6e0c4f71be9b39bb702bcf9d08bd9d97298bd23e04",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/agent-sandbox-launch.mjs",
+      "installed": "/Users/leo/.local/bin/agent-sandbox-launch.mjs",
+      "exists": true,
+      "base_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "installed_sha256": "eb510f046af8355a64d5c25b7b1dbf5b3b1377f788bdb02d36470f0537ccbc52",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/install-agent-sandbox.sh",
+      "installed": "/Users/leo/.local/bin/install-agent-sandbox.sh",
+      "exists": true,
+      "base_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "installed_sha256": "94f50240b6fa8e20c70d3971b58a58b904089738db051926203b57cb94c3ab90",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/compose-codex-app-config.py",
+      "installed": "/Users/leo/.local/bin/compose-codex-app-config.py",
+      "exists": true,
+      "base_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "installed_sha256": "b383400ace0e1d5e92d20b721eb887920126a24f59f3fa07c79e797d53f73e2c",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/repair-codex-reasoning-history.py",
+      "installed": "/Users/leo/.local/bin/repair-codex-reasoning-history.py",
+      "exists": true,
+      "base_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "installed_sha256": "4719f28cb11ef7e0630bc50b7ddd70a405ee9db2736e2e00118b4193d5627c08",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/agent-endpoint.py",
+      "installed": "/Users/leo/.local/bin/agent-endpoint.py",
+      "exists": true,
+      "base_sha256": "1cc81e338001d1e36b0532c5b88c45f6ab87a8be4ac96140b3829f250a875f52",
+      "installed_sha256": "1cc81e338001d1e36b0532c5b88c45f6ab87a8be4ac96140b3829f250a875f52",
+      "matches_base": true
+    },
+    {
+      "source": "scripts/agent-tools.zsh",
+      "installed": "/Users/leo/.config/zsh/agent-tools.zsh",
+      "exists": true,
+      "base_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "installed_sha256": "ea8ca26ffa7969dc6dd53a95ee14b681e90df48bfb4a30271a993943b6861898",
+      "matches_base": true
+    },
+    {
+      "source": "config/endpoints.example.json",
+      "installed": "/Users/leo/.local/bin/agent-endpoints.defaults.json",
+      "exists": true,
+      "base_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "installed_sha256": "d27ed29a4e3cf24063ee803fb103c71fc669a97275a0d643c2a3bfcca28bc2b0",
+      "matches_base": true
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/deepreview/SKILL.md",
+      "exists": true,
+      "base_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "installed_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "matches_base": true
+    },
+    {
+      "source": "skills/deepreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/deepreview/SKILL.md",
+      "exists": true,
+      "base_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "installed_sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159",
+      "matches_base": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/deepreview/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "installed_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "matches_base": true
+    },
+    {
+      "source": "skills/deepreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/deepreview/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "installed_sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19",
+      "matches_base": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/gateflow/SKILL.md",
+      "exists": true,
+      "base_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "installed_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "matches_base": true
+    },
+    {
+      "source": "skills/gateflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/gateflow/SKILL.md",
+      "exists": true,
+      "base_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "installed_sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad",
+      "matches_base": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/gateflow/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "installed_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "matches_base": true
+    },
+    {
+      "source": "skills/gateflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/gateflow/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "installed_sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c",
+      "matches_base": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/phaseflow/SKILL.md",
+      "exists": true,
+      "base_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "installed_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "matches_base": true
+    },
+    {
+      "source": "skills/phaseflow/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/phaseflow/SKILL.md",
+      "exists": true,
+      "base_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "installed_sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf",
+      "matches_base": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/phaseflow/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "installed_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "matches_base": true
+    },
+    {
+      "source": "skills/phaseflow/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/phaseflow/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "installed_sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b",
+      "matches_base": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/planreview/SKILL.md",
+      "exists": true,
+      "base_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "installed_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "matches_base": true
+    },
+    {
+      "source": "skills/planreview/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/planreview/SKILL.md",
+      "exists": true,
+      "base_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "installed_sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4",
+      "matches_base": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/planreview/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "installed_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "matches_base": true
+    },
+    {
+      "source": "skills/planreview/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/planreview/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "installed_sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/SKILL.md",
+      "exists": true,
+      "base_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/SKILL.md",
+      "exists": true,
+      "base_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "installed_sha256": "cb812b367be37e7c6cdc5d919877a271b33aecd3ea6d8fc453b8aa3c6e8482db",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/sub-agents/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "installed_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/sub-agents/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "installed_sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.codex/skills/sub-agents/references/advanced.md",
+      "exists": true,
+      "base_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "installed_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "matches_base": true
+    },
+    {
+      "source": "skills/sub-agents/references/advanced.md",
+      "installed": "/Users/leo/.claude/skills/sub-agents/references/advanced.md",
+      "exists": true,
+      "base_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "installed_sha256": "18d9f258bd3791e55b8c53e5e229de73d4ad0a50f4cae0cc25d67eead66067ee",
+      "matches_base": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/SKILL.md",
+      "exists": true,
+      "base_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "installed_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "matches_base": true
+    },
+    {
+      "source": "skills/tmux-agents/SKILL.md",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/SKILL.md",
+      "exists": true,
+      "base_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "installed_sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03",
+      "matches_base": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.codex/skills/tmux-agents/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "installed_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "matches_base": true
+    },
+    {
+      "source": "skills/tmux-agents/agents/openai.yaml",
+      "installed": "/Users/leo/.claude/skills/tmux-agents/agents/openai.yaml",
+      "exists": true,
+      "base_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "installed_sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a",
+      "matches_base": true
+    }
+  ],
+  "extra_installed_files_in_sync_skill_dirs": []
+}

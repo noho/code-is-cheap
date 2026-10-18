@@ -1,0 +1,63 @@
+{
+  "source_parent": "92757b8dbb1291bfe3d1b2c9f56f90c0218d2571",
+  "bundle_sha256": "e73c2046f0da4f9a580906fadb5cc0ba8046790b9a96bb07f4101df31ebc86d5",
+  "files": {
+    "README.md": "60b21fe7e0d92eb14916bbbb5b29cc2a14d590f168d234550f7bbcc8a7940a4f",
+    "README.zh.md": "7bffc6f9ca7d52afd65ff8dd6f2d6b94c81a8f67abb45713ece195b726a362e8",
+    "scripts/agent-endpoint.py": "ae9e34b45a749c057a3c1074c0d450c7350903bb657af0f54baa68fb27644a59",
+    "scripts/agent-run-result.py": "8345f1267f2e2d4e0b68af1397dcdb607b49f973cf11280cb291720e314d3c27",
+    "scripts/agent-tools.zsh": "f9b736191b83d89cb1dd64b9433c444afd836cb234ed57646c79c87f2f40aa1b",
+    "scripts/claude-agent-run": "d2e47517a36dadbc72f125b63a57e0c1bf6dbfe64ede24c461c5a8205554c52d",
+    "scripts/codex-agent-run": "bb4f61e0d07fe74b74f9023abb95ba3194fd2a5d4ec75705635001223a0884d1",
+    "scripts/sub-agent-preflight": "b547a2a85a67fd812d71b5c45763d25184603cf3d5c90e256530fed2cc20480e",
+    "skills/sub-agents/SKILL.md": "a40660709e3c9d3fa5e6bbebbacb8895e1ad47797c75a7d135508ce0e1518796",
+    "skills/sub-agents/references/advanced.md": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307",
+    "tests/test_agent_run_results.py": "04b16a86469e3c58d3f79f82ef80e838aa8894f91d675e288389a89d8b4f8f57",
+    "tests/test_agent_sandbox_runtimes.py": "245d960312dd9c9ebf4d93c521675b1d4f813f9894b271d7ffdb7ea4b47072aa",
+    "tests/test_install_endpoints.py": "eca12585e202f0d1ebce03e6d29c24576d0db9579464af4707f9cbe15dd42405",
+    "tests/test_official_catalog_runtime.py": "ca3064a6255d84870784abc19e7efc7fdb5bc0c16ede8d834b26599e9dcc832b",
+    "tests/test_sub_agent_preflight.py": "b7025dd9947f02a43e3d2943bc3fdf2399044d26e9930fbe89f260eb518b97e3"
+  },
+  "validation_logs": {
+    "/tmp/native-exit-result-tests-final-v2.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-result-tests-final-v2.log",
+      "bytes": 125,
+      "sha256": "026bddce6f499220323c73d3f8ade04deda6546505efce0a992d415823cc0f35"
+    },
+    "/tmp/native-exit-preflight-tests-final.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-preflight-tests-final.log",
+      "bytes": 113,
+      "sha256": "5f27c9ba8f1b662e27abb4e80ec6e12810c982d32b7eba1a3554c26ed1b6df57"
+    },
+    "/tmp/native-exit-endpoint-tests-final-v2.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-endpoint-tests-final-v2.log",
+      "bytes": 124,
+      "sha256": "31249c5fa2273546bd9f204e9957cd19b4181ef31e25c3e880a0d93e9de9a18c"
+    },
+    "/tmp/native-exit-sandbox-tests-v2.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-sandbox-tests-v2.log",
+      "bytes": 192,
+      "sha256": "7c9d646e35d4a999349551678d10d99a7ee35580d58244d4059a6341a2975f0d"
+    },
+    "/tmp/native-exit-boundary-tests-final.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-boundary-tests-final.log",
+      "bytes": 103,
+      "sha256": "72986c9474c46636215a0ec6d51c5c9495a3fe0f588b41c5c4aefd4ec808b28e"
+    },
+    "/tmp/native-exit-long-final-check.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-long-final-check.log",
+      "bytes": 98,
+      "sha256": "b84b900402a9edc9fb128796273f79a05836240c75e0e9ea6d780e53d050ee81"
+    },
+    "/tmp/native-exit-all-tests-final-v2.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-all-tests-final-v2.log",
+      "bytes": 3982,
+      "sha256": "f070fda6b7fd3206409e76481a133f507a33cdc72fcd2d546953ae8910f43846"
+    },
+    "/tmp/native-exit-endpoint-tests.log": {
+      "retained_copy": "docs/gateflow/subagent-native-exit-contract/evidence/native-exit-endpoint-tests.log",
+      "bytes": 3473,
+      "sha256": "0b44f9a134a47720470446f6494252e9f764e330ae8fe01ed81a241401c29628"
+    }
+  }
+}

@@ -52,7 +52,7 @@ Run options:
   -- <codex exec args...>    Pass additional arguments directly to codex exec.
 
 Environment:
-  AGENT_TOOLS_FILE           Override the launcher file used by this script.
+  AGENT_TOOLS_FILE           Override launcher file (requires pre-exec-error-v1 support).
 
 Orchestrator note:
   Always pass --cwd explicitly. Do not rely on the controller's current
@@ -350,14 +350,17 @@ fi
 
 if [[ -n "$prompt_file" ]]; then
   if [[ "$prompt_file" == "-" ]]; then
-    prompt_text="$(<&0)"
+    prompt_text="$(cat && print -rn -- .)" || die "cannot read prompt from stdin"
+    prompt_text="${prompt_text%.}"
   else
     [[ -f "$prompt_file" && -r "$prompt_file" ]] || die "cannot read prompt file: $prompt_file"
-    prompt_text="$(<"$prompt_file")"
+    prompt_text="$(cat -- "$prompt_file" && print -rn -- .)" || die "cannot read prompt file: $prompt_file"
+    prompt_text="${prompt_text%.}"
   fi
 elif [[ "$explicit_prompt" == false ]]; then
   [[ ! -t 0 ]] || die "provide --prompt, --prompt-file, positional text, or stdin"
-  prompt_text="$(<&0)"
+  prompt_text="$(cat && print -rn -- .)" || die "cannot read prompt from stdin"
+  prompt_text="${prompt_text%.}"
 fi
 
 command -v python3 >/dev/null 2>&1 || die "python3 is required for prompt validation"
@@ -377,6 +380,9 @@ setopt noclobber
 umask 077
 
 (( $+functions[$runner] )) || die "launcher function not found: $runner"
+(( $+functions[_agent_tools_runner_contract] )) || die "launcher lacks pre-exec-error-v1 support; sync tools or update AGENT_TOOLS_FILE"
+launch_contract="$(_agent_tools_runner_contract)" || die "cannot establish launcher pre-exec error contract"
+[[ "$launch_contract" == pre-exec-error-v1 ]] || die "unsupported launcher pre-exec error contract; update AGENT_TOOLS_FILE/helper"
 command -v codex >/dev/null 2>&1 || die "codex command not found"
 
 cd -- "$workdir" || die "cannot enter working directory: $workdir"
@@ -496,12 +502,21 @@ fi
 codex_args+=(-)
 
 run_codex() {
+  # stdout/stderr already point at the selected streams; close wrapper duplicates.
+  (( stdout_fd <= 2 )) || exec {stdout_fd}>&-
+  (( stderr_fd <= 2 )) || exec {stderr_fd}>&-
+  exec {launch_stdout_fd}>&-
   print -rn -- "$prompt_text" | "$runner" "${codex_args[@]}"
+  return ${pipestatus[2]}
 }
 
 open_output_streams
-run_codex >&$stdout_fd 2>&$stderr_fd
+exec {launch_stdout_fd}>&$stdout_fd || die "cannot preserve primary output descriptor"
+# Command substitution supplies the invocation-local error-only pipe on fd 3.
+launch_error="$(AGENT_RUN_ERROR_FD=3 run_codex 3>&1 >&$launch_stdout_fd 2>&$stderr_fd)"
 runtime_exit=$?
+exec {launch_stdout_fd}>&-
+[[ -z "$launch_error" ]] || die "native CLI not executed: $launch_error; output=$output_file; stderr=$stderr_file"
 run_exit=$runtime_exit
 
 postprocessing_fd=2
@@ -512,18 +527,18 @@ if [[ -n "$last_message_file" ]]; then
     # Repeat the check after the run: another process may have created the path.
     if [[ -e "$last_message_file" || -L "$last_message_file" ]]; then
       print -u2 -- "$PROGRAM_NAME: final-message destination now exists: $last_message_file"
-      (( run_exit != 0 )) || run_exit=1
     elif cat -- "$last_message_tmp" >"$last_message_file"; then
       last_message_saved=true
-      rm -- "$last_message_tmp"
-      rmdir -- "$last_message_dir" 2>/dev/null || true
+      if rm -- "$last_message_tmp"; then
+        rmdir -- "$last_message_dir" 2>/dev/null || print -u2 -- "$PROGRAM_NAME: cannot clean final-message directory: $last_message_dir"
+      else
+        print -u2 -- "$PROGRAM_NAME: cannot remove temporary final message: $last_message_tmp"
+      fi
     else
       print -u2 -- "$PROGRAM_NAME: cannot save final message to: $last_message_file"
-      (( run_exit != 0 )) || run_exit=1
     fi
   else
     print -u2 -- "$PROGRAM_NAME: Agent did not produce a regular final-message file"
-    (( run_exit != 0 )) || run_exit=1
   fi
 fi
 
@@ -536,7 +551,7 @@ fi
 if [[ "$detail" == false ]]; then
   exec {stdout_fd}>&-
   exec {stderr_fd}>&-
-  typeset -a collect_args=(--runtime codex --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$runtime_exit" --runner-exit-code "$run_exit")
+  typeset -a collect_args=(--runtime codex --provider "$provider" --output "$output_file" --stderr "$stderr_file" --exit-code "$runtime_exit")
   [[ -z "$canary_file" ]] || collect_args+=(--canary-file "${canary_file:A}" --canary-expected "${canary_expected:A}")
   for artifact in "${artifacts[@]}"; do collect_args+=(--artifact "${artifact:A}"); done
   if [[ "$last_message_saved" == true ]]; then
@@ -547,6 +562,9 @@ if [[ "$detail" == false ]]; then
   collect_args+=(--wall-clock-seconds "$SECONDS")
   python3 "$result_adapter" "${collect_args[@]}"
   collect_exit=$?
-  (( run_exit != 0 )) || run_exit=$collect_exit
+  if (( collect_exit != 0 )); then
+    print -u2 -- "$PROGRAM_NAME: primary result delivery failed (collector exit $collect_exit); known native exit=$runtime_exit; output=$output_file; stderr=$stderr_file"
+    (( run_exit != 0 )) || run_exit=1
+  fi
 fi
 exit "$run_exit"

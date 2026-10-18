@@ -5,18 +5,18 @@
 - Confirmed goal: [goal.md](goal.md)
 - Base: 32a244d1e286086be86dba837976d3d72fdd6c1f
 - Goal confirmation: pass; user confirmed branch and inclusion of two existing investigation files.
-- Current gate / next entry point: implementation / validation
+- Current gate / next entry point: code review
 - Roles: gpt-6-sol Codex runner for plan/implementation/fix; mimo and ds-flash Claude runners for independent parallel reviews; controller adjudicates.
 - Plan review applicability: required, public exit/status contract; use Planreview on both review routes.
 - Historical initial plan: plan.md and its two old-target reviews are superseded by user clarification; preserved for audit, not implementation authority.
 - Current implementation authority: plan-v2.md + scope-amendment.md + decisions.md; delivery-amendment.md governs later authorized sync/probes.
-- Implementation: authorized approved S1, gpt-6-sol via Codex runner; no implementation result received yet.
+- Implementation: delivered implementation.md and implementation-receipt.json, actual outer/native/runner 0/0/0. Final 15-source bundle verified by controller against current bytes; full suite 235 tests/24 conditional skips/exit 0, focused/syntax/skill checks verified from retained logs/events.
 - User steering: scope-amendment.md explicitly rejects multiple status verdicts/new wrapper status and requires thin CLI/native-final behavior; remove custom 12000 final cap and associated fields. Initial plan/reviews are superseded for conflicting contract, not current approval.
 - Delivery authorization supplement: delivery-amendment.md supersedes earlier no-live boundary. After reviewed fix/draft-PR delivery checks, controller must sync reviewed tools/skills and execute mimo-flash probes through both Codex and Claude runtimes with real read → compute/write → readback evidence. Merge remains unauthorized. Scripts support work-branch sync; no merge prerequisite. Current review is not interrupted.
 - Initial independent Planreview: both old-target reports delivered, actual 0; superseded scope clearly adjudicated in decisions.md. No old-target process in flight.
 - Revised plan delivered: plan-v2.md; plan-v2-receipt.json, actual outer/native/runner 0/0/0. Controller check and both revised independent reviews passed with classified risks; user reiterated thin CLI, no final truncation, no warning-text judgment.
 - Plan gate pass: both revised independent reports pass-with-risks and controller adjudication in decisions.md. M-v2-1 is formally deferred to approved S1 tests, owner gpt-6-sol, nonblocking public-contract already explicit; all implementation obligations remain required at final code gate. No blocking question/unclassified risk.
 - Findings: C-P1–C-P3 plan corrections verified; C-P4/M-01/M-02 and M-v2-1 implementation/test obligations tracked in decisions.md. No code-stage fix or review pass claimed.
-- Implementation managed handle: 97310; raw log/prompt stem /private/tmp/subagent-native-exit-contract/implementation; actual exit pending.
+- Implementation managed handle: 97310 completed. Source/test evidence: source-freeze.json and evidence/. Initial fixture's unintended host Codex request/401 responses disclosed, retained and fixed; not a live probe or deployment.
 - Residual risk: current classifications in plan-v2.md, decisions.md and delivery-amendment.md; no unclassified risk.
 - Completion: active; no PR or deployment yet.

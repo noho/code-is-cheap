@@ -348,7 +348,7 @@ token 不打印，也不写入 prompt。
 
 ### Runner 结果
 
-实际 runtime 退出后，runner stdout 返回一个 JSON 汇总：状态、`final_answer`、诊断、完整日志路径和统计。
+实际 runtime 退出后，runner stdout 返回一个 schema-v2 JSON 汇总：`final_answer`、诊断、完整日志路径和统计。
 `--output` / `--stderr` 保存原始日志，即使 stdout 返回汇总也保留；未指定时创建私有文件。显式 `-` 目标（`--output` / `--stderr` / Codex `--last-message`）
 需要 `--detail`，汇总模式明确拒绝，不静默替换。Claude 内部用 stream-json。
 等待托管进程句柄返回退出码，再使用最终答复和任务产物；没有增加中途指令通道或自动完成通知。
@@ -360,45 +360,48 @@ claude-agent-run --provider ds-flash --cwd /path/to/workspace --prompt-file task
 codex-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md --detail
 ```
 
-`validation_status` 为 `passed`、`needs_review` 或 `rejected`，`result_status` 始终是 `not_assessed`。
-普通工具错误留在 `anomalies`，不自动判 Agent 失败，也不要求逐事件裁决报告；按它是否留下影响任务的未解决问题判断，
-需要时核对相关证据。无工具记录的工具语法也只作诊断，不能仅凭文本区分示例和执行声明。runtime 失败保留非零原码，否则机械拒收返回 1，`needs_review` 返回 0。
-退出 0 或最终答复都不证明任务正确、不构成用户授权；项目明确要求的审核/工作流仍然适用。
+外层退出码就是实际原生 CLI 退出码，包括非零 1/2/126/127。说明缺少输入、环境阻碍或未能完成工作的 final 是正常答复。
+缺失产物、canary 不匹配、工具错误、日志损坏或协议诊断都不改写已知原生退出码。调用方按自己的用户/项目授权与路由
+决定任务验收和后续交互；没有自动重试或换 provider。保留各次尝试/日志、测量样本归属与指定并发度，不能用重试替换失败样本。
 
-收集模式在原生执行及必要后处理均退出 0、同一次执行有唯一有效成功终态、最终答复完整且非空、日志结构完整且
-所选检查通过时返回 0。两种 runtime 都将结构有效的中间错误/重试诊断保留为 `anomalies`，不依赖措辞是否已知，
-Claude 非证明性诊断载荷也不决定能否完成；完成后仍会提示 `needs_review`。失败、缺失、重复、冲突或无效的
-终态/最终答复/身份、损坏的日志和所选检查失败仍会拒收。
+汇总 schema version **2**：
 
-Codex 要求有序的 thread/turn start、已完成的 agent message 和 `turn.completed`；最后一条已完成消息拥有最终答复。
-其协议没有独立的拒答/finish-reason 字段，最终文本交由调用方判断。Claude 唯一的根 `result` 拥有最终答复，
-中间或嵌套 assistant 文本不能替代它。原生负面完成字段会拒收，即使 result 标为成功。正常 result `stop_reason`
-为 `end_turn` 和 `stop_sequence`；历史流中缺失/null 的 stop 元数据及缺失的 terminal 元数据仍受支持。
-中间 assistant/工具/重试元数据不提供整次执行完成的证明。
+| 字段 | 含义 |
+| --- | --- |
+| `schema_version`, `source`, `runtime`, `provider` | `2`、`subagent_report` 和所选 runtime/provider。 |
+| `runtime_exit_code`, `final_answer` | 实际原生退出码和**完整、不截断**的原生 final，保留 Unicode 与所有空白。 |
+| `session_id`, `terminal` | 原生身份与终态 type/subtype，缺失或冲突时为 null。 |
+| `wall_clock_seconds`, `usage`, `runtime_metrics` | 启动到调用收集器的实测时间、单一终态原始用量和 Claude 时长/费用/modelUsage；缺失为 null/空对象，真实零值保留，不累加流式片段。 |
+| `logs` | 绝对 `output`、`stderr`、可选 `last_message` 路径；部分文本仍在原始日志中。 |
+| `diagnostics` | 单一 `{message, path, line}` 事实列表。warning 原文带来源保留，不判断措辞、严重性或是否恢复。 |
+| `checks` | `artifacts: [{path, exists, regular_file}]`；未请求 canary 时为 null，否则为 `{proof_observed, proof_matches_expected, read_candidate_observed}`，无可比较证明时匹配为 null。 |
 
-`agent_status=completed` 表示观察到原生执行完成：进程/后处理退出均为 0，且有同次执行的有效终态/最终答复证明。
-独立的解析或所选检查错误仍可使其同时出现 `validation_status=rejected` 和非零调用退出码；完成证明无效则不能
-标为 completed。可读的最终/部分文本仍保留用于诊断，`result_status=not_assessed` 始终将任务正确性交由调用方判断。
+v1 迁移：移除对 `agent_status`、`validation_status`、`result_status`、`runner_exit_code`、`final_answer_chars`、
+`final_answer_truncated`、三类诊断及其计数/截断字段、工具/事件汇总的依赖；使用原生退出、完整 final、来源诊断与 `checks`。
+检查缺项不再产生拒收退出，也没有替代 wrapper verdict。收集器成功序列化观察结果时退出 0，即使日志缺失/损坏；
+收集器进程退出码不是业务验收。
 
-`session_id` 返回原生 Codex thread_id 或 Claude session_id，缺失/冲突为 null。只有显式持久化的会话才可
-resume；ID 不代表默认一次性运行已保存。
+Codex 最后一条 completed agent message 拥有 final；Claude 仅由唯一根 `result` 字符串提供 final，中间 assistant 或嵌套
+result 不回填。缺失、非文本、歧义 final 为 null；实测空字符串保持空字符串。无关损坏帧或原生负面元数据不会抹去
+可归属 final。缺失/冲突身份、终态只产生诊断；统计仅来自无歧义终态。只有显式持久化会话才能 resume，ID 不代表会话已保存。
 
-`wall_clock_seconds` 是 runner 启动至调用收集器的实测秒数，包含 setup/runtime/最终消息处理，不含收集器序列化和
-调用方预检、等待开销。`usage` 原样复制单一终态用量对象，不归一化、不累计流式片段。
-`runtime_metrics` 保留 Claude 实际报告的 `duration_ms`、`duration_api_ms`、`total_cost_usd` 和 `modelUsage`。
-缺失用量/时间为 null、缺失 metrics 为空对象，真实零值仍为零；失败终态可保留真实统计，缺失/冲突终态不提供可信用量。
-完整原始统计仍在日志。新增字段保持 schema_version=1。
+原生 exec 前的参数、输入、路径、依赖或 launcher 错误退出 2，stderr 给出原因及已分配日志路径，不伪造原生 report。
+原生退出后若封装无法运行收集器、序列化或写出主结果，stderr 记录实际交付错误、已知原生退出码与日志路径；
+原生 0 时外层退出 1，原生非零时保留原码。Codex 附加 `--last-message` 缺失、复制/竞争/清理失败均保留原生退出码，
+保留可用临时源并报告位置，不覆盖既有目标。`--detail` 返回原始输出，跳过收集及可选收尾检查，原生退出语义相同。
 
-最终答复最多展示 12000 字符并标记截断；每类诊断最多展示 20 条、每条 2000 字符，保留完整计数和来源位置。
-截断或必要取证时查看留存日志；`tool_evidence_scope=recorded_events_only` 不保证每个工具通道都有轨迹。
+`AGENT_TOOLS_FILE` 继续支持自定义 launcher，但必须显式实现 **pre-exec-error-v1**：source 后
+`_agent_tools_runner_contract` 仅在终端 helper 支持契约时输出恰好 `pre-exec-error-v1` 并退出 0。
+runner 的 `AGENT_RUN_ERROR_FD` 指向仅报告 exec 前错误的内部 pipe；exec 前返回/失败必须写入，成功 exec 时以 CLOEXEC
+关闭，并从原生环境移除此变量。没有成功握手或退出后协议。仓库 launcher 使用 `agent-endpoint.py` 做终端 exec；
+能力检查在启动前发现 helper 版本偏差。不支持/过时 launcher 在启动前按 setup 失败处理；普通无内部描述符的交互调用保持原行为。
+请一起同步 runner、launcher、helper；不从缺失事件、特殊数字或 warning 措辞推测原生归属。
 
-可选的重复 `--artifact /path/to/new-file` 检查本轮新建普通文件；既有文件/目录/符号链接在派发前拒绝。
-收尾拒绝硬链接/日志别名；新路径不证明 inode 来源或内容正确。
-不声明就不自动抽取 final answer 中的路径，也不要求额外报告。可选的成对 runner `--canary-file` / `--canary-expected`
-启动前校验可读、非空普通输入与有效 expected token，运行后检查读取证明；preflight `--canary` 会设置它们。证明为独立、不缩进、不放代码块的一行 `CANARY=<token>`；
-其它 token 示例须放围栏/缩进代码块或行内，避免成为冲突证明。匹配及候选读取轨迹不证明整项任务正确。
-`agent-sandbox` 下检查仍在既有写/读边界内。`--detail` 恢复原始输出，跳过自动收集/canary/产物检查；
-此时可用 text 和 Claude json，不额外增加审计仪式。选择这些能力时参阅[高级调用参考](skills/sub-agents/references/advanced.md)。
+可选重复 `--artifact /path/to/new-file` 在派发前要求新路径；收尾存在性、类型、硬链接/日志别名及读取错误仅为观察，
+不证明来源或内容。未声明时不自动从 final 提取路径。成对 `--canary-file` / `--canary-expected` 启动前检查可读非空普通输入
+和有效 token；preflight `--canary` 会设置它们。证明为不缩进、不在代码块内的独立 `CANARY=<token>` 行；
+匹配与候选读取轨迹不证明整项任务正确，诊断消息保留二级 proof 行号。`agent-sandbox` 下仍遵守既有边界。
+`--detail` 可用 text 或 Claude json。参阅[高级调用参考](skills/sub-agents/references/advanced.md)。
 
 ## Codex Agent 配置（xx_codex）
 
