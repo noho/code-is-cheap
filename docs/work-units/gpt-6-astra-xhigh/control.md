@@ -12,7 +12,7 @@ Routing: plan/implementation/fix use `codex-agent-run --provider gpt-6-sol`; ind
 
 ## Gate state
 
-Goal confirmation: passed. Plan/controller check: passed. Current gate / next entry point: 必要提交 / push.
+Goal confirmation: passed. Plan/controller check: passed. Current gate: final closeout pass. Work unit completed. Next entry point: user manual merge, then authorized live sync.
 
 ## Residual risks
 
@@ -45,3 +45,13 @@ No unclassified residual risk or implementation blocker. Next: independent paral
 ## Code-review/controller decision
 
 Both independent parallel Deepreviews completed and were inspected: see [adjudication.md](adjudication.md). No material finding, blocker, or unresolved evidence; no fix/re-review applies. All residuals reconciled to Gateflow classifications with owners/destinations. Source/test/docs content is unchanged from reviewed commit. Ready-to-open-draft-PR criteria passed; next transition is necessary commit/push, then create draft PR.
+
+Necessary commit/push passed: implementation `6a92d08`, review/evidence `388e0dc`, branch pushed to `origin/feat/gpt-6-astra-xhigh`. No substantive change after full review.
+
+Draft PR created successfully: https://github.com/noho/code-is-cheap/pull/62. Next entry point is controller delivery check, not draft-PR-pass.
+
+## Delivery/controller check
+
+PR #62 identity, exact head/base OIDs, immutable compare full diff, all 22 changed paths and GitHub blob OIDs checked against local Git; all 13 substantive file hashes match reviewed implementation. PR is draft/open in noho/code-is-cheap, correct head/base branches, title/body accurate, remote push matches. No status checks attached; repository has no Actions workflows. Required local affected-suite/syntax/skills/diff checks passed. See delivery-initial.json and losslessly saved delivery-initial.diff.gz. Head/base re-queried unchanged within check. draft-PR-pass entered only after this delivery check passed. Next entry: final closeout; final metadata-only push will be rechecked against immutable OIDs and reviewed hashes.
+
+Final closeout summary created: closeout.md. Findings resolved/classified, docs completed, draft PR URL and no-issue status recorded; sync commands and user-owned next entry point recorded. Final evidence-only push/recheck remains controller delivery housekeeping and cannot alter reviewed substantive content.
