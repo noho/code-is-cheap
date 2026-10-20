@@ -1,0 +1,442 @@
+Implementation validation evidence
+Repository: /Users/leo/workspace/code-is-cheap
+Branch: feat/gpt-6-astra-xhigh
+Python test environment: PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests
+Initial focused fixture failures are retained; the later complete six-suite run is the final acceptance result.
+
+$ python3 -m unittest -v test_codex_model_defaults.BusinessModelDefaultsTests.test_subscription_cards_have_requested_models_and_efforts test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card test_install_endpoints.RunnerNativeBoundaryTests.test_astra_runner_selection_preserves_high_alias_and_uses_no_connections test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_interactive_resume_forwarding_and_missing_card test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_both_public_app_forms_dispatch test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app test_agent_sandbox.CodexCATests.test_astra_subscription_check_and_launch_classification_and_staging test_agent_sandbox.CodexCATests.test_astra_xhigh_denied_selected_card_stops_check_and_launch
+UTC: 2026-10-20T10:26:04.228882+00:00
+test_subscription_cards_have_requested_models_and_efforts (test_codex_model_defaults.BusinessModelDefaultsTests.test_subscription_cards_have_requested_models_and_efforts) ... ok
+test_astra_xhigh_app_composition_preserves_policy_state_and_providers (test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers) ... ERROR
+test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card) ... ERROR
+test_astra_runner_selection_preserves_high_alias_and_uses_no_connections (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_runner_selection_preserves_high_alias_and_uses_no_connections) ... ok
+test_astra_xhigh_interactive_resume_forwarding_and_missing_card (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_interactive_resume_forwarding_and_missing_card) ... ok
+test_astra_xhigh_both_public_app_forms_dispatch (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_both_public_app_forms_dispatch) ... ok
+test_astra_xhigh_app_launch_composes_private_home_without_opening_app (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app) ... FAIL
+test_astra_subscription_check_and_launch_classification_and_staging (test_agent_sandbox.CodexCATests.test_astra_subscription_check_and_launch_classification_and_staging) ... ok
+test_astra_xhigh_denied_selected_card_stops_check_and_launch (test_agent_sandbox.CodexCATests.test_astra_xhigh_denied_selected_card_stops_check_and_launch) ... ok
+
+======================================================================
+ERROR: test_astra_xhigh_app_composition_preserves_policy_state_and_providers (test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_provider_registry.py", line 176, in test_astra_xhigh_app_composition_preserves_policy_state_and_providers
+    self.assertEqual(data["sandbox_mode"], "workspace-write")
+                     ~~~~^^^^^^^^^^^^^^^^
+KeyError: 'sandbox_mode'
+
+======================================================================
+ERROR: test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_sub_agent_preflight.py", line 85, in test_real_astra_xhigh_discovery_and_missing_selected_card
+    result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leo/workspace/code-is-cheap/tests/test_sub_agent_preflight.py", line 64, in preflight
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 2157, in _communicate
+    stderr = self._translate_newlines(stderr,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1086, in _translate_newlines
+    data = data.decode(encoding, errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xef in position 155: invalid continuation byte
+
+======================================================================
+FAIL: test_astra_xhigh_app_launch_composes_private_home_without_opening_app (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_install_endpoints.py", line 1155, in test_astra_xhigh_app_launch_composes_private_home_without_opening_app
+    self.assertEqual(done.returncode, 0, done.stderr)
+AssertionError: 1 != 0 : compose-codex-app-config.py 不在 PATH（是否忘了跑 sync-agent-tools.sh？）
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.475s
+
+FAILED (failures=1, errors=2)
+exit_code=1
+
+$ python3 -m unittest -v test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app
+UTC: 2026-10-20T10:26:24.104524+00:00
+test_astra_xhigh_app_composition_preserves_policy_state_and_providers (test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers) ... ok
+test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card) ... ERROR
+test_astra_xhigh_app_launch_composes_private_home_without_opening_app (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app) ... ok
+
+======================================================================
+ERROR: test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_sub_agent_preflight.py", line 87, in test_real_astra_xhigh_discovery_and_missing_selected_card
+    result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leo/workspace/code-is-cheap/tests/test_sub_agent_preflight.py", line 65, in preflight
+    result = subprocess.run(
+             ^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 2157, in _communicate
+    stderr = self._translate_newlines(stderr,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.15/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py", line 1086, in _translate_newlines
+    data = data.decode(encoding, errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xef in position 155: invalid continuation byte
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.597s
+
+FAILED (errors=1)
+exit_code=1
+
+$ python3 -m unittest -v test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card
+UTC: 2026-10-20T10:26:42.010289+00:00
+test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.359s
+
+OK
+exit_code=0
+
+$ python3 -m unittest -v test_codex_model_defaults test_install_endpoints test_provider_registry test_sub_agent_preflight test_model_catalog_generation test_agent_sandbox
+UTC: 2026-10-20T10:27:00.113688+00:00
+test_business_failure_does_not_interrupt_shared_sync (test_codex_model_defaults.BusinessModelDefaultsTests.test_business_failure_does_not_interrupt_shared_sync) ... ok
+test_inserts_missing_defaults_before_tables (test_codex_model_defaults.BusinessModelDefaultsTests.test_inserts_missing_defaults_before_tables) ... ok
+test_invalid_config_and_symlink_do_not_replace_file (test_codex_model_defaults.BusinessModelDefaultsTests.test_invalid_config_and_symlink_do_not_replace_file) ... ok
+test_subscription_cards_have_requested_models_and_efforts (test_codex_model_defaults.BusinessModelDefaultsTests.test_subscription_cards_have_requested_models_and_efforts) ... ok
+test_updates_only_business_defaults_and_preserves_local_settings (test_codex_model_defaults.BusinessModelDefaultsTests.test_updates_only_business_defaults_and_preserves_local_settings) ... ok
+test_all_request_transforms_apply_before_restoring_gzip_and_deflate (test_install_endpoints.EndpointTests.test_all_request_transforms_apply_before_restoring_gzip_and_deflate) ... ok
+test_claude_gets_one_connection_no_key_in_argv_and_clean_inherited_environment (test_install_endpoints.EndpointTests.test_claude_gets_one_connection_no_key_in_argv_and_clean_inherited_environment) ... ok
+test_claude_not_started_when_config_key_or_helper_is_invalid (test_install_endpoints.EndpointTests.test_claude_not_started_when_config_key_or_helper_is_invalid) ... ok
+test_codex_client_gets_no_cloud_key_but_selected_connection_is_required (test_install_endpoints.EndpointTests.test_codex_client_gets_no_cloud_key_but_selected_connection_is_required) ... ok
+test_duplicate_fields_permissions_symlinks_and_factory_keys_rejected (test_install_endpoints.EndpointTests.test_duplicate_fields_permissions_symlinks_and_factory_keys_rejected) ... ok
+test_guardian_read_failures_retry_and_exhaust_as_controlled_gateway_error (test_install_endpoints.EndpointTests.test_guardian_read_failures_retry_and_exhaust_as_controlled_gateway_error) ... ok
+test_initialization_is_exclusive_and_reinstall_never_overwrites_overrides (test_install_endpoints.EndpointTests.test_initialization_is_exclusive_and_reinstall_never_overwrites_overrides) ... ok
+test_invalid_config_and_partial_override_fail_closed_without_secret_echo (test_install_endpoints.EndpointTests.test_invalid_config_and_partial_override_fail_closed_without_secret_echo) ... ok
+test_local_codex_model_reaches_cli_and_app_composer (test_install_endpoints.EndpointTests.test_local_codex_model_reaches_cli_and_app_composer) ... ok
+test_local_health_uses_the_selected_runtime_endpoint (test_install_endpoints.EndpointTests.test_local_health_uses_the_selected_runtime_endpoint) ... ok
+test_malformed_route_shapes_exit_without_traceback (test_install_endpoints.EndpointTests.test_malformed_route_shapes_exit_without_traceback) ... ok
+test_manual_skill_sync_reuses_installed_validator_environment (test_install_endpoints.EndpointTests.test_manual_skill_sync_reuses_installed_validator_environment) ... ok
+test_mimo_ordinary_format_downgrade_preserves_lite_and_snapshot_auth (test_install_endpoints.EndpointTests.test_mimo_ordinary_format_downgrade_preserves_lite_and_snapshot_auth) ... ok
+test_missing_file_uses_defaults_without_creating_or_loading_env_keys (test_install_endpoints.EndpointTests.test_missing_file_uses_defaults_without_creating_or_loading_env_keys) ... ok
+test_redirect_does_not_forward_gateway_key (test_install_endpoints.EndpointTests.test_redirect_does_not_forward_gateway_key) ... ok
+test_shim_maps_normal_and_guardian_models_without_buffering_normal_requests (test_install_endpoints.EndpointTests.test_shim_maps_normal_and_guardian_models_without_buffering_normal_requests) ... ok
+test_shim_missing_key_or_bad_json_fails_before_upstream_and_logs_sanitized_error (test_install_endpoints.EndpointTests.test_shim_missing_key_or_bad_json_fails_before_upstream_and_logs_sanitized_error) ... ok
+test_whole_runtime_override_revert_and_single_snapshot (test_install_endpoints.EndpointTests.test_whole_runtime_override_revert_and_single_snapshot) ... ok
+test_downloaded_bootstrap_reinstall_and_sync_preserve_local_state (test_install_endpoints.InstallTests.test_downloaded_bootstrap_reinstall_and_sync_preserve_local_state) ... ok
+test_astra_runner_selection_preserves_high_alias_and_uses_no_connections (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_runner_selection_preserves_high_alias_and_uses_no_connections) ... ok
+test_astra_xhigh_app_launch_composes_private_home_without_opening_app (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_app_launch_composes_private_home_without_opening_app) ... ok
+test_astra_xhigh_both_public_app_forms_dispatch (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_both_public_app_forms_dispatch) ... ok
+test_astra_xhigh_interactive_resume_forwarding_and_missing_card (test_install_endpoints.RunnerNativeBoundaryTests.test_astra_xhigh_interactive_resume_forwarding_and_missing_card) ... ok
+test_cloud_codex_setup_queries_do_not_signal_terminal_exec_failure (test_install_endpoints.RunnerNativeBoundaryTests.test_cloud_codex_setup_queries_do_not_signal_terminal_exec_failure) ... ok
+test_custom_and_stale_launchers_are_detected_before_entry (test_install_endpoints.RunnerNativeBoundaryTests.test_custom_and_stale_launchers_are_detected_before_entry) ... ok
+test_ordinary_interactive_launchers_keep_returns_args_and_no_internal_fd (test_install_endpoints.RunnerNativeBoundaryTests.test_ordinary_interactive_launchers_keep_returns_args_and_no_internal_fd) ... ok
+test_real_native_1_2_126_127_and_no_protocol_are_exact (test_install_endpoints.RunnerNativeBoundaryTests.test_real_native_1_2_126_127_and_no_protocol_are_exact) ... ok
+test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause (test_install_endpoints.RunnerNativeBoundaryTests.test_same_numeric_setup_returns_are_not_native_and_exec_failure_has_cause) ... ok
+test_astra_xhigh_app_composition_preserves_policy_state_and_providers (test_provider_registry.ProviderRegistryTests.test_astra_xhigh_app_composition_preserves_policy_state_and_providers) ... ok
+test_composer_reports_missing_shared_base_without_traceback (test_provider_registry.ProviderRegistryTests.test_composer_reports_missing_shared_base_without_traceback) ... ok
+test_every_card_resolves_to_one_shared_gateway (test_provider_registry.ProviderRegistryTests.test_every_card_resolves_to_one_shared_gateway) ... ok
+test_existing_app_home_gets_new_provider_registry (test_provider_registry.ProviderRegistryTests.test_existing_app_home_gets_new_provider_registry) ... ok
+test_legacy_card_keeps_its_gateway_during_upgrade (test_provider_registry.ProviderRegistryTests.test_legacy_card_keeps_its_gateway_during_upgrade) ... ok
+test_local_url_override_handles_comments_and_preserves_base_on_failure (test_provider_registry.ProviderRegistryTests.test_local_url_override_handles_comments_and_preserves_base_on_failure) ... ok
+test_registry_matches_shim_routes_without_client_credentials (test_provider_registry.ProviderRegistryTests.test_registry_matches_shim_routes_without_client_credentials) ... ok
+test_sync_creates_missing_base_privately_and_refuses_malformed_registry (test_provider_registry.ProviderRegistryTests.test_sync_creates_missing_base_privately_and_refuses_malformed_registry) ... ok
+test_sync_preserves_local_config_and_is_idempotent (test_provider_registry.ProviderRegistryTests.test_sync_preserves_local_config_and_is_idempotent) ... ok
+test_sync_refuses_unowned_conflict (test_provider_registry.ProviderRegistryTests.test_sync_refuses_unowned_conflict) ... ok
+test_sync_rejects_symlink_and_damaged_block_without_writes (test_provider_registry.ProviderRegistryTests.test_sync_rejects_symlink_and_damaged_block_without_writes) ... ok
+test_auto_labels_are_safe_distinct_and_explicit_label_can_be_reused (test_sub_agent_preflight.PreflightTests.test_auto_labels_are_safe_distinct_and_explicit_label_can_be_reused) ... ok
+test_collection_contract_and_claude_trace_match_envelope_check (test_sub_agent_preflight.PreflightTests.test_collection_contract_and_claude_trace_match_envelope_check) ... ok
+test_empty_whitespace_and_conflicting_sources_fail_without_command (test_sub_agent_preflight.PreflightTests.test_empty_whitespace_and_conflicting_sources_fail_without_command) ... ok
+test_existing_artifact_is_setup_failure (test_sub_agent_preflight.PreflightTests.test_existing_artifact_is_setup_failure) ... ok
+test_missing_selected_launcher_profile_or_runner_fails (test_sub_agent_preflight.PreflightTests.test_missing_selected_launcher_profile_or_runner_fails) ... ok
+test_only_selected_catalog_is_required (test_sub_agent_preflight.PreflightTests.test_only_selected_catalog_is_required) ... ok
+test_only_selected_claude_runtime_is_required (test_sub_agent_preflight.PreflightTests.test_only_selected_claude_runtime_is_required) ... ok
+test_opt_in_canary_is_private_paired_and_not_in_prompt (test_sub_agent_preflight.PreflightTests.test_opt_in_canary_is_private_paired_and_not_in_prompt) ... ok
+test_optional_envelope_and_full_access_commands (test_sub_agent_preflight.PreflightTests.test_optional_envelope_and_full_access_commands) ... ok
+test_optional_envelope_setup_failure_never_prints_dispatch (test_sub_agent_preflight.PreflightTests.test_optional_envelope_setup_failure_never_prints_dispatch) ... ok
+test_plain_tasks_and_arbitrary_protocol_discussion_for_all_sources (test_sub_agent_preflight.PreflightTests.test_plain_tasks_and_arbitrary_protocol_discussion_for_all_sources) ... ok
+test_prompt_file_directory_reports_structured_failure (test_sub_agent_preflight.PreflightTests.test_prompt_file_directory_reports_structured_failure) ... ok
+test_real_astra_xhigh_discovery_and_missing_selected_card (test_sub_agent_preflight.PreflightTests.test_real_astra_xhigh_discovery_and_missing_selected_card) ... ok
+test_task_file_directory_reports_structured_failure (test_sub_agent_preflight.PreflightTests.test_task_file_directory_reports_structured_failure) ... ok
+test_absent_original_registry_and_pairs_are_removed_on_failure (test_model_catalog_generation.ConversionSyncTests.test_absent_original_registry_and_pairs_are_removed_on_failure) ... ok
+test_actual_native_rejection_before_registry_and_pair_mutation (test_model_catalog_generation.ConversionSyncTests.test_actual_native_rejection_before_registry_and_pair_mutation) ... ok
+test_backup_failure_before_mutation (test_model_catalog_generation.ConversionSyncTests.test_backup_failure_before_mutation) ... ok
+test_final_verification_failure_rollback (test_model_catalog_generation.ConversionSyncTests.test_final_verification_failure_rollback) ... ok
+test_first_card_replace_failure_rollback (test_model_catalog_generation.ConversionSyncTests.test_first_card_replace_failure_rollback) ... ok
+test_first_catalog_replace_failure_rollback (test_model_catalog_generation.ConversionSyncTests.test_first_catalog_replace_failure_rollback) ... ok
+test_later_pair_copy_failure_rollback (test_model_catalog_generation.ConversionSyncTests.test_later_pair_copy_failure_rollback) ... ok
+test_loaded_service_restart_failure_keeps_conversion_and_reports_failure (test_model_catalog_generation.ConversionSyncTests.test_loaded_service_restart_failure_keeps_conversion_and_reports_failure) ... ok
+test_loaded_service_restart_success_keeps_conversion_and_prints_success (test_model_catalog_generation.ConversionSyncTests.test_loaded_service_restart_success_keeps_conversion_and_prints_success) ... ok
+test_native_stage_failure_untouched (test_model_catalog_generation.ConversionSyncTests.test_native_stage_failure_untouched) ... ok
+test_registry_update_then_failure_rollback (test_model_catalog_generation.ConversionSyncTests.test_registry_update_then_failure_rollback) ... ok
+test_restore_failure_retains_backups_and_reports_error (test_model_catalog_generation.ConversionSyncTests.test_restore_failure_retains_backups_and_reports_error) ... ok
+test_stage_integrity_failure_untouched (test_model_catalog_generation.ConversionSyncTests.test_stage_integrity_failure_untouched) ... ok
+test_success_repeat_bytes_modes_and_no_service_actions (test_model_catalog_generation.ConversionSyncTests.test_success_repeat_bytes_modes_and_no_service_actions) ... ok
+test_unowned_registry_failure_untouched (test_model_catalog_generation.ConversionSyncTests.test_unowned_registry_failure_untouched) ... ok
+test_actual_nested_native_rejection (test_model_catalog_generation.NativeParserTests.test_actual_nested_native_rejection) ... ok
+test_all_assembled_profiles_parse_and_local_fallback_is_preserved (test_model_catalog_generation.NativeParserTests.test_all_assembled_profiles_parse_and_local_fallback_is_preserved) ... ok
+test_card_invariants_fail_without_overwriting_output (test_model_catalog_generation.OfficialAssemblyTests.test_card_invariants_fail_without_overwriting_output) ... ok
+test_dry_run_native_validation_no_output_writes (test_model_catalog_generation.OfficialAssemblyTests.test_dry_run_native_validation_no_output_writes) ... ok
+test_guardian_drift_is_not_replaced_by_session (test_model_catalog_generation.OfficialAssemblyTests.test_guardian_drift_is_not_replaced_by_session) ... ok
+test_selected_budget_and_tool_semantics (test_model_catalog_generation.OfficialAssemblyTests.test_selected_budget_and_tool_semantics) ... ok
+test_source_integrity_and_missing_file_errors (test_model_catalog_generation.OfficialAssemblyTests.test_source_integrity_and_missing_file_errors) ... ok
+test_source_mapping_and_structure_failures (test_model_catalog_generation.OfficialAssemblyTests.test_source_mapping_and_structure_failures) ... ok
+test_tracked_snapshots_and_all_eight_complete_mappings (test_model_catalog_generation.OfficialAssemblyTests.test_tracked_snapshots_and_all_eight_complete_mappings) ... ok
+test_unknown_nested_extension_preserves_copy_ownership (test_model_catalog_generation.OfficialAssemblyTests.test_unknown_nested_extension_preserves_copy_ownership) ... ok
+test_incompatible_local_donors_fail_closed (test_model_catalog_generation.SessionTemplateTests.test_incompatible_local_donors_fail_closed) ... WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: renamed-direct: already present in Codex's catalog; refusing to replace built-in metadata
+ok
+test_local_donor_can_be_renamed_and_is_deep_copied (test_model_catalog_generation.SessionTemplateTests.test_local_donor_can_be_renamed_and_is_deep_copied) ... ok
+test_astra_subscription_check_and_launch_classification_and_staging (test_agent_sandbox.CodexCATests.test_astra_subscription_check_and_launch_classification_and_staging) ... ok
+test_astra_xhigh_denied_selected_card_stops_check_and_launch (test_agent_sandbox.CodexCATests.test_astra_xhigh_denied_selected_card_stops_check_and_launch) ... ok
+test_bad_selected_override_never_falls_through (test_agent_sandbox.CodexCATests.test_bad_selected_override_never_falls_through) ... ok
+test_broken_cycle_and_nul_are_located (test_agent_sandbox.CodexCATests.test_broken_cycle_and_nul_are_located) ... ok
+test_check_and_launch_reject_same_ca_without_exec_or_success (test_agent_sandbox.CodexCATests.test_check_and_launch_reject_same_ca_without_exec_or_success) ... ok
+test_check_and_launch_share_selected_ca_and_unchanged_policy (test_agent_sandbox.CodexCATests.test_check_and_launch_share_selected_ca_and_unchanged_policy) ... ok
+test_codex_priority_ignores_every_lower_input_and_parent (test_agent_sandbox.CodexCATests.test_codex_priority_ignores_every_lower_input_and_parent) ... ok
+test_decorative_certificate_comments_outside_blocks_are_ignored (test_agent_sandbox.CodexCATests.test_decorative_certificate_comments_outside_blocks_are_ignored) ... ok
+test_default_failure_is_located (test_agent_sandbox.CodexCATests.test_default_failure_is_located) ... ok
+test_default_with_unset_and_empty_overrides (test_agent_sandbox.CodexCATests.test_default_with_unset_and_empty_overrides) ... ok
+test_direct_alias_and_ancestor_denials_precede_open (test_agent_sandbox.CodexCATests.test_direct_alias_and_ancestor_denials_precede_open) ... ok
+test_empty_nonpem_and_genuine_crl_only_fail (test_agent_sandbox.CodexCATests.test_empty_nonpem_and_genuine_crl_only_fail) ... ok
+test_existing_deny_expansion_covers_external_ca_target (test_agent_sandbox.CodexCATests.test_existing_deny_expansion_covers_external_ca_target) ... ok
+test_http_does_not_inspect_or_mutate_ca (test_agent_sandbox.CodexCATests.test_http_does_not_inspect_or_mutate_ca) ... ok
+test_invalid_payloads_and_every_companion_in_both_orders (test_agent_sandbox.CodexCATests.test_invalid_payloads_and_every_companion_in_both_orders) ... ok
+test_main_claude_and_codex_http_preserve_ca_env_without_default_requirement (test_agent_sandbox.CodexCATests.test_main_claude_and_codex_http_preserve_ca_env_without_default_requirement) ... ok
+test_malformed_delimiters_for_both_labels (test_agent_sandbox.CodexCATests.test_malformed_delimiters_for_both_labels) ... ok
+test_noncertificate_labels_around_ordinary_and_trusted_certificates (test_agent_sandbox.CodexCATests.test_noncertificate_labels_around_ordinary_and_trusted_certificates) ... ok
+test_noncertificate_text_inside_active_block_is_kept_for_validation (test_agent_sandbox.CodexCATests.test_noncertificate_text_inside_active_block_is_kept_for_validation) ... ok
+test_open_errors_remain_read_failures (test_agent_sandbox.CodexCATests.test_open_errors_remain_read_failures) ... ok
+test_parser_error_detail_is_bounded (test_agent_sandbox.CodexCATests.test_parser_error_detail_is_bounded) ... ok
+test_post_open_special_file_does_not_read_and_closes_fd (test_agent_sandbox.CodexCATests.test_post_open_special_file_does_not_read_and_closes_fd) ... ok
+test_read_failure_closes_fd (test_agent_sandbox.CodexCATests.test_read_failure_closes_fd) ... ok
+test_relative_alias_and_literal_tilde_use_envelope_cwd (test_agent_sandbox.CodexCATests.test_relative_alias_and_literal_tilde_use_envelope_cwd) ... ok
+test_selected_whitespace_is_literal_for_both_variables (test_agent_sandbox.CodexCATests.test_selected_whitespace_is_literal_for_both_variables) ... ok
+test_special_files_and_alias_fail_before_open (test_agent_sandbox.CodexCATests.test_special_files_and_alias_fail_before_open) ... ok
+test_ssl_fallback_and_exact_empty_codex (test_agent_sandbox.CodexCATests.test_ssl_fallback_and_exact_empty_codex) ... ok
+test_valid_ordinary_trusted_mixed_crl_and_comments_preserve_original (test_agent_sandbox.CodexCATests.test_valid_ordinary_trusted_mixed_crl_and_comments_preserve_original) ... ok
+test_validator_receives_individual_normalized_certificates_never_crls (test_agent_sandbox.CodexCATests.test_validator_receives_individual_normalized_certificates_never_crls) ... ok
+test_B_directory_reentry_scans_secondary_targets_and_rejects_hardlinks (test_agent_sandbox.DanglingSetupTests.test_B_directory_reentry_scans_secondary_targets_and_rejects_hardlinks) ... ok
+test_B_existing_reentry_is_reported_even_when_already_covered (test_agent_sandbox.DanglingSetupTests.test_B_existing_reentry_is_reported_even_when_already_covered) ... ok
+test_C_missing_then_ENOTDIR_is_located_without_kernel_precedence_claim (test_agent_sandbox.DanglingSetupTests.test_C_missing_then_ENOTDIR_is_located_without_kernel_precedence_claim) ... ok
+test_added_ancestor_preserves_hardlink_and_special_target_rejection (test_agent_sandbox.DanglingSetupTests.test_added_ancestor_preserves_hardlink_and_special_target_rejection) ... ok
+test_ancestor_cascade_preserves_origins_and_visited_termination (test_agent_sandbox.DanglingSetupTests.test_ancestor_cascade_preserves_origins_and_visited_termination) ... ok
+test_ancestor_listdir_walk_and_type_failures_do_not_move_up (test_agent_sandbox.DanglingSetupTests.test_ancestor_listdir_walk_and_type_failures_do_not_move_up) ... ok
+test_capability_failure_is_located_but_strict_success_still_works (test_agent_sandbox.DanglingSetupTests.test_capability_failure_is_located_but_strict_success_still_works) ... ok
+test_declared_missing_and_cycle_errors_include_original_declaration (test_agent_sandbox.DanglingSetupTests.test_declared_missing_and_cycle_errors_include_original_declaration) ... ok
+test_internal_target_and_revisited_ancestor_are_exact_and_terminate (test_agent_sandbox.DanglingSetupTests.test_internal_target_and_revisited_ancestor_are_exact_and_terminate) ... ok
+test_missing_aware_non_ENOENT_errors_are_located (test_agent_sandbox.DanglingSetupTests.test_missing_aware_non_ENOENT_errors_are_located) ... ok
+test_missing_leaf_multiple_ancestors_absolute_relative_and_chain (test_agent_sandbox.DanglingSetupTests.test_missing_leaf_multiple_ancestors_absolute_relative_and_chain) ... ok
+test_missing_target_is_not_preread_and_lstat_errors_are_not_absence (test_agent_sandbox.DanglingSetupTests.test_missing_target_is_not_preread_and_lstat_errors_are_not_absence) ... ok
+test_missing_then_real_cycle_is_not_swallowed (test_agent_sandbox.DanglingSetupTests.test_missing_then_real_cycle_is_not_swallowed) ... ok
+test_multi_link_required_input_conflict_has_each_origin_before_specific_path (test_agent_sandbox.DanglingSetupTests.test_multi_link_required_input_conflict_has_each_origin_before_specific_path) ... ok
+test_readlink_and_target_lstat_errors_keep_context (test_agent_sandbox.DanglingSetupTests.test_readlink_and_target_lstat_errors_keep_context) ... ok
+test_root_ancestor_is_rejected_before_scan (test_agent_sandbox.DanglingSetupTests.test_root_ancestor_is_rejected_before_scan) ... ok
+test_same_missing_target_keeps_first_origin_but_reports_each_link (test_agent_sandbox.DanglingSetupTests.test_same_missing_target_keeps_first_origin_but_reports_each_link) ... ok
+test_self_and_two_link_cycles_are_located (test_agent_sandbox.DanglingSetupTests.test_self_and_two_link_cycles_are_located) ... ok
+test_strict_non_ENOENT_errors_never_use_missing_aware (test_agent_sandbox.DanglingSetupTests.test_strict_non_ENOENT_errors_never_use_missing_aware) ... ok
+test_strict_success_preserves_A_and_valid_file_directory_chains (test_agent_sandbox.DanglingSetupTests.test_strict_success_preserves_A_and_valid_file_directory_chains) ... ok
+test_direct_helper_full_access_conflicts (test_agent_sandbox.FullAccessTests.test_direct_helper_full_access_conflicts) ... ok
+test_opt_in_flags_and_default_launches (test_agent_sandbox.FullAccessTests.test_opt_in_flags_and_default_launches) ... ok
+test_claude_original_deny_write_wins_over_cwd (test_agent_sandbox.KernelTests.test_claude_original_deny_write_wins_over_cwd) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_codex_ca_reaches_native_cli (test_agent_sandbox.KernelTests.test_codex_ca_reaches_native_cli) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_dangling_targets_with_verified_ancestor_boundary (test_agent_sandbox.KernelTests.test_dangling_targets_with_verified_ancestor_boundary) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_kernel_boundary_and_write_preservation (test_agent_sandbox.KernelTests.test_kernel_boundary_and_write_preservation) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_large_deny_list_verifies_every_entry_before_runner (test_agent_sandbox.KernelTests.test_large_deny_list_verifies_every_entry_before_runner) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_missing_query_and_ENOENT_are_ambiguous_under_allow_default (test_agent_sandbox.KernelTests.test_missing_query_and_ENOENT_are_ambiguous_under_allow_default) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_profile_hardlink_changes_detected_by_prespawn_hashes (test_agent_sandbox.KernelTests.test_profile_hardlink_changes_detected_by_prespawn_hashes) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_read_only_does_not_gain_cwd_writes (test_agent_sandbox.KernelTests.test_read_only_does_not_gain_cwd_writes) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_unsupported_policy_fails_before_runner (test_agent_sandbox.KernelTests.test_unsupported_policy_fails_before_runner) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_verified_ancestor_policy_denies_after_fixture_materialization (test_agent_sandbox.KernelTests.test_verified_ancestor_policy_denies_after_fixture_materialization) ... skipped 'requires macOS and explicit outer-sandbox test opt-in'
+test_artifact_leaf_symlinks_are_rejected_before_canonicalization (test_agent_sandbox.SetupTests.test_artifact_leaf_symlinks_are_rejected_before_canonicalization) ... ok
+test_collection_arguments_do_not_expand_outputs_or_write_boundary (test_agent_sandbox.SetupTests.test_collection_arguments_do_not_expand_outputs_or_write_boundary) ... ok
+test_denied_directory_symlink_to_fifo_is_rejected_without_open (test_agent_sandbox.SetupTests.test_denied_directory_symlink_to_fifo_is_rejected_without_open) ... ok
+test_direct_internal_entry_cannot_fake_seatbelt_with_unix_mode (test_agent_sandbox.SetupTests.test_direct_internal_entry_cannot_fake_seatbelt_with_unix_mode) ... ok
+test_fifo_denial_is_rejected_without_open (test_agent_sandbox.SetupTests.test_fifo_denial_is_rejected_without_open) ... ok
+test_invalid_entries_fail (test_agent_sandbox.SetupTests.test_invalid_entries_fail) ... ok
+test_later_child_hash_record_cannot_replace_adapter_record (test_agent_sandbox.SetupTests.test_later_child_hash_record_cannot_replace_adapter_record) ... ok
+test_original_claude_parent_settings_remain_effective (test_agent_sandbox.SetupTests.test_original_claude_parent_settings_remain_effective) ... ok
+test_preexisting_hardlink_is_explicitly_rejected (test_agent_sandbox.SetupTests.test_preexisting_hardlink_is_explicitly_rejected) ... ok
+test_preflight_rejects_standalone_srt_without_executing_it (test_agent_sandbox.SetupTests.test_preflight_rejects_standalone_srt_without_executing_it) ... ok
+test_prepared_prompt_required (test_agent_sandbox.SetupTests.test_prepared_prompt_required) ... ok
+test_raw_native_options_cannot_change_policy (test_agent_sandbox.SetupTests.test_raw_native_options_cannot_change_policy) ... ok
+test_result_contract_rejects_denied_canary_and_unwritable_artifact (test_agent_sandbox.SetupTests.test_result_contract_rejects_denied_canary_and_unwritable_artifact) ... ok
+test_symlink_canonicalization (test_agent_sandbox.SetupTests.test_symlink_canonicalization) ... ok
+test_allowed_probe_must_really_read_and_write_before_exec (test_agent_sandbox.VerifyTests.test_allowed_probe_must_really_read_and_write_before_exec) ... ok
+test_ancestor_query_denial_is_not_enough_without_actual_PermissionError (test_agent_sandbox.VerifyTests.test_ancestor_query_denial_is_not_enough_without_actual_PermissionError) ... ok
+test_invalid_metadata_and_component_coverage_fail_before_query (test_agent_sandbox.VerifyTests.test_invalid_metadata_and_component_coverage_fail_before_query) ... ok
+test_no_missing_metadata_existing_boundary_still_requires_kernel_query (test_agent_sandbox.VerifyTests.test_no_missing_metadata_existing_boundary_still_requires_kernel_query) ... ok
+test_target_requires_query_and_only_PermissionError_or_registered_ENOENT (test_agent_sandbox.VerifyTests.test_target_requires_query_and_only_PermissionError_or_registered_ENOENT) ... ok
+test_unregistered_ENOENT_and_existing_entry_disappearance_never_exec (test_agent_sandbox.VerifyTests.test_unregistered_ENOENT_and_existing_entry_disappearance_never_exec) ... ok
+test_verified_ancestor_then_registered_ENOENT_then_allowed_probe_and_one_exec (test_agent_sandbox.VerifyTests.test_verified_ancestor_then_registered_ENOENT_then_allowed_probe_and_one_exec) ... ok
+
+----------------------------------------------------------------------
+Ran 167 tests in 52.378s
+
+OK (skipped=10)
+Actual native staged rejection (synthetic fixture):
+WARNING: ds-flash: staged /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmp4wclhmdu/catalog-validate.kex9b321/ds-flash.json: native parser failed (exit 1): WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmp4wclhmdu" (codex_home: AbsolutePathBuf("/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmp4wclhmdu/catalog-src.tloe44bc"))
+Error: failed to parse model_catalog_json path `/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmp4wclhmdu/catalog-validate.kex9b321/ds-flash.json` as JSON: unknown variant `native-invalid-enum`, expected `bytes` or `tokens` at line 235 column 5
+
+1 warning(s) — catalog may be stale; see above
+
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpnprw4isv/not-created/kimi.json
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpnprw4isv/not-created/mimo.json
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpnprw4isv/not-created/qwen.json
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+exit_code=0
+
+$ zsh -n scripts/agent-tools.zsh
+UTC: 2026-10-20T10:28:09.816681+00:00
+exit_code=0
+
+$ zsh -n scripts/codex-agent-run
+UTC: 2026-10-20T10:28:09.849957+00:00
+exit_code=0
+
+$ python3 -c 'import ast,pathlib; ast.parse(pathlib.Path("scripts/agent-sandbox").read_text())'
+UTC: 2026-10-20T10:28:09.886071+00:00
+exit_code=0
+
+$ ./scripts/codex-agent-run --list-providers
+UTC: 2026-10-20T10:28:09.939921+00:00
+ds-flash
+mimo
+mimo-fast
+mimo-flash
+qwen
+kimi
+glm
+glm-flash
+local
+gpt-6-astra
+gpt-6-astra-xhigh
+gpt-6-sol
+gpt-6-luna
+business
+exit_code=0
+
+$ ./scripts/codex-agent-run --help
+UTC: 2026-10-20T10:28:09.970800+00:00
+Usage:
+  codex-agent-run --provider <ds-flash|mimo|mimo-fast|mimo-flash|qwen|kimi|glm|glm-flash|local|gpt-6-astra|gpt-6-astra-xhigh|gpt-6-sol|gpt-6-luna|business> [options] --prompt <text>
+  codex-agent-run --provider <provider> [options] --prompt-file <path>
+  printf '%s' '<prompt>' | codex-agent-run --provider <provider> [options]
+
+Required:
+  --provider <name>          Codex profile: ds-flash, mimo, mimo-fast, mimo-flash, qwen, kimi,
+                             glm, glm-flash, local, gpt-6-astra, gpt-6-astra-xhigh, gpt-6-sol, gpt-6-luna, or business.
+
+Prompt input (choose one):
+  --prompt <text>            Prompt text.
+  --prompt-file <path>       Read the prompt from a UTF-8 text file; use - for stdin.
+  <positional text>          Remaining positional arguments are joined with spaces.
+  stdin                      Used when no other prompt input is supplied.
+
+Run options:
+  --cwd <directory>          Working directory. Defaults to the current directory.
+  --output-format <format>   text, json, or jsonl. Defaults to json (JSONL event stream).
+  --detail                   Return raw runtime output instead of the collected result.
+  --artifact <path>          Optional NEW regular task file; repeatable. Checked after execution.
+  --canary-file <path>       Optional canary input path (paired with --canary-expected).
+  --canary-expected <path>   Controller's expected token file; never sent in the prompt.
+  --output <path>            Save raw runtime output to a NEW private file; - requires --detail.
+  --stderr <path>            Write stderr to a NEW private file; - requires --detail.
+  --last-message <path>      Save final message to a NEW file; - requires --detail.
+  --sandbox <mode>           read-only, workspace-write, or danger-full-access.
+  --full-access              Disable the runtime sandbox and skip approvals (opt-in).
+  --thread-source <source>   Pass a Codex thread source classification.
+  --skip-git-repo-check      Permit execution outside a Git repository.
+  --persist                  Save a new session.
+  --resume <id>              Resume a saved session; implies --persist.
+  --resume-last              Resume the most recent saved session; implies --persist.
+  --no-persist               Run ephemerally (default for new runs).
+  --list-providers           Print supported providers and exit.
+  -h, --help                 Show this help.
+  -- <codex exec args...>    Pass additional arguments directly to codex exec.
+
+Environment:
+  AGENT_TOOLS_FILE           Override launcher file (requires pre-exec-error-v1 support).
+
+Orchestrator note:
+  Always pass --cwd explicitly. Do not rely on the controller's current
+  directory when launching a child agent.
+
+Examples:
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task.md \
+    --output runs/dsflash-01.jsonl
+
+  codex-agent-run --provider gpt-6-astra --persist --prompt 'Review the implementation plan'
+
+  codex-agent-run --provider business --resume <session-id> \
+    --prompt 'Continue the review'
+
+  codex-agent-run --provider qwen --cwd ~/workspace/project \
+    --prompt-file task.md -- --strict-config
+
+  codex-agent-run --provider local --cwd ~/workspace/project \
+    --prompt 'Review this repository with the local model'
+
+Parallel runs:
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task-a.md --output dsflash-01.jsonl &
+  codex-agent-run --provider ds-flash --cwd ~/workspace/project --prompt-file task-b.md --output dsflash-02.jsonl &
+  wait
+exit_code=0
+
+$ ./scripts/validate-skills.sh
+UTC: 2026-10-20T10:28:10.006727+00:00
+Validating skills/deepreview
+Skill is valid!
+Validating skills/gateflow
+Skill is valid!
+Validating skills/phaseflow
+Skill is valid!
+Validating skills/planreview
+Skill is valid!
+Validating skills/sub-agents
+Skill is valid!
+Validating skills/tmux-agents
+Skill is valid!
+exit_code=0
+
+$ git diff --check
+UTC: 2026-10-20T10:28:10.280596+00:00
+exit_code=0
+
+$ git diff --check
+UTC: 2026-10-20T10:29:06.508992+00:00
+exit_code=0

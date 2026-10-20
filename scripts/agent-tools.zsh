@@ -179,6 +179,7 @@ _codex_agent_title() {
     glm)      print -r -- "CodexAgent-GLM" ;;
     glm-flash) print -r -- "CodexAgent-GLM-Flash" ;;
     local)    print -r -- "CodexAgent-Local" ;;
+    gpt-6-astra-xhigh) print -r -- "CodexAgent-GPT-6-Astra-Xhigh" ;;
     gpt-6-astra) print -r -- "CodexAgent-GPT-6-Astra" ;;
     gpt-6-sol)   print -r -- "CodexAgent-GPT-6-Sol" ;;
     gpt-6-luna)  print -r -- "CodexAgent-GPT-6-Luna" ;;
@@ -244,7 +245,7 @@ _codex_agent_require_home() {
     }
   fi
   case "$agent_id" in
-    local|gpt-6-astra|gpt-6-sol|gpt-6-luna|business) ;;
+    local|gpt-6-astra|gpt-6-astra-xhigh|gpt-6-sol|gpt-6-luna|business) ;;
     *)
       local helper
       helper="$(_agent_tools_connection_helper)" || return 1
@@ -495,6 +496,7 @@ kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
 glm-flash_codex() { _codex_agent_launch glm-flash "$@"; }
 local_codex()    { _codex_agent_launch local "$@"; }
+gpt-6-astra-xhigh_codex() { _codex_agent_launch gpt-6-astra-xhigh "$@"; }
 gpt-6-astra_codex() { _codex_agent_launch gpt-6-astra "$@"; }
 gpt-6-sol_codex()   { _codex_agent_launch gpt-6-sol "$@"; }
 gpt_codex()         { _codex_agent_launch gpt-6-sol "$@"; }
@@ -510,6 +512,7 @@ kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }
 glm-flash_codex_app() { _codex_agent_app glm-flash "$@"; }
 local_codex_app()    { _codex_agent_app local "$@"; }
+gpt-6-astra-xhigh_codex_app() { _codex_agent_app gpt-6-astra-xhigh "$@"; }
 gpt-6-astra_codex_app() { _codex_agent_app gpt-6-astra "$@"; }
 gpt-6-sol_codex_app()   { _codex_agent_app gpt-6-sol "$@"; }
 gpt-6-luna_codex_app()  { _codex_agent_app gpt-6-luna "$@"; }

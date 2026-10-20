@@ -1,0 +1,6 @@
+# `codex -p gpt-6-astra-xhigh` model card. Layered over the shared-home base config
+# (~/.codex/config.toml), which owns policy and machine-local
+# runtime state. Only model deltas live here.
+
+model = "gpt-6-astra"
+model_reasoning_effort = "xhigh"

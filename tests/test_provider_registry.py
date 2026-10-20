@@ -158,6 +158,29 @@ class ProviderRegistryTests(unittest.TestCase):
             self.assertEqual(data["desktop"]["state"], "keep")
             self.assertIn("kimi", data["model_providers"])
 
+    def test_astra_xhigh_app_composition_preserves_policy_state_and_providers(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base, out = root / "base.toml", root / "app.toml"
+            base.write_text(sync_providers.compose(
+                'model = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\n'
+                'sandbox_mode = "workspace-write"\napproval_policy = "on-request"\n'
+                '[projects."/work"]\ntrust_level = "trusted"\n', REGISTRY.read_text()))
+            out.write_text(base.read_text().replace('model = "gpt-6.1-sol"', 'model = "old"') + '\n[desktop]\nstate = "keep"\n')
+            command = [sys.executable, str(COMPOSE), "--base", str(base), "--card",
+                       str(ROOT / "codex-agent/profiles/gpt-6-astra-xhigh/config.toml"), "--out", str(out)]
+            subprocess.run(command, check=True, capture_output=True)
+            first = out.read_bytes()
+            data = tomllib.loads(first.decode())
+            self.assertEqual((data["model"], data["model_reasoning_effort"]), ("gpt-6-astra", "xhigh"))
+            self.assertEqual(data["sandbox_mode"], "workspace-write")
+            self.assertEqual(data["approval_policy"], "on-request")
+            self.assertEqual(data["projects"], {"/work": {"trust_level": "trusted"}})
+            self.assertEqual(data["desktop"], {"state": "keep"})
+            self.assertEqual(data["model_providers"], tomllib.loads(REGISTRY.read_text())["model_providers"])
+            subprocess.run(command, check=True, capture_output=True)
+            self.assertEqual(out.read_bytes(), first)
+
     def test_legacy_card_keeps_its_gateway_during_upgrade(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

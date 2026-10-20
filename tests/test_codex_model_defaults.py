@@ -23,12 +23,13 @@ SPEC.loader.exec_module(module)
 
 
 class BusinessModelDefaultsTests(unittest.TestCase):
-    def test_three_gpt_cards_have_requested_efforts(self) -> None:
-        for profile, model, effort in (("gpt-6-astra", "gpt-6-astra", "high"), ("gpt-6-sol", "gpt-6.1-sol", "xhigh"), ("gpt-6-luna", "gpt-6-luna", "max")):
+    def test_subscription_cards_have_requested_models_and_efforts(self) -> None:
+        for profile, model, effort in (("gpt-6-astra", "gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "gpt-6-astra", "xhigh"), ("gpt-6-sol", "gpt-6.1-sol", "xhigh"), ("gpt-6-luna", "gpt-6-luna", "max")):
             with self.subTest(profile=profile):
                 card = tomllib.loads((ROOT / "codex-agent/profiles" / profile / "config.toml").read_text())
                 self.assertEqual(card["model"], model)
                 self.assertEqual(card["model_reasoning_effort"], effort)
+                self.assertEqual(set(card), {"model", "model_reasoning_effort"})
 
     def test_updates_only_business_defaults_and_preserves_local_settings(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

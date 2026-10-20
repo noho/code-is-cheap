@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import os
 import shlex
+import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -13,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PREFLIGHT = ROOT / "scripts/sub-agent-preflight"
 BODY = "Goal\nInspect the CANARY concept and token validation.\nNon-goals\nNo dispatch.\nStop condition\nFinish setup.\n"
-CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business".replace(" ", "\n") + "\n"
+CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-xhigh gpt-6-sol gpt-6-luna business".replace(" ", "\n") + "\n"
 CLAUDE_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy".replace(" ", "\n") + "\n"
 
 
@@ -51,7 +53,7 @@ class PreflightTests(unittest.TestCase):
             "FAKE_CLAUDE_EXIT": "0",
         }
 
-    def preflight(self, source: str, body: str | Path, *options: str, runtime: str = "codex") -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
+    def preflight(self, source: str, body: str | Path, *options: str, runtime: str = "codex", provider: str | None = None) -> tuple[subprocess.CompletedProcess[str], dict[str, str]]:
         if source == "--task":
             value = str(body)
         elif isinstance(body, Path):
@@ -62,13 +64,39 @@ class PreflightTests(unittest.TestCase):
             value = str(task_file)
         result = subprocess.run(
             [
-                "bash", str(PREFLIGHT), "--runtime", runtime, "--provider", "mimo" if runtime == "codex" else "ds-flash",
+                "bash", str(PREFLIGHT), "--runtime", runtime, "--provider", provider or ("mimo" if runtime == "codex" else "ds-flash"),
                 "--cwd", str(ROOT), source, value, *options,
             ],
             env=self.env, capture_output=True, text=True, check=False,
         )
         report = dict(line.split("=", 1) for line in result.stdout.splitlines() if "=" in line)
         return result, report
+
+    def test_real_astra_xhigh_discovery_and_missing_selected_card(self):
+        runner = self.root / "bin/codex-agent-run"
+        runner.unlink()
+        runner.symlink_to(ROOT / "scripts/codex-agent-run")
+        shutil.copyfile(ROOT / "scripts/agent-endpoint.py", self.root / "bin/agent-endpoint.py")
+        (self.root / "bin/agent-endpoint.py").chmod(0o755)
+        (self.root / "bin/python3").symlink_to(sys.executable)
+        self.env["AGENT_TOOLS_FILE"] = str(ROOT / "scripts/agent-tools.zsh")
+        home = Path(self.env["HOME"]) / ".codex"
+        for profile in ("gpt-6-astra", "gpt-6-astra-xhigh"):
+            shutil.copyfile(ROOT / f"codex-agent/profiles/{profile}/config.toml", home / f"{profile}.config.toml")
+        catalog = subprocess.run([str(runner), "--list-providers"], env=self.env, capture_output=True, text=True, check=True)
+        self.assertEqual(catalog.stdout.splitlines().count("gpt-6-astra-xhigh"), 1)
+        result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(report["provider"], "gpt-6-astra-xhigh")
+        self.assertEqual(report["launcher"], "gpt-6-astra-xhigh_codex")
+        self.assertEqual(report["profile_home"], str(home))
+        command = shlex.split(report["command"])
+        self.assertEqual(command[command.index("--provider") + 1], "gpt-6-astra-xhigh")
+        (home / "gpt-6-astra-xhigh.config.toml").unlink()
+        result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertEqual(report["command"], "")
+        self.assertIn("gpt-6-astra-xhigh.config.toml", result.stdout)
 
     def test_optional_envelope_setup_failure_never_prints_dispatch(self):
         wrapper = self.root / "bin/agent-sandbox"

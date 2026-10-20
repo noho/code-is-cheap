@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import tomllib
 import threading
 import urllib.error
 import urllib.request
@@ -954,8 +955,23 @@ fi
                 TEST_REPO=str(ROOT),
             )
             command = ["bash", str(downloaded), "--no-service"]
+            def assert_astra_installed():
+                for profile, effort in (("gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "xhigh")):
+                    card = home / f".codex/{profile}.config.toml"
+                    self.assertEqual(tomllib.loads(card.read_text()), {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+                    self.assertEqual(card.stat().st_mode & 0o777, 0o600)
+                catalog = subprocess.run([str(home / ".local/bin/codex-agent-run"), "--list-providers"],
+                                         env=env, capture_output=True, text=True, check=True).stdout.splitlines()
+                self.assertEqual(catalog.count("gpt-6-astra-xhigh"), 1)
+                self.assertEqual(catalog.count("gpt-6-astra"), 1)
+                discovery = subprocess.run(["zsh", "-f", "-c",
+                    'source "$HOME/.config/zsh/agent-tools.zsh"; '
+                    '(( $+functions[gpt-6-astra-xhigh_codex] && $+functions[gpt-6-astra-xhigh_codex_app] ))'],
+                    env=env, capture_output=True, text=True)
+                self.assertEqual(discovery.returncode, 0, discovery.stderr)
             first = subprocess.run(command, env=env, capture_output=True, text=True)
             self.assertEqual(first.returncode, 0, first.stderr)
+            assert_astra_installed()
             endpoint = home / ".config/agent-tools/endpoints.json"
             keys = home / ".config/zsh/agent-tools.local.zsh"
             self.assertEqual(endpoint.stat().st_mode & 0o777, 0o600)
@@ -980,6 +996,7 @@ fi
             )
             second = subprocess.run(command, env=env, capture_output=True, text=True)
             self.assertEqual(second.returncode, 0, second.stderr)
+            assert_astra_installed()
             self.assertEqual(
                 before,
                 (
@@ -1007,6 +1024,7 @@ fi
                 text=True,
             )
             self.assertEqual(direct.returncode, 0, direct.stderr)
+            assert_astra_installed()
             self.assertFalse(endpoint.exists())
             self.assertEqual(keys.read_bytes(), before[1])
 
@@ -1045,6 +1063,111 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
         return subprocess.run([str(ROOT/f'scripts/{runtime}-agent-run'),'--provider',
             provider or ('gpt-6-sol' if runtime=='codex' else 'ds-flash'),'--cwd',str(self.home),'--prompt','fake only',*args],
             env=env or self.env,capture_output=True,text=True)
+
+    def stage_astra_profiles(self):
+        for profile in ("gpt-6-astra", "gpt-6-astra-xhigh"):
+            shutil.copyfile(ROOT / f"codex-agent/profiles/{profile}/config.toml",
+                            self.home / f".codex/{profile}.config.toml")
+        (self.home / ".codex/config.toml").write_text('model="gpt-6.1-sol"\nmodel_reasoning_effort="medium"\nsandbox_mode="workspace-write"\n')
+        self.config.unlink()
+        self.selection = self.home / "selection.json"
+        self.helper_calls = self.home / "helper-calls.jsonl"
+        self.env.update(NATIVE_SELECTION=str(self.selection), HELPER_CALLS=str(self.helper_calls))
+        for key in ("AGENT_SANDBOX_CODEX_HOME", "AGENT_SANDBOX_ENDPOINT_HELPER"):
+            self.env.pop(key, None)
+        # Permit the real helper's contract and terminal exec, but fail any connection/key lookup.
+        (self.bins / "agent-endpoint.py").write_text(
+            'import json,os,runpy,sys\nfrom pathlib import Path\n'
+            'with open(os.environ["HELPER_CALLS"], "a") as f: f.write(json.dumps(sys.argv[1:])+"\\n")\n'
+            'assert sys.argv[1] in ("--runner-error-contract", "--exec-native"), "unexpected connection query"\n'
+            f'runpy.run_path({str(HELPER)!r}, run_name="__main__")\n')
+        native = self.bins / "codex"
+        native.write_text('#!' + sys.executable + '\n' +
+            'import json,os,sys,tomllib\nfrom pathlib import Path\n'
+            'args=sys.argv[1:]\nprofile=args[args.index("-p")+1]\n'
+            'home=Path(os.environ["CODEX_HOME"])\n'
+            'Path(os.environ["NATIVE_SELECTION"]).write_text(json.dumps(dict(argv=args, '
+            'home=str(home), sqlite=os.environ["CODEX_SQLITE_HOME"], '
+            'card=tomllib.loads((home/(profile+".config.toml")).read_text()))))\n'
+            'assert "AGENT_RUN_ERROR_FD" not in os.environ\n'
+            'print(json.dumps({"type":"turn.completed"}))\n')
+
+    def test_astra_runner_selection_preserves_high_alias_and_uses_no_connections(self):
+        self.stage_astra_profiles()
+        for provider, selected, effort in (("gpt-6-astra-xhigh", "gpt-6-astra-xhigh", "xhigh"),
+                ("gpt-6-astra", "gpt-6-astra", "high"), ("astra", "gpt-6-astra", "high")):
+            with self.subTest(provider=provider):
+                done = self.run_runner("codex", provider=provider)
+                self.assertEqual(done.returncode, 0, done.stderr)
+                self.assertEqual(json.loads(done.stdout)["provider"], selected)
+                native = json.loads(self.selection.read_text())
+                self.assertEqual(native["argv"][:3], ["exec", "-p", selected])
+                self.assertEqual(native["argv"].count("-p"), 1)
+                self.assertEqual(native["home"], str(self.home / ".codex"))
+                self.assertEqual(native["sqlite"], native["home"])
+                self.assertEqual(native["card"], {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+        calls = [json.loads(line) for line in self.helper_calls.read_text().splitlines()]
+        self.assertEqual({call[0] for call in calls}, {"--runner-error-contract", "--exec-native"})
+        self.assertFalse(self.config.exists())
+
+    def test_astra_xhigh_interactive_resume_forwarding_and_missing_card(self):
+        self.stage_astra_profiles()
+        for tail, expected in (([], ["-p", "gpt-6-astra-xhigh"]),
+                (["resume", "--help"], ["resume", "-p", "gpt-6-astra-xhigh", "--help"])):
+            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; shift; gpt-6-astra-xhigh_codex "$@"',
+                "_", str(ROOT / "scripts/agent-tools.zsh"), *tail], env=self.env, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual(json.loads(self.selection.read_text())["argv"], expected)
+        done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; _codex_agent_title gpt-6-astra-xhigh; '
+            '_codex_agent_shim_port gpt-6-astra-xhigh', "_", str(ROOT / "scripts/agent-tools.zsh")],
+            env=self.env, capture_output=True, text=True, check=True)
+        self.assertEqual(done.stdout, "CodexAgent-GPT-6-Astra-Xhigh\n\n")
+        self.assertFalse(self.helper_calls.exists())
+        self.selection.unlink()
+        (self.home / ".codex/gpt-6-astra-xhigh.config.toml").unlink()
+        done = self.run_runner("codex", provider="gpt-6-astra-xhigh")
+        self.assertEqual(done.returncode, 2, done.stderr)
+        self.assertIn("not executed", done.stderr)
+        self.assertFalse(self.selection.exists())
+
+    def test_astra_xhigh_both_public_app_forms_dispatch(self):
+        for launch in ("gpt-6-astra-xhigh_codex app", "gpt-6-astra-xhigh_codex_app"):
+            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+                '_codex_agent_app() { print -rl -- "$@"; }; ' + launch + ' "$2"',
+                "_", str(ROOT / "scripts/agent-tools.zsh"), str(self.home)],
+                env=self.env, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual(done.stdout.splitlines(), ["gpt-6-astra-xhigh", str(self.home)])
+
+    @unittest.skipUnless(sys.platform == "darwin" and Path("/Applications/ChatGPT.app").is_dir(), "macOS ChatGPT app prerequisite")
+    def test_astra_xhigh_app_launch_composes_private_home_without_opening_app(self):
+        self.stage_astra_profiles()
+        shutil.copy2(ROOT / "scripts/compose-codex-app-config.py", self.bins / "compose-codex-app-config.py")
+        (self.bins / "compose-codex-app-config.py").chmod(0o755)
+        auth = self.home / ".codex/auth.json"
+        auth.write_text('{"synthetic":"login"}\n'); auth.chmod(0o600)
+        capture = self.home / "open-args"
+        workspace = self.home / "workspace with spaces"; workspace.mkdir()
+        for launch in ("gpt-6-astra-xhigh_codex app", "gpt-6-astra-xhigh_codex_app"):
+            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+                'function /usr/bin/open() { print -rl -- "$@" > "$APP_OPEN_CAPTURE"; }; '
+                + launch + ' "$2"', "_", str(ROOT / "scripts/agent-tools.zsh"), str(workspace)],
+                env=self.env | {"APP_OPEN_CAPTURE": str(capture)}, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            user_data = self.home / ".codex-agent/app-data/gpt-6-astra-xhigh"
+            app_home = user_data / "home"
+            config = tomllib.loads((app_home / "config.toml").read_text())
+            self.assertEqual((config["model"], config["model_reasoning_effort"]), ("gpt-6-astra", "xhigh"))
+            self.assertEqual(config["sandbox_mode"], "workspace-write")
+            self.assertEqual((app_home / "auth.json").read_bytes(), auth.read_bytes())
+            self.assertEqual((app_home / "auth.json").stat().st_mode & 0o777, 0o600)
+            args = capture.read_text().splitlines()
+            from urllib.parse import quote
+            self.assertEqual(args, ["-n", "--env", f"CODEX_HOME={app_home}", "--env", f"CODEX_SQLITE_HOME={app_home}",
+                "--env", f"CODEX_ELECTRON_USER_DATA_PATH={user_data}", "-a", "/Applications/ChatGPT.app",
+                "codex://threads/new?path=" + quote(str(workspace), safe=""), "--args", f"--user-data-dir={user_data}"])
+        self.assertFalse((self.home / ".codex-agent/app-data/gpt-6-astra").exists())
+        self.assertFalse(self.helper_calls.exists())
 
     def test_real_native_1_2_126_127_and_no_protocol_are_exact(self):
         for runtime in ('codex','claude'):

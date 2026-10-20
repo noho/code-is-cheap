@@ -647,10 +647,16 @@ class CodexCATests(unittest.TestCase):
             self.prepare(env, route='http://example.com/v1')
         self.assertEqual(env, before)
 
-    def run_main(self, env, *, check, runtime='codex', denies=(), route='https://example.com/v1'):
+    def run_main(self, env, *, check, runtime='codex', denies=(), route='https://example.com/v1', subscription=None):
         home = self.root/'home'; config = home/'.codex'; config.mkdir(parents=True, exist_ok=True)
         (config/'config.toml').write_text('model = "synthetic-model"\nmodel_provider = "mock"\n[model_providers.mock]\nname = "mock"\nbase_url = "'+route+'"\nrequires_openai_auth = false\n')
         (config/'gpt-6-sol.config.toml').write_text('')
+        provider = subscription or 'gpt-6-sol'
+        if subscription:
+            (config/'config.toml').write_text('model = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\nsandbox_mode = "workspace-write"\n')
+            shutil.copyfile(ROOT/f'codex-agent/profiles/{provider}/config.toml', config/f'{provider}.config.toml')
+            auth = config/'auth.json'
+            auth.write_text('{"synthetic":"subscription-login"}\n'); auth.chmod(0o600)
         listing = self.root/'list.json'; listing.write_text(json.dumps(list(map(str, denies or [self.root/'secret']))))
         (self.root/'secret').write_text('synthetic denied input')
         runner = self.root/(runtime+'-agent-run'); runner.write_text('synthetic runner')
@@ -662,10 +668,12 @@ class CodexCATests(unittest.TestCase):
         helper = unittest.mock.Mock()
         helper.user_path.return_value = self.root/'absent-endpoints.json'
         helper.connection.return_value = {'base_url':route}
+        if subscription:
+            helper.connection.side_effect = AssertionError('subscription must not query a gateway key')
         stdout, stderr = io.StringIO(), io.StringIO()
         original_mkdtemp = tempfile.mkdtemp
         argv = ['agent-sandbox', *(['--check'] if check else []), '--cwd',str(self.cwd), '--deny-list',str(listing),
-                '--',str(runner),'--provider','gpt-6-sol','--prompt','synthetic task','--detail',
+                '--',str(runner),'--provider',provider,'--prompt','synthetic task','--detail',
                 '--output',str(self.root/'sink/result')]
         with contextlib.ExitStack() as stack:
             stack.enter_context(unittest.mock.patch.object(sys,'argv',argv))
@@ -673,7 +681,8 @@ class CodexCATests(unittest.TestCase):
             stack.enter_context(unittest.mock.patch.object(platform,'system',return_value='Darwin'))
             stack.enter_context(unittest.mock.patch.object(shutil,'which',side_effect=lambda name:bin_paths.get(name, str(runner) if name == str(runner) else None)))
             stack.enter_context(unittest.mock.patch.object(sandbox,'connection_helper',return_value=helper))
-            stack.enter_context(unittest.mock.patch.object(sandbox,'write_boundary',return_value=([str(self.cwd)],[str(self.cwd/'.git')])))
+            if not subscription:
+                stack.enter_context(unittest.mock.patch.object(sandbox,'write_boundary',return_value=([str(self.cwd)],[str(self.cwd/'.git')])))
             stack.enter_context(unittest.mock.patch.object(subprocess,'run',return_value=subprocess.CompletedProcess([],0,sandbox.SRT_VERSION,'')))
             stack.enter_context(unittest.mock.patch.object(tempfile,'mkdtemp',side_effect=lambda suffix=None,prefix=None,dir=None:original_mkdtemp(suffix=suffix,prefix=prefix,dir=self.root)))
             stack.enter_context(unittest.mock.patch.object(os,'chdir'))
@@ -689,7 +698,58 @@ class CodexCATests(unittest.TestCase):
             else:
                 code = 0
         self.assertEqual(private_env, before)
+        if subscription:
+            helper.connection.assert_not_called()
         return code, stdout.getvalue(), stderr.getvalue(), execute
+
+    def test_astra_subscription_check_and_launch_classification_and_staging(self):
+        for provider, effort in (('gpt-6-astra-xhigh', 'xhigh'), ('gpt-6-astra', 'high')):
+            for check in (True, False):
+                with self.subTest(provider=provider, check=check):
+                    code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(self.ca)},
+                                                          check=check, subscription=provider)
+                    self.assertEqual(code, 0, err)
+                    if check:
+                        self.assertEqual(out, 'setup_status=ok\n'); execute.assert_not_called()
+                        continue
+                    execute.assert_called_once()
+                    child = execute.call_args.args[2]
+                    home = Path(child['AGENT_SANDBOX_CODEX_HOME']); state = home.parent
+                    config = sandbox.tomllib.loads((home/'config.toml').read_text())
+                    self.assertEqual((config['model'], config['model_reasoning_effort']), ('gpt-6-astra', effort))
+                    self.assertNotIn('model_provider', config)
+                    self.assertEqual((home/f'{provider}.config.toml').read_text(), '')
+                    self.assertEqual((home/'auth.json').read_bytes(), (self.root/'home/.codex/auth.json').read_bytes())
+                    self.assertEqual((home/'auth.json').stat().st_mode & 0o777, 0o600)
+                    self.assertEqual(state.stat().st_mode & 0o777, 0o700)
+                    self.assertEqual(child['CODEX_CA_CERTIFICATE'], str(self.ca))
+                    manifest = json.loads((state/'boundary.json').read_text())
+                    command = manifest['command']
+                    self.assertEqual(command[command.index('--provider')+1], provider)
+                    settings = json.loads((state/'srt.json').read_text())
+                    self.assertEqual(settings['network'], {'allowedDomains':['chatgpt.com:443', 'auth.openai.com:443',
+                        'api.openai.com:443', 'chatgpt.com:443'], 'deniedDomains':[], 'strictAllowlist':True,
+                        'allowLocalBinding':False, 'allowAllUnixSockets':False, 'allowUnixSockets':[]})
+                    fs = settings['filesystem']
+                    self.assertEqual(fs['allowRead'], [])
+                    self.assertEqual(fs['denyRead'], [{'path':str(self.root/'secret'), 'literal':True}])
+                    self.assertEqual(fs['allowWrite'], [{'path':str(path), 'literal':True}
+                        for path in (state, self.cwd, self.root/'sink/result')])
+                    for path in [self.cwd/name for name in ('.git', '.codex', '.agents', '.aws')] + [
+                            home/'config.toml', home/f'{provider}.config.toml']:
+                        self.assertIn({'path':str(path), 'literal':True}, fs['denyWrite'])
+                    for key in ('allowAppleEvents', 'enableWeakerNestedSandbox', 'enableWeakerNetworkIsolation'):
+                        self.assertIs(settings[key], False)
+
+    def test_astra_xhigh_denied_selected_card_stops_check_and_launch(self):
+        card = self.root/'home/.codex/gpt-6-astra-xhigh.config.toml'
+        for check in (True, False):
+            code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(self.ca)}, check=check,
+                subscription='gpt-6-astra-xhigh', denies=[card])
+            self.assertEqual(code, 1)
+            self.assertNotIn('setup_status=ok', out)
+            self.assertIn(str(card), err)
+            execute.assert_not_called()
 
     def test_check_and_launch_reject_same_ca_without_exec_or_success(self):
         bad = self.cwd/'bad'; bad.write_bytes(b'invalid')

@@ -13,7 +13,7 @@ description: "通过 claude-agent-run 或 codex-agent-run 启动外部子 Agent�
 | Runtime | Runner | Providers |
 | --- | --- | --- |
 | Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy` |
-| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-sol gpt-6-luna business` |
+| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-xhigh gpt-6-sol gpt-6-luna business` |
 
 每次显式传 `--cwd` 的 workspace 绝对路径，避免依赖总控当前目录。接口不熟悉时查看所选 runner 的 `--help` / `--list-providers`。
 

@@ -323,6 +323,13 @@ sys.exit(r.returncode)
 
     def test_success_repeat_bytes_modes_and_no_service_actions(self):
         first=self.run_sync(); self.assertEqual(first.returncode,0,first.stderr)
+        for profile, effort in (("gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "xhigh")):
+            path = self.home / f'{profile}.config.toml'
+            self.assertEqual(tomllib.loads(path.read_text()), {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+            self.assertEqual(path.stat().st_mode & 0o777, 0o600)
+            self.assertFalse((self.home / f'model-catalogs/{profile}.json').exists())
+        self.assertEqual({p.stem for p in (self.home/'model-catalogs').glob('*.json')}, set(module.DEFAULT_PROFILES))
+        self.assertEqual(len(module.DEFAULT_PROFILES), 9)
         all_files={p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()}
         second=self.run_sync(); self.assertEqual(second.returncode,0,second.stderr)
         self.assertEqual(all_files,{p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()})
