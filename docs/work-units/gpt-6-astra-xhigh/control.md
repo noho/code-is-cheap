@@ -12,7 +12,7 @@ Routing: plan/implementation/fix use `codex-agent-run --provider gpt-6-sol`; ind
 
 ## Gate state
 
-Goal confirmation: passed. Plan/controller check: passed. Current gate / next entry point: code review.
+Goal confirmation: passed. Plan/controller check: passed. Current gate / next entry point: 必要提交 / push.
 
 ## Residual risks
 
@@ -41,3 +41,7 @@ Residual-risk classification applies to plan/implementation items:
 - Live installation/reload: assigned to later work unit; owner user; destination manual post-merge sync. No live sync authorized or run.
 
 No unclassified residual risk or implementation blocker. Next: independent parallel Deepreviews through Claude mimo and ds-flash.
+
+## Code-review/controller decision
+
+Both independent parallel Deepreviews completed and were inspected: see [adjudication.md](adjudication.md). No material finding, blocker, or unresolved evidence; no fix/re-review applies. All residuals reconciled to Gateflow classifications with owners/destinations. Source/test/docs content is unchanged from reviewed commit. Ready-to-open-draft-PR criteria passed; next transition is necessary commit/push, then create draft PR.

@@ -1,0 +1,24 @@
+{
+  "base": "f300ca395dbdd8204ff009487f1d295235965852",
+  "implementation_head": "6a92d08003e39b235a2ddf847ab61c400b521359",
+  "patch_scope": "all changed production/config/test/README/skill files; workflow evidence separately in implementation commit",
+  "patch_sha256": "9286de253ed38ed2980fa2c21b0fa4163144c02d035f554dfce08183dcec5582",
+  "files": {
+    "README.md": "3f70ab9a05e801a6a542e05a52ca1d43fd60dea2095164192ba892c934174786",
+    "README.zh.md": "ee97036c6bd7bf2bdba1161d435d6f9ead61ec68219a2ae5a95583c0412dc642",
+    "codex-agent/profiles/gpt-6-astra-xhigh/config.toml": "a8ea67c5b169f36c0d48318d8039fd991218aeab464748f03772cd35c800cc14",
+    "scripts/agent-sandbox": "5650780d0294d92630e528e2809431a67ab1e771ac4914b1f6aadd4cbae2940a",
+    "scripts/agent-tools.zsh": "6b63a72eccaf9144ee6e9e9651703dc74ec7cfd3d457c1623dd05568424d3b22",
+    "scripts/codex-agent-run": "d7d094938967b987329c4fc05092053e8ad5a167af84db5912e75971c2698d76",
+    "skills/sub-agents/SKILL.md": "2dc94bf4a391b9bba3a012ded974588c31bceeefd967fb7a014ba1222f53f96c",
+    "tests/test_agent_sandbox.py": "f35cbabe76a6f2ec7a943cb55ebf9ceb8973ae76e44c0d24b385ec2b5f28191c",
+    "tests/test_codex_model_defaults.py": "e13820b2b42a9cedabbe26334b485745ae8accbf8dd6e318d9251cfdda6e135b",
+    "tests/test_install_endpoints.py": "38e40a58366142156fa4f9984ff0ab8e87b8d00fa76cfefc133abfc9df9cde94",
+    "tests/test_model_catalog_generation.py": "786442f8408747546f6fa578006a1a437e82f5179808cc1bf6e7e83bfd893cc9",
+    "tests/test_provider_registry.py": "ab956267d56bada5d387322e3b43efed00a2cf25c63a628e02926540d33a7a6b",
+    "tests/test_sub_agent_preflight.py": "2bac2c19ef67e2b87a192c00167cfa4c6158ab96036cde92244b2cc729bc834c"
+  },
+  "patch_snapshot": "reviewed.patch.gz",
+  "patch_encoding": "gzip; patch_sha256 covers uncompressed reviewed bytes",
+  "compressed_sha256": "2e7b0b3ea7aba86e32ad9d1ce10094ee75632b66b09b5a24fa83beebdfa618b8"
+}
