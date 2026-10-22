@@ -323,6 +323,16 @@ business_codex_app /path/to/workspace
 
 `tmux-agents` 会发现这些 pane title，但不会分配角色。请在当前用户 prompt 中写清期望分工。
 
+日常一次性问答可用 `AI [-p provider | --provider provider] prompt`，默认 `gpt-6-sol`。它直接调用 Codex，使用只读
+sandbox，不保存 Codex session，不新增 runner 日志，在非 Git 目录也可使用。只在首个正文参数前解析选项；正文以
+选项开头时先加 `--`。多个正文参数以空格连接，shell 特殊字符仍需正常引用。
+
+```zsh
+AI '解释 TCP 和 UDP 的区别'
+AI -p gpt-6-luna 'HTTP 429 是什么意思？'
+AI -- '--full-access 是要解释的正文'
+```
+
 总控非交互调用子 Agent 时，使用已安装的 runner 命令：
 
 ```bash

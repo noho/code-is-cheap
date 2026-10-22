@@ -487,6 +487,40 @@ _codex_agent_launch() (
   fi
 )
 
+# One-shot answers use stdin so prompt text never becomes native CLI options.
+AI() {
+  emulate -L zsh
+  local provider=gpt-6-sol
+  while (( $# > 0 )); do
+    case "$1" in
+      -p|--provider)
+        if (( $# < 2 )) || [[ -z "$2" || "$2" == -* ]]; then
+          print -r -u2 -- "AI: $1 需要 provider"
+          return 2
+        fi
+        provider="$2"
+        shift 2
+        ;;
+      --) shift; break ;;
+      -?*)
+        print -r -u2 -- "AI: 未知选项：$1"
+        return 2
+        ;;
+      *) break ;;
+    esac
+  done
+  _codex_agent_title "$provider" >/dev/null || {
+    print -r -u2 -- "AI: 未知 provider：$provider"
+    return 2
+  }
+  local prompt="${(j: :)@}"
+  [[ -n "${prompt//[[:space:]]/}" ]] || {
+    print -r -u2 -- "AI: prompt 不能为空或纯空白"
+    return 2
+  }
+  _codex_agent_launch "$provider" exec --ephemeral --skip-git-repo-check --sandbox read-only -- - <<< "$prompt"
+}
+
 ds-flash_codex() { _codex_agent_launch ds-flash "$@"; }
 mimo_codex()     { _codex_agent_launch mimo "$@"; }
 mimo-fast_codex() { _codex_agent_launch mimo-fast "$@"; }

@@ -344,6 +344,17 @@ business_codex_app /path/to/workspace
 `tmux-agents` discovers these pane titles but does not assign roles. Put the desired assignment in the current user
 prompt.
 
+For everyday one-shot answers, use `AI [-p provider | --provider provider] prompt` (default: `gpt-6-sol`). It calls Codex
+directly with a read-only sandbox and no saved Codex session, works outside Git repositories, and adds no runner logs.
+Options are parsed only before the first prompt argument; use `--` for text that starts with an option. Multiple prompt
+arguments are joined with spaces; quote shell metacharacters as usual.
+
+```zsh
+AI 'Explain the difference between TCP and UDP'
+AI -p gpt-6-luna 'What does HTTP 429 mean?'
+AI -- '--full-access is the text to explain'
+```
+
 For non-interactive child-agent calls, use the installed runner commands:
 
 ```bash
