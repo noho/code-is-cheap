@@ -39,5 +39,7 @@
 
 ## Delivery
 
-- PR and final remote-head verification will be recorded after push.
+- PR: https://github.com/noho/code-is-cheap/pull/63 (open, ready for manual review).
+- Reviewed code commit: `b2e6c8d9cbf5b9fa6642dbbde20c81e6d4a78bb4`; PR creation confirmed the expected base and head commit, 6 changed files, and no extra product changes.
+- This delivery entry is the only post-review addition. Final controller check verifies the pushed branch matches local HEAD and the installed launcher still matches source.
 - User merges manually.
