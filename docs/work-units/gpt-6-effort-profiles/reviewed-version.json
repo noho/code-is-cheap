@@ -1,0 +1,29 @@
+{
+  "base": "bb3454de0d461d97aab1c3bfc71dd87d18b49d61",
+  "branch": "feat/gpt-6-effort-profiles",
+  "captured_at": "2026-10-23T03:16:06.890250+00:00",
+  "files": {
+    "README.md": "db7e8efbb96b4335b3d9abc328cb886d0c2d9ee659fa3544187e654944eaa9b9",
+    "README.zh.md": "f3544b78e6c715d713e17b7a783639251cb71b5dc8a9b3007d5f15e757c41990",
+    "codex-agent/profiles/gpt-6-astra-max/config.toml": "9f186f38ac952bdda61414728d06040aa3f5f37ff371b5037b3d9c7f4914c7d7",
+    "codex-agent/profiles/gpt-6-astra-x/config.toml": "8110f0950d8c7118b9aa21205372e4b232efee3c4956734cc1b0a6c6300314e0",
+    "codex-agent/profiles/gpt-6-astra-xhigh/config.toml": null,
+    "codex-agent/profiles/gpt-6-sol-max/config.toml": "45386cb3e6035b2910ec0c8965b08cfce7d055b56fdb35bb78b12efe5c641d74",
+    "codex-agent/profiles/gpt-6-sol-x/config.toml": "f79e015d249fd7ac2feae24dfdd30cd1c005be31596c8df11ad2852b6f535d32",
+    "codex-agent/profiles/gpt-6-sol/config.toml": "7a1bfdd0f4490eb3d0696b8eb3a3ca776c525a14fcb5268fa1b41f7f07799e92",
+    "scripts/agent-sandbox": "a699ab34093fb57a7cb8d8ceeefd629f35e8dd2a98949b4221a44d2d1a2ac54a",
+    "scripts/agent-tools.zsh": "6fd2f4d094c0c5df4800eca51d0bd6cb9d8e10ef9ac7ff302dcac5230d7c5c09",
+    "scripts/codex-agent-run": "b8d930ea42fb98031119923c9fb2a658650ecac98d4e6a071816ec4b0d4d7bda",
+    "skills/sub-agents/SKILL.md": "39c928edc9893e5131d43a1e6c32a2f9dfa725b193b0b9f9f084a3122d13e55c",
+    "tests/test_agent_sandbox.py": "eb967acc1fb94cba10e1c87a725120f0b8217cb217e485de96de152ee2e9875c",
+    "tests/test_codex_model_defaults.py": "b92e47c90d4c812c5fef418bbbe80619454d525fcf3dc658322996b62cbbd3c9",
+    "tests/test_install_endpoints.py": "502933d10fdaf512bf39d918eda19590308f9006b0719b39d09cbc9761b94374",
+    "tests/test_model_catalog_generation.py": "3c070904b57f71c81faf7f4c7bfd38b71b63f15153e0d9e7b34ba72173b359f2",
+    "tests/test_provider_registry.py": "3cc1d8a34d49e350a759f0c1c45beddb0b086cbba9dce4039da469d47308d271",
+    "tests/test_sub_agent_preflight.py": "bed3f8d6878e2fae7485b4707f85206e04316cd199e48c229a8ac115811cf709",
+    "AGENTS.md": "f5e3ec3826b74b8a71c2c9080eb887f8b83abfc3c1fafa966993e6ce5f1a5f11"
+  },
+  "implementation_commit": "2b96ae803e1e6c8cd78c6ec56a6d75c73bb506a3",
+  "reviewed_commit": "626dd0ef1f4dd4938b0b1d77693955de76c6daa5",
+  "source_diff_sha256": "59a0009a41d04bde4910b5dbfb356250f00f7631ed0f85cffa8393c26d78a56a"
+}

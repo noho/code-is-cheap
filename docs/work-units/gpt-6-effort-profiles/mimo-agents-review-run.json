@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "source": "subagent_report",
+  "runtime": "claude",
+  "provider": "mimo-flash",
+  "runtime_exit_code": 0,
+  "final_answer": "**结论：未发现实质性问题。**\n\nAGENTS.md 的 ds-flash Codex runtime 备份规则（commit `626dd0e`，仅改 2 行）通过全部受影响面核对：默认 Claude mimo-flash + Claude ds-flash 并行独立审查完整保留；fallback 仅限 ds-flash 一个 reviewer、仅在其 Claude runtime 不可用且记录原因后生效；不扩大到其它 provider/runtime 或部署权限；结尾 \"Explicit user instructions take precedence\" 未变。与 `plan.md` 的 Authorized review runtime fallback 段及 `ds-flash-attempt.json`（403、exit 1）证据一致。Open Questions 仅两处文档粒度问题（reason 记录位置未指定、双 runtime 均失败无降级路径），Residual Risk 已记录。\n\nReview artifact：`docs/reviews/code-review-20261023-112229.md`",
+  "session_id": "ab1f29bc-a260-4ef4-bfa9-4903a0eb474d",
+  "terminal": "success",
+  "wall_clock_seconds": 78.300878,
+  "usage": {
+    "input_tokens": 53994,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 203008,
+    "output_tokens": 2347,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "",
+    "iterations": [],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "runtime_metrics": {
+    "duration_ms": 75673,
+    "duration_api_ms": 73338,
+    "total_cost_usd": 0.43014900000000006,
+    "modelUsage": {
+      "mimo-v2.6-flash[1m]": {
+        "inputTokens": 53994,
+        "outputTokens": 2347,
+        "cacheReadInputTokens": 203008,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 0.43014900000000006,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "mimo-v2.6-flash[1m]",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    }
+  },
+  "logs": {
+    "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.Ci8fIVle/output.jsonl",
+    "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.Ci8fIVle/stderr.log",
+    "last_message": null
+  },
+  "diagnostics": [
+    {
+      "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}\n",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.Ci8fIVle/stderr.log",
+      "line": 1
+    }
+  ],
+  "checks": {
+    "artifacts": [],
+    "canary": null
+  }
+}

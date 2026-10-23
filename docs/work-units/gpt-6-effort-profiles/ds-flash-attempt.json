@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "source": "subagent_report",
+  "runtime": "claude",
+  "provider": "ds-flash",
+  "runtime_exit_code": 1,
+  "final_answer": "Failed to authenticate. API Error: 403 The package is disabled or you do not have invocation permission. Please check the package status in the console.",
+  "session_id": "fe58e679-8545-49a6-b9fd-cc27691b8d2a",
+  "terminal": "success",
+  "wall_clock_seconds": 3.138874,
+  "usage": {
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 0,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "",
+    "iterations": [],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "runtime_metrics": {
+    "duration_ms": 500,
+    "duration_api_ms": 0,
+    "total_cost_usd": 0,
+    "modelUsage": {}
+  },
+  "logs": {
+    "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/output.jsonl",
+    "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/stderr.log",
+    "last_message": null
+  },
+  "diagnostics": [
+    {
+      "message": "authentication_failed",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/output.jsonl",
+      "line": 5
+    },
+    {
+      "message": "native result is_error=True",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/output.jsonl",
+      "line": 6
+    },
+    {
+      "message": "native result terminal_reason='api_error'",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/output.jsonl",
+      "line": 6
+    },
+    {
+      "message": "native result api_error_status=403",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/output.jsonl",
+      "line": 6
+    },
+    {
+      "message": "[claude-code:unrecognized_model] {\"model\":\"deepseek/deepseek-flash[1m]\",\"query_source\":\"sdk\"}\n",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.ulQI8WYA/stderr.log",
+      "line": 1
+    }
+  ],
+  "checks": {
+    "artifacts": [],
+    "canary": null
+  }
+}

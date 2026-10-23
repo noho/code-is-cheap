@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "source": "subagent_report",
+  "runtime": "claude",
+  "provider": "mimo-flash",
+  "runtime_exit_code": 0,
+  "final_answer": "Review 完成。结论：**未发现实质性问题**——six-provider 目标、上游模型 ID、effort 生效链、缺卡失败路径、重名拒绝、重复 sync 幂等、business 本地保留与文档一致性均沿真实调用链核实通过；独立重跑 9 个受影响模块 188 tests（175 passed / 13 既有 skip）全绿。审定版本为 HEAD `626dd0e`（review 期间控制器提交，全部文件哈希已与提交态核对一致）。\n\nArtifact：`docs/reviews/code-review-20261023-112748.md`",
+  "session_id": "1cf69da3-bfa5-460f-a785-4bfeb757d4e1",
+  "terminal": "success",
+  "wall_clock_seconds": 1104.935122,
+  "usage": {
+    "input_tokens": 138173,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 5235968,
+    "output_tokens": 24007,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "",
+    "iterations": [],
+    "speed": "standard",
+    "fallback_credit": null
+  },
+  "runtime_metrics": {
+    "duration_ms": 1102097,
+    "duration_api_ms": 853338,
+    "total_cost_usd": 3.9090239999999996,
+    "modelUsage": {
+      "mimo-v2.6-flash[1m]": {
+        "inputTokens": 138173,
+        "outputTokens": 24007,
+        "cacheReadInputTokens": 5235968,
+        "cacheCreationInputTokens": 0,
+        "webSearchRequests": 0,
+        "costUSD": 3.9090239999999996,
+        "contextWindow": 1000000,
+        "maxOutputTokens": 32000,
+        "thinkingTokens": 0,
+        "canonicalModel": "mimo-v2.6-flash[1m]",
+        "provider": "firstParty",
+        "costBasis": "unknown"
+      }
+    }
+  },
+  "logs": {
+    "output": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.xLTXzN3u/output.jsonl",
+    "stderr": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.xLTXzN3u/stderr.log",
+    "last_message": null
+  },
+  "diagnostics": [
+    {
+      "message": "native tool result is_error=true (tool_use_id='call_f223e7d206524fafad088924')",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.xLTXzN3u/output.jsonl",
+      "line": 1117
+    },
+    {
+      "message": "native tool result is_error=true (tool_use_id='call_700d277e1ecf4ba6af3fbe83')",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.xLTXzN3u/output.jsonl",
+      "line": 4536
+    },
+    {
+      "message": "[claude-code:unrecognized_model] {\"model\":\"mimo-v2.6-flash[1m]\",\"query_source\":\"sdk\"}\n",
+      "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T//agent-run.xLTXzN3u/stderr.log",
+      "line": 1
+    }
+  ],
+  "checks": {
+    "artifacts": [],
+    "canary": null
+  }
+}
