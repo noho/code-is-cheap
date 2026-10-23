@@ -16,6 +16,14 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+GPT_PROFILES = (
+    ("gpt-6-astra", "gpt-6-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6-astra", "max"),
+    ("gpt-6-sol", "gpt-6.1-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+)
 SCRIPT = ROOT / 'scripts/patch-codex-model-catalog.py'
 CARDS = ROOT / 'codex-agent/profiles'
 SPEC = importlib.util.spec_from_file_location('patch_codex_model_catalog', SCRIPT)
@@ -322,16 +330,31 @@ sys.exit(r.returncode)
 ''')
 
     def test_success_repeat_bytes_modes_and_no_service_actions(self):
+        business = self.root / 'home/.codex-agent/business'; business.mkdir(parents=True)
+        business_config = business / 'config.toml'
+        original = 'model="old"\nmodel_reasoning_effort="xhigh"\nnotify=["keep"]\n[desktop]\nstate="keep"\n'
+        business_config.write_text(original); business_config.chmod(0o640)
+        auth = business / 'auth.json'; auth.write_text('synthetic account')
+        old_card = self.home / 'gpt-6-astra-xhigh.config.toml'
+        old_card.write_text('model="gpt-6-astra"\nmodel_reasoning_effort="xhigh"\n'); old_card.chmod(0o600)
         first=self.run_sync(); self.assertEqual(first.returncode,0,first.stderr)
-        for profile, effort in (("gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "xhigh")):
+        expected = tomllib.loads(original) | {"model": "gpt-6.1-sol", "model_reasoning_effort": "high"}
+        self.assertEqual(tomllib.loads(business_config.read_text()), expected)
+        self.assertEqual(business_config.stat().st_mode & 0o777, 0o640)
+        business_bytes = business_config.read_bytes()
+        self.assertEqual(auth.read_text(), 'synthetic account')
+        self.assertIn('model_reasoning_effort="xhigh"', old_card.read_text())
+        for profile, model, effort in GPT_PROFILES:
             path = self.home / f'{profile}.config.toml'
-            self.assertEqual(tomllib.loads(path.read_text()), {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+            self.assertEqual(tomllib.loads(path.read_text()), {"model": model, "model_reasoning_effort": effort})
             self.assertEqual(path.stat().st_mode & 0o777, 0o600)
             self.assertFalse((self.home / f'model-catalogs/{profile}.json').exists())
         self.assertEqual({p.stem for p in (self.home/'model-catalogs').glob('*.json')}, set(module.DEFAULT_PROFILES))
         self.assertEqual(len(module.DEFAULT_PROFILES), 9)
         all_files={p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()}
         second=self.run_sync(); self.assertEqual(second.returncode,0,second.stderr)
+        self.assertEqual(business_config.read_bytes(), business_bytes)
+        self.assertEqual(auth.read_text(), 'synthetic account')
         self.assertEqual(all_files,{p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()})
         self.assertEqual(len((self.root/'parses').read_text().splitlines()),18)
         self.assertTrue(all(p.stat().st_mode & 0o777==0o600 for p in self.home.glob('*.config.toml')))

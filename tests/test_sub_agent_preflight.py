@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PREFLIGHT = ROOT / "scripts/sub-agent-preflight"
 BODY = "Goal\nInspect the CANARY concept and token validation.\nNon-goals\nNo dispatch.\nStop condition\nFinish setup.\n"
-CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-xhigh gpt-6-sol gpt-6-luna business".replace(" ", "\n") + "\n"
+CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-x gpt-6-astra-max gpt-6-sol gpt-6-sol-x gpt-6-sol-max gpt-6-luna business".replace(" ", "\n") + "\n"
 CLAUDE_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy".replace(" ", "\n") + "\n"
 
 
@@ -72,7 +72,7 @@ class PreflightTests(unittest.TestCase):
         report = dict(line.split("=", 1) for line in result.stdout.splitlines() if "=" in line)
         return result, report
 
-    def test_real_astra_xhigh_discovery_and_missing_selected_card(self):
+    def test_real_subscription_discovery_and_missing_selected_cards(self):
         runner = self.root / "bin/codex-agent-run"
         runner.unlink()
         runner.symlink_to(ROOT / "scripts/codex-agent-run")
@@ -81,22 +81,26 @@ class PreflightTests(unittest.TestCase):
         (self.root / "bin/python3").symlink_to(sys.executable)
         self.env["AGENT_TOOLS_FILE"] = str(ROOT / "scripts/agent-tools.zsh")
         home = Path(self.env["HOME"]) / ".codex"
-        for profile in ("gpt-6-astra", "gpt-6-astra-xhigh"):
+        profiles = "gpt-6-astra gpt-6-astra-x gpt-6-astra-max gpt-6-sol gpt-6-sol-x gpt-6-sol-max".split()
+        for profile in profiles:
             shutil.copyfile(ROOT / f"codex-agent/profiles/{profile}/config.toml", home / f"{profile}.config.toml")
         catalog = subprocess.run([str(runner), "--list-providers"], env=self.env, capture_output=True, text=True, check=True)
-        self.assertEqual(catalog.stdout.splitlines().count("gpt-6-astra-xhigh"), 1)
-        result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(report["provider"], "gpt-6-astra-xhigh")
-        self.assertEqual(report["launcher"], "gpt-6-astra-xhigh_codex")
-        self.assertEqual(report["profile_home"], str(home))
-        command = shlex.split(report["command"])
-        self.assertEqual(command[command.index("--provider") + 1], "gpt-6-astra-xhigh")
-        (home / "gpt-6-astra-xhigh.config.toml").unlink()
-        result, report = self.preflight("--task", BODY, provider="gpt-6-astra-xhigh")
-        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
-        self.assertEqual(report["command"], "")
-        self.assertIn("gpt-6-astra-xhigh.config.toml", result.stdout)
+        self.assertNotIn("gpt-6-astra-xhigh", catalog.stdout.splitlines())
+        for profile in profiles:
+            with self.subTest(profile=profile):
+                self.assertEqual(catalog.stdout.splitlines().count(profile), 1)
+                result, report = self.preflight("--task", BODY, provider=profile)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(report["provider"], profile)
+                self.assertEqual(report["launcher"], f"{profile}_codex")
+                self.assertEqual(report["profile_home"], str(home))
+                command = shlex.split(report["command"])
+                self.assertEqual(command[command.index("--provider") + 1], profile)
+                (home / f"{profile}.config.toml").unlink()
+                result, report = self.preflight("--task", BODY, provider=profile)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertEqual(report["command"], "")
+                self.assertIn(f"{profile}.config.toml", result.stdout)
 
     def test_optional_envelope_setup_failure_never_prints_dispatch(self):
         wrapper = self.root / "bin/agent-sandbox"

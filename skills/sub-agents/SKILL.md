@@ -13,7 +13,9 @@ description: "通过 claude-agent-run 或 codex-agent-run 启动外部子 Agent�
 | Runtime | Runner | Providers |
 | --- | --- | --- |
 | Claude Code | `claude-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy` |
-| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-xhigh gpt-6-sol gpt-6-luna business` |
+| Codex | `codex-agent-run` | `ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-x gpt-6-astra-max gpt-6-sol gpt-6-sol-x gpt-6-sol-max gpt-6-luna business` |
+
+Astra 与 Sol 均提供默认 high、`-x` xhigh 和 `-max` max 三档；Sol 上游为 `gpt-6.1-sol`。这些 provider 使用订阅登录，不需要 API key 或 shim；`business` 同步 Sol 默认 high，Luna 保持 max。旧 `gpt-6-astra-xhigh` 不再是受支持的 runner provider。
 
 每次显式传 `--cwd` 的 workspace 绝对路径，避免依赖总控当前目录。接口不熟悉时查看所选 runner 的 `--help` / `--list-providers`。
 

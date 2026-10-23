@@ -22,6 +22,14 @@ import unittest
 import unittest.mock
 
 ROOT = Path(__file__).resolve().parents[1]
+GPT_PROFILES = (
+    ("gpt-6-astra", "gpt-6-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6-astra", "max"),
+    ("gpt-6-sol", "gpt-6.1-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+)
 loader = importlib.machinery.SourceFileLoader('agent_sandbox', str(ROOT/'scripts/agent-sandbox'))
 spec = importlib.util.spec_from_loader(loader.name, loader)
 sandbox = importlib.util.module_from_spec(spec)
@@ -702,8 +710,8 @@ class CodexCATests(unittest.TestCase):
             helper.connection.assert_not_called()
         return code, stdout.getvalue(), stderr.getvalue(), execute
 
-    def test_astra_subscription_check_and_launch_classification_and_staging(self):
-        for provider, effort in (('gpt-6-astra-xhigh', 'xhigh'), ('gpt-6-astra', 'high')):
+    def test_subscription_check_and_launch_classification_and_staging(self):
+        for provider, model, effort in GPT_PROFILES:
             for check in (True, False):
                 with self.subTest(provider=provider, check=check):
                     code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(self.ca)},
@@ -716,7 +724,7 @@ class CodexCATests(unittest.TestCase):
                     child = execute.call_args.args[2]
                     home = Path(child['AGENT_SANDBOX_CODEX_HOME']); state = home.parent
                     config = sandbox.tomllib.loads((home/'config.toml').read_text())
-                    self.assertEqual((config['model'], config['model_reasoning_effort']), ('gpt-6-astra', effort))
+                    self.assertEqual((config['model'], config['model_reasoning_effort']), (model, effort))
                     self.assertNotIn('model_provider', config)
                     self.assertEqual((home/f'{provider}.config.toml').read_text(), '')
                     self.assertEqual((home/'auth.json').read_bytes(), (self.root/'home/.codex/auth.json').read_bytes())
@@ -741,15 +749,17 @@ class CodexCATests(unittest.TestCase):
                     for key in ('allowAppleEvents', 'enableWeakerNestedSandbox', 'enableWeakerNetworkIsolation'):
                         self.assertIs(settings[key], False)
 
-    def test_astra_xhigh_denied_selected_card_stops_check_and_launch(self):
-        card = self.root/'home/.codex/gpt-6-astra-xhigh.config.toml'
-        for check in (True, False):
-            code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(self.ca)}, check=check,
-                subscription='gpt-6-astra-xhigh', denies=[card])
-            self.assertEqual(code, 1)
-            self.assertNotIn('setup_status=ok', out)
-            self.assertIn(str(card), err)
-            execute.assert_not_called()
+    def test_subscription_denied_selected_card_stops_check_and_launch(self):
+        for provider, _, _ in GPT_PROFILES:
+            card = self.root / f'home/.codex/{provider}.config.toml'
+            for check in (True, False):
+                with self.subTest(provider=provider, check=check):
+                    code, out, err, execute = self.run_main({'CODEX_CA_CERTIFICATE':str(self.ca)}, check=check,
+                        subscription=provider, denies=[card])
+                    self.assertEqual(code, 1)
+                    self.assertNotIn('setup_status=ok', out)
+                    self.assertIn(str(card), err)
+                    execute.assert_not_called()
 
     def test_check_and_launch_reject_same_ca_without_exec_or_success(self):
         bad = self.cwd/'bad'; bad.write_bytes(b'invalid')

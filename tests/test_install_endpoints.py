@@ -24,6 +24,14 @@ import zlib
 from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
+GPT_PROFILES = (
+    ("gpt-6-astra", "gpt-6-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6-astra", "max"),
+    ("gpt-6-sol", "gpt-6.1-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+)
 loader = importlib.machinery.SourceFileLoader(
     "endpoint_shim", str(ROOT / "codex-agent/bin/codex-auto-review-shim")
 )
@@ -955,23 +963,24 @@ fi
                 TEST_REPO=str(ROOT),
             )
             command = ["bash", str(downloaded), "--no-service"]
-            def assert_astra_installed():
-                for profile, effort in (("gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "xhigh")):
+            def assert_profiles_installed():
+                for profile, model, effort in GPT_PROFILES:
                     card = home / f".codex/{profile}.config.toml"
-                    self.assertEqual(tomllib.loads(card.read_text()), {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+                    self.assertEqual(tomllib.loads(card.read_text()), {"model": model, "model_reasoning_effort": effort})
                     self.assertEqual(card.stat().st_mode & 0o777, 0o600)
                 catalog = subprocess.run([str(home / ".local/bin/codex-agent-run"), "--list-providers"],
                                          env=env, capture_output=True, text=True, check=True).stdout.splitlines()
-                self.assertEqual(catalog.count("gpt-6-astra-xhigh"), 1)
-                self.assertEqual(catalog.count("gpt-6-astra"), 1)
-                discovery = subprocess.run(["zsh", "-f", "-c",
-                    'source "$HOME/.config/zsh/agent-tools.zsh"; '
-                    '(( $+functions[gpt-6-astra-xhigh_codex] && $+functions[gpt-6-astra-xhigh_codex_app] ))'],
-                    env=env, capture_output=True, text=True)
-                self.assertEqual(discovery.returncode, 0, discovery.stderr)
+                self.assertNotIn("gpt-6-astra-xhigh", catalog)
+                for profile, _, _ in GPT_PROFILES:
+                    self.assertEqual(catalog.count(profile), 1)
+                    discovery = subprocess.run(["zsh", "-f", "-c",
+                        'source "$HOME/.config/zsh/agent-tools.zsh"; '
+                        '(( $+functions[$1] && $+functions[$2] ))', "_", f"{profile}_codex", f"{profile}_codex_app"],
+                        env=env, capture_output=True, text=True)
+                    self.assertEqual(discovery.returncode, 0, discovery.stderr)
             first = subprocess.run(command, env=env, capture_output=True, text=True)
             self.assertEqual(first.returncode, 0, first.stderr)
-            assert_astra_installed()
+            assert_profiles_installed()
             endpoint = home / ".config/agent-tools/endpoints.json"
             keys = home / ".config/zsh/agent-tools.local.zsh"
             self.assertEqual(endpoint.stat().st_mode & 0o777, 0o600)
@@ -996,7 +1005,7 @@ fi
             )
             second = subprocess.run(command, env=env, capture_output=True, text=True)
             self.assertEqual(second.returncode, 0, second.stderr)
-            assert_astra_installed()
+            assert_profiles_installed()
             self.assertEqual(
                 before,
                 (
@@ -1024,7 +1033,7 @@ fi
                 text=True,
             )
             self.assertEqual(direct.returncode, 0, direct.stderr)
-            assert_astra_installed()
+            assert_profiles_installed()
             self.assertFalse(endpoint.exists())
             self.assertEqual(keys.read_bytes(), before[1])
 
@@ -1064,8 +1073,8 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
             provider or ('gpt-6-sol' if runtime=='codex' else 'ds-flash'),'--cwd',str(self.home),'--prompt','fake only',*args],
             env=env or self.env,capture_output=True,text=True)
 
-    def stage_astra_profiles(self):
-        for profile in ("gpt-6-astra", "gpt-6-astra-xhigh"):
+    def stage_subscription_profiles(self):
+        for profile, _, _ in GPT_PROFILES:
             shutil.copyfile(ROOT / f"codex-agent/profiles/{profile}/config.toml",
                             self.home / f".codex/{profile}.config.toml")
         (self.home / ".codex/config.toml").write_text('model="gpt-6.1-sol"\nmodel_reasoning_effort="medium"\nsandbox_mode="workspace-write"\n')
@@ -1092,81 +1101,148 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
             'assert "AGENT_RUN_ERROR_FD" not in os.environ\n'
             'print(json.dumps({"type":"turn.completed"}))\n')
 
-    def test_astra_runner_selection_preserves_high_alias_and_uses_no_connections(self):
-        self.stage_astra_profiles()
-        for provider, selected, effort in (("gpt-6-astra-xhigh", "gpt-6-astra-xhigh", "xhigh"),
-                ("gpt-6-astra", "gpt-6-astra", "high"), ("astra", "gpt-6-astra", "high")):
-            with self.subTest(provider=provider):
-                done = self.run_runner("codex", provider=provider)
-                self.assertEqual(done.returncode, 0, done.stderr)
-                self.assertEqual(json.loads(done.stdout)["provider"], selected)
-                native = json.loads(self.selection.read_text())
-                self.assertEqual(native["argv"][:3], ["exec", "-p", selected])
-                self.assertEqual(native["argv"].count("-p"), 1)
-                self.assertEqual(native["home"], str(self.home / ".codex"))
-                self.assertEqual(native["sqlite"], native["home"])
-                self.assertEqual(native["card"], {"model": "gpt-6-astra", "model_reasoning_effort": effort})
+    def test_subscription_runner_selection_aliases_and_resume_use_no_connections(self):
+        self.stage_subscription_profiles()
+        selections = [(p, p, m, e) for p, m, e in GPT_PROFILES]
+        selections += [("astra", "gpt-6-astra", "gpt-6-astra", "high"),
+                       ("sol", "gpt-6-sol", "gpt-6.1-sol", "high")]
+        for provider, selected, model, effort in selections:
+            for args in ((), ("--resume", "01a0d626-0a68-7913-8394-a73c79d0f977")):
+                with self.subTest(provider=provider, args=args):
+                    done = self.run_runner("codex", *args, provider=provider)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    self.assertEqual(json.loads(done.stdout)["provider"], selected)
+                    native = json.loads(self.selection.read_text())
+                    self.assertEqual(native["argv"][:3], ["exec", "-p", selected])
+                    if args:
+                        self.assertIn("resume", native["argv"])
+                        self.assertIn(args[1], native["argv"])
+                    self.assertEqual(native["argv"].count("-p"), 1)
+                    self.assertEqual(native["home"], str(self.home / ".codex"))
+                    self.assertEqual(native["sqlite"], native["home"])
+                    self.assertEqual(native["card"], {"model": model, "model_reasoning_effort": effort})
         calls = [json.loads(line) for line in self.helper_calls.read_text().splitlines()]
         self.assertEqual({call[0] for call in calls}, {"--runner-error-contract", "--exec-native"})
         self.assertFalse(self.config.exists())
 
-    def test_astra_xhigh_interactive_resume_forwarding_and_missing_card(self):
-        self.stage_astra_profiles()
-        for tail, expected in (([], ["-p", "gpt-6-astra-xhigh"]),
-                (["resume", "--help"], ["resume", "-p", "gpt-6-astra-xhigh", "--help"])):
-            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; shift; gpt-6-astra-xhigh_codex "$@"',
-                "_", str(ROOT / "scripts/agent-tools.zsh"), *tail], env=self.env, capture_output=True, text=True)
-            self.assertEqual(done.returncode, 0, done.stderr)
-            self.assertEqual(json.loads(self.selection.read_text())["argv"], expected)
-        done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; _codex_agent_title gpt-6-astra-xhigh; '
-            '_codex_agent_shim_port gpt-6-astra-xhigh', "_", str(ROOT / "scripts/agent-tools.zsh")],
-            env=self.env, capture_output=True, text=True, check=True)
-        self.assertEqual(done.stdout, "CodexAgent-GPT-6-Astra-Xhigh\n\n")
-        self.assertFalse(self.helper_calls.exists())
-        self.selection.unlink()
-        (self.home / ".codex/gpt-6-astra-xhigh.config.toml").unlink()
+    def test_subscription_interactive_title_resume_and_missing_card(self):
+        self.stage_subscription_profiles()
+        repair = self.bins / "repair-codex-reasoning-history.py"
+        shutil.copy2(ROOT / "scripts" / repair.name, repair)
+        repair.chmod(0o755)
+        tmux = self.bins / "tmux"
+        tmux.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$TMUX_CAPTURE"\n')
+        tmux.chmod(0o755)
+        capture = self.home / "tmux-args"
+        session = "01a0d626-0a68-7913-8394-a73c79d0f977"
+        folder = self.home / ".codex/sessions"; folder.mkdir()
+        rollout = folder / f"rollout-synthetic-{session}.jsonl"
+        for provider, model, effort in GPT_PROFILES:
+            rollout.write_text(json.dumps({"type": "turn_context", "payload": {"model": model}}) + "\n")
+            original = rollout.read_bytes()
+            for tail, expected in (([], ["-p", provider]),
+                    (["--title"], ["-p", provider]),
+                    (["resume", "--help"], ["resume", "-p", provider, "--help"]),
+                    (["resume", session], ["resume", "-p", provider, session]),
+                    (["--resume", session, "continue"], ["resume", "-p", provider, session, "continue"])):
+                with self.subTest(provider=provider, tail=tail):
+                    done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; launcher="$2"; shift 2; "$launcher" "$@"',
+                        "_", str(ROOT / "scripts/agent-tools.zsh"), f"{provider}_codex", *tail],
+                        env=self.env | {"TMUX": "synthetic", "TMUX_CAPTURE": str(capture)}, capture_output=True, text=True)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    native = json.loads(self.selection.read_text())
+                    self.assertEqual(native["argv"], expected)
+                    self.assertEqual(native["card"], {"model": model, "model_reasoning_effort": effort})
+                    if tail == ["--title"]:
+                        title = "CodexAgent-GPT-6-" + provider.removeprefix("gpt-6-").title()
+                        self.assertEqual(capture.read_text().splitlines(), ["select-pane", "-T", title])
+            if provider == "gpt-6-sol":
+                alias = subprocess.run(["zsh", "-f", "-c", 'source "$1"; gpt_codex --resume "$2" continue',
+                    "_", str(ROOT / "scripts/agent-tools.zsh"), session], env=self.env, capture_output=True, text=True)
+                self.assertEqual(alias.returncode, 0, alias.stderr)
+                native = json.loads(self.selection.read_text())
+                self.assertEqual(native["argv"], ["resume", "-p", provider, session, "continue"])
+                self.assertEqual(native["card"], {"model": model, "model_reasoning_effort": "high"})
+            self.assertEqual(rollout.read_bytes(), original)
+            self.selection.unlink()
+            (self.home / f".codex/{provider}.config.toml").unlink()
+            done = self.run_runner("codex", provider=provider)
+            self.assertEqual(done.returncode, 2, done.stderr)
+            self.assertIn("not executed", done.stderr)
+            self.assertFalse(self.selection.exists())
+        self.assertEqual(list(folder.glob("*.backup-*")), [])
+
+    def test_renamed_runner_provider_is_rejected_even_with_retained_card(self):
+        self.stage_subscription_profiles()
+        shutil.copyfile(self.home / ".codex/gpt-6-astra-x.config.toml",
+                        self.home / ".codex/gpt-6-astra-xhigh.config.toml")
+        for option in ("--help", "--list-providers"):
+            done = subprocess.run([str(ROOT / "scripts/codex-agent-run"), option],
+                                  env=self.env, capture_output=True, text=True, check=True)
+            self.assertNotIn("gpt-6-astra-xhigh", done.stdout)
+            for provider, _, _ in GPT_PROFILES:
+                self.assertIn(provider, done.stdout)
         done = self.run_runner("codex", provider="gpt-6-astra-xhigh")
         self.assertEqual(done.returncode, 2, done.stderr)
-        self.assertIn("not executed", done.stderr)
+        self.assertIn("unsupported provider: gpt-6-astra-xhigh", done.stderr)
         self.assertFalse(self.selection.exists())
+        done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+            '(( ! $+functions[gpt-6-astra-xhigh_codex] && ! $+functions[gpt-6-astra-xhigh_codex_app] ))',
+            "_", str(ROOT / "scripts/agent-tools.zsh")], env=self.env, capture_output=True, text=True)
+        self.assertEqual(done.returncode, 0, done.stderr)
 
-    def test_astra_xhigh_both_public_app_forms_dispatch(self):
-        for launch in ("gpt-6-astra-xhigh_codex app", "gpt-6-astra-xhigh_codex_app"):
-            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
-                '_codex_agent_app() { print -rl -- "$@"; }; ' + launch + ' "$2"',
-                "_", str(ROOT / "scripts/agent-tools.zsh"), str(self.home)],
-                env=self.env, capture_output=True, text=True)
-            self.assertEqual(done.returncode, 0, done.stderr)
-            self.assertEqual(done.stdout.splitlines(), ["gpt-6-astra-xhigh", str(self.home)])
+    def test_subscription_both_public_app_forms_dispatch(self):
+        for provider, _, _ in GPT_PROFILES:
+            for launch in (f"{provider}_codex app", f"{provider}_codex_app"):
+                with self.subTest(launch=launch):
+                    done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+                        '_codex_agent_app() { print -rl -- "$@"; }; ' + launch + ' "$2"',
+                        "_", str(ROOT / "scripts/agent-tools.zsh"), str(self.home)],
+                        env=self.env, capture_output=True, text=True)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    self.assertEqual(done.stdout.splitlines(), [provider, str(self.home)])
 
     @unittest.skipUnless(sys.platform == "darwin" and Path("/Applications/ChatGPT.app").is_dir(), "macOS ChatGPT app prerequisite")
-    def test_astra_xhigh_app_launch_composes_private_home_without_opening_app(self):
-        self.stage_astra_profiles()
+    def test_subscription_app_launch_composes_private_home_without_opening_app(self):
+        self.stage_subscription_profiles()
         shutil.copy2(ROOT / "scripts/compose-codex-app-config.py", self.bins / "compose-codex-app-config.py")
         (self.bins / "compose-codex-app-config.py").chmod(0o755)
         auth = self.home / ".codex/auth.json"
         auth.write_text('{"synthetic":"login"}\n'); auth.chmod(0o600)
         capture = self.home / "open-args"
         workspace = self.home / "workspace with spaces"; workspace.mkdir()
-        for launch in ("gpt-6-astra-xhigh_codex app", "gpt-6-astra-xhigh_codex_app"):
-            done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
-                'function /usr/bin/open() { print -rl -- "$@" > "$APP_OPEN_CAPTURE"; }; '
-                + launch + ' "$2"', "_", str(ROOT / "scripts/agent-tools.zsh"), str(workspace)],
-                env=self.env | {"APP_OPEN_CAPTURE": str(capture)}, capture_output=True, text=True)
-            self.assertEqual(done.returncode, 0, done.stderr)
-            user_data = self.home / ".codex-agent/app-data/gpt-6-astra-xhigh"
-            app_home = user_data / "home"
-            config = tomllib.loads((app_home / "config.toml").read_text())
-            self.assertEqual((config["model"], config["model_reasoning_effort"]), ("gpt-6-astra", "xhigh"))
-            self.assertEqual(config["sandbox_mode"], "workspace-write")
-            self.assertEqual((app_home / "auth.json").read_bytes(), auth.read_bytes())
-            self.assertEqual((app_home / "auth.json").stat().st_mode & 0o777, 0o600)
-            args = capture.read_text().splitlines()
-            from urllib.parse import quote
-            self.assertEqual(args, ["-n", "--env", f"CODEX_HOME={app_home}", "--env", f"CODEX_SQLITE_HOME={app_home}",
-                "--env", f"CODEX_ELECTRON_USER_DATA_PATH={user_data}", "-a", "/Applications/ChatGPT.app",
-                "codex://threads/new?path=" + quote(str(workspace), safe=""), "--args", f"--user-data-dir={user_data}"])
-        self.assertFalse((self.home / ".codex-agent/app-data/gpt-6-astra").exists())
+        old_data = self.home / ".codex-agent/app-data/gpt-6-astra-xhigh"
+        old_data.mkdir(parents=True)
+        old_session = old_data / "old-session"; old_session.write_text("keep")
+        for provider, model, effort in GPT_PROFILES:
+            for launch in (f"{provider}_codex app", f"{provider}_codex_app"):
+                with self.subTest(launch=launch):
+                    done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+                        'function /usr/bin/open() { print -rl -- "$@" > "$APP_OPEN_CAPTURE"; }; '
+                        + launch + ' "$2"', "_", str(ROOT / "scripts/agent-tools.zsh"), str(workspace)],
+                        env=self.env | {"APP_OPEN_CAPTURE": str(capture)}, capture_output=True, text=True)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    user_data = self.home / f".codex-agent/app-data/{provider}"
+                    app_home = user_data / "home"
+                    config = tomllib.loads((app_home / "config.toml").read_text())
+                    self.assertEqual((config["model"], config["model_reasoning_effort"]), (model, effort))
+                    self.assertEqual(config["sandbox_mode"], "workspace-write")
+                    self.assertEqual((app_home / "auth.json").read_bytes(), auth.read_bytes())
+                    self.assertEqual((app_home / "auth.json").stat().st_mode & 0o777, 0o600)
+                    session = app_home / "sessions/keep.jsonl"
+                    if session.exists():
+                        self.assertEqual(session.read_text(), "keep session")
+                        self.assertEqual(config["desktop"], {"state": "keep"})
+                    else:
+                        session.parent.mkdir(); session.write_text("keep session")
+                        with (app_home / "config.toml").open("a") as f:
+                            f.write('\n[desktop]\nstate="keep"\n')
+                    args = capture.read_text().splitlines()
+                    from urllib.parse import quote
+                    self.assertEqual(args, ["-n", "--env", f"CODEX_HOME={app_home}", "--env", f"CODEX_SQLITE_HOME={app_home}",
+                        "--env", f"CODEX_ELECTRON_USER_DATA_PATH={user_data}", "-a", "/Applications/ChatGPT.app",
+                        "codex://threads/new?path=" + quote(str(workspace), safe=""), "--args", f"--user-data-dir={user_data}"])
+        self.assertEqual(old_session.read_text(), "keep")
         self.assertFalse(self.helper_calls.exists())
 
     def test_real_native_1_2_126_127_and_no_protocol_are_exact(self):

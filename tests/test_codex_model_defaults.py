@@ -14,6 +14,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+GPT_PROFILES = (
+    ("gpt-6-astra", "gpt-6-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6-astra", "max"),
+    ("gpt-6-sol", "gpt-6.1-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+)
 SCRIPT = ROOT / "scripts/sync-codex-model-defaults.py"
 CARD = ROOT / "codex-agent/profiles/gpt-6-sol/config.toml"
 SPEC = importlib.util.spec_from_file_location("sync_codex_model_defaults", SCRIPT)
@@ -24,7 +32,7 @@ SPEC.loader.exec_module(module)
 
 class BusinessModelDefaultsTests(unittest.TestCase):
     def test_subscription_cards_have_requested_models_and_efforts(self) -> None:
-        for profile, model, effort in (("gpt-6-astra", "gpt-6-astra", "high"), ("gpt-6-astra-xhigh", "gpt-6-astra", "xhigh"), ("gpt-6-sol", "gpt-6.1-sol", "xhigh"), ("gpt-6-luna", "gpt-6-luna", "max")):
+        for profile, model, effort in (*GPT_PROFILES, ("gpt-6-luna", "gpt-6-luna", "max")):
             with self.subTest(profile=profile):
                 card = tomllib.loads((ROOT / "codex-agent/profiles" / profile / "config.toml").read_text())
                 self.assertEqual(card["model"], model)
@@ -38,13 +46,16 @@ class BusinessModelDefaultsTests(unittest.TestCase):
                 'model = "gpt-5.4"\nmodel_reasoning_effort = "medium"\n'
                 'notify = ["/private/path", "turn-ended"]\n\n'
                 '[projects."/work"]\ntrust_level = "trusted"\n'
+                '[profiles.personal]\nmodel = "keep"\nmodel_reasoning_effort = "max"\n'
             )
             config.write_text(original)
             config.chmod(0o600)
             self.assertTrue(module.sync(config, CARD))
             updated = tomllib.loads(config.read_text())
             self.assertEqual(updated["model"], "gpt-6.1-sol")
-            self.assertEqual(updated["model_reasoning_effort"], "xhigh")
+            self.assertEqual(updated["model_reasoning_effort"], "high")
+            self.assertEqual({k: v for k, v in updated.items() if k not in module.KEYS},
+                             {k: v for k, v in tomllib.loads(original).items() if k not in module.KEYS})
             self.assertEqual(updated["notify"], ["/private/path", "turn-ended"])
             self.assertEqual(updated["projects"], {"/work": {"trust_level": "trusted"}})
             self.assertEqual(stat.S_IMODE(config.stat().st_mode), 0o600)
@@ -53,7 +64,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
     def test_inserts_missing_defaults_before_tables(self) -> None:
         result = module.compose('[projects."/work"]\ntrust_level = "trusted"\n', CARD.read_text())
         self.assertEqual(tomllib.loads(result)["model"], "gpt-6.1-sol")
-        self.assertEqual(tomllib.loads(result)["model_reasoning_effort"], "xhigh")
+        self.assertEqual(tomllib.loads(result)["model_reasoning_effort"], "high")
         self.assertIn('[projects."/work"]\ntrust_level = "trusted"\n', result)
 
     def test_invalid_config_and_symlink_do_not_replace_file(self) -> None:

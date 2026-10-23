@@ -648,7 +648,7 @@ def main():
     require_readable(helper.user_path(), denies) if helper.user_path().exists() else None
     # Check keys without printing their values; preserve current default/override routing.
     provider = options["--provider"]
-    if runtime == "claude" or provider not in {"gpt-6-astra", "gpt-6-astra-xhigh", "gpt-6-sol", "gpt-6-luna", "business"}:
+    if runtime == "claude" or provider not in {"gpt-6-astra", "gpt-6-astra-x", "gpt-6-astra-max", "gpt-6-sol", "gpt-6-sol-x", "gpt-6-sol-max", "gpt-6-luna", "business"}:
         connection = helper.connection(provider, runtime, require_key=True)
     write_roots, original_write_denies = write_boundary(runtime, provider, cwd, denies)
     validate_result_contract(options, command, write_roots, original_write_denies, denies)
@@ -686,7 +686,7 @@ def main():
         with socket.create_connection((parts.hostname, parts.port or 80), timeout=2):
             pass
     domains = [domain, *args.allow_domain]
-    if runtime == "codex" and provider in {"gpt-6-astra", "gpt-6-astra-xhigh", "gpt-6-sol", "gpt-6-luna", "business"}:
+    if runtime == "codex" and provider in {"gpt-6-astra", "gpt-6-astra-x", "gpt-6-astra-max", "gpt-6-sol", "gpt-6-sol-x", "gpt-6-sol-max", "gpt-6-luna", "business"}:
         domains += ["auth.openai.com:443", "api.openai.com:443", "chatgpt.com:443"]
     writes = [str(state), *write_roots]
     # Runner outputs were already caller-selected sinks before runtime sandboxing.

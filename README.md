@@ -324,7 +324,7 @@ Available launchers:
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
 | Claude Code | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `hy` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-astra-xhigh`, `gpt-6-sol`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6-sol-x`, `gpt-6-sol-max`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
@@ -335,9 +335,9 @@ The app launchers open a new Codex app instance with the selected profile and op
 ```bash
 mimo_claude --title
 gpt-6-astra_codex --title
-gpt-6-astra-xhigh_codex --title
-gpt-6-astra-xhigh_codex app /path/to/workspace
-gpt-6-astra-xhigh_codex_app /path/to/workspace
+gpt-6-astra-x_codex --title
+gpt-6-astra-x_codex app /path/to/workspace
+gpt-6-astra-x_codex_app /path/to/workspace
 business_codex_app /path/to/workspace
 ```
 
@@ -349,7 +349,7 @@ For non-interactive child-agent calls, use the installed runner commands:
 ```bash
 claude-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
 codex-agent-run --provider gpt-6-astra --cwd /path/to/workspace --prompt-file task.md
-codex-agent-run --provider gpt-6-astra-xhigh --cwd /path/to/workspace --prompt-file task.md
+codex-agent-run --provider gpt-6-astra-x --cwd /path/to/workspace --prompt-file task.md
 ```
 
 The runners accept prompts through `--prompt`, `--prompt-file`, positional text, or stdin, and support output files,
@@ -453,8 +453,8 @@ is model switching, and the session pool is shared. Resume through the target mo
 (`gpt-6-sol_codex resume <session-id>`) or pass `-p` explicitly
 (`codex resume -p gpt-6-sol <session-id>`). Plain `codex resume <session-id>` can restore the
 session's last selected model instead of the base config's default. The nine
-third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the four subscription-backed OpenAI
-profiles (`gpt-6-astra`, `gpt-6-astra-xhigh`, `gpt-6-sol`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
+third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the seven subscription-backed OpenAI
+profiles (`gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6-sol-x`, `gpt-6-sol-max`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
 machine-owned except for the marked provider registry managed by this repository.
 
@@ -469,11 +469,20 @@ Run `./scripts/sync-agent-tools.sh` and open a new shell before using this optio
 such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
-`gpt-6-luna` the low-cost bulk work. `gpt-6-astra` keeps high reasoning effort; choose `gpt-6-astra-xhigh` for the same upstream
-Astra model at xhigh. Sol defaults to xhigh and Luna to max. The `gpt-6-sol` profile selects GPT-6.1 Sol. `sync-codex-agent.sh`
-copies the Sol card's model and effort defaults (GPT-6.1 Sol / xhigh) into the separate
+`gpt-6-luna` the low-cost bulk work. Astra and Sol each have three providers: the base name uses high,
+`-x` uses xhigh, and `-max` uses max. All Astra variants select `gpt-6-astra`; all Sol variants select
+`gpt-6.1-sol`. Luna stays at max. These subscription providers use account login without API keys or shim.
+`sync-codex-agent.sh` copies the base Sol card's two defaults (GPT-6.1 Sol / high) into the separate
 `business` CODEX_HOME, leaving its account and other local settings intact.
-`gpt_codex` is an alias for `gpt-6-sol_codex`, including its resume handling and arguments.
+`gpt_codex` selects `gpt-6-sol`, including its resume handling and arguments; runner aliases `sol` and `astra`
+still select their base high providers.
+
+`gpt-6-astra-x` replaces `gpt-6-astra-xhigh`; the old name is no longer a supported runner provider or
+managed launcher. Sync retains extra installed cards, so an old card may still be selected directly by native
+Codex; its presence does not mean the runner supports that provider. Existing App data, sessions and personal
+settings are retained. Open a new shell to discard previously loaded old launcher functions, or explicitly run
+`unfunction gpt-6-astra-xhigh_codex gpt-6-astra-xhigh_codex_app` before reloading with `source ~/.zshrc`.
+Sourcing alone does not remove old functions. Reopen Agent sessions to load updated skills.
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
@@ -487,11 +496,14 @@ copies the Sol card's model and effort defaults (GPT-6.1 Sol / xhigh) into the s
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `local` | `qwen3.8-27b-local` | user-configurable (default 127.0.0.1:8080) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
-| `gpt-6-astra-xhigh` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
-| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
-| `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed |
+| `gpt-6-astra-x` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
+| `gpt-6-astra-max` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
+| `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
+| `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+| `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
 
-Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the four OpenAI profiles across three upstream models share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
+Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the seven OpenAI profiles across three upstream models share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
 
 Set up or update the profiles:
 
@@ -823,8 +835,11 @@ codex-agent/
     qwen/config.toml
     local/config.toml
     gpt-6-astra/config.toml
-    gpt-6-astra-xhigh/config.toml
+    gpt-6-astra-x/config.toml
+    gpt-6-astra-max/config.toml
     gpt-6-sol/config.toml
+    gpt-6-sol-x/config.toml
+    gpt-6-sol-max/config.toml
     gpt-6-luna/config.toml
   bin/
     codex-auto-review-shim

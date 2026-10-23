@@ -300,7 +300,7 @@ source ~/.zshrc
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
 | Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`hy` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-astra-xhigh`、`gpt-6-sol`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
@@ -315,9 +315,9 @@ CLI 会话若要跨模型续接，请在共享 home 中显式指定目标 profil
 ```bash
 mimo_claude --title
 gpt-6-astra_codex --title
-gpt-6-astra-xhigh_codex --title
-gpt-6-astra-xhigh_codex app /path/to/workspace
-gpt-6-astra-xhigh_codex_app /path/to/workspace
+gpt-6-astra-x_codex --title
+gpt-6-astra-x_codex app /path/to/workspace
+gpt-6-astra-x_codex_app /path/to/workspace
 business_codex_app /path/to/workspace
 ```
 
@@ -328,7 +328,7 @@ business_codex_app /path/to/workspace
 ```bash
 claude-agent-run --provider mimo --cwd /path/to/workspace --prompt-file task.md
 codex-agent-run --provider gpt-6-astra --cwd /path/to/workspace --prompt-file task.md
-codex-agent-run --provider gpt-6-astra-xhigh --cwd /path/to/workspace --prompt-file task.md
+codex-agent-run --provider gpt-6-astra-x --cwd /path/to/workspace --prompt-file task.md
 ```
 
 runner 可通过 `--prompt`、`--prompt-file`、位置参数或 stdin 接收 prompt，并支持输出文件、临时或持久 session，
@@ -415,7 +415,7 @@ runner 的 `AGENT_RUN_ERROR_FD` 指向仅报告 exec 前错误的内部 pipe；e
 launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profile（如
 `codex resume -p gpt-6-sol <session-id>`）。单独执行 `codex resume <session-id>` 可能恢复会话上次选中的模型，
 不能保证使用 base config 的默认模型。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
-`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与四个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-astra-xhigh`、`gpt-6-sol`、`gpt-6-luna`）已在仓库
+`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与七个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
 
@@ -430,10 +430,18 @@ Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话�
 `gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
-`gpt-6-astra` 保留 high reasoning effort；`gpt-6-astra-xhigh` 选择同一上游 Astra 模型的 xhigh 推理等级。
-Sol 默认使用 xhigh（extra high），Luna 默认使用 max。
-`gpt-6-sol` profile 选择 GPT-6.1 Sol；`sync-codex-agent.sh` 将 Sol 模型卡的模型和推理等级默认值（GPT-6.1 Sol / xhigh）
-同步到 `business` 的独立 CODEX_HOME，只更新这两个顶层键，保留账号及其他本机设置。
+Astra 和 Sol 均提供三档 provider：默认名称使用 high，`-x` 使用 xhigh，`-max` 使用 max。
+Astra 三档上游均为 `gpt-6-astra`，Sol 三档上游均为 `gpt-6.1-sol`；Luna 保持 max。
+这些订阅制 provider 使用账号登录，不需要 API key 或 shim。
+`sync-codex-agent.sh` 将 Sol 默认卡的模型和推理等级（GPT-6.1 Sol / high）同步到 `business` 的独立
+CODEX_HOME，只更新这两个顶层键，保留账号及其他本机设置。`gpt_codex` 仍选择 `gpt-6-sol`，
+runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
+
+`gpt-6-astra-x` 替代 `gpt-6-astra-xhigh`，旧名称不再是受支持的 runner provider 或受管 launcher。
+同步保留额外的已安装模型卡，因此 native Codex 仍可能直接选用旧卡；旧卡存在不代表 runner 支持旧 provider。
+已有 App data、session 和个人设置均保留。已加载的旧函数需打开新 shell 清除，或先显式执行
+`unfunction gpt-6-astra-xhigh_codex gpt-6-astra-xhigh_codex_app`，再 `source ~/.zshrc` 加载新函数；
+仅 source 不会删除旧函数。重新打开 Agent 会话以加载更新后的 skills。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
@@ -447,11 +455,14 @@ Sol 默认使用 xhigh（extra high），Luna 默认使用 max。
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `local` | `qwen3.8-27b-local` | 用户可配置（默认 127.0.0.1:8080） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
-| `gpt-6-astra-xhigh` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
-| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
-| `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制 |
+| `gpt-6-astra-x` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
+| `gpt-6-astra-max` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
+| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
+| `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
+| `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
+| `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 
-云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。四个 OpenAI profile 对应三个上游模型，共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
+云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。七个 OpenAI profile 对应三个上游模型，共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
 
 安装或更新：
 
@@ -766,8 +777,11 @@ codex-agent/
     qwen/config.toml
     local/config.toml
     gpt-6-astra/config.toml
-    gpt-6-astra-xhigh/config.toml
+    gpt-6-astra-x/config.toml
+    gpt-6-astra-max/config.toml
     gpt-6-sol/config.toml
+    gpt-6-sol-x/config.toml
+    gpt-6-sol-max/config.toml
     gpt-6-luna/config.toml
   bin/
     codex-auto-review-shim
