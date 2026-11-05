@@ -49,3 +49,22 @@ The optional question about retaining direct instead of requested Plan overrides
 Current gate=ready-to-open-draft-PR; next=commit/push/create draft PR and immutableOIDdeliverycheck. Usermergesmanually. Finalcomponent sync is explicitly authorized by user's test-before-sync clarification and follows tested/reviewed source.
 
 Delivery packaging-only adjustment: staged whitespacecheck correctly flags required blank context markers inside a raw embedded unifieddiff. Preserve exact reviewedpatch in fix.patch.gz; keep rawlocalfix.patch ignored with a scoped .gitignore. DecompressedSHA matches a806a748..., no product/test/reviewsemantic change. See evidence-packaging.md.
+
+## Draft PR delivery check passed
+
+Draft PR: https://github.com/noho/code-is-cheap/pull/66. Creation succeeded, followed by the controller delivery check before rollout. Repository and head repository are `noho/code-is-cheap`; base `main` is `2cb3127fc1ec2041f8636a6d5ad3d78a739d815a`, head is `47d66721683205abeaeb11c88d9a9833d7f74063`. The immutable GitHub comparison contains exactly the intended 53 changed files and one commit; every returned blob OID matches local committed content, and all 19 reviewed product hashes match. Title/body and draft status are accurate. No repository workflow is configured, and GitHub reports zero statuses, check runs and workflow runs for this head; CI is not applicable. Remote work branch matches head.
+
+The GitHub plugin lacks immutable-OID comparison and its metadata calls returned only acknowledgements, so `gh api` supplied the fixed-OID full diff and metadata. Retrievable private evidence: `/private/tmp/hy4-codex-task/delivery-initial/{receipt.json,pr.json,compare.json,compare.diff.gz}`; full diff SHA256 `35bd9cd946d3af433660cc0898fb6da7d93bd4c92201e1463fdfe4a1e08e1dd8`. Source/evidence commit is available from the PR branch. This check does not replace the two full reviews and two affected reviews already recorded.
+
+Decision: draft-PR-pass. Current gate/next entry point: final closeout, including the already authorized live sync, private endpoint update and actual installed-route verification. Final docs-only closeout changes will be pushed and delivery identity/diff/head/base checked again; no product changes are pending.
+
+
+## Authorized rollout and final closeout
+
+All three approved sync commands exited 0, in order: agent tools, Codex agent, skills. Both installed factories now recognize Hy Codex before the atomic private update. Controller updated only `default.hy.codex` and both `override.hy` runtimes using existing credentials, with compare-before-write, a private 0600 backup and exact unrelated-value preservation. The effective Plan bases and model `hy4` match the user-requested Tencent documentation. No live JSON or key is included in Git.
+
+Actual installed verification passed: nine source/factory/route pairs and both skill trees match; card/registry values are correct; both installed helpers validate keyed effective connections; shim resolves Hy to `/plan/v3/responses`; the same running launchd PID28987 owns all nine ports including8796, and installed stable readiness returns0. Mock native launches verify selected Claude authentication/main/subagent model slots and Codex Hy profile/shared home. Native `debug models` accepts the installed Hy catalog. An invalid supplemental `features list -p hy` command returned1 because that subcommand disallows profiles; retained privately and replaced with the established parser owner, not treated as a product failure or hidden pass.
+
+Private evidence: `/private/tmp/hy4-codex-task/live-sync/receipt.json` and `verification.json`, with raw sync logs outsideGit. Account403001 remains user/account-owned; requested overrides are present, and effectivePlan calls remain permission-blocked until the user resolves the account/key. No further inference was sent, and no Plan success is claimed.
+
+Decision: final closeout pass, work unit completed. See closeout.md for behavior, validation, docs, finding closure, actual sync commands, PR, classified remaining limits and next entry point. Final deliverable is a docs-only closeout tail over the exact19reviewedproductfiles; commit/push and immutableOIDdelivery check run before reporting completion. User merges PR66 manually; no issue or external comment applies. Final receipt location: `/private/tmp/hy4-codex-task/delivery-final/receipt.json`.
