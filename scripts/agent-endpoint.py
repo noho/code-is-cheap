@@ -48,16 +48,22 @@ def validate_url(url):
 
 
 def validate_document(doc, known=None):
+    """Return active sections; only private backup roots/providers are inert."""
     if (
         not isinstance(doc, dict)
         or "default" not in doc
-        or set(doc) - {"default", "override"}
+        or (known is None and set(doc) - {"default", "override"})
     ):
         raise ValueError("expected default and optional override objects")
+    active = {}
     for section in ["default", "override"]:
         providers = doc.get(section, {})
         if not isinstance(providers, dict):
             raise ValueError("invalid configuration section")
+        if section == "override" and known is not None:
+            # Select by exact factory provider name before inspecting contents.
+            providers = {p: r for p, r in providers.items() if p in known}
+        active[section] = providers
         for provider, runtimes in providers.items():
             if not isinstance(runtimes, dict) or not runtimes:
                 raise ValueError("invalid provider settings")
@@ -86,6 +92,7 @@ def validate_document(doc, known=None):
                     raise ValueError(
                         "direct local Codex connection does not support an API key"
                     )
+    return active
 
 
 def factory_document():
@@ -124,7 +131,7 @@ def load_endpoints():
                     "private file must be an owned regular file with mode 600"
                 )
             local = read_json(path.read_text())
-        validate_document(local, factory["default"])
+        local = validate_document(local, factory["default"])
         result = copy.deepcopy(factory["default"])
         for section in ["default", "override"]:
             for provider, runtimes in local.get(section, {}).items():

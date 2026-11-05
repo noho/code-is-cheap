@@ -176,6 +176,184 @@ class EndpointTests(unittest.TestCase):
                 (Path(temp) / ".config/agent-tools/endpoints.json").exists()
             )
 
+    def test_rename_disable_restore_uses_whole_defaults_without_writes(self):
+        module = shim.endpoint_module()
+        defaults = {
+            "ds-flash": {
+                runtime: conn(f"https://default.example/{runtime}", f"default/{runtime}",
+                              f"fake-default-{runtime}")
+                for runtime in ("codex", "claude")
+            },
+            "mimo": {"codex": conn(key="fake-mimo-default")},
+        }
+        overrides = {
+            provider: {
+                runtime: conn(f"https://override.example/{provider}/{runtime}",
+                              f"{provider}/{runtime}", f"fake-{provider}-{runtime}")
+                for runtime in ("codex", "claude")
+            }
+            for provider in ("ds-flash", "mimo")
+        }
+        for backup in ("ds-flash-bak", "overrideds-flash-bak", "overridexxx"):
+            with self.subTest(backup=backup), tempfile.TemporaryDirectory() as temp, \
+                 patch.dict(os.environ, {"HOME": temp}):
+                doc = {"default": defaults, "override": copy.deepcopy(overrides)}
+                path = private_doc(temp, doc)
+                snapshot = module.load_endpoints()
+                selected = module.connection("ds-flash", "codex", snapshot, require_key=True)
+                if backup == "overridexxx":
+                    doc[backup] = doc.pop("override")
+                else:
+                    doc["override"][backup] = doc["override"].pop("ds-flash")
+                path.write_text(json.dumps(doc, indent=3) + "\n")
+                before = path.read_bytes(), path.stat().st_mode
+                original = copy.deepcopy(doc)
+                module.validate_document(doc, FACTORY["default"])
+                self.assertEqual(doc, original)
+                disabled = module.load_endpoints()
+                expected = copy.deepcopy(FACTORY["default"])
+                for provider, runtimes in defaults.items():
+                    expected[provider].update(runtimes)
+                if backup != "overridexxx":
+                    expected["mimo"].update(overrides["mimo"])
+                self.assertEqual(disabled, expected)
+                for args in (("--check",), ("--initialize",)):
+                    result = self.run_helper(temp, *args)
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+                if backup == "overridexxx":
+                    doc["override"] = doc.pop(backup)
+                else:
+                    doc["override"]["ds-flash"] = doc["override"].pop(backup)
+                path.write_text(json.dumps(doc))
+                restored = module.load_endpoints()
+                for provider in overrides:
+                    self.assertEqual(restored[provider], overrides[provider])
+                    self.assertEqual(snapshot[provider], overrides[provider])
+                self.assertEqual(selected, overrides["ds-flash"]["codex"])
+                self.assertEqual(disabled, expected)
+
+    def test_malformed_backups_are_inert_until_exact_name_restoration(self):
+        module = shim.endpoint_module()
+        cases = [
+            ("root", None), ("root", 17), ("root", []),
+            ("root", {"ds-flash": None}),
+            ("provider", None), ("provider", "backup"), ("provider", []),
+            ("provider", {}),
+            ("provider", {"codex": {"base_url": "https://partial.example"}}),
+            ("provider", {"codex": conn() | {"api_key_bak": "fake-extra"}}),
+            ("provider", {"codex": conn(key=" ")}),
+            ("provider", {"codex": conn(url="file:///invalid")}),
+            ("provider", {"claude": conn(model="invalid model")}),
+            ("provider", {"codex": conn(key="fake\ninvalid")}),
+            ("provider", {"codex-bak": conn()}),
+        ]
+        for scope, value in cases:
+            with self.subTest(scope=scope, value=value), tempfile.TemporaryDirectory() as temp, \
+                 patch.dict(os.environ, {"HOME": temp}):
+                active = value if scope == "root" else {"ds-flash": value}
+                disabled = ({"overridexxx": value} if scope == "root" else
+                            {"override": {"overrideds-flash-bak": value}})
+                path = private_doc(temp, {"default": {}} | disabled)
+                self.assertEqual(module.load_endpoints(), FACTORY["default"])
+                result = self.run_helper(temp, "--check")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                path.write_text(json.dumps({"default": {}, "override": active}))
+                # Every active entry is validated, even for an unrelated query.
+                with self.assertRaises(ValueError):
+                    module.connection("mimo", "claude")
+                result = self.run_helper(temp, "--check")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn("fake", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_backup_selection_keeps_default_factory_and_json_validation_strict(self):
+        module = shim.endpoint_module()
+        for value in (None, "backup", 17, [], {}, {"codex": {"api_key": "fake"}}):
+            doc = {"default": {}, "extra-root": value, "override": {"extra-provider": value}}
+            with self.subTest(value=value):
+                module.validate_document(doc, FACTORY["default"])
+                with self.assertRaises(ValueError):
+                    module.validate_document(doc)  # Factory roots stay strict.
+        for default in (None, {"ds-flash": {}}, {"unknown": {"codex": conn()}},
+                        {"ds-flash": {"codex-bak": conn()}},
+                        {"ds-flash": {"codex": {"api_key": "fake-partial"}}}):
+            with self.subTest(default=default), self.assertRaises(ValueError):
+                module.validate_document(
+                    {"default": default, "override": {"ds-flash": {"codex": conn()}}},
+                    FACTORY["default"],
+                )
+        with self.assertRaises(ValueError):
+            module.validate_document(
+                {"default": {}, "override": {"local": {"codex": conn()}}},
+                FACTORY["default"],
+            )
+        invalid_json = [
+            '{"default":{},"overridexxx":{"x":1,"x":2}}',
+            '{"default":{},"override":{"ds-flash-bak":{"codex":{"api_key":"a","api_key":"b"}}}}',
+            '{"default":{},"overridexxx":',
+            '{"default":{},"override":{"ds-flash-bak":}}',
+        ]
+        for content in invalid_json:
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as temp:
+                path = private_doc(temp, {"default": {}})
+                path.write_text(content)
+                self.assertNotEqual(self.run_helper(temp, "--check").returncode, 0)
+                self.assertEqual(path.read_text(), content)
+
+    def test_mimo_native_launch_with_disabled_overrides_and_no_backup_key_fallback(self):
+        for backup in ("overrideds-flash-bak", "overridexxx"):
+            with self.subTest(backup=backup), tempfile.TemporaryDirectory() as temp:
+                home = Path(temp)
+                bins = home / "bin"
+                stage_helper(bins)
+                capture = home / "claude.json"
+                stub = bins / "claude"
+                stub.write_text(
+                    "#!" + sys.executable + "\nimport os,json,sys\nfrom pathlib import Path\nPath("
+                    + repr(str(capture))
+                    + ').write_text(json.dumps({"keys":{k:v for k,v in os.environ.items() if k.endswith(("KEY","TOKEN"))},"argv":sys.argv[1:]}))\n'
+                )
+                stub.chmod(0o755)
+                mimo = conn("https://mimo-default.example/anthropic", "mimo/default", "fake-mimo-key")
+                ds = {runtime: conn(key="fake-backup-key") for runtime in ("codex", "claude")}
+                disabled = ({"overridexxx": {"ds-flash": ds}} if backup == "overridexxx" else
+                            {"override": {backup: ds}})
+                path = private_doc(home, {"default": {"mimo": {"claude": mimo}}} | disabled)
+                before = path.read_bytes(), path.stat().st_mode
+                env = fixture_env(
+                    HOME=temp, PATH=str(bins) + ":/usr/bin:/bin",
+                    DEEPSEEK_API_KEY="fake-inherited-key", ANTHROPIC_AUTH_TOKEN="fake-inherited-token",
+                )
+                command = ["zsh", "-f", "-c", 'source "$1"; "${2}_claude" -p ping',
+                           "_", str(ROOT / "scripts/agent-tools.zsh")]
+                result = subprocess.run(command + ["mimo"], env=env, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                captured = json.loads(capture.read_text())
+                self.assertEqual(captured["keys"], {"ANTHROPIC_AUTH_TOKEN": mimo["api_key"]})
+                settings = json.loads(captured["argv"][1])["env"]
+                self.assertEqual(settings["ANTHROPIC_BASE_URL"], mimo["base_url"])
+                self.assertEqual(settings["ANTHROPIC_MODEL"], mimo["upstream_model"])
+                self.assertEqual(captured["argv"][-2:], ["-p", "ping"])
+                self.assertNotIn(mimo["api_key"], json.dumps(captured["argv"]))
+                self.assertNotIn("fake-backup-key", json.dumps(captured))
+                capture.unlink()
+                # Factory cloud keys are empty: neither backups nor env may fill them.
+                result = subprocess.run(command + ["ds-flash"], env=env, capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertFalse(capture.exists())
+                for runtime in ("codex", "claude"):
+                    result = subprocess.run(
+                        [sys.executable, str(HELPER), "--check", "--require-key",
+                         "--provider", "ds-flash", "--runtime", runtime],
+                        env=env, capture_output=True, text=True,
+                    )
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertNotIn("fake-", result.stderr)
+                result = self.run_helper(temp, "--check")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+
     def test_invalid_config_and_partial_override_fail_closed_without_secret_echo(self):
         invalid = [
             [],

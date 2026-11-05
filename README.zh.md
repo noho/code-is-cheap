@@ -142,9 +142,13 @@ bash install-code-is-cheap.sh
 
 `~/.config/agent-tools/endpoints.json` 统一保存每个 provider/runtime 的上游 URL、模型 ID 和 API key，权限必须为 `600`。安装器仅在文件不存在时创建；sync 不创建或修改用户文件。`config/endpoints.example.json` 是单独部署的程序默认资源，不含云端凭据。初始 URL 和模型选择保持当前值；以下示例不会自动选择新云商。
 
-- `default`：你的基线连接，每个 runtime 包含 `base_url`、`upstream_model`、`api_key`。
+- `default`：你的基线连接，已有文件必须包含此对象。provider/runtime 名称必须受支持，每个 runtime 必须恰好包含 `base_url`、`upstream_model`、`api_key`。
 - `override`：可选的覆盖连接，沿用 provider/runtime 层级。覆盖必须**同时填写这三个字段**，避免新云商沿用旧云商的 key。其他 runtime/provider 保持默认连接；删除该 runtime 的 override 即可恢复。
-- 缺少文件或某个 runtime 连接时使用程序默认资源；云端启动仍需要有效连接中的非空 key。已有文件必须包含 `default`；未知字段、不完整覆盖、空 URL/模型、重复 JSON 字段和不安全权限会明确报错。空字符串不表示继承。
+- 缺少文件或某个 runtime 连接时使用程序默认资源。云端启动仍需要有效连接中的非空 key，不能从备份节点或继承的环境变量补充。空字符串不表示继承。
+
+临时停用某个 provider 的覆盖时，可将 `override.ds-flash` 改名为未识别的名称，例如 `override.ds-flash-bak` 或 `override.overrideds-flash-bak`。停用全部覆盖时，将根节点 `override` 改名为 `overridexxx`，保留 `default`。受影响的连接回退到你完整的 default 连接三元组，缺少的连接再使用程序默认资源。恢复精确的受识别名称后，会重新校验并启用保存的覆盖；helper 不修改私有文件。
+
+只有精确命名的根节点 `override` 及其下受识别的 provider 名称会激活。未知私有根字段和未知 override-provider 名称下的内容无论形状如何都被忽略，但整个文件仍须是有效 JSON，包括备份内部在内的重复字段也会被拒绝。`default` 和所有激活的 override 仍严格校验 provider/runtime 和连接字段：字段缺失或多余、不支持的 runtime、无效 URL/模型/key、空白云端 override key，即使查询无关连接也会报错。修改 runtime 或连接字段的名称不能停用配置。文件必须是当前用户拥有、权限为 `600` 的普通文件，不能是符号链接。程序默认资源仍严格校验结构，且不得包含云端凭据。
 
 例如在 `override` 中添加以下连接，仅切换 `ds-flash_codex`（填入网关实际 URL/模型/key）：
 

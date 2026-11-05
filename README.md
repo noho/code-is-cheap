@@ -151,9 +151,13 @@ Existing private connection JSON, Codex login and unrelated Codex settings are p
 
 `~/.config/agent-tools/endpoints.json` now owns the upstream URL, model ID and API key for each provider/runtime. Keep it private with mode `600`. The installer creates it only when absent; sync never creates or changes it. Project defaults in `config/endpoints.example.json` contain no cloud credentials and are deployed separately. Existing default URLs and model choices remain the initial values; the examples below do not select a new gateway automatically.
 
-- `default`: your baseline connections. Each runtime contains `base_url`, `upstream_model` and `api_key`.
+- `default`: your baseline connections, in a required object for existing files. Provider/runtime names must be recognized, and each runtime contains exactly `base_url`, `upstream_model` and `api_key`.
 - `override`: optional connections with the same provider/runtime nesting. An override replaces **all three fields together**, so a new gateway cannot inherit an old gateway's key. Other runtimes/providers keep their defaults. Delete that runtime's override to revert.
-- Missing files or omitted runtime connections use program defaults; a cloud launch still requires a nonempty key in the effective connection. Existing files must have `default`; unknown fields, incomplete overrides, blank URLs/models, duplicate JSON fields and unsafe permissions fail explicitly. Empty strings do not mean inheritance.
+- Missing files or omitted runtime connections use program defaults. A cloud launch still requires a nonempty key in the effective connection; backup data and inherited environment keys cannot supply it. Empty strings do not mean inheritance.
+
+To temporarily disable a provider's overrides, rename `override.ds-flash` to an unrecognized name such as `override.ds-flash-bak` or `override.overrideds-flash-bak`. To disable all overrides, rename root `override` to `overridexxx`, retaining `default`. The affected connections fall back to your complete default tuples, then program defaults for omitted connections. Restore the exact recognized name to revalidate and reactivate the saved overrides; the helper preserves the private file unchanged.
+
+Only exact root `override` and recognized provider names beneath it are active. Unknown private root fields and unknown override-provider names are ignored regardless of their contents, but the whole file must still be valid JSON with no duplicate fields, including inside backups. `default` and every active override retain strict provider/runtime and tuple validation: incomplete or extra tuple fields, unsupported runtimes, invalid URLs/models/keys and blank cloud override keys fail even for an unrelated connection query. Renaming runtime or tuple-field names does not disable them. The file must be an owned regular file with mode `600`, not a symlink. Project defaults retain their strict schema and cannot contain cloud credentials.
 
 For example, add this connection under `override` to change only `ds-flash_codex` (use the gateway's actual URL/model/key):
 

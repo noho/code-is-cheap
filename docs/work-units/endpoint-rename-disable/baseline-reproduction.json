@@ -1,0 +1,14 @@
+[
+  {
+    "sample": "provider-renamed",
+    "baseline_exit": 1,
+    "stderr": "Cannot use connection settings; check JSON fields, mode 600 and selected api_key.",
+    "unrelated_mimo_selection_failed": true
+  },
+  {
+    "sample": "root-renamed",
+    "baseline_exit": 1,
+    "stderr": "Cannot use connection settings; check JSON fields, mode 600 and selected api_key.",
+    "unrelated_mimo_selection_failed": true
+  }
+]
