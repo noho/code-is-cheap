@@ -1,0 +1,38 @@
+# Override rename-disable controller
+
+## Confirmed goal and preflight
+
+The user confirmed that renamed override provider nodes and a renamed root override block are retained but inactive; effective connections fall back to default, and unrelated launchers such as mimo_claude must continue. Renaming back restores activation. Only recognized active connections receive schema validation. Active tuple validation, credential isolation, duplicate-key parsing, owned regular mode-0600 file checks and required default remain in force. No live data is edited by this fix.
+
+Initial branch main at f2ba5ab (prior Hy work merged). Created fix/endpoint-rename-disable before edits, as AGENTS.md requires; user implementation authorization includes the routine work branch. Three preexisting untracked docs/reviews/runner-handle-loss-20261023 files are unrelated and excluded.
+
+Root cause evidence: scripts/agent-endpoint.py validate_document rejects every unknown root key and unknown override provider/runtime; load_endpoints validates the entire document before any connection selection, then merges every provider without filtering. Thus merely skipping unknown keys during validation would leave a merge KeyError. Selection and validation must agree at the endpoint schema owner, not be patched in launchers.
+
+Scope: private unknown root fields and unknown provider names under override may be inert. Recognized provider runtime names and connection fields retain existing strictness; default remains a required validated baseline. No provider/model changes or network inference tests are needed. Relevant helper, launcher, shim and installer behavior will be tested with isolated homes/fake credentials. Live current key names were inspected without values; no live file was mutated. Final tested/reviewed helper sync is authorized by this ongoing fix request and earlier test-before-sync instructions; preserve the private file byte for byte.
+
+Current gate: plan. GPT-6 Sol delegated per AGENTS.md through codex-agent-run; receipt under /private/tmp/endpoint-rename-disable/plan.jsonl. Controller will adjudicate the small plan, dispatch implementation, then run independent parallel MiMo Claude and DS Claude Deepreviews (authorized DS Codex backup only if required). Controller owns PR and live delivery. No separate architecture plan review is warranted for this narrow schema selection correction using existing ownership.
+
+## Plan check passed
+
+Sol plan native/outer exit0; actual receipt /private/tmp/endpoint-rename-disable/plan.jsonl, 161.978s. Read plan.md and accept the contract: private unknown root keys and unknown override provider names are inert; factory defaults, private default, known override runtimes/tuples and global parse/file security stay strict. validate_document returns one active view consumed by load_endpoints, eliminating disagreement between filtering and merging. This small, user-defined selection correction has no new architecture/protocol/major migration decision; controller plan check suffices. Optional extra ownership mocking is unnecessary unless a changed path needs it; retain existing checks.
+
+Baseline isolated reproductions in baseline-reproduction.json both return1 on unrelated mimo selection. No blocking question. Current gate: implementation/validation. Dispatch Sol to implement the four planned product/test/doc files and record meaningful regressions using fake data only. Live remains untouched until validation and review pass.
+
+## Implementation validation passed / full review dispatch
+
+Sol native/outer exit0, actual managed session97490 completed, receipt implement.jsonl, 275.495s. Controller read the exact four-file diff, all new tests and implementation.md. Four focused tests and all34 endpoint/install tests passed with no skips; actual commands/results are saved in test-results.json, whitespace check0. Change is the planned small schema-owner selection and merge correction, with no launcher/registry/live changes. All four product files frozen in review-input.json; retrievable source archive and complete product diff saved privately. No known implementation blocker; full independent review is next.
+
+Current gate: code review. Dispatch Claude MiMo Flash and Claude DS Flash in parallel, no peer report/adjudication visibility. Both must inspect the same frozen4-file combined change and relevant unchanged consumers; tests use isolated fake settings. No live deployment before both reviews and any accepted fix loop pass.
+
+
+DS Claude primary exited native/outer1, auth403 package disabled/no invocation permission, 3.009s, no substantive review. Actual receipt review-ds.jsonl retained privately. Per AGENTS.md, use the same DS reviewer on codex-agent-run --provider ds-flash as the authorized backup. MiMo remains independently running on Claude. A controller-only isolated HOME/ephemeral shim wrapper reuses the existing private default.ds-flash.codex direct connection rather than the permission-blocked Plan override, without changing live. Wrapper and route facts stay under /private/tmp/endpoint-rename-disable/. Reviewer inputs and frozen scope are unchanged; no peer reports are provided.
+
+## Full review adjudication / ready to deliver
+
+Both independent reviews completed with native/outer0 and formal artifacts: MiMo Claude docs/reviews/code-review-20261105-145627.md (1321.200s) and DS authorized Codex backup docs/reviews/code-review-20261105-144106.md (210.873s). Controller read both full reports, source/diff and actual test evidence; all four product hashes remain exactly frozen. Both independently reran all34 endpoint tests successfully (MiMo29.492s; DS27.413s with Python3.11/PATH corrected). DS retained its initial Python3.9 discovery/installer environment failures; these are not counted as passes. MiMo also ran10 adversarial probes and retained its failed tool observation; formal report was actually written and native process exited.
+
+MiMo finding1 verdict: rejected-with-reason, not accepted/unfixed. It requests an owner-UID mismatch test solely because of the planner's initial wording. Before implementation, the controller plan check explicitly removed this optional unchanged-branch addition, and the Sol implementation prompt and implementation.md reflect that approval. The source guard is unchanged and both reviewers confirm it is correct; the rename-selection change does not alter the pre-selection file checks. This does not prevent correct implementation of the confirmed goal. The accepted plan wording is now aligned with that already-recorded pre-implementation decision; no product or test changes, no retroactive change of user scope. Original independent report is retained unchanged. Existing UID-branch dynamic coverage remains an existing policy gap, owner maintainers, destination a later file-security testing work unit if that guard is changed.
+
+DS has no findings. No accepted findings, needs-more-evidence or code blocker remains; no empty fix/re-review is required. Residuals: vendor/live connectivity and all-repository matrix are outside this helper-selection correction (owner operator/existing testing policy); upcoming authorized installed-helper smokes cover deployment copies, exact renamed shapes and running shim readiness. No new issue or user choice is required. Both reviews were independent; no peer report or controller verdict was provided to either reviewer.
+
+Full-review gate PASS. Current gate: ready-to-open-draft-PR; next commit/push/create draft PR, then immutable-OID delivery check. Only docs-only adjudication/approved-plan clarification and closeout records follow the frozen product version. User merges manually. No issue is associated.

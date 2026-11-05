@@ -1,0 +1,22 @@
+[
+  {
+    "command": "/bin/zsh -c \"PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_install_endpoints.py' -k rename_disable -k malformed_backups -k backup_selection -k mimo_native_launch\"",
+    "exit_code": 0,
+    "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 2.536s\n\nOK\n"
+  },
+  {
+    "command": "/bin/zsh -c 'git diff --check; git diff --stat'",
+    "exit_code": 0,
+    "output": " README.md                       |   8 +-\n README.zh.md                    |   8 +-\n scripts/agent-endpoint.py       |  11 ++-\n tests/test_install_endpoints.py | 178 ++++++++++++++++++++++++++++++++++++++++\n 4 files changed, 199 insertions(+), 6 deletions(-)\n"
+  },
+  {
+    "command": "/bin/zsh -c \"PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_install_endpoints.py'\"",
+    "exit_code": 0,
+    "output": "..................................\n----------------------------------------------------------------------\nRan 34 tests in 29.681s\n\nOK\n"
+  },
+  {
+    "command": "/bin/zsh -c 'git diff --check'",
+    "exit_code": 0,
+    "output": ""
+  }
+]
