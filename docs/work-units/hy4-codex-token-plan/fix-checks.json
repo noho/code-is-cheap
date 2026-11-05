@@ -1,0 +1,108 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "scripts/sync-codex-agent.sh"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "zsh",
+        "-n",
+        "codex-agent/bin/codex-auto-review-shim-service"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "-c",
+        "from pathlib import Path; [compile(Path(p).read_bytes(), p, \"exec\") for p in (\"tests/test_shim_service.py\", \"tests/test_model_catalog_generation.py\")]"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "skill_validation_reuse": {
+    "prior_summary": "/Users/leo/workspace/code-is-cheap/docs/work-units/hy4-codex-token-plan/implementation-test-results.json",
+    "summary_sha256": "d7adf557b41b7bfba80ab39b0b33e404cbba4a211d34105ca0d4fcca146420b7",
+    "archive_sha256": "4298b9f4a88cba832274d4dc2699ead3ff398e783307bb9d3b9709831076cc63",
+    "command": "./scripts/validate-skills.sh",
+    "exit": 0,
+    "skills": 6,
+    "log_sha256": "09d2025436961c37206407353492d096d7a091904da4232bf7c5eb745435d3da",
+    "log": "Validating skills/deepreview\nSkill is valid!\nValidating skills/gateflow\nSkill is valid!\nValidating skills/phaseflow\nSkill is valid!\nValidating skills/planreview\nSkill is valid!\nValidating skills/sub-agents\nSkill is valid!\nValidating skills/tmux-agents\nSkill is valid!\n",
+    "unchanged_skill_files": [
+      {
+        "path": "skills/deepreview/SKILL.md",
+        "sha256": "51c1f43fa7ac47bd805ef4fb6f13dcfc69d944f05ef12c2a14d8f294c2553159"
+      },
+      {
+        "path": "skills/deepreview/agents/openai.yaml",
+        "sha256": "4a0541d136e56977b994b378c3ca4ad022c5ea79f41ca7b6a837301f808edb19"
+      },
+      {
+        "path": "skills/gateflow/SKILL.md",
+        "sha256": "a89544cc5a841f9ba59441223af292f34fbfc03ef555e9a3368620f0a2c4f5ad"
+      },
+      {
+        "path": "skills/gateflow/agents/openai.yaml",
+        "sha256": "c3364b8e1c194de09eb4d29c153b16b18e295c8ef896af5a31e2d3e6e3bfce9c"
+      },
+      {
+        "path": "skills/phaseflow/SKILL.md",
+        "sha256": "b873285442109def37639816ee84d35120faf2fb31da6a36547d8303de067fbf"
+      },
+      {
+        "path": "skills/phaseflow/agents/openai.yaml",
+        "sha256": "c611c8ada0b3f4834145069bb036900556ee9dfa463d0a895ac9a2b0ef02af4b"
+      },
+      {
+        "path": "skills/planreview/SKILL.md",
+        "sha256": "cabe829df2e15e92907045f4b32589d425dd34aed1af7c35ccc2dfcd061144a4"
+      },
+      {
+        "path": "skills/planreview/agents/openai.yaml",
+        "sha256": "31d1e27f7e2b1d01c8d69e5fc897bce4d39577fcd31b1c7b7bf9382bf629838d"
+      },
+      {
+        "path": "skills/sub-agents/SKILL.md",
+        "sha256": "2e54c7a0de0792265a7521bd4d63dd91f4dea226183885b19edcee8fea457f06"
+      },
+      {
+        "path": "skills/sub-agents/agents/openai.yaml",
+        "sha256": "441192906344a809661fa618e2f48f36e8f35e4ca78c38a1dacc5c0dd842c282"
+      },
+      {
+        "path": "skills/sub-agents/references/advanced.md",
+        "sha256": "8b359a88fc36909f9846c510cff5db20b802fad1335a5db663c90e8c549ec307"
+      },
+      {
+        "path": "skills/tmux-agents/SKILL.md",
+        "sha256": "02bb9a5c1a7b9716104635bb4f70a8778ba9336d4daaad0931a5b45896b54c03"
+      },
+      {
+        "path": "skills/tmux-agents/agents/openai.yaml",
+        "sha256": "514c9299ffe980e8a5e83dd26212e302994fe9212aa31e48a841764e6de0b21a"
+      }
+    ]
+  }
+}

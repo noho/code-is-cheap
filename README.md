@@ -324,12 +324,21 @@ Available launchers:
 | Runtime | Agent IDs | Commands |
 | --- | --- | --- |
 | Claude Code | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `hy` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `local`, `gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6-sol-x`, `gpt-6-sol-max`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds-flash`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `kimi`, `glm`, `glm-flash`, `hy`, `local`, `gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6-sol-x`, `gpt-6-sol-max`, `gpt-6-luna`, `business` | `<agent-id>_codex [args...]` |
 | Codex app | Same as Codex CLI | `<agent-id>_codex_app [workspace]` |
 
 Pass `--title` to a CLI launcher to set a stable tmux pane title such as `ClaudeAgent-DS-Flash` or `CodexAgent-GPT-6-Astra`.
-`hy` (hy4-preview on tokenhub.tencentmaas.com, with its JSON `api_key`) is **Claude-runtime only**: the gateway's `/v1/responses` SSE
-upstream proved too unreliable for Codex auto-review escalations (2026-09-24), so the Codex-side profile was dropped.
+`hy` uses `hy4` for Claude and Codex; `hy_codex`, `hy_codex_app` and runner alias `hunyuan` select the Hy card. The direct factory Codex base is `https://tokenhub.tencentmaas.com/v1` (shim port 8796). A bounded native workflow on 2026-11-05 completed real tool continuation and automatic review; this is runtime integration evidence, not an availability or capability guarantee. Hy uses repository-authored text-only compatibility metadata, `high` effort and the ordinary 1048576 / 786432 context/compact configuration; those limits were not measured. Its independently bundled guardian preserves native security metadata with existing direct/non-Lite transport.
+
+Token Plan override examples below replace the complete URL/model/key tuple; keys are placeholders. Current tested Plan credentials return HTTP 403 / `403001` (package disabled or invocation permission missing), which is an account permission blocker, not demonstrated Hy incompatibility. Enable only with a permitted account. Install both updated endpoint factories before adding `override.hy.codex`: old helpers reject the whole document when that runtime is unknown. Keep private endpoints outside Git.
+
+```json
+{"override":{"hy":{
+  "claude":{"base_url":"https://tokenhub.tencentmaas.com/plan/anthropic","upstream_model":"hy4","api_key":"YOUR_TOKEN_PLAN_KEY"},
+  "codex":{"base_url":"https://tokenhub.tencentmaas.com/plan/v3","upstream_model":"hy4","api_key":"YOUR_TOKEN_PLAN_KEY"}
+}}}
+```
+
 The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To continue a CLI conversation on another model, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`.
 
 ```bash
@@ -452,8 +461,8 @@ All managed profiles share one Codex home (`~/.codex`, Codex's default home — 
 is model switching, and the session pool is shared. Resume through the target model's launcher
 (`gpt-6-sol_codex resume <session-id>`) or pass `-p` explicitly
 (`codex resume -p gpt-6-sol <session-id>`). Plain `codex resume <session-id>` can restore the
-session's last selected model instead of the base config's default. The nine
-third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `local`) and the seven subscription-backed OpenAI
+session's last selected model instead of the base config's default. The ten
+third-party profiles (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `hy`, `local`) and the seven subscription-backed OpenAI
 profiles (`gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6-sol-x`, `gpt-6-sol-max`, `gpt-6-luna`) are versioned in this repository under `codex-agent/profiles/`;
 `business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
 machine-owned except for the marked provider registry managed by this repository.
@@ -494,6 +503,7 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + patched catalog + `json_object` downgrade |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + patched catalog + `json_object` downgrade |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
+| `hy` | `hy4` | tokenhub.tencentmaas.com | 8796 | authored compatibility catalog |
 | `local` | `qwen3.8-27b-local` | user-configurable (default 127.0.0.1:8080) | none | patched catalog, runs unsandboxed, no shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
 | `gpt-6-astra-x` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
@@ -523,7 +533,7 @@ The tracked templates write machine paths as `@HOME@`; the sync script substitut
 install (Codex accepts only absolute paths in these fields).
 
 Model cards carry only model deltas (model, `model_provider`, reasoning effort, context/compact windows,
-`web_search`, `model_catalog_json`). The nine third-party gateway definitions live in
+`web_search`, `model_catalog_json`). The ten third-party gateway definitions live in
 `codex-agent/model-providers.toml`; sync installs them as a marked block in the shared base config so resume can
 resolve a provider used earlier in the same conversation. `glm-flash`, `mimo-fast`, and `mimo-flash` now have distinct
 provider IDs because they use distinct gateway ports. Legacy sessions recorded with the shared `glm` or `mimo` IDs
@@ -537,16 +547,17 @@ The sync script changes only its marked provider block and refuses to overwrite 
 Cards are pure artifacts and are overwritten wholesale on sync. To change
 one model's setting, edit its card in the repo and re-sync (layering makes card keys win over base).
 
-`model-catalogs/<id>.json` remain **generated, untracked outputs**. The eight cloud profiles
+`model-catalogs/<id>.json` remain **generated, untracked outputs**. Eight cloud profiles
 use byte-verified [official source snapshots](codex-agent/catalog-sources/README.md), preserving
 complete source metadata and instructions. Each appends only an independently obtained bundled native
 guardian; cloud sessions have no GPT donor. `glm-flash` is a user-authorized clone of official `glm-5.3`,
 labelled derived for `glm-5.3-flash` with only its three identity fields changed; it does not switch to Turbo.
 Kimi's card and shim logical slug are `k3`; endpoint-owned URL/key/upstream model stay independent.
 Qwen uses context **983616** and compact limit **737712**, preserving its absent maximum. Other cloud
-cards retain 1048576/786432. All eight efforts stay **max**. Official advertised/default levels stay intact:
+cards retain 1048576/786432. Their eight efforts stay **max**. Official advertised/default levels stay intact:
 MiMo's snapshot omits max (user reports official confirmation); Qwen advertises low/medium/xhigh.
 Informational notes expose these differences. Mock forwarding is not vendor acceptance.
+Hy separately uses the repository-authored compatibility entry described above; its high effort and guardian transport do not alter these official sources.
 
 DS/GLM/Kimi/Qwen guardian transport uses direct tools with Lite disabled; MiMo retains native
 Code Mode/Responses Lite and `additional_tools`. Native 0.162.1 has stable/default-true
@@ -828,6 +839,7 @@ codex-agent/
     ds-flash/config.toml
     glm/config.toml
     glm-flash/config.toml
+    hy/config.toml
     kimi/config.toml
     mimo/config.toml
     mimo-fast/config.toml

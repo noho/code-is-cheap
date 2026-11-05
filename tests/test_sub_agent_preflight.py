@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PREFLIGHT = ROOT / "scripts/sub-agent-preflight"
 BODY = "Goal\nInspect the CANARY concept and token validation.\nNon-goals\nNo dispatch.\nStop condition\nFinish setup.\n"
-CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local gpt-6-astra gpt-6-astra-x gpt-6-astra-max gpt-6-sol gpt-6-sol-x gpt-6-sol-max gpt-6-luna business".replace(" ", "\n") + "\n"
+CODEX_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash hy local gpt-6-astra gpt-6-astra-x gpt-6-astra-max gpt-6-sol gpt-6-sol-x gpt-6-sol-max gpt-6-luna business".replace(" ", "\n") + "\n"
 CLAUDE_PROVIDERS = "ds-flash mimo mimo-fast mimo-flash qwen kimi glm glm-flash local hy".replace(" ", "\n") + "\n"
 
 

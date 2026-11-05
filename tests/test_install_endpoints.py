@@ -95,6 +95,31 @@ class EndpointTests(unittest.TestCase):
             text=True,
         )
 
+    def test_hy_factory_override_mapping_and_old_schema_ordering(self):
+        module = shim.endpoint_module()
+        old = copy.deepcopy(FACTORY['default'])
+        del old['hy']['codex']
+        plan = conn('https://tokenhub.tencentmaas.com/plan/v3','hy4','fake-plan-key')
+        doc = {'default':{}, 'override':{'hy':{'codex':plan}}}
+        with self.assertRaises(ValueError):
+            module.validate_document(doc, old)
+        module.validate_document(doc, FACTORY['default'])
+        with tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, {'HOME':temp}):
+            direct = FACTORY['default']['hy']['codex'] | {'api_key':'fake-direct-key'}
+            path = private_doc(temp, {'default':{'hy':{'codex':direct}}, 'override':{}})
+            selected = module.connection('hy','codex',require_key=True)
+            route = next(r for r in json.loads((ROOT/'codex-agent/shim-routes.json').read_text())['routes'] if r['endpoint_id']=='hy')
+            self.assertEqual(shim.route_url(route,'/v1/responses',selected), direct['base_url']+'/responses')
+            path.write_text(json.dumps(doc))
+            self.assertEqual(module.connection('hy','codex',require_key=True),plan)
+            self.assertEqual(shim.route_url(route,'/v1/responses',plan),plan['base_url']+'/responses')
+            self.assertEqual(selected['api_key'],'fake-direct-key')
+            for bins in (Path(temp)/'.local/bin',Path(temp)/'.codex-agent/bin'):
+                stage_helper(bins)
+                done = subprocess.run([sys.executable,str(bins/'agent-endpoint.py'),'--check'],env=fixture_env(HOME=temp),capture_output=True,text=True)
+                self.assertEqual(done.returncode,0,done.stderr)
+                self.assertEqual((bins/'agent-endpoints.defaults.json').read_bytes(),(ROOT/'config/endpoints.example.json').read_bytes())
+
     def test_whole_runtime_override_revert_and_single_snapshot(self):
         with (
             tempfile.TemporaryDirectory() as temp,
@@ -483,50 +508,51 @@ class EndpointTests(unittest.TestCase):
             self.assertFalse(marker.exists())
 
     def test_codex_client_gets_no_cloud_key_but_selected_connection_is_required(self):
-        with tempfile.TemporaryDirectory() as temp:
-            home = Path(temp)
-            bins = home / "bin"
-            stage_helper(bins)
-            capture = home / "codex.json"
-            stub = bins / "codex"
-            stub.write_text(
-                "#!"
-                + sys.executable
-                + "\nimport os,json,sys\nfrom pathlib import Path\nPath("
-                + repr(str(capture))
-                + ').write_text(json.dumps({"keys":{k:v for k,v in os.environ.items() if k.endswith(("KEY","TOKEN"))},"argv":sys.argv[1:]}))\n'
-            )
-            stub.chmod(0o755)
-            card = home / ".codex/ds-flash.config.toml"
-            card.parent.mkdir()
-            card.write_text('model="deepseek-flash"\n')
-            private_doc(
-                home, {"default": {}, "override": {"ds-flash": {"codex": conn()}}}
-            )
-            env = os.environ | {
-                "HOME": temp,
-                "PATH": str(bins) + ":" + os.environ["PATH"],
-                "DEEPSEEK_API_KEY": "old-key",
-            }
-            command = [
-                "zsh",
-                "-f",
-                "-c",
-                'source "$1"; _codex_agent_require_shim() { return 0; }; ds-flash_codex exec ping',
-                "_",
-                str(ROOT / "scripts/agent-tools.zsh"),
-            ]
-            result = subprocess.run(command, env=env, capture_output=True, text=True)
-            self.assertEqual(result.returncode, 0, result.stderr)
-            captured = json.loads(capture.read_text())
-            self.assertEqual(captured["keys"], {})
-            self.assertEqual(captured["argv"], ["exec", "-p", "ds-flash", "ping"])
-            capture.unlink()
-            private_doc(home, {"default": {}})
-            self.assertNotEqual(
-                subprocess.run(command, env=env, capture_output=True).returncode, 0
-            )
-            self.assertFalse(capture.exists())
+        for provider in ("ds-flash", "hy"):
+            with tempfile.TemporaryDirectory() as temp:
+                home = Path(temp)
+                bins = home / "bin"
+                stage_helper(bins)
+                capture = home / "codex.json"
+                stub = bins / "codex"
+                stub.write_text(
+                    "#!"
+                    + sys.executable
+                    + "\nimport os,json,sys\nfrom pathlib import Path\nPath("
+                    + repr(str(capture))
+                    + ').write_text(json.dumps({"keys":{k:v for k,v in os.environ.items() if k.endswith(("KEY","TOKEN"))},"argv":sys.argv[1:]}))\n'
+                )
+                stub.chmod(0o755)
+                card = home / f".codex/{provider}.config.toml"
+                card.parent.mkdir()
+                card.write_text('model="deepseek-flash"\n')
+                private_doc(
+                    home, {"default": {}, "override": {provider: {"codex": conn()}}}
+                )
+                env = os.environ | {
+                    "HOME": temp,
+                    "PATH": str(bins) + ":" + os.environ["PATH"],
+                    "DEEPSEEK_API_KEY": "old-key",
+                }
+                command = [
+                    "zsh",
+                    "-f",
+                    "-c",
+                    'source "$1"; _codex_agent_require_shim() { return 0; }; "${2}_codex" exec ping',
+                    "_",
+                    str(ROOT / "scripts/agent-tools.zsh"), provider,
+                ]
+                result = subprocess.run(command, env=env, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                captured = json.loads(capture.read_text())
+                self.assertEqual(captured["keys"], {})
+                self.assertEqual(captured["argv"], ["exec", "-p", provider, "ping"])
+                capture.unlink()
+                private_doc(home, {"default": {}})
+                self.assertNotEqual(
+                    subprocess.run(command, env=env, capture_output=True).returncode, 0
+                )
+                self.assertFalse(capture.exists())
 
     def test_shim_maps_normal_and_guardian_models_without_buffering_normal_requests(
         self,

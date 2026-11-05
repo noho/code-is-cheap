@@ -15,7 +15,7 @@ configuration data. Generated per-profile outputs remain untracked.
 | mimo-model-catalogs.json | 85255 | 8834dc34d879b8489b7376a5a1788f0d1b696f8410fc2df3544ad38ab145601a |
 | qwen-model-catalogs.json | 15100 | 4bc94831cb66e43aaf4c375543f92883bfa1d3116a4065c5796c5de29e8a019c |
 
-Each cloud output preserves the complete source object, root metadata,
+Each official-source cloud output preserves the complete source object, root metadata,
 ordering, unselected entries and unknown fields. It appends one independent
 bundled `codex-auto-review` guardian. DS/GLM/Kimi/Qwen guardian transport uses
 direct tools and disables Responses Lite; MiMo retains native Code Mode/Lite.
@@ -54,3 +54,17 @@ route-wide json_schema-to-json_object downgrade applies to ordinary and
 guardian requests and loses schema enforcement. No metadata or boundary
 fallback is supplied on runtime failure. See the bilingual root READMEs and
 implementation evidence for measured outcomes and remaining prerequisites.
+
+## Repository-authored Hy runtime compatibility
+
+Hy is separate from the five official snapshots above. `hy_session_entry()` in
+`patch-codex-model-catalog.py` constructs the minimal native session entry field
+by field with generic repository coding instructions (no model donor). It selects
+`hy4`, high effort, direct tools, no Lite/search and text input only. Context
+1048576 / compact 786432 follows the existing Hy documentation table convention;
+this work does not measure context or vision capability. Native parsing validates
+the schema at generation. The second entry is the independent bundled guardian,
+with only the established direct/non-Lite transport adaptation; all security,
+instruction and tool metadata is retained. Official hashes, mappings and assembly
+checks remain unchanged. See `docs/work-units/hy4-codex-token-plan/investigation.md`
+for direct runtime and Token Plan account-permission evidence.

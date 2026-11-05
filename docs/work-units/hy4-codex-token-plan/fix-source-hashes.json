@@ -1,0 +1,26 @@
+{
+  "baseline": "1a70943eee047a95099b6f4cb4865b00e8cbb284",
+  "branch": "fix/hy4-route-readiness",
+  "files": [
+    {
+      "path": "codex-agent/bin/codex-auto-review-shim-service",
+      "baseline_sha256": "e515d7fba19ab07b4d75b4a47215da2621b7c89946049373b481ecbb9f9500fb",
+      "sha256": "0196b7cba57473ba0f22e78a0dbe78dbad811943487aa023440179b2505bb78a"
+    },
+    {
+      "path": "scripts/sync-codex-agent.sh",
+      "baseline_sha256": "45a730154680a7f387c111ac0a97d1a917a8983c549eba95b827124b36a98499",
+      "sha256": "624f1b2228100521cff8f39dc552e12c1a74a0971bc11aebb36e631627e8e33f"
+    },
+    {
+      "path": "tests/test_model_catalog_generation.py",
+      "baseline_sha256": "05c1f6463d4dbf3076bc82fd3837754119af02b97e365f68595c525b10990499",
+      "sha256": "b2feb21cae4b5ba784fcb9cb012ef501380cea7a01928db54f819e389b8db4f7"
+    },
+    {
+      "path": "tests/test_shim_service.py",
+      "baseline_sha256": "6308a6d3f2bbaf6e7faf2c8ce64dbae4408cd20507799cb714f3aa405643d481",
+      "sha256": "08956245cf2e1de44677c96ab2406b75d13cda880f61297c1e959c01a8948e9b"
+    }
+  ]
+}

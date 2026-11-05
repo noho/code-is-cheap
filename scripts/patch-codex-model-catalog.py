@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Assemble official cloud catalogs and the unchanged local direct-tool fallback.
+"""Assemble official catalogs, authored Hy metadata and the local fallback.
 
-Cloud inputs are byte-verified tracked snapshots, preserved in full. Only the
+Official cloud inputs are byte-verified tracked snapshots, preserved in full. Only the
 user-authorized GLM Flash identity derivation and independent native guardian
 transport adaptations are applied. --source supplies native guardian/local
 metadata only. The installed CLI parses every assembled catalog in an empty
@@ -25,7 +25,7 @@ from pathlib import Path
 HOME = Path.home()
 SHARED_HOME = Path(os.environ.get("CODEX_SHARED_HOME", HOME / ".codex"))
 CATALOG_DIR = SHARED_HOME / "model-catalogs"
-DEFAULT_PROFILES = ["ds-flash", "glm", "glm-flash", "kimi", "local", "mimo", "mimo-fast", "mimo-flash", "qwen"]
+DEFAULT_PROFILES = ["ds-flash", "glm", "glm-flash", "hy", "kimi", "local", "mimo", "mimo-fast", "mimo-flash", "qwen"]
 TARGET_ENTRY = "codex-auto-review"
 WANT_TOOL_MODE = "direct"
 EXPECTED_BEFORE = "code_mode_only"
@@ -293,7 +293,44 @@ def session_entry(catalog: dict, model: str, window: int) -> dict | None:
     return entry
 
 
+def hy_session_entry() -> dict:
+    # Authored explicitly, not derived from another provider or GPT instructions.
+    return dict(slug='hy4', display_name='Hy4 (repository compatibility)',
+                description='Repository-authored minimal native compatibility metadata; no capability certification.',
+                default_reasoning_level='high', supported_reasoning_levels=[dict(effort='high', description='Documented Hy effort')],
+                shell_type='unified_exec', visibility='hide', supported_in_api=True, priority=99,
+                additional_speed_tiers=[], service_tiers=[], availability_nux=None, upgrade=None,
+                model_messages=None, include_skills_usage_instructions=False,
+                include_plugin_usage_instructions=False, include_apps_usage_instructions=False,
+                default_reasoning_summary='none', support_verbosity=False, default_verbosity=None,
+                apply_patch_tool_type=None, web_search_tool_type='text',
+                truncation_policy=dict(mode='bytes', limit=10000), supports_image_detail_original=False,
+                context_window=1048576, max_context_window=1048576, comp_hash=None,
+                effective_context_window_percent=95, experimental_supported_tools=[], input_modalities=['text'],
+                supports_search_tool=False, supports_experimental_context=False, use_responses_lite=False,
+                supports_reasoning_effort_updates=False, node_repl_auto_review_required=False,
+                node_repl_disabled=False, tool_mode='direct', multi_agent_version='v1',
+                base_instructions='You are a coding assistant. Follow the user task using the advertised native tools. '
+                'Read files before reporting their contents. Honor sandbox and approval policy. '
+                'When the user explicitly requests an authorized escalation, use require_escalated with a clear justification. '
+                'Do not bypass a denied review. Report actual observed tool output accurately and finish concisely.')
+
+
+def hy_catalog(native: dict, cards_dir: Path) -> dict:
+    """Repository-authored runtime metadata, independent of official snapshots."""
+    path = cards_dir / "hy.config.toml"
+    card = tomllib.loads(path.read_text())
+    expected = dict(model="hy4", model_provider="hy", model_reasoning_effort="high",
+                    model_context_window=1048576, model_auto_compact_token_limit=786432,
+                    model_catalog_json=str(CATALOG_DIR / "hy.json"), web_search="disabled")
+    if card != expected or not CATALOG_DIR.is_absolute():
+        raise ValueError(f"hy: {path}: card differs from approved Hy runtime contract")
+    return {"models": [hy_session_entry(), guardian_entry(native, "hy")]}
+
+
 def assemble(native: dict, profile: str, cards_dir: Path) -> dict:
+    if profile == "hy":
+        return hy_catalog(native, cards_dir)
     if profile in OFFICIAL:
         return official_catalog(native, profile, cards_dir)
     if profile != "local":

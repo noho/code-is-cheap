@@ -1,0 +1,8 @@
+# Repository-authored Hy runtime card; policy belongs to the shared home.
+model = "hy4"
+model_provider = "hy"
+model_reasoning_effort = "high"
+model_context_window = 1048576
+model_auto_compact_token_limit = 786432
+model_catalog_json = "@HOME@/.codex/model-catalogs/hy.json"
+web_search = "disabled"

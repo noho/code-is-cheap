@@ -15,9 +15,10 @@ emulate -L zsh
 setopt no_unset pipe_fail
 
 readonly LABEL="com.leo.codex-auto-review-shim"
-readonly SHIM="$HOME/.codex-agent/bin/codex-auto-review-shim"
-readonly ROUTES="$HOME/.codex-agent/shim-routes.json"
-readonly LOG="$HOME/.codex-agent/shim.log"
+readonly AGENT_ROOT="${CODEX_AGENT_TARGET:-$HOME/.codex-agent}"
+readonly SHIM="$AGENT_ROOT/bin/codex-auto-review-shim"
+readonly ROUTES="$AGENT_ROOT/shim-routes.json"
+readonly LOG="$AGENT_ROOT/shim.log"
 readonly PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 readonly DOMAIN="gui/$(id -u)"
 
@@ -92,9 +93,11 @@ ports_are_free() {
 }
 
 ports_are_listening() {
-  local port
+  local pid="$1" port
+  shift
   for port in "$@"; do
-    lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 || return 1
+    # A conflicting listener must not certify this launchd job as ready.
+    lsof -nP -a -p "$pid" -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1 || return 1
   done
   return 0
 }
@@ -109,11 +112,31 @@ wait_for_free_ports() {
 }
 
 wait_for_service() {
-  local attempt
+  local attempt job pid previous_pid="" stable=0
   for attempt in {1..30}; do
-    if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1 && ports_are_listening "$@"; then
-      return 0
+    pid=""
+    if job="$(launchctl print "$DOMAIN/$LABEL" 2>/dev/null)"; then
+      # The first state/pid fields describe the job; nested coalitions may
+      # have their own state fields.
+      pid="$(print -r -- "$job" | awk '
+        $1 == "state" && $2 == "=" && !seen_state++ {running = ($3 == "running")}
+        $1 == "pid" && $2 == "=" && !seen_pid++ {pid = $3}
+        END {if (running && pid ~ /^[0-9]+$/ && pid > 0) print pid}
+      ')"
     fi
+    if [[ -n "$pid" ]] && ports_are_listening "$pid" "$@"; then
+      if [[ "$pid" == "$previous_pid" ]]; then
+        (( stable += 1 ))
+      else
+        stable=1
+      fi
+      # Observe the same running process and all listeners for ~0.8 seconds,
+      # rather than accepting the brief bind window of an exiting job.
+      (( stable >= 5 )) && return 0
+    else
+      stable=0
+    fi
+    previous_pid="$pid"
     sleep 0.2
   done
   return 1
@@ -218,8 +241,17 @@ cmd_uninstall() {
 }
 
 cmd_restart() {
+  local python port_lines
+  local -a ports
+  python="$(resolve_python)" || die "找不到可用的 Python 3.11+（请先安装并确保 python3 在 PATH 中）"
+  port_lines="$(route_ports "$python")" || die "无法读取路由端口：$ROUTES"
+  ports=("${(@f)port_lines}")
   launchctl kickstart -k "$DOMAIN/$LABEL" 2>/dev/null || die "kickstart 失败（未安装？）"
-  sleep 1
+  if ! wait_for_service "${ports[@]}"; then
+    print -u2 -- "服务未在所有路由端口稳定启动：$LABEL；请检查 $LOG（端口冲突或进程退出）"
+    cmd_status >&2
+    return 1
+  fi
   cmd_status
 }
 
