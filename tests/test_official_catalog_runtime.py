@@ -33,7 +33,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_IDS = {'ds-flash':'deepseek', 'glm':'glm', 'glm-flash':'glm_flash', 'kimi':'kimi',
-               'mimo':'mimo', 'mimo-fast':'mimo_fast', 'mimo-flash':'mimo_flash', 'qwen':'qwen'}
+               'mimo':'mimo', 'mimo-fast':'mimo_fast', 'mimo-flash':'mimo_flash', 'qwen':'qwen', 'hy':'hy'}
 
 
 def decoded(raw, headers):
@@ -318,8 +318,8 @@ class Fixture:
                 f'curl --noproxy "" --max-time 2 -sS http://127.0.0.1:{self.other.server_port}/unlisted',
                 self.canary_command()]
 
-    def run(self):
-        argv=[str(ROOT/'scripts/codex-agent-run'),'--provider',self.profile,'--cwd',str(self.root/'work'),
+    def run(self,provider=None):
+        argv=[str(ROOT/'scripts/codex-agent-run'),'--provider',provider or self.profile,'--cwd',str(self.root/'work'),
               '--skip-git-repo-check','--sandbox','workspace-write','--prompt','Synthetic fixture task: read canary.txt, write result.txt and report CANARY with equals.',
               '--output',str(self.root/'sinks/events.jsonl'),'--stderr',str(self.root/'sinks/native.stderr'),
               '--last-message',str(self.root/'sinks/final.txt')]
@@ -385,7 +385,7 @@ class OfficialRuntimeTests(unittest.TestCase):
             self.assertNotIn('fixture-key',before['headers'].get('authorization',''))
             self.assertEqual(original.get('instructions'),wire.get('instructions'))
             self.assertEqual(original.get('reasoning'),wire.get('reasoning'))
-            if original['model']!= 'codex-auto-review':self.assertEqual(original['reasoning']['effort'],'max')
+            if original['model']!= 'codex-auto-review':self.assertEqual(original['reasoning']['effort'],'high' if fixture.profile=='hy' else 'max')
             lite=fixture.profile.startswith('mimo')
             items=[i for i in original['input'] if i.get('type')=='additional_tools']
             if lite:
@@ -429,6 +429,15 @@ class OfficialRuntimeTests(unittest.TestCase):
                 for item in value.values():yield from strings(item)
         rendered='\n'.join(strings(f.ingress()[0]['body']['input']))
         self.assertIn(source['base_instructions'].strip(),rendered)
+
+    def test_hy_native_read_write(self):
+        f=self.fixture('hy','hy'); self.check_success(f,f.run(provider='hunyuan'))
+        self.assertEqual(f.ingress()[0]['body']['model'],'hy4')
+        self.assertEqual(f.ingress()[0]['body']['reasoning']['effort'],'high')
+
+    def test_hy_guardian_allow(self):self.approval_case('hy','allow')
+    def test_hy_guardian_deny(self):self.approval_case('hy','deny')
+    def test_hy_guardian_error(self):self.approval_case('hy','error')
 
     def test_kimi_native_logical_wire_separation(self):
         f=self.fixture('kimi','kimi'); self.check_success(f,f.run())

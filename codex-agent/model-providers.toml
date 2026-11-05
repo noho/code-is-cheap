@@ -57,3 +57,9 @@ name = "Qwen"
 base_url = "http://127.0.0.1:8792/compatible-mode/v1"
 wire_api = "responses"
 requires_openai_auth = false
+
+[model_providers.hy]
+name = "Hy"
+base_url = "http://127.0.0.1:8796/v1"
+wire_api = "responses"
+requires_openai_auth = false

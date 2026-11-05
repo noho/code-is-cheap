@@ -1,0 +1,77 @@
+{
+  "affected_suite": {
+    "command": "PYTHONPATH=tests python3 -m unittest test_model_catalog_generation test_provider_registry test_install_endpoints test_sub_agent_preflight test_agent_sandbox test_agent_sandbox_launch test_agent_run_results test_shim_service",
+    "exit": 1,
+    "tests": 205,
+    "skips": 11,
+    "failures": 1,
+    "reason": "Only stale expected catalog count 9 instead of 10 in ConversionSyncTests; fixed to 10 and repeat parses20."
+  },
+  "inventory_recheck": {
+    "command": "PYTHONPATH=tests python3 -m unittest test_model_catalog_generation.ConversionSyncTests.test_success_repeat_bytes_modes_and_no_service_actions",
+    "exit": 0,
+    "tests": 1
+  },
+  "native_hy_synthetic": {
+    "command": "OFFICIAL_CATALOG_RUNTIME_TESTS=1 OFFICIAL_CATALOG_EVIDENCE_DIR=/private/tmp/hy4-native-synthetic PYTHONPATH=tests python3 -m unittest test_official_catalog_runtime.OfficialRuntimeTests.test_hy_native_read_write test_official_catalog_runtime.OfficialRuntimeTests.test_hy_guardian_allow test_official_catalog_runtime.OfficialRuntimeTests.test_hy_guardian_deny test_official_catalog_runtime.OfficialRuntimeTests.test_hy_guardian_error",
+    "parent": "require_escalated",
+    "exit": 0,
+    "tests": 4,
+    "elapsed_seconds": 19.654,
+    "cases": [
+      "hunyuan alias actual native tool read/write/result continuation; high effort, logical hy4, fake distinct wire model/key",
+      "Hy guardian allow executed sentinel",
+      "Hy guardian deny prevented sentinel",
+      "Hy guardian HTTP error failed closed"
+    ]
+  },
+  "syntax": {
+    "commands": [
+      "python3 -m py_compile scripts/patch-codex-model-catalog.py docs/work-units/hy4-codex-token-plan/probe_hy4.py tests/test_install_endpoints.py tests/test_official_catalog_runtime.py",
+      "zsh -n scripts/agent-tools.zsh scripts/codex-agent-run",
+      "git diff --check"
+    ],
+    "exit": 0
+  },
+  "skills": {
+    "command": "./scripts/validate-skills.sh",
+    "exit": 0,
+    "skills": 6
+  },
+  "not_run": [
+    "Outer kernel tests: no outer runtime changes; explicit opt-in skipped.",
+    "Reasoning-history suite: no repair code or selected-config tests changed."
+  ],
+  "interrupted_initial_discovery": {
+    "command": "python3 -m unittest discover -s tests -p 'test_*.py'",
+    "exit": 130,
+    "reason": "Controller scope is affected suites. Implementer caught accidentally broad discovery and interrupted before restarting required suite selection. No failure observed before interruption; no pass claim."
+  },
+  "archive": {
+    "path": "implementation-test-evidence.json.gz",
+    "sha256": "4298b9f4a88cba832274d4dc2699ead3ff398e783307bb9d3b9709831076cc63",
+    "bytes": 1167,
+    "members": [
+      {
+        "name": "affected-suite.log",
+        "bytes": 4544,
+        "sha256": "d0f572ebc12ac9ce10e999a1c0fe3f9d3e86809590782b083b1a78bee3751596"
+      },
+      {
+        "name": "inventory-recheck.log",
+        "bytes": 98,
+        "sha256": "10127cd6f7f6727229b1b1b588d35c1276dd57f6b77b433e93f63035424c581a"
+      },
+      {
+        "name": "native-synthetic.log",
+        "bytes": 103,
+        "sha256": "5738e8f2d1d628155862515361662aae071f6fc2d8480e721ba929f0f5d7581d"
+      },
+      {
+        "name": "skills.log",
+        "bytes": 268,
+        "sha256": "09d2025436961c37206407353492d096d7a091904da4232bf7c5eb745435d3da"
+      }
+    ]
+  }
+}

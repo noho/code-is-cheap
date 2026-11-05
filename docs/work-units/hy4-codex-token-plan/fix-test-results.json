@@ -1,0 +1,51 @@
+{
+  "created_at": "2026-11-05T12:30:24.443163+08:00",
+  "cwd": "/private/tmp/hy4-codex-task/readiness-fix-workspace",
+  "findings_status": "已修复，待受影响面独立复审",
+  "finding": "DS 1 in docs/reviews/code-review-20261105-115349.md",
+  "tests": [
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest -v test_shim_service test_model_catalog_generation.ConversionSyncTests",
+      "parent": "require_escalated",
+      "exit": 0,
+      "tests": 28,
+      "skips": 0,
+      "elapsed_seconds": 46.438,
+      "stage": "Before launchctl nested-state parser refinement",
+      "log": "/private/tmp/hy4-codex-task/readiness-fix-tests-initial.log",
+      "sha256": "1e46e7273eaa4e498d69d6e773486d65c3f6406bcdeb50ec5ca92b35cc392817"
+    },
+    {
+      "command": "PYTHONPATH=tests python3 -m unittest -v test_shim_service test_model_catalog_generation.ConversionSyncTests",
+      "parent": "require_escalated",
+      "exit": 0,
+      "tests": 28,
+      "skips": 0,
+      "elapsed_seconds": 42.306,
+      "stage": "Final frozen source",
+      "log": "/private/tmp/hy4-codex-task/readiness-fix-tests-final.log",
+      "sha256": "9c942f67a64f44d916fdd90ee335514805ccfeb2a304647ef438a8db140a3fd5"
+    }
+  ],
+  "patch": {
+    "path": "/private/tmp/hy4-codex-task/readiness-fix.patch",
+    "sha256": "a806a748d59378eaa82d861c943775febbe4c29f7096cb1c02ff43769627fd4d",
+    "bytes": 13069,
+    "command": "git diff --binary HEAD --",
+    "reverse_check_argv": [
+      "git",
+      "apply",
+      "--check",
+      "--reverse",
+      "/private/tmp/hy4-codex-task/readiness-fix.patch"
+    ],
+    "reverse_check_exit": 0
+  },
+  "source_hashes": "/private/tmp/hy4-codex-task/readiness-fix-source-hashes.json",
+  "syntax_diff_skill_evidence": "/private/tmp/hy4-codex-task/readiness-fix-checks.json",
+  "source_identity_checks": {
+    "private_baseline_matches_original_16_frozen_product_files": true,
+    "all_4_real_source_paths_still_match_private_baseline": true,
+    "final_sources_match_frozen_hash_manifest": true
+  }
+}

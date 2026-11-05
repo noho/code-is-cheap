@@ -1,0 +1,65 @@
+{
+  "workflow": "staged-direct",
+  "batch": "/private/tmp/hy4-codex-task/staged-20261105-114719",
+  "exit": {
+    "exit_code": 0,
+    "runner_used": true,
+    "timed_out": false,
+    "elapsed_seconds": 72.148
+  },
+  "criteria": {
+    "native_completed": true,
+    "ordinary_incremental_completed": true,
+    "real_canary_continuation": true,
+    "native_escalation_requested": true,
+    "structured_guardian_allow": true,
+    "sentinel_executed": true,
+    "escalation_result_continued": true
+  },
+  "qualifies": true,
+  "attempts": 5,
+  "guardian_attempts": 1,
+  "retry_attempts": 0,
+  "limits": [],
+  "archive": {
+    "path": "staged-integration-evidence.json.gz",
+    "sha256": "ae2bea716d675f62701f2d824ad1679d24cb685dc5f731e399fc8e92691bed3a",
+    "bytes": 253462,
+    "uncompressed_bytes": 2563218,
+    "entries": [
+      "upstream-05.request.json",
+      "upstream-02.request.json",
+      "exit.json",
+      "statuses.jsonl",
+      "runner.stderr",
+      "upstream-02.response",
+      "upstream-03.response",
+      "upstream-03.request.json",
+      "upstream-04.request.json",
+      "catalog-generation.json",
+      "native.jsonl",
+      "ingress.jsonl",
+      "chunks.jsonl",
+      "staged-sources.json",
+      "final.txt",
+      "runner.stdout",
+      "prompt.txt",
+      "upstream-05.response",
+      "upstream-04.response",
+      "upstream-01.response",
+      "argv.json",
+      "analysis.json",
+      "upstream-01.request.json",
+      "parser-exit",
+      "attempts.jsonl",
+      "native.stderr"
+    ]
+  },
+  "measurement_correction": {
+    "initial_summary": "staged-integration-initial-measurement-results.json",
+    "initial_archive": "staged-integration-evidence.json.gz: initial_measurement_result",
+    "reason": "Stage copy loop shadowed marker name. Native followed exact saved authorized prompt (marker agent-run-result.py). Analyzer now verifies that precise harmless command, path, marker and returned execution result; no new inference or upstream calls. Future staging loop no longer shadows workflow name.",
+    "reanalysis_exit": 0,
+    "native_and_runner_exit": 0
+  }
+}

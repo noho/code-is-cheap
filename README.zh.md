@@ -300,12 +300,21 @@ source ~/.zshrc
 | Runtime | Agent IDs | 命令 |
 | --- | --- | --- |
 | Claude Code | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`hy` | `<agent-id>_claude [args...]` |
-| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`local`、`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
+| Codex CLI | `ds-flash`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`kimi`、`glm`、`glm-flash`、`hy`、`local`、`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`、`business` | `<agent-id>_codex [args...]` |
 | Codex app | 与 Codex CLI 相同 | `<agent-id>_codex_app [workspace]` |
 
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
-`hy`（tokenhub.tencentmaas.com 上的 hy4-preview，key 来自连接 JSON）**仅提供 Claude runtime**：该网关的 `/v1/responses` SSE
-上游对 Codex 自动安全审核的 escalation 过于不稳（2026-09-24 实测），Codex 侧 profile 已移除。
+`hy` 的 Claude 与 Codex 均选择 `hy4`；提供 `hy_codex`、`hy_codex_app` 与 runner 别名 `hunyuan`。Codex 工厂默认直连 `https://tokenhub.tencentmaas.com/v1`，shim 端口 8796。2026-11-05 的一次有界 native workflow 完成实际工具续接和自动安全审核；这仅是运行时集成证据，不保证可用率或模型能力。Hy 使用仓库独立编写的纯文本兼容元数据、`high` effort 和常规 1048576 / 786432 上下文及压缩配置，未实测这些容量。独立 bundled guardian 保留 native 安全元数据，沿用 direct/non-Lite 传输。
+
+下列 Token Plan override 替换完整 URL/model/key 元组，密钥均为占位符。当前测试 key 返回 HTTP 403 / `403001`（套餐禁用或无调用权限），这是账号权限阻塞，不能解释为 Hy 不兼容。仅使用有权限的账号启用。添加 `override.hy.codex` 前先更新两处 endpoint factory；旧 helper 遇到未知 runtime 会拒绝整个文件。私有配置不得进入 Git。
+
+```json
+{"override":{"hy":{
+  "claude":{"base_url":"https://tokenhub.tencentmaas.com/plan/anthropic","upstream_model":"hy4","api_key":"YOUR_TOKEN_PLAN_KEY"},
+  "codex":{"base_url":"https://tokenhub.tencentmaas.com/plan/v3","upstream_model":"hy4","api_key":"YOUR_TOKEN_PLAN_KEY"}
+}}}
+```
+
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
 全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
 `compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；各 app home 的会话记录彼此隔离。
@@ -414,8 +423,8 @@ runner 的 `AGENT_RUN_ERROR_FD` 指向仅报告 exec 前错误的内部 pipe；e
 `codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享。换模型续同一段对话时，用目标模型的
 launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profile（如
 `codex resume -p gpt-6-sol <session-id>`）。单独执行 `codex resume <session-id>` 可能恢复会话上次选中的模型，
-不能保证使用 base config 的默认模型。九个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
-`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`local`）与七个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`）已在仓库
+不能保证使用 base config 的默认模型。十个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
+`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`hy`、`local`）与七个订阅制 OpenAI profile（`gpt-6-astra`、`gpt-6-astra-x`、`gpt-6-astra-max`、`gpt-6-sol`、`gpt-6-sol-x`、`gpt-6-sol-max`、`gpt-6-luna`）已在仓库
 `codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
 
@@ -453,6 +462,7 @@ runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 | `mimo-fast` | `mimo-v2.6-pro-ultraspeed` | api.xiaomimimo.com | 8794 | + 目录补丁 + `json_object` 降级 |
 | `mimo-flash` | `mimo-v2.6-flash` | token-plan-cn.xiaomimimo.com | 8793 | + 目录补丁 + `json_object` 降级 |
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
+| `hy` | `hy4` | tokenhub.tencentmaas.com | 8796 | 仓库编写的兼容目录 |
 | `local` | `qwen3.8-27b-local` | 用户可配置（默认 127.0.0.1:8080） | 无 | 目录补丁、不走沙箱或 shim |
 | `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
 | `gpt-6-astra-x` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
@@ -481,7 +491,7 @@ launchd plist，并重新加载已有服务。`restart` 只重启现有 plist，
 仓库模板中的本机路径写作 `@HOME@`，由同步脚本在安装时替换为实际 home（Codex 只接受绝对路径）。
 
 模型卡只承载模型差量（model、`model_provider`、reasoning effort、上下文/compact 窗口、`web_search`、
-`model_catalog_json`）。九个第三方网关定义集中在 `codex-agent/model-providers.toml`，同步时作为带标记的块
+`model_catalog_json`）。十个第三方网关定义集中在 `codex-agent/model-providers.toml`，同步时作为带标记的块
 写入共享 base，使恢复会话时可以解析历史 provider。`glm-flash`、`mimo-fast`、`mimo-flash` 因网关端口不同，
 现在各有独立 provider ID。旧会话使用的共用 `glm` 或 `mimo` ID 无法识别其创建时的具体变体；
 这两个旧 ID 保留普通 `glm` 和 `mimo` 路由。退役的 provider ID 也要在注册表中保留最后可用的路由；
@@ -497,9 +507,9 @@ ChatGPT 桌面端写入的机器本地状态（`[projects.*]` trust、`[hooks.st
 native guardian，云端会话不再使用 GPT donor。`glm-flash` 是用户明确授权的官方 `glm-5.3` 克隆，
 仅修改三个身份字段、明确标注派生为 `glm-5.3-flash`，不切换 Turbo。Kimi 模型卡和 shim 逻辑 slug 为
 `k3`，endpoint 管理的 URL/key/上游模型仍独立。Qwen 上下文 **983616**、压缩阈值 **737712**，
-保留源里缺失的最大窗口；其它云端卡仍为 1048576/786432。八个默认 effort 都是 **max**，官方支持
+保留源里缺失的最大窗口；其它云端卡仍为 1048576/786432。这八个默认 effort 都是 **max**，官方支持
 列表和默认等级完整保留。MiMo 快照未列 max（用户报告官方确认支持），Qwen 仅列 low/medium/xhigh；
-生成器给出信息提示。模拟请求转发不证明厂商接受。
+生成器给出信息提示。模拟请求转发不证明厂商接受。Hy 独立使用上文的仓库兼容条目和 high effort，不改变这些官方来源。
 
 DS/GLM/Kimi/Qwen guardian 使用 direct 且关闭 Lite；MiMo 保留 native Code Mode/Responses Lite 和
 `additional_tools`。Native 0.162.1 的 `code_mode_host` 为 stable、默认 true，保持不显式设置，
@@ -770,6 +780,7 @@ codex-agent/
     ds-flash/config.toml
     glm/config.toml
     glm-flash/config.toml
+    hy/config.toml
     kimi/config.toml
     mimo/config.toml
     mimo-fast/config.toml

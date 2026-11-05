@@ -4,6 +4,7 @@ import os
 import json
 from pathlib import Path
 import plistlib
+import socket
 import subprocess
 import sys
 import tempfile
@@ -14,6 +15,47 @@ SERVICE = Path(__file__).resolve().parents[1] / "codex-agent/bin/codex-auto-revi
 
 
 class ShimServiceTests(unittest.TestCase):
+    def test_restart_waits_for_all_routes_and_running_job(self):
+        with tempfile.TemporaryDirectory() as temp:
+            home, _, env = self._fixture(Path(temp))
+            (home / "loaded").touch()
+            result = subprocess.run([str(SERVICE), "restart"], env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((home / "events").read_text().splitlines(), ["kickstart"])
+            self.assertIn("state = running", result.stdout)
+
+    def test_restart_rejects_missing_route_or_exiting_job_or_foreign_listener(self):
+        for settings in ({"MISSING_PORT": "8794"}, {"EXIT_AFTER_SAMPLE": "1"},
+                         {"LISTENER_PID": "99999"}):
+            with self.subTest(settings=settings), tempfile.TemporaryDirectory() as temp:
+                home, _, env = self._fixture(Path(temp))
+                (home / "loaded").touch()
+                result = subprocess.run([str(SERVICE), "restart"], env=env | settings,
+                                        capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("未在所有路由端口稳定启动", result.stderr)
+                self.assertIn(str(home / ".codex-agent/shim.log"), result.stderr)
+                self.assertIn("8794", result.stderr)
+                self.assertEqual(result.stdout, "")
+                self.assertTrue((home / "loaded").exists())
+                self.assertEqual((home / "events").read_text().splitlines(), ["kickstart"])
+
+    def test_real_loopback_bind_conflict_exits_shim(self):
+        with tempfile.TemporaryDirectory() as temp, socket.socket() as conflict:
+            conflict.bind(("127.0.0.1", 0))
+            conflict.listen()
+            conflict_port = conflict.getsockname()[1]
+            # Retain the conflicting listener through process exit; no upstream
+            # connection or production service is involved.
+            routes = Path(temp) / "routes.json"
+            routes.write_text(json.dumps({"routes": [{"port": conflict_port,
+                "upstream": "http://127.0.0.1:1", "from": "test", "to": "test"}]}))
+            result = subprocess.run([sys.executable, str(SERVICE.with_name("codex-auto-review-shim"))],
+                env=os.environ | {"HOME": temp, "SHIM_ROUTES": str(routes)},
+                capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 1, result.stderr)
+            self.assertIn(f"cannot bind 127.0.0.1:{conflict_port}", result.stderr)
+
     def test_print_plist_uses_available_python(self):
         with tempfile.TemporaryDirectory() as temp:
             home, bin_dir, env = self._fixture(Path(temp))
@@ -159,7 +201,14 @@ class ShimServiceTests(unittest.TestCase):
         for name, body in {
             "launchctl": """#!/bin/sh
 case "$1" in
-  print) test -f "$HOME/loaded" ;;
+  print)
+    test -f "$HOME/loaded" || exit 1
+    if [ -f "$HOME/exited" ]; then
+      echo 'state = waiting'; echo 'last exit code = 1'
+    else
+      echo 'state = running'; echo 'pid = 34567'; echo 'state = active'
+    fi ;;
+  kickstart) echo kickstart >> "$HOME/events" ;;
   bootout) rm "$HOME/loaded"; echo bootout >> "$HOME/events" ;;
   bootstrap)
     if [ -f "$HOME/fail_bootstrap_once" ]; then
@@ -173,11 +222,17 @@ esac
             "lsof": """#!/bin/sh
 for arg in "$@"; do
   if [ "$arg" = "-iTCP:$CONFLICT_PORT" ]; then exit 0; fi
+  if [ "$arg" = "-iTCP:$MISSING_PORT" ]; then exit 1; fi
+done
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "-p" ] && [ "$2" != "${LISTENER_PID:-34567}" ]; then exit 1; fi
+  shift
 done
 if [ "$NO_LISTEN" = "1" ]; then exit 1; fi
+if [ -f "$HOME/exited" ]; then exit 1; fi
 test -f "$HOME/loaded"
 """,
-            "sleep": "#!/bin/sh\nexit 0\n",
+            "sleep": '#!/bin/sh\n[ "$EXIT_AFTER_SAMPLE" = "1" ] && touch "$HOME/exited"\nexit 0\n',
         }.items():
             path = bin_dir / name
             path.write_text(body)

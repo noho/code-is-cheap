@@ -155,16 +155,16 @@ class ProviderRegistryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             base = root / "base.toml"
-            card = root / "kimi.config.toml"
+            card = root / "hy.config.toml"
             out = root / "app.toml"
             base.write_text(sync_providers.compose('model = "gpt-6-sol"\n', REGISTRY.read_text()))
-            card.write_text('model = "kimi-k3"\nmodel_provider = "kimi"\n')
+            card.write_text('model = "hy4"\nmodel_provider = "hy"\n')
             out.write_text('model = "old"\n\n[desktop]\nstate = "keep"\n')
             subprocess.run([sys.executable, str(COMPOSE), "--base", str(base), "--card", str(card), "--out", str(out)], check=True, capture_output=True)
             data = tomllib.loads(out.read_text())
-            self.assertEqual(data["model"], "kimi-k3")
+            self.assertEqual(data["model"], "hy4")
             self.assertEqual(data["desktop"]["state"], "keep")
-            self.assertIn("kimi", data["model_providers"])
+            self.assertIn("hy", data["model_providers"])
 
     def test_subscription_app_composition_preserves_policy_state_and_providers(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

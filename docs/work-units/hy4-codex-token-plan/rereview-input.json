@@ -1,0 +1,107 @@
+{
+  "base": "2cb3127fc1ec2041f8636a6d5ad3d78a739d815a",
+  "product": [
+    {
+      "path": "README.md",
+      "sha256": "45aaad09ac66fc11e0da2e3d3c47dd3933e3ad069a988dd984c609936688c326"
+    },
+    {
+      "path": "README.zh.md",
+      "sha256": "9cd47e26267385791cc71b64936d9a90a59db069e74980246ab88a45a5146a90"
+    },
+    {
+      "path": "codex-agent/bin/codex-auto-review-shim-service",
+      "sha256": "0196b7cba57473ba0f22e78a0dbe78dbad811943487aa023440179b2505bb78a"
+    },
+    {
+      "path": "codex-agent/catalog-sources/README.md",
+      "sha256": "7b3b7e663459b775beefe7d9d86a4b7f9304d337553b83c713608849be0785e0"
+    },
+    {
+      "path": "codex-agent/model-providers.toml",
+      "sha256": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2"
+    },
+    {
+      "path": "codex-agent/profiles/hy/config.toml",
+      "sha256": "a9ab4e2d9b6d5dcc08f2238a26cce143acf97a107f4cd0cac22e97a3852aeca6"
+    },
+    {
+      "path": "codex-agent/shim-routes.json",
+      "sha256": "afd1e15ca3a914993987382abaf148227ef6a97a796cdb73791b4787bea26bfe"
+    },
+    {
+      "path": "config/endpoints.example.json",
+      "sha256": "36cb630acc2071e0683215a2b92f3cb64147e9a1d846df305d6d090836f83354"
+    },
+    {
+      "path": "scripts/agent-tools.zsh",
+      "sha256": "375cf555adafe6728e119778a8b9c6df65f785a4ba81f2a5b4c2ae736b528314"
+    },
+    {
+      "path": "scripts/codex-agent-run",
+      "sha256": "ac249b2f5675701fb29f36139f8ee9d89d2f6a6663418409af56bf280914032a"
+    },
+    {
+      "path": "scripts/patch-codex-model-catalog.py",
+      "sha256": "e83fa2cde9096823a652b0c6d9aee80ba72e2abbec0e48c0f2efd7c854d14caf"
+    },
+    {
+      "path": "scripts/sync-codex-agent.sh",
+      "sha256": "624f1b2228100521cff8f39dc552e12c1a74a0971bc11aebb36e631627e8e33f"
+    },
+    {
+      "path": "skills/sub-agents/SKILL.md",
+      "sha256": "2e54c7a0de0792265a7521bd4d63dd91f4dea226183885b19edcee8fea457f06"
+    },
+    {
+      "path": "tests/test_install_endpoints.py",
+      "sha256": "5769e25da36e47296b34f4c4c6cc314816530e360d892773df53adc6721dbcb1"
+    },
+    {
+      "path": "tests/test_model_catalog_generation.py",
+      "sha256": "b2feb21cae4b5ba784fcb9cb012ef501380cea7a01928db54f819e389b8db4f7"
+    },
+    {
+      "path": "tests/test_official_catalog_runtime.py",
+      "sha256": "42890d5b50f85bdef3d163d1e56f2b9d8ca4912b73640da6a082898e74c1d1f4"
+    },
+    {
+      "path": "tests/test_provider_registry.py",
+      "sha256": "eced8400483ea7e9f4a80aaee7a40e3c118c59a09da808dfb2939cbc2c2c2793"
+    },
+    {
+      "path": "tests/test_shim_service.py",
+      "sha256": "08956245cf2e1de44677c96ab2406b75d13cda880f61297c1e959c01a8948e9b"
+    },
+    {
+      "path": "tests/test_sub_agent_preflight.py",
+      "sha256": "43be4fd2a1da45ce27e71f5c7d2392d85c3aa79ba0afb409179aaa17574b45cd"
+    }
+  ],
+  "affected_fix": [
+    {
+      "path": "codex-agent/bin/codex-auto-review-shim-service",
+      "baseline_sha256": "e515d7fba19ab07b4d75b4a47215da2621b7c89946049373b481ecbb9f9500fb",
+      "sha256": "0196b7cba57473ba0f22e78a0dbe78dbad811943487aa023440179b2505bb78a"
+    },
+    {
+      "path": "scripts/sync-codex-agent.sh",
+      "baseline_sha256": "45a730154680a7f387c111ac0a97d1a917a8983c549eba95b827124b36a98499",
+      "sha256": "624f1b2228100521cff8f39dc552e12c1a74a0971bc11aebb36e631627e8e33f"
+    },
+    {
+      "path": "tests/test_model_catalog_generation.py",
+      "baseline_sha256": "05c1f6463d4dbf3076bc82fd3837754119af02b97e365f68595c525b10990499",
+      "sha256": "b2feb21cae4b5ba784fcb9cb012ef501380cea7a01928db54f819e389b8db4f7"
+    },
+    {
+      "path": "tests/test_shim_service.py",
+      "baseline_sha256": "6308a6d3f2bbaf6e7faf2c8ce64dbae4408cd20507799cb714f3aa405643d481",
+      "sha256": "08956245cf2e1de44677c96ab2406b75d13cda880f61297c1e959c01a8948e9b"
+    }
+  ],
+  "prior_full_reviews": [
+    "docs/reviews/code-review-20261105-115347.md",
+    "docs/reviews/code-review-20261105-115349.md"
+  ]
+}

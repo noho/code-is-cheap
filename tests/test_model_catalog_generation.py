@@ -96,6 +96,29 @@ class OfficialAssemblyTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(module, 'CATALOG_DIR', self.home / 'model-catalogs').start()
 
+    def test_hy_authored_contract_and_guardian_independence(self):
+        with patch.object(module, 'official_source', side_effect=AssertionError('official borrowing forbidden')), \
+             patch.object(module, 'session_entry', side_effect=AssertionError('native donor forbidden')):
+            output = module.assemble(NATIVE, 'hy', self.home)
+        session, guardian = output['models']
+        self.assertEqual(session['slug'], 'hy4')
+        self.assertEqual(session['default_reasoning_level'], 'high')
+        self.assertEqual([x['effort'] for x in session['supported_reasoning_levels']], ['high'])
+        self.assertEqual(session['input_modalities'], ['text'])
+        self.assertFalse(session['supports_search_tool'])
+        self.assertFalse(session['use_responses_lite'])
+        self.assertEqual(session['context_window'], 1048576)
+        self.assertIn('Repository-authored', session['description'])
+        self.assertNotEqual(session['base_instructions'], NATIVE['models'][1]['base_instructions'])
+        self.assertEqual(guardian, NATIVE['models'][0] | {'tool_mode':'direct','use_responses_lite':False})
+        card = self.home / 'hy.config.toml'
+        original = card.read_text()
+        for old, new in [('"high"','"max"'), ('1048576','64000'), ('786432','48000'), ('hy4','wrong')]:
+            card.write_text(original.replace(old,new))
+            with self.assertRaisesRegex(ValueError, 'Hy runtime contract'):
+                module.assemble(NATIVE,'hy',self.home)
+        card.write_text(original)
+
     def test_tracked_snapshots_and_all_eight_complete_mappings(self):
         self.assertEqual(module.SOURCE_HASHES, HASHES)
         with patch.object(module, 'session_entry', side_effect=AssertionError('cloud donor forbidden')):
@@ -276,9 +299,27 @@ else:
         self.script('launchctl', '''import os,sys
 from pathlib import Path
 with open(Path(os.environ['TEST_ROOT'])/'launchctl','a') as f:f.write(' '.join(sys.argv[1:])+'\\n')
-if sys.argv[1]=='print': sys.exit(0 if os.environ.get('TEST_SERVICE_LOADED')=='1' else 1)
+if sys.argv[1]=='print':
+    if os.environ.get('TEST_SERVICE_LOADED')!='1': sys.exit(1)
+    if (Path(os.environ['TEST_ROOT'])/'service-exited').exists():
+        print('state = waiting\\nlast exit code = 1')
+    else: print('state = running\\npid = 34567\\nstate = active')
+    sys.exit(0)
 if sys.argv[1]=='kickstart': sys.exit(int(os.environ.get('TEST_KICKSTART_EXIT','0')))
 sys.exit(1)
+''')
+        self.script('lsof', '''import os,sys
+from pathlib import Path
+with open(Path(os.environ['TEST_ROOT'])/'lsof','a') as f:f.write(' '.join(sys.argv[1:])+'\\n')
+if '-iTCP:'+os.environ.get('TEST_MISSING_PORT','') in sys.argv: sys.exit(1)
+if (Path(os.environ['TEST_ROOT'])/'service-exited').exists(): sys.exit(1)
+if '-p' in sys.argv and sys.argv[sys.argv.index('-p')+1]!='34567': sys.exit(1)
+sys.exit(0)
+''')
+        self.script('sleep', '''import os
+from pathlib import Path
+if os.environ.get('TEST_EXIT_AFTER_SAMPLE')=='1':
+    (Path(os.environ['TEST_ROOT'])/'service-exited').touch()
 ''')
 
     def script(self,name,body):
@@ -313,8 +354,9 @@ sys.exit(1)
 
     def assert_loaded_service_actions(self):
         service=f'gui/{os.getuid()}/com.leo.codex-auto-review-shim'
-        self.assertEqual((self.root/'launchctl').read_text().splitlines(),
-                         [f'print {service}',f'kickstart -k {service}'])
+        actions=(self.root/'launchctl').read_text().splitlines()
+        self.assertEqual(actions[:2], [f'print {service}',f'kickstart -k {service}'])
+        self.assertTrue(all(line==f'print {service}' for line in actions[2:]))
 
     def inject(self,name,n,after=False,always_after=False):
         real=shutil.which(name)
@@ -350,13 +392,13 @@ sys.exit(r.returncode)
             self.assertEqual(path.stat().st_mode & 0o777, 0o600)
             self.assertFalse((self.home / f'model-catalogs/{profile}.json').exists())
         self.assertEqual({p.stem for p in (self.home/'model-catalogs').glob('*.json')}, set(module.DEFAULT_PROFILES))
-        self.assertEqual(len(module.DEFAULT_PROFILES), 9)
+        self.assertEqual(len(module.DEFAULT_PROFILES), 10)
         all_files={p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()}
         second=self.run_sync(); self.assertEqual(second.returncode,0,second.stderr)
         self.assertEqual(business_config.read_bytes(), business_bytes)
         self.assertEqual(auth.read_text(), 'synthetic account')
         self.assertEqual(all_files,{p:p.read_bytes() for p in self.home.rglob('*') if p.is_file()})
-        self.assertEqual(len((self.root/'parses').read_text().splitlines()),18)
+        self.assertEqual(len((self.root/'parses').read_text().splitlines()),20)
         self.assertTrue(all(p.stat().st_mode & 0o777==0o600 for p in self.home.glob('*.config.toml')))
         self.assertTrue(all(line.startswith('print ') for line in (self.root/'launchctl').read_text().splitlines()))
         for profile in module.OFFICIAL:
@@ -385,6 +427,42 @@ sys.exit(r.returncode)
         self.assertEqual(done.stderr,'')
         self.assert_loaded_service_actions()
         self.assert_conversion_current()
+        ports={route['port'] for route in json.loads((self.repo/'codex-agent/shim-routes.json').read_text())['routes']}
+        queries=(self.root/'lsof').read_text().splitlines()
+        for port in ports:
+            self.assertGreaterEqual(queries.count(f'-nP -a -p 34567 -iTCP:{port} -sTCP:LISTEN'),5)
+
+    def test_loaded_kickstart_accepted_but_route_absent_or_job_exits_fails_sync(self):
+        # Read the configured port rather than reproducing a fixed port list.
+        routes=json.loads((self.repo/'codex-agent/shim-routes.json').read_text())['routes']
+        missing=str(routes[-1]['port'])
+        for settings in ({'TEST_MISSING_PORT':missing}, {'TEST_EXIT_AFTER_SAMPLE':'1'}):
+            with self.subTest(settings=settings):
+                self.env.update(TEST_SERVICE_LOADED='1',**settings)
+                (self.root/'launchctl').unlink(missing_ok=True)
+                done=self.run_sync()
+                self.assertNotEqual(done.returncode,0)
+                self.assertIn('未在所有路由端口稳定启动',done.stderr)
+                self.assertIn(str(self.root/'home/.codex-agent/shim.log'),done.stderr)
+                self.assertIn(missing,done.stderr)
+                self.assertNotIn('Synced codex-agent cards',done.stdout)
+                self.assertNotIn('restarted launchd service:',done.stdout)
+                self.assertNotIn('conversion failed',done.stderr)
+                self.assert_loaded_service_actions()
+                self.assert_conversion_current()
+                for name in settings: self.env.pop(name)
+
+    def test_loaded_service_restart_uses_custom_target_and_shared_home(self):
+        target=self.root/'custom agent target'
+        shared=self.root/'custom shared home'
+        self.env.update(TEST_SERVICE_LOADED='1', CODEX_AGENT_TARGET=str(target), CODEX_SHARED_HOME=str(shared))
+        # The normal HOME destination deliberately has no route file.
+        done=self.run_sync()
+        self.assertEqual(done.returncode,0,done.stderr)
+        self.assertIn(f'Synced codex-agent cards to {shared}',done.stdout)
+        self.assertTrue((target/'shim-routes.json').is_file())
+        self.assertFalse((self.root/'home/.codex-agent/shim-routes.json').exists())
+        self.assert_loaded_service_actions()
 
     def test_stage_integrity_failure_untouched(self):
         (self.repo/'codex-agent/catalog-sources/kimi-model-catalogs.json').write_text('{}')

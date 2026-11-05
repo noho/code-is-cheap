@@ -178,6 +178,7 @@ _codex_agent_title() {
     kimi)     print -r -- "CodexAgent-Kimi" ;;
     glm)      print -r -- "CodexAgent-GLM" ;;
     glm-flash) print -r -- "CodexAgent-GLM-Flash" ;;
+    hy) print -r -- "CodexAgent-HY" ;;
     local)    print -r -- "CodexAgent-Local" ;;
     gpt-6-astra-max) print -r -- "CodexAgent-GPT-6-Astra-Max" ;;
     gpt-6-astra-x) print -r -- "CodexAgent-GPT-6-Astra-X" ;;
@@ -196,6 +197,7 @@ _codex_agent_shim_port() {
     ds-flash)   print -r -- "8788" ;;
     glm)  print -r -- "8789" ;;
     glm-flash) print -r -- "8795" ;;
+    hy) print -r -- "8796" ;;
     kimi) print -r -- "8790" ;;
     mimo) print -r -- "8791" ;;
     mimo-fast) print -r -- "8794" ;;
@@ -494,6 +496,7 @@ ds-flash_codex() { _codex_agent_launch ds-flash "$@"; }
 mimo_codex()     { _codex_agent_launch mimo "$@"; }
 mimo-fast_codex() { _codex_agent_launch mimo-fast "$@"; }
 mimo-flash_codex() { _codex_agent_launch mimo-flash "$@"; }
+hy_codex()       { _codex_agent_launch hy "$@"; }
 qwen_codex()     { _codex_agent_launch qwen "$@"; }
 kimi_codex()     { _codex_agent_launch kimi "$@"; }
 glm_codex()      { _codex_agent_launch glm "$@"; }
@@ -513,6 +516,7 @@ ds-flash_codex_app() { _codex_agent_app ds-flash "$@"; }
 mimo_codex_app()     { _codex_agent_app mimo "$@"; }
 mimo-fast_codex_app() { _codex_agent_app mimo-fast "$@"; }
 mimo-flash_codex_app() { _codex_agent_app mimo-flash "$@"; }
+hy_codex_app()       { _codex_agent_app hy "$@"; }
 qwen_codex_app()     { _codex_agent_app qwen "$@"; }
 kimi_codex_app()     { _codex_agent_app kimi "$@"; }
 glm_codex_app()      { _codex_agent_app glm "$@"; }

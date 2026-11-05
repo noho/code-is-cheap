@@ -111,7 +111,12 @@
     "hy": {
       "claude": {
         "base_url": "https://tokenhub.tencentmaas.com",
-        "upstream_model": "hy4-preview",
+        "upstream_model": "hy4",
+        "api_key": ""
+      },
+      "codex": {
+        "base_url": "https://tokenhub.tencentmaas.com/v1",
+        "upstream_model": "hy4",
         "api_key": ""
       }
     }

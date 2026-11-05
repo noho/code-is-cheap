@@ -166,7 +166,7 @@ echo "synced shim-routes.json"
 
 # --- 让运行中的 shim 用上新路由 ----------------------------------------------
 if launchctl print "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then
-  if ! launchctl kickstart -k "gui/$(id -u)/$shim_label" >/dev/null 2>&1; then
+  if ! CODEX_AGENT_TARGET="$target_root" "$target_root/bin/codex-auto-review-shim-service" restart; then
     echo "ERROR: failed to restart launchd service: $shim_label" >&2
     exit 1
   fi

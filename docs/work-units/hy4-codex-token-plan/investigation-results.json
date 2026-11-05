@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "batch": "/private/tmp/hy4-codex-task/investigation-20261105-112805",
+  "version": "codex-cli 0.166.0",
+  "shared_upstream_attempts": 32,
+  "credential_checks": {
+    "keys_distinct": true,
+    "plan_runtime": "codex",
+    "plan_claude_key_agrees": true
+  },
+  "selected_source_urls": [
+    "https://cloud.tencent.com/document/product/1823/130070",
+    "https://cloud.tencent.com/document/product/1823/130071",
+    "https://cloud.tencent.com/document/product/1823/130060",
+    "https://cloud.tencent.com/document/product/1823/132252",
+    "https://cloud.tencent.com/document/product/1823/131208"
+  ],
+  "archive": {
+    "archive": "investigation-evidence.tar.gz",
+    "sha256": "9eb845d7c7661b0360c81c974b5e5692dd7a2c1bf48c5537dd46908dde96090c",
+    "bytes": 343164,
+    "members": [
+      {
+        "name": "investigation-results.json",
+        "bytes": 212572,
+        "sha256": "452d900850fd901a29b5c8574838ab875b762306d7c80155c456ddc5483e40cf"
+      },
+      {
+        "name": "investigation-traces.json",
+        "bytes": 1461720,
+        "sha256": "8c90e62abeb8cc9c852da2fb854c5694a1e9b418246ddd36da1bd7a3a98c5611"
+      }
+    ],
+    "extract": "tar -xzf investigation-evidence.tar.gz -C /private/tmp/hy4-evidence",
+    "contents": "Sanitized historical results and native ingress traces only. No private configs, credentials or headers."
+  },
+  "workflows": [
+    {
+      "workflow": "direct-1",
+      "exit": {
+        "exit_code": null,
+        "timed_out": false,
+        "elapsed_seconds": 146.584,
+        "stopped_for": "Confirmed outer macOS sandbox prevents native sandbox_apply; preserve failed sample without replacement. Remaining declared workflows require unrestricted parent with unchanged inner native policy.",
+        "termination_signal_sent": 15,
+        "exit_observation": "Native parent was terminated before reaping; exact native exit unavailable, not inferred from signal sent."
+      },
+      "criteria": {
+        "native_completed": false,
+        "ordinary_incremental_completed": true,
+        "real_canary_continuation": false,
+        "native_escalation_requested": true,
+        "structured_guardian_allow": false,
+        "sentinel_executed": false,
+        "escalation_result_continued": false
+      },
+      "qualifies": false,
+      "attempts": 14,
+      "guardian_attempts": 1,
+      "retry_attempts": 0,
+      "native_duplicate_request_retries": 0
+    },
+    {
+      "workflow": "direct-2",
+      "exit": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 91.43
+      },
+      "criteria": {
+        "native_completed": true,
+        "ordinary_incremental_completed": true,
+        "real_canary_continuation": true,
+        "native_escalation_requested": true,
+        "structured_guardian_allow": true,
+        "sentinel_executed": true,
+        "escalation_result_continued": true
+      },
+      "qualifies": true,
+      "attempts": 6,
+      "guardian_attempts": 1,
+      "retry_attempts": 0,
+      "native_duplicate_request_retries": 0
+    },
+    {
+      "workflow": "plan-1",
+      "exit": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_seconds": 7.817
+      },
+      "criteria": {
+        "native_completed": false,
+        "ordinary_incremental_completed": false,
+        "real_canary_continuation": false,
+        "native_escalation_requested": false,
+        "structured_guardian_allow": false,
+        "sentinel_executed": false,
+        "escalation_result_continued": false
+      },
+      "qualifies": false,
+      "attempts": 6,
+      "guardian_attempts": 0,
+      "retry_attempts": 0,
+      "native_duplicate_request_retries": 5
+    },
+    {
+      "workflow": "plan-2",
+      "exit": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_seconds": 7.482
+      },
+      "criteria": {
+        "native_completed": false,
+        "ordinary_incremental_completed": false,
+        "real_canary_continuation": false,
+        "native_escalation_requested": false,
+        "structured_guardian_allow": false,
+        "sentinel_executed": false,
+        "escalation_result_continued": false
+      },
+      "qualifies": false,
+      "attempts": 6,
+      "guardian_attempts": 0,
+      "retry_attempts": 0,
+      "native_duplicate_request_retries": 5
+    }
+  ],
+  "classifications": {
+    "direct-1": "setup-invalid nested sandbox EPERM; never replaced",
+    "direct-2": "complete pass accepted by controller",
+    "plan-1": "HTTP403001 account permission",
+    "plan-2": "HTTP403001 account permission; setup incident retained in archived result"
+  }
+}

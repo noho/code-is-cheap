@@ -1,0 +1,31 @@
+{
+  "workflow": "staged-direct",
+  "batch": "/private/tmp/hy4-codex-task/staged-20261105-114719",
+  "exit": {
+    "exit_code": 0,
+    "runner_used": true,
+    "timed_out": false,
+    "elapsed_seconds": 72.148
+  },
+  "criteria": {
+    "native_completed": true,
+    "ordinary_incremental_completed": true,
+    "real_canary_continuation": true,
+    "native_escalation_requested": true,
+    "structured_guardian_allow": true,
+    "sentinel_executed": false,
+    "escalation_result_continued": true
+  },
+  "qualifies": false,
+  "attempts": 5,
+  "guardian_attempts": 1,
+  "retry_attempts": 0,
+  "limits": [],
+  "archive": {
+    "path": "staged-integration-evidence.json.gz",
+    "sha256": "ae2bea716d675f62701f2d824ad1679d24cb685dc5f731e399fc8e92691bed3a",
+    "member": "initial_measurement_result",
+    "note": "Original full measurement and shared sanitized traffic are consolidated to avoid duplicated logs."
+  },
+  "original_archive_sha256": "0d58a43a04016576517f34849306f19358663d7f2a28804a6e2825b2b57dfbea"
+}

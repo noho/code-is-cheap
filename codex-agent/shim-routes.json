@@ -73,6 +73,15 @@
       "drop_tools_item": false,
       "endpoint_id": "glm-flash",
       "request_prefix": "/api/v1"
+    },
+    {
+      "port": 8796,
+      "to": "hy4",
+      "id_fix": false,
+      "json_fmt_fix": false,
+      "drop_tools_item": false,
+      "endpoint_id": "hy",
+      "request_prefix": "/v1"
     }
   ]
 }
