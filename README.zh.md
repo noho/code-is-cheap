@@ -461,7 +461,7 @@ runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 
 | Profile | 模型 | 网关 | shim 端口 | 网关修复 |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 改模型名 + 目录补丁 |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | 改模型名 + 原生 Agent 消息适配 + 目录补丁 |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | 改模型名 + 目录补丁 |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | 改模型名 + 目录补丁 |
 | `kimi` | `k3` | api.kimi.com | 8790 | + 目录补丁 |
@@ -478,6 +478,8 @@ runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 | `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
 | `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
+
+仅 DeepSeek 路由启用 `agent_message_fix`（其余默认关闭），将 Codex 0.167.0 原生 Agent 间消息适配为标准 user 消息，保留内容顺序，以文本携带来源、接收者与元数据；原生 rollout 不变。适配假设实测 `agent_message` 的 `encrypted_content` 槽内是明文，无法解密真正的不透明密文；不处理 reasoning 或工具参数。未知或非法 Agent 内容返回不含正文的 HTTP 400，避免转发残缺任务。仅在获授权后通过 `./scripts/sync-codex-agent.sh` 部署代码与路由，安装服务需要加载更新后的代码和路由。
 
 云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。七个 OpenAI profile 对应三个上游模型，共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
 

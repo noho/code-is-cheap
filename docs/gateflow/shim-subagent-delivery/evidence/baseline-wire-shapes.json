@@ -1,0 +1,758 @@
+{
+  "parent_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+  "records": [
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 6
+      },
+      "agent_messages": []
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 8,
+        "function_call": 1,
+        "function_call_output": 1
+      },
+      "agent_messages": []
+    },
+    {
+      "thread_id": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 5,
+        "agent_message": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root",
+          "recipient": "/root/wire_probe_a",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 76,
+              "sha256": "7af35f5d8ab11db4beaff1a9e33d4cab38070bbdde08245ef35116b6957bed38",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            },
+            {
+              "type": "encrypted_content",
+              "keys": [
+                "type",
+                "encrypted_content"
+              ],
+              "length": 102,
+              "sha256": "78dfc33e1f9bad5588b987b2a7e0206f8030cd6f3ea755d5ddde5fed5d8b82b4",
+              "has_probe_marker": true,
+              "has_live_probe_ok": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 5,
+        "agent_message": 1,
+        "reasoning": 1,
+        "function_call": 1,
+        "function_call_output": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root",
+          "recipient": "/root/wire_probe_a",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 76,
+              "sha256": "7af35f5d8ab11db4beaff1a9e33d4cab38070bbdde08245ef35116b6957bed38",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            },
+            {
+              "type": "encrypted_content",
+              "keys": [
+                "type",
+                "encrypted_content"
+              ],
+              "length": 102,
+              "sha256": "78dfc33e1f9bad5588b987b2a7e0206f8030cd6f3ea755d5ddde5fed5d8b82b4",
+              "has_probe_marker": true,
+              "has_live_probe_ok": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 8,
+        "function_call": 2,
+        "function_call_output": 2,
+        "reasoning": 1,
+        "agent_message": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 479,
+              "sha256": "81f88eb9fe2d246b513db92b98d782e4dd947dac84b1c72bc1322eab6121f2df",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 8,
+        "function_call": 3,
+        "function_call_output": 3,
+        "reasoning": 2,
+        "agent_message": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 479,
+              "sha256": "81f88eb9fe2d246b513db92b98d782e4dd947dac84b1c72bc1322eab6121f2df",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 6,
+        "agent_message": 2,
+        "reasoning": 2,
+        "function_call": 1,
+        "function_call_output": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root",
+          "recipient": "/root/wire_probe_a",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 76,
+              "sha256": "7af35f5d8ab11db4beaff1a9e33d4cab38070bbdde08245ef35116b6957bed38",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            },
+            {
+              "type": "encrypted_content",
+              "keys": [
+                "type",
+                "encrypted_content"
+              ],
+              "length": 102,
+              "sha256": "78dfc33e1f9bad5588b987b2a7e0206f8030cd6f3ea755d5ddde5fed5d8b82b4",
+              "has_probe_marker": true,
+              "has_live_probe_ok": true
+            }
+          ]
+        },
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root",
+          "recipient": "/root/wire_probe_a",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 76,
+              "sha256": "7af35f5d8ab11db4beaff1a9e33d4cab38070bbdde08245ef35116b6957bed38",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            },
+            {
+              "type": "encrypted_content",
+              "keys": [
+                "type",
+                "encrypted_content"
+              ],
+              "length": 103,
+              "sha256": "0578230fefbd4dfbfa72e04ca32e0fb5fa5236b12b0d3f1872237652e594b24b",
+              "has_probe_marker": true,
+              "has_live_probe_ok": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 9,
+        "function_call": 4,
+        "function_call_output": 4,
+        "reasoning": 3,
+        "agent_message": 1
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 479,
+              "sha256": "81f88eb9fe2d246b513db92b98d782e4dd947dac84b1c72bc1322eab6121f2df",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 9,
+        "function_call": 5,
+        "function_call_output": 5,
+        "reasoning": 4,
+        "agent_message": 2
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 479,
+              "sha256": "81f88eb9fe2d246b513db92b98d782e4dd947dac84b1c72bc1322eab6121f2df",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        },
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 444,
+              "sha256": "5041f04bd35fc5de43bd5894f2fb9439dfc3cc10049ffb471a0e2276c8e60d5e",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "thread_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "model": "deepseek-flash",
+      "top_keys": [
+        "model",
+        "stream",
+        "input",
+        "tools",
+        "tool_choice",
+        "parallel_tool_calls",
+        "reasoning",
+        "store",
+        "include",
+        "prompt_cache_key",
+        "text",
+        "client_metadata"
+      ],
+      "types": {
+        "message": 9,
+        "function_call": 6,
+        "function_call_output": 6,
+        "reasoning": 5,
+        "agent_message": 2
+      },
+      "agent_messages": [
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 479,
+              "sha256": "81f88eb9fe2d246b513db92b98d782e4dd947dac84b1c72bc1322eab6121f2df",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        },
+        {
+          "keys": [
+            "type",
+            "id",
+            "author",
+            "recipient",
+            "content"
+          ],
+          "author": "/root/wire_probe_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "keys": [
+                "type",
+                "text"
+              ],
+              "length": 444,
+              "sha256": "5041f04bd35fc5de43bd5894f2fb9439dfc3cc10049ffb471a0e2276c8e60d5e",
+              "has_probe_marker": false,
+              "has_live_probe_ok": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "type": "userMessage",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "agentMessage",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4",
+      "item": {
+        "type": "agentMessage",
+        "id": "bb54f4ec-8f40-4756-ba67-eb5d43501654",
+        "text": "I'll spawn one child agent with no inherited context, wait for its final, then send a follow-up to the same child.",
+        "phase": "commentary",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null,
+        "startedAtMs": 1794056996737,
+        "completedAtMs": 1794056996889
+      }
+    },
+    {
+      "type": "subAgentActivity",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "turnId": "01a1b621-492a-7bb3-b0fa-d20dbc9c7fc9"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "turnId": "01a1b621-492a-7bb3-b0fa-d20dbc9c7fc9"
+    },
+    {
+      "type": "agentMessage",
+      "threadId": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "turnId": "01a1b621-492a-7bb3-b0fa-d20dbc9c7fc9",
+      "item": {
+        "type": "agentMessage",
+        "id": "40952a40-7e64-4236-8ca0-f03f34d5694e",
+        "text": "Diagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (agent tree visible via `list_agents`)\n- Spawned further children: none\n- Files read/written, shell tools, external integrations, settings: untouched\n\nNo blockers or issues encountered. Ready for the next communication check.",
+        "phase": "final_answer",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null,
+        "startedAtMs": 1794057002846,
+        "completedAtMs": 1794057003375
+      }
+    },
+    {
+      "type": "subAgentActivity",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "collabAgentToolCall",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4",
+      "item": {
+        "type": "collabAgentToolCall",
+        "id": "call_00_momPXDG9f8szMLnIqzDH1429",
+        "tool": "wait",
+        "status": "completed",
+        "senderThreadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+        "receiverThreadIds": [],
+        "prompt": null,
+        "model": null,
+        "reasoningEffort": null,
+        "agentsStates": {},
+        "startedAtMs": 1794056998845,
+        "completedAtMs": 1794057003436
+      }
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "agentMessage",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4",
+      "item": {
+        "type": "agentMessage",
+        "id": "5ac129ae-1ff5-43c2-a875-7b10ed1a98a4",
+        "text": "The first child final is now available; I’m sending the required follow-up to that same child and will record its next final verbatim.",
+        "phase": "commentary",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null,
+        "startedAtMs": 1794057006837,
+        "completedAtMs": 1794057007061
+      }
+    },
+    {
+      "type": "subAgentActivity",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "agentMessage",
+      "threadId": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+      "turnId": "01a1b621-70c2-7ad0-8955-d29461e6e59d",
+      "item": {
+        "type": "agentMessage",
+        "id": "79c72fe1-041b-4960-9ce6-3e3eae68746a",
+        "text": "Diagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (`list_agents` returned the live tree)\n- Spawned further children: none\n- Files, shell tools, external integrations, settings: untouched\n\nNo blockers. Ready for the next communication check.",
+        "phase": "final_answer",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null,
+        "startedAtMs": 1794057008675,
+        "completedAtMs": 1794057008872
+      }
+    },
+    {
+      "type": "subAgentActivity",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "collabAgentToolCall",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4",
+      "item": {
+        "type": "collabAgentToolCall",
+        "id": "call_00_nQxRX4OddZBUpfHMFg6p3349",
+        "tool": "wait",
+        "status": "completed",
+        "senderThreadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+        "receiverThreadIds": [],
+        "prompt": null,
+        "model": null,
+        "reasoningEffort": null,
+        "agentsStates": {},
+        "startedAtMs": 1794057008694,
+        "completedAtMs": 1794057008909
+      }
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "reasoning",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4"
+    },
+    {
+      "type": "agentMessage",
+      "threadId": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+      "turnId": "01a1b621-383f-7271-bb49-1651052753c4",
+      "item": {
+        "type": "agentMessage",
+        "id": "92052899-01f6-4f3f-8ee9-633bf6675364",
+        "text": "Native collaboration tools were available. I called `spawn_agent` exactly once with `fork_turns=none` and `task_name=wire_probe_a`, then used `followup_task` on the same child.\n\nFirst child final:\n\n```text\nDiagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (agent tree visible via `list_agents`)\n- Spawned further children: none\n- Files read/written, shell tools, external integrations, settings: untouched\n\nNo blockers or issues encountered. Ready for the next communication check.\n```\n\nEquals `LIVE_PROBE_OK`: **No**\n\nSecond child final:\n\n```text\nDiagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (`list_agents` returned the live tree)\n- Spawned further children: none\n- Files, shell tools, external integrations, settings: untouched\n\nNo blockers. Ready for the next communication check.\n```\n\nEquals `LIVE_PROBE_OK`: **No**",
+        "phase": "final_answer",
+        "memoryCitation": null,
+        "delivery": null,
+        "questions": null,
+        "startedAtMs": 1794057012762,
+        "completedAtMs": 1794057013565
+      }
+    }
+  ],
+  "exit_code": 0
+}

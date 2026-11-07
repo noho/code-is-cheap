@@ -188,6 +188,63 @@ def drop_tools_item(body: bytes) -> tuple[bytes, int]:
     return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), len(inp) - len(kept)
 
 
+def fix_agent_messages(body: bytes) -> tuple[bytes, int]:
+    """Adapt native v2 inter-agent items for a non-native Responses gateway.
+
+    Observed Codex 0.167.0 agent_message encrypted_content slots contain
+    plaintext. This route-specific compatibility assumption is NOT decryption;
+    actual opaque ciphertext cannot be recovered here. Never visit reasoning,
+    tool arguments, or ordinary messages. Validate the whole request before
+    returning anything so an unknown variant cannot become a partial task.
+    """
+    try:
+        doc = json.loads(body)
+    except ValueError:
+        return body, 0
+    items = doc.get("input") if isinstance(doc, dict) else None
+    if not isinstance(items, list):
+        return body, 0
+    converted, count = [], 0
+    for index, item in enumerate(items):
+        if not isinstance(item, dict) or item.get("type") != "agent_message":
+            converted.append(item)
+            continue
+        # Error text contains positions only, never arbitrary keys or content.
+        error = f"Invalid agent_message at input[{index}]"
+        if any(not isinstance(item.get(k), str) or not item[k] for k in ("author", "recipient")):
+            raise ValueError(error)
+        content = item.get("content")
+        if not isinstance(content, list) or not content:
+            raise ValueError(error)
+        texts = []
+        for part in content:
+            if not isinstance(part, dict):
+                raise ValueError(error)
+            kind = part.get("type")
+            key = ({"input_text": "text", "encrypted_content": "encrypted_content"}.get(kind)
+                   if isinstance(kind, str) else None)
+            if key is None or set(part) != {"type", key} or not isinstance(part[key], str):
+                raise ValueError(error)
+            texts.append({"type": "input_text", "text": part[key]})
+        # Carry routing/metadata as text, not unsupported protocol fields.
+        # Preserve all original non-content fields, including the native id,
+        # without presenting amsg_ as a provider message id or elevating role.
+        metadata = {k: v for k, v in item.items() if k not in {"type", "content"}}
+        envelope = ("Native agent_message metadata: "
+                    + json.dumps(metadata, ensure_ascii=False, separators=(",", ":")) + "\n")
+        converted.append({"type": "message", "role": "user", "content": [
+            {"type": "input_text", "text": envelope}, *texts,
+        ]})
+        count += 1
+    if not count:
+        return body, 0
+    doc["input"] = converted
+    try:
+        return json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode(), count
+    except UnicodeEncodeError:
+        raise ValueError("Invalid agent_message Unicode") from None
+
+
 def rewrite(body: bytes, encoding: str, src: str, dst: str) -> tuple[bytes, str]:
     """Return (body, how). Decompresses, rewrites, and restores the encoding.
 
@@ -252,6 +309,7 @@ def load_routes() -> list[dict]:
             "id_fix": bool(r.get("id_fix", doc.get("id_fix", False))),
             "json_fmt_fix": bool(r.get("json_fmt_fix", doc.get("json_fmt_fix", False))),
             "drop_tools_item": bool(r.get("drop_tools_item", doc.get("drop_tools_item", False))),
+            "agent_message_fix": bool(r.get("agent_message_fix", False)),
         })
     if not routes:
         raise SystemExit(f"no routes defined in {path}")
@@ -348,7 +406,17 @@ class Handler(BaseHTTPRequestHandler):
         if plain:
             target = selected["upstream_model"] if selected else route["to"]
             source = route["from"] if guardian else route["to"]
-            transformed, how = _swap(plain, source, target)
+            transformed, n = plain, 0
+            if route.get("agent_message_fix"):
+                try:
+                    transformed, n = fix_agent_messages(transformed)
+                except ValueError as exc:
+                    self._log(str(exc))
+                    self.send_error(400, str(exc))
+                    return
+            transformed, how = _swap(transformed, source, target)
+            if n:
+                how = f"{how}+agentmsg{n}"
             if route.get("id_fix"):
                 transformed, n = fix_message_ids(transformed)
                 if n:

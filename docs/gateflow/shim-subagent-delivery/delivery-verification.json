@@ -1,0 +1,37 @@
+{
+  "repository": "noho/code-is-cheap",
+  "pr": {
+    "author": {
+      "id": "MDQ6VXNlcjE0MTU4MzY3",
+      "is_bot": false,
+      "login": "noho",
+      "name": ""
+    },
+    "baseRefName": "main",
+    "baseRefOid": "09337967910277785b82874326d7f49156c9395b",
+    "body": "Codex 0.167.0 writes delegated tasks as native `agent_message` items, with the observed plaintext task in an `encrypted_content` slot. The configured DeepSeek Responses gateway accepts those requests with HTTP 200 but the model does not receive the task. The tasks were present in child rollouts and wire requests; unloaded-child queue/resume errors were a separate control restriction.\n\nEnable a route-specific adapter only for DeepSeek. It converts known inter-agent content to standard user messages, preserves text order and source/routing metadata, and rejects invalid or unknown content with sanitized HTTP 400 before forwarding. Other item types, provider routes, model/credential mapping, compression, guardian handling and ordinary streaming retain their existing behavior. The adapter assumes the observed slots contain plaintext; it cannot decrypt opaque ciphertext.\n\nValidation: 71 focused/related tests passed, plus two actual DeepSeek native probe runs. The same child returned the exact initial and followup markers and consumed a separate send_message token. Another child executed `cat` on a random fixture whose contents were absent from its task and returned the exact contents. Baseline failure, setup failure, identities, ingress/egress, tool output and commands are retained under `docs/gateflow/shim-subagent-delivery/`.\n\nNo watchlist, scheduling ledger or business data changed. The running service has not been deployed. After merge and authorization, sync from the approved checkout with `./scripts/sync-codex-agent.sh`; it restarts the loaded launchd shim. Reopening Codex is not inherently required for this HTTP adapter; old failed tasks need a deliberate native followup and have not been recovered here.\n\nIndependent reviews ran in parallel via Claude mimo-flash and ds-flash. The accepted low-severity evidence privacy finding was fixed by the required gpt-6-sol delegate and passed both affected-surface re-reviews. A suggestion to classify hypothetical future top-level types by a string prefix was rejected with a recorded scope/contract reason. Full adjudication and residual owners are in `docs/gateflow/shim-subagent-delivery/review-adjudication.md`.\n",
+    "headRefName": "fix/shim-subagent-message-delivery",
+    "headRefOid": "a06c59477bd2a8739e61c991d00fa9e887e7408c",
+    "headRepository": {
+      "id": "R_kgDOSd8g6w",
+      "name": "code-is-cheap",
+      "nameWithOwner": "noho/code-is-cheap"
+    },
+    "isDraft": true,
+    "number": 70,
+    "statusCheckRollup": [],
+    "title": "Fix native Codex subagent messages on DeepSeek shim",
+    "url": "https://github.com/noho/code-is-cheap/pull/70"
+  },
+  "reviewed_source_commit": "a06c59477bd2a8739e61c991d00fa9e887e7408c",
+  "compare_url": "repos/noho/code-is-cheap/compare/09337967910277785b82874326d7f49156c9395b...a06c59477bd2a8739e61c991d00fa9e887e7408c",
+  "full_diff_snapshot": "/private/tmp/shim-subagent-pr70-a06c594.diff",
+  "full_diff_sha256": "95adb3a60908cce10618df1a0c3000f15ad839ce77d7a7b1429e873c11089223",
+  "github_diff_equals_local_exact_oid_diff": true,
+  "reviewed_source_hashes_match": true,
+  "title_body_match_implementation": true,
+  "workflow_count": 0,
+  "ci": "No configured GitHub Actions workflows or check runs; applicable local/native validation passed",
+  "final_push_source_commit_verified": true,
+  "control_document_closeout_commit_may_follow": "Only closeout/delivery records and their checksums; final source hashes and PR identity will be checked again and retained in /private/tmp/shim-subagent-pr70-final-delivery.json"
+}

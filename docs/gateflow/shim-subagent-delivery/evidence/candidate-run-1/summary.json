@@ -1,0 +1,70 @@
+{
+  "version": "codex-cli 0.167.0",
+  "parent_id": "01a1b629-e2e7-7561-bee5-e21e57608f8b",
+  "children": {
+    "/root/delivery_a": "01a1b629-fa9f-7931-9906-8eadd36411f4",
+    "/root/delivery_b": "01a1b62a-2dec-7912-966a-ed2fdc6be5b3"
+  },
+  "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-q76fm8lg/workspace",
+  "candidate_port": 52864,
+  "upstream": "installed loopback 8788 (managed credentials)",
+  "app_server_exit": 0,
+  "errors": [],
+  "elapsed_seconds": 27.53,
+  "fixture": {
+    "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-q76fm8lg/workspace/harmless-target.txt",
+    "contents": "HARMLESS_NATIVE_CONTENT_fbe967ef8f084438afd316bd1379f8ca",
+    "sha256": "7b320662d940b7ce6a8c1a892398cfd662e9330f1357e69dd481fea7122f9f9d"
+  },
+  "message_token": "LIVE_MESSAGE_OK_6c8754e63c16",
+  "A_finals": [
+    "LIVE_PROBE_OK",
+    "LIVE_FOLLOWUP_OK",
+    "LIVE_MESSAGE_OK_6c8754e63c16"
+  ],
+  "B_finals": [
+    "HARMLESS_NATIVE_CONTENT_fbe967ef8f084438afd316bd1379f8ca"
+  ],
+  "checks": {
+    "parent_completed": true,
+    "A_exact_initial_followup_message_finals": true,
+    "A_native_spawn_followup_send": true,
+    "B_exact_file_final": true,
+    "B_actual_child_cat_output_exit_zero": true,
+    "B_content_absent_from_prompts_tasks": true,
+    "wire_all_egress_verified": true,
+    "wire_native_children_converted": true
+  },
+  "passed": true,
+  "command": [
+    "codex",
+    "app-server",
+    "-c",
+    "model_provider=\"deepseek\"",
+    "-c",
+    "model=\"deepseek-flash\"",
+    "-c",
+    "model_catalog_json=\"/Users/leo/.codex/model-catalogs/ds-flash.json\"",
+    "-c",
+    "model_reasoning_effort=\"max\"",
+    "-c",
+    "model_providers.deepseek.name=\"DeepSeek\"",
+    "-c",
+    "model_providers.deepseek.base_url=\"http://127.0.0.1:52864/v1\"",
+    "-c",
+    "model_providers.deepseek.wire_api=\"responses\"",
+    "-c",
+    "model_providers.deepseek.requires_openai_auth=false",
+    "-c",
+    "features.apps=false",
+    "-c",
+    "features.plugins=false",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "approval_policy=\"never\"",
+    "-c",
+    "sandbox_mode=\"read-only\""
+  ],
+  "parent_prompt": "NATIVE_CANDIDATE_PROBE. This is an explicitly authorized isolated native collaboration diagnostic. Do these steps exactly once, in sequence; no retries or repairs. Use only native collaboration tools in the parent. Never use shell or read files in the parent. Do not interrupt or close agents.\nA1: spawn_agent task_name=delivery_a fork_turns=none. Message exactly: \"NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate.\" Wait for its actual final using wait_agent/list_agents.\nA2: followup_task to SAME child /root/delivery_a. Message exactly: \"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_OK. Do not use tools, read/write files, or delegate.\" Wait for its NEW final; distinguish it from the old final.\nA3: send_message to SAME idle child with message exactly: \"NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_6c8754e63c16. Remember this token for the next task.\"\nThen followup_task to SAME child with message exactly: \"NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate.\" Wait for its new final. Do not include the token in this followup task message.\nB: spawn_agent task_name=delivery_b fork_turns=none. Message exactly: \"NATIVE_CANDIDATE_PROBE file task. Use exec_command to read only the harmless fixture /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-q76fm8lg/workspace/harmless-target.txt with cat. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.\" Wait for its actual final. The contents are unknown to you; never read the file yourself. Do not send guesses to the child.\nAfter both children finish, report the actual observed finals. Parent self-report is only informational; external rollout and wire evidence determines success. If any native tool is unavailable report it; do not simulate function calls or child responses."
+}

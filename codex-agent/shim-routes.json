@@ -5,6 +5,7 @@
     {
       "port": 8788,
       "to": "deepseek-flash",
+      "agent_message_fix": true,
       "id_fix": false,
       "json_fmt_fix": false,
       "drop_tools_item": false,
