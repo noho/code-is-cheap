@@ -2,7 +2,7 @@
 
 ## Result and current gate
 
-代码修复、实现验证、双路完整审核和必要双路受影响面复审已完成。当前 gate / next entry: `ready-to-open-draft-PR` → commit/push → create draft PR → 总控交付核对。此刻未声明 PR gate 或 final closeout pass；后续交付事实在本文件补全。
+代码修复、实现验证、双路完整审核和必要双路受影响面复审已完成，源码/证据已提交并 push，draft PR 已创建且总控交付核对通过。`draft-PR-pass` → `final closeout pass`；本代码 work unit completed。当前 next entry: 用户手工 review/merge PR #70，再授权从 approved checkout 同步 live。运行中服务仍未部署。
 
 Branch: `fix/shim-subagent-message-delivery`; base: `09337967910277785b82874326d7f49156c9395b`。用户授权调查、最小修复、真实 A/B 回归；AGENTS.md 授权分支、指定 runner 委派、提交、push 和 PR，用户手工 merge。三个既有 `docs/reviews/runner-handle-loss-20261023-*` untracked 文件未修改或纳入。
 
@@ -48,4 +48,12 @@ sync 脚本在 launchd 服务已加载时会重启它。未改 skills/launcher�
 
 ## PR delivery / final closeout
 
-Pending concrete PR creation and controller delivery verification. No GitHub issue was supplied, so issue link/closeout comment are not applicable. Next entry: necessary commit/push and draft PR creation; final closeout will record the actual PR and source identity before marking this code work unit complete.
+Draft PR: https://github.com/noho/code-is-cheap/pull/70 (`noho/code-is-cheap`, head repository 同名，head branch `fix/shim-subagent-message-delivery`, base `main`)。保持 draft，未 merge、approve、mark ready、request reviewers 或创建 issue/comment。用户未提供 GitHub issue，因此 issue 关联/closeout comment 不适用。
+
+总控已按精确 OID 核对完整 GitHub compare diff，与本地 diff 字节一致：base `09337967910277785b82874326d7f49156c9395b`，reviewed source head `a06c59477bd2a8739e61c991d00fa9e887e7408c`；完整 diff SHA-256 `95adb3a60908cce10618df1a0c3000f15ad839ce77d7a7b1429e873c11089223`，保存于 `/private/tmp/shim-subagent-pr70-a06c594.diff`，可由 `repos/noho/code-is-cheap/compare/<base>...<head>` 重取。title/body 与真实实现、测试及未部署边界一致；PR draft=true，检查列表为空，仓库 GitHub Actions workflow 数为 0。源码/测试/probe 的 7 个已审 hash 与当前版本一致；读取完整 diff 后二次查询 head/base 未变。详见 [delivery-verification.json](delivery-verification.json)。
+
+随后仅补充本 closeout 与交付事实、刷新本 control document checksum，作为 documentation-only closeout commit；不改变已审源码/测试/回归捕获，也不机械重派完整审核。最终 closing commit 的远端 head/base、完整 diff、source hash 与 push 同步检查保存在 `/private/tmp/shim-subagent-pr70-final-delivery.json` 及 `/private/tmp/shim-subagent-pr70-final.diff`，用于避免 control record 自引用的提交循环。
+
+已完成内容：最小 DeepSeek adapter、71 项相关离线验证、两轮真实 native A/B/MESSAGE、原始失败与 setup 失败证据、双路独立完整 review 与必要复审、accepted 发现修复、英文/中文 docs、draft PR 和交付核对。未恢复业务 run 或修改用户资料。发现状态：accepted 隐私项已修复；未来类型前缀建议拒绝并有范围/协议依据；无待修 accepted blocker。剩余风险/owner 见上一节及 review-adjudication.md。
+
+完成后的技术回报目标为父线程 `01a1b57a-8e5d-76e1-934d-1847728240be`；controller 在最终 push/identity 检查后发送根因、PR、实际回归证据、部署/重开说明，回报结果保存于 `/private/tmp/shim-subagent-parent-notification.json`。下一入口是用户手工 merge 及授权 live 同步，不是自动执行新闻研究或改调度账本。
