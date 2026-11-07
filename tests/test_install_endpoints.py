@@ -1429,11 +1429,11 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
         native = self.bins / "codex"
         native.write_text('#!' + sys.executable + '\n' +
             'import json,os,sys,tomllib\nfrom pathlib import Path\n'
-            'args=sys.argv[1:]\nprofile=args[args.index("-p")+1]\n'
+            'args=sys.argv[1:]\nprofile=args[args.index("-p")+1] if "-p" in args else None\n'
             'home=Path(os.environ["CODEX_HOME"])\n'
             'Path(os.environ["NATIVE_SELECTION"]).write_text(json.dumps(dict(argv=args, '
             'home=str(home), sqlite=os.environ["CODEX_SQLITE_HOME"], '
-            'card=tomllib.loads((home/(profile+".config.toml")).read_text()))))\n'
+            'card=tomllib.loads((home/(profile+".config.toml" if profile else "config.toml")).read_text()))))\n'
             'assert "AGENT_RUN_ERROR_FD" not in os.environ\n'
             'print(json.dumps({"type":"turn.completed"}))\n')
 
@@ -1463,9 +1463,6 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
 
     def test_subscription_interactive_title_resume_and_missing_card(self):
         self.stage_subscription_profiles()
-        repair = self.bins / "repair-codex-reasoning-history.py"
-        shutil.copy2(ROOT / "scripts" / repair.name, repair)
-        repair.chmod(0o755)
         tmux = self.bins / "tmux"
         tmux.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$TMUX_CAPTURE"\n')
         tmux.chmod(0o755)
@@ -1507,6 +1504,43 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
             self.assertIn("not executed", done.stderr)
             self.assertFalse(self.selection.exists())
         self.assertEqual(list(folder.glob("*.backup-*")), [])
+
+    def test_interactive_resume_keeps_third_party_and_business_home_selection(self):
+        self.stage_subscription_profiles()
+        # Real connection validation with fake credentials; no live shim or model call.
+        shutil.copy2(HELPER, self.bins / HELPER.name)
+        private_doc(self.home, {"default": {}, "override": {"ds-flash": {"codex": conn()}}})
+        shutil.copyfile(ROOT / "codex-agent/profiles/ds-flash/config.toml",
+                        self.home / ".codex/ds-flash.config.toml")
+        business_home = self.home / ".codex-agent/business"
+        business_home.mkdir(parents=True)
+        (business_home / "config.toml").write_text('model="business-model"\n')
+        for provider, home in (("ds-flash", self.home / ".codex"), ("business", business_home)):
+            folder = home / "sessions"
+            folder.mkdir()
+            rollout = folder / "rollout-synthetic-missing-id.jsonl"
+            original = (json.dumps({"type": "session_meta", "payload": {"model_provider": "openai"}}) + "\n" +
+                        json.dumps({"type": "turn_context", "payload": {"model": "gpt-6.1-sol"}}) + "\n" +
+                        json.dumps({"type": "response_item", "payload": {"type": "reasoning", "encrypted_content": "saved"}}) + "\n").encode()
+            rollout.write_bytes(original)
+            for supplied, forwarded in ((["resume", "named session", "--last"], ["resume", "named session", "--last"]),
+                    (["--resume=named session", "continue\n继续"], ["resume", "named session", "continue\n继续"]),
+                    (["--resume"], ["resume"]), (["--resume="], ["resume", ""])):
+                with self.subTest(provider=provider, supplied=supplied):
+                    done = subprocess.run(["zsh", "-f", "-c", 'source "$1"; '
+                        '_codex_agent_require_shim() { return 0; }; launcher="$2"; shift 2; "$launcher" "$@"',
+                        "_", str(ROOT / "scripts/agent-tools.zsh"), f"{provider}_codex", *supplied],
+                        env=self.env, capture_output=True, text=True)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    native = json.loads(self.selection.read_text())
+                    expected = (["resume", "-p", provider, *forwarded[1:]]
+                                if provider != "business" else forwarded)
+                    self.assertEqual(native["argv"], expected)
+                    self.assertEqual(native["home"], str(home))
+                    self.assertEqual(native["sqlite"], str(home))
+                    self.assertEqual(native["card"]["model"], "business-model" if provider == "business" else "deepseek-flash")
+                    self.assertEqual(rollout.read_bytes(), original)
+                    self.assertEqual(list(folder.iterdir()), [rollout])
 
     def test_renamed_runner_provider_is_rejected_even_with_retained_card(self):
         self.stage_subscription_profiles()

@@ -1,4 +1,4 @@
-"""Recovery checks for cross-provider Codex reasoning history."""
+"""Manual legacy recovery and native launcher resume boundary checks."""
 
 from __future__ import annotations
 
@@ -42,77 +42,115 @@ class RepairReasoningHistoryTests(unittest.TestCase):
         self.assertEqual(fixed.splitlines()[-1], original.splitlines()[-1])
         self.assertEqual(len(fixed.splitlines()), 4)
 
-    def test_launcher_resume_repairs_then_calls_codex(self) -> None:
+    def test_launcher_resume_forwards_without_repair(self) -> None:
         if not shutil.which("zsh"):
             self.skipTest("zsh unavailable")
         session_id = "01a0d626-0a68-7913-8394-a73c79d0f977"
+        prompt = "continue with spaces\n下一步 🌱"
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             home = root / "home"
             codex_home = home / ".codex"
             folder = codex_home / "sessions" / "2026" / "09" / "25"
             folder.mkdir(parents=True)
-            (codex_home / "gpt-6-sol.config.toml").write_text('model = "gpt-6-sol"\n')
+            (codex_home / "gpt-6-sol.config.toml").write_text('model = "gpt-6.1-sol"\n')
             rollout = folder / f"rollout-2026-09-25T00-00-00-{session_id}.jsonl"
             original = (
-                row("turn_context", {"model": "gpt-6-sol"})
+                row("session_meta", {"id": session_id, "model_provider": "openai"})
+                + row("turn_context", {"model": "gpt-6.1-sol", "model_provider": "openai"})
                 + row("response_item", {"type": "reasoning", "encrypted_content": "native"})
-                + row("turn_context", {"model": "kimi-k3"})
+                + row("turn_context", {"model": "kimi-k3", "model_provider": "kimi"})
                 + row("response_item", {"type": "reasoning", "encrypted_content": "foreign"})
                 + row("response_item", {"type": "message", "content": [{"type": "output_text", "text": "answer"}]})
-            )
-            rollout.write_text(original)
+            ).encode()
+            rollout.write_bytes(original)
+            files_before = set(codex_home.rglob("*"))
             bin_dir = root / "bin"
             bin_dir.mkdir()
-            shutil.copy2(SCRIPT, bin_dir / SCRIPT.name)
-            (bin_dir / SCRIPT.name).chmod(0o755)
-            capture = root / "codex-args"
+            trap = root / "repair-called"
+            repair = bin_dir / SCRIPT.name
+            repair.write_text('#!/bin/sh\ntouch "$REPAIR_TRAP"\nexit 97\n')
+            repair.chmod(0o755)
+            capture = root / "codex-args.json"
             stub = bin_dir / "codex"
-            stub.write_text('#!/bin/sh\nprintf "%s\\n" "$@" > "$CAPTURE_FILE"\n')
+            stub.write_text('#!' + sys.executable + "\n" +
+                'import json,os,sys\nfrom pathlib import Path\n'
+                'Path(os.environ["CAPTURE_FILE"]).write_text(json.dumps(dict(argv=sys.argv[1:], '
+                'home=os.environ["CODEX_HOME"], sqlite=os.environ["CODEX_SQLITE_HOME"])))\n'
+                'sys.stdout.write(os.environ.get("NATIVE_STDOUT", ""))\n'
+                'sys.stderr.write(os.environ.get("NATIVE_STDERR", ""))\n'
+                'sys.exit(int(os.environ.get("NATIVE_EXIT", "0")))\n')
             stub.chmod(0o755)
-            env = os.environ | {"HOME": str(home), "PATH": f"{bin_dir}:{os.environ['PATH']}", "CAPTURE_FILE": str(capture)}
+            env = {"HOME": str(home), "PATH": f"{bin_dir}:/usr/bin:/bin",
+                   "CAPTURE_FILE": str(capture), "REPAIR_TRAP": str(trap)}
             launcher = SCRIPT.parent / "agent-tools.zsh"
-            cmd = ["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume "$2"', "_", str(launcher), session_id]
-            done = subprocess.run(cmd, env=env, capture_output=True, text=True)
-            self.assertEqual(done.returncode, 0, done.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
-            self.assertEqual(len(rollout.read_text().splitlines()), 4)
-            self.assertEqual(next(folder.glob("*.backup-*")).read_text(), original)
-            capture.unlink()
-            alias = subprocess.run(["zsh", "-c", 'source "$1"; gpt_codex resume "$2"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
-            self.assertEqual(alias.returncode, 0, alias.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
-            capture.unlink()
-            equal_form = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex "--resume=$2" "next step"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
-            self.assertEqual(equal_form.returncode, 0, equal_form.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id, "next step"])
-            self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
-            capture.unlink()
-            flagged = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume "$2"', "_", str(launcher), session_id], env=env, capture_output=True, text=True)
-            self.assertEqual(flagged.returncode, 0, flagged.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", session_id])
-            self.assertEqual(len(list(folder.glob("*.backup-*"))), 1)
-            capture.unlink()
-            bare = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume', "_", str(launcher)], env=env, capture_output=True, text=True)
-            self.assertEqual(bare.returncode, 0, bare.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol"])
-            capture.unlink()
-            native_option = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex resume --help', "_", str(launcher)], env=env, capture_output=True, text=True)
-            self.assertEqual(native_option.returncode, 0, native_option.stderr)
-            self.assertEqual(capture.read_text().splitlines(), ["resume", "-p", "gpt-6-sol", "--help"])
-            capture.unlink()
-            invalid = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume bad-id', "_", str(launcher)], env=env, capture_output=True, text=True)
-            self.assertNotEqual(invalid.returncode, 0)
-            self.assertFalse(capture.exists())
-            missing = subprocess.run(["zsh", "-c", 'source "$1"; gpt-6-sol_codex --resume', "_", str(launcher)], env=env, capture_output=True, text=True)
-            self.assertEqual(missing.returncode, 2)
-            self.assertFalse(capture.exists())
+            cases = [
+                (["resume"], ["resume"]),
+                (["--resume"], ["resume"]),
+                (["--resume="], ["resume", ""]),
+                (["resume", ""], ["resume", ""]),
+                (["resume", session_id], ["resume", session_id]),
+                (["--resume", session_id, prompt], ["resume", session_id, prompt]),
+                (["--title", "saved thread", "--resume", session_id, prompt], ["resume", session_id, prompt]),
+                (["--resume", "", prompt], ["resume", "", prompt]),
+                ([f"--resume={session_id}", prompt], ["resume", session_id, prompt]),
+                (["resume", "--help"], ["resume", "--help"]),
+                (["--resume", "--last", "--all"], ["resume", "--last", "--all"]),
+                (["resume", "named session", "--model", "other", "--", prompt, ""],
+                 ["resume", "named session", "--model", "other", "--", prompt, ""]),
+                (["--resume=named session", "--model", "other", "--", prompt, ""],
+                 ["resume", "named session", "--model", "other", "--", prompt, ""]),
+                (["resume", "--all", "unavailable-session", "--model", "other", prompt],
+                 ["resume", "--all", "unavailable-session", "--model", "other", prompt]),
+                (["--resume", "unavailable-session", "--model", "other", prompt],
+                 ["resume", "unavailable-session", "--model", "other", prompt]),
+                (["--resume=", "--", prompt], ["resume", "", "--", prompt]),
+                # Alias-looking prompts and arguments after the delimiter stay literal.
+                (["--", "--resume=literal", prompt], ["--", "--resume=literal", prompt]),
+                (["--", "--resume", ""], ["--", "--resume", ""]),
+                (["resume", session_id, "--resume=literal"], ["resume", session_id, "--resume=literal"]),
+                (["exec", "resume", session_id, "--", prompt], ["exec", "resume", session_id, "--", prompt]),
+            ]
+            for entry in ("gpt-6-sol_codex", "gpt_codex"):
+                for supplied, forwarded in cases:
+                    with self.subTest(entry=entry, supplied=supplied):
+                        done = subprocess.run([
+                            "zsh", "-f", "-c", 'source "$1"; launcher="$2"; shift 2; "$launcher" "$@"',
+                            "_", str(launcher), entry, *supplied,
+                        ], env=env, capture_output=True, text=True)
+                        self.assertEqual(done.returncode, 0, done.stderr)
+                        expected = ([forwarded[0], "-p", "gpt-6-sol", *forwarded[1:]]
+                                    if forwarded[0] in ("resume", "exec")
+                                    else ["-p", "gpt-6-sol", *forwarded])
+                        native = json.loads(capture.read_text())
+                        self.assertEqual(native["argv"], expected)
+                        self.assertEqual(native["home"], str(codex_home))
+                        self.assertEqual(native["sqlite"], str(codex_home))
+                        self.assertEqual(rollout.read_bytes(), original)
+                        self.assertEqual(set(codex_home.rglob("*")), files_before)
+                        self.assertFalse(trap.exists())
+            # Native validation/provider messages and failures pass through without a fallback.
+            for supplied in (["resume", "unavailable-session"], ["--resume="], ["--resume"]):
+                with self.subTest(native_failure=supplied):
+                    stdout = "Continue in a new chat.\n"
+                    stderr = "modelProviderMismatch: this chat is read-only\n"
+                    done = subprocess.run([
+                        "zsh", "-f", "-c", 'source "$1"; shift; gpt-6-sol_codex "$@"',
+                        "_", str(launcher), *supplied,
+                    ], env=env | {"NATIVE_STDOUT": stdout, "NATIVE_STDERR": stderr, "NATIVE_EXIT": "23"},
+                        capture_output=True, text=True)
+                    self.assertEqual(done.returncode, 23)
+                    self.assertEqual(done.stdout, stdout)
+                    self.assertEqual(done.stderr, stderr)
+                    self.assertEqual(rollout.read_bytes(), original)
+                    self.assertEqual(set(codex_home.rglob("*")), files_before)
+                    self.assertFalse(trap.exists())
 
     def test_sync_installs_repair_tool(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             bin_dir = root / "bin"
-            env = os.environ | {"AGENT_TOOLS_TARGET": str(root / "agent-tools.zsh"), "AGENT_RUN_BIN_DIR": str(bin_dir)}
+            env = os.environ | {"HOME": str(root / "home"), "AGENT_TOOLS_TARGET": str(root / "agent-tools.zsh"), "AGENT_RUN_BIN_DIR": str(bin_dir)}
             done = subprocess.run(["bash", str(SCRIPT.parent / "sync-agent-tools.sh")], env=env, capture_output=True, text=True)
             self.assertEqual(done.returncode, 0, done.stderr)
             installed = bin_dir / SCRIPT.name

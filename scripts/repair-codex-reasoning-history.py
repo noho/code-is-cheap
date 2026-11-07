@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Repair third-party reasoning fields that OpenAI rejects on session replay.
+"""Manual legacy recovery for incompatible Codex rollout reasoning fields.
 
+Launchers never call this tool. It cannot bypass Codex provider mismatch checks;
+use Codex's native continuation flow when a saved thread is read-only.
 By default this only reports the number of affected rollout items. --apply
-creates a private backup beside the rollout before atomically replacing it.
+edits reasoning history, creating a private backup before atomic replacement.
 Close every Codex client using the session before applying the repair.
 """
 
@@ -102,7 +104,7 @@ def main() -> int:
     parser.add_argument("--session-id", help="find a rollout by session UUID under --sessions-root")
     parser.add_argument("--sessions-root", type=Path, help="session directory for --session-id")
     parser.add_argument("--target-config", type=Path, help="model card/config whose model reasoning to retain")
-    parser.add_argument("--apply", action="store_true", help="back up and atomically repair the rollout")
+    parser.add_argument("--apply", action="store_true", help="manually edit legacy reasoning history after saving a private backup")
     parser.add_argument("--drop-reasoning-model", action="append", default=[], metavar="MODEL",
                         help="remove reasoning items from turns using MODEL; repeat as needed")
     args = parser.parse_args()

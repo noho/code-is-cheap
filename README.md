@@ -292,12 +292,12 @@ If `install.sh` completed successfully, skip the manual deployment steps in this
 The versioned sources are `scripts/agent-tools.zsh`, `scripts/claude-agent-run`, and `scripts/codex-agent-run`. Their
 installed copies live under `~/.config/zsh` and `~/.local/bin`; edit the repository sources and sync them rather than
 editing installed copies.
-`sync-agent-tools.sh` also installs the URL helper, default URL resources and `repair-codex-reasoning-history.py` to `~/.local/bin`.
+`sync-agent-tools.sh` also installs the URL helper, default URL resources and the manual legacy recovery tool `repair-codex-reasoning-history.py` to `~/.local/bin`.
 
 Prerequisites:
 
 - `zsh`, `claude`, `codex`, `jq`, and `curl` are available on `PATH`.
-- `python3` 3.11 or newer is required for URL resolution and the `--resume` repair option; `agent-endpoint.py` must be on `PATH` alongside the runners.
+- `python3` 3.11 or newer is required for URL resolution, connection helpers/runners and the standalone manual legacy recovery tool; `agent-endpoint.py` must be on `PATH` alongside the runners.
 - `~/.local/bin` is on `PATH` so the child-agent runners can be invoked by name.
 - The selected cloud runtime has a nonempty `api_key` in the private connection JSON.
 - Each Codex profile has its model card deployed at `~/.codex/<agent-id>.config.toml` (`business` excepted: `~/.codex-agent/business/config.toml`).
@@ -343,7 +343,7 @@ Token Plan override examples below replace the complete URL/model/key tuple; key
 }}}
 ```
 
-The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To continue a CLI conversation on another model, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`.
+The app launchers open a new Codex app instance with the selected profile and optional workspace. The desktop app reads `$CODEX_HOME/config.toml` in full (no `-p` layering), so each managed app instance gets its own **composed home** under its user-data directory (shared base + the selected model card, composed idempotently at launch by `compose-codex-app-config.py`) — the app starts on the selected model. These app homes have separate session histories. To select another model for a CLI conversation, use the shared-home CLI with an explicit profile, for example `gpt-6-sol_codex resume <session-id>` or `codex resume -p gpt-6-sol <session-id>`. Codex handles compatibility: same-provider model changes can warn; a different provider can make the saved thread read-only and offer continuation in a new chat (see below).
 
 ```bash
 mimo_claude --title
@@ -462,7 +462,7 @@ See [advanced sub-agent calls](skills/sub-agents/references/advanced.md) when se
 All managed profiles share one Codex home (`~/.codex`, Codex's default home — it must be a real directory; the desktop app's sandbox rejects symlink components in its writable paths): the base
 `config.toml` carries policy and machine-local runtime state, and each profile is a model card at
 `~/.codex/<agent-id>.config.toml` layered in with `codex -p <agent-id>` — picking a card at launch
-is model switching, and the session pool is shared. Resume through the target model's launcher
+selects the model, and the session pool is shared. Ask Codex to resume through the target model's launcher
 (`gpt-6-sol_codex resume <session-id>`) or pass `-p` explicitly
 (`codex resume -p gpt-6-sol <session-id>`). Plain `codex resume <session-id>` can restore the
 session's last selected model instead of the base config's default. The ten
@@ -471,15 +471,19 @@ profiles (`gpt-6-astra`, `gpt-6-astra-x`, `gpt-6-astra-max`, `gpt-6-sol`, `gpt-6
 `business` keeps its own CODEX_HOME (`~/.codex-agent/business`, a separate account). The shared base config remains
 machine-owned except for the marked provider registry managed by this repository.
 
-To repair and resume a cross-model session in one step, close other Codex clients using it and run
-`gpt-6-sol_codex resume <session-id> [prompt]` or `gpt-6-sol_codex --resume <session-id> [prompt]`
-(replace the launcher with the intended target model; `--resume=<session-id>` also works).
-Both launcher forms find the session under its Codex home, save a private backup when needed, and remove reasoning records
-from turns whose model differs from the target card, then runs `codex resume` with that card. Messages and tool history
-remain; reasoning and summaries from other models are unavailable in the repaired session but remain in the backup.
-If there is nothing to remove, the session is left untouched and no backup is created.
-Run `./scripts/sync-agent-tools.sh` and open a new shell before using this option. Bare `resume` and Codex resume options
-such as `--help` or `--last` still go directly to Codex because no session ID has been selected for repair.
+The launcher forwards native `resume` and its arguments to Codex, including session names, picker options,
+`--help`, `--last`, and prompts. Leading `--resume` and `--resume=<session-id>` are compatibility aliases for
+`resume` and `resume <session-id>`; remaining arguments keep their order and boundaries. Bare `--resume` opens
+the native picker; `--resume=` passes an empty session argument for Codex to interpret. Launchers never inspect or
+repair saved rollouts on resume. `gpt_codex` forwards in the same way through `gpt-6-sol_codex`.
+
+Codex owns provider compatibility and continuation. The official [start/resume documentation](https://learn.chatgpt.com/docs/app-server#start-or-resume-a-thread)
+describes provider mismatch rejecting input to the original thread; switching models within one provider has a separate warning.
+In the current TUI observed by the user, a provider mismatch makes the saved thread read-only and offers
+`c` to continue in a new chat. That new chat receives a prompt to read the saved conversation transcript and continue.
+Follow the action offered by your installed Codex version; UI wording and shortcuts can vary. This does not promise
+transfer of all internal state or tool execution, and the observed TUI flow is not necessarily app-server `thread/fork`.
+The launcher leaves that flow to Codex without changing session metadata or selecting the action automatically.
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. Astra and Sol each have three providers: the base name uses high,
@@ -593,15 +597,21 @@ For the official MiMo outer-boundary case, also set `AGENT_SANDBOX_KERNEL_TESTS=
 with no weaker fallback. [Implementation evidence](docs/gateflow/official-provider-catalogs/implementation.md)
 records actual outcomes; vendor acceptance and desktop/future-runtime compatibility are separate checks.
 
-### Repairing reasoning history for cross-provider resume
+### Manual legacy reasoning-history recovery
 
-A third-party Responses provider can save `reasoning_text` in a reasoning item's `content` array. The official OpenAI
-endpoint rejects that history on resume with `Invalid 'input[n].content': array too long` (see [upstream issue #36551](https://github.com/openai/codex/issues/36551)). Close every Codex client using the session, then locate its rollout file under `~/.codex/sessions/` and run:
+`repair-codex-reasoning-history.py` remains available for explicitly manual legacy payload recovery. Launchers never
+call it, and it cannot bypass Codex's provider mismatch boundary. For a read-only thread, use the native continuation
+flow described above. This utility deliberately edits saved reasoning history when `--apply` is requested.
+
+Legacy Responses histories could contain `reasoning_text` in a reasoning item's `content` array and fail OpenAI
+payload validation with `Invalid 'input[n].content': array too long` (see [historical upstream issue #36551](https://github.com/openai/codex/issues/36551)).
+If recovering such legacy payloads manually, close every Codex client using the session, locate its rollout under
+`~/.codex/sessions/`, and run:
 
 ```bash
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
-# If cross-provider resume then reports invalid_encrypted_content or a missing reasoning item ID:
+# For legacy payload errors involving encrypted reasoning or a missing reasoning item ID:
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
 ```
@@ -615,9 +625,10 @@ records are lost from the repaired rollout, but remain in the timestamped backup
 Flags match the exact logical model name recorded in `turn_context`, not the endpoint's upstream wire model or a profile alias.
 The examples cover current Kimi `k3`, legacy Kimi `kimi-k3`, and MiMo `mimo-v2.6-pro`; a zero-match model produces a warning.
 Both the repaired rollout and its backup have owner-only permissions (`0600` when the original is writable by its owner).
-Reopen the session with the target model's profile after repair. If the tool reports unsupported reasoning content or malformed JSONL, it leaves the rollout
+Codex still decides whether the recovered thread can resume under the selected provider; stripping reasoning does not enable
+cross-provider input to the original thread. If the tool reports unsupported reasoning content or malformed JSONL, it leaves the rollout
 unchanged; inspect that line separately. To roll back, close the session again and copy the reported
-`rollout-*.jsonl.backup-<timestamp>` file over the rollout. Keep the backup until the resumed conversation works.
+`rollout-*.jsonl.backup-<timestamp>` file over the rollout. Keep the backup until the manual recovery has been verified.
 
 ### Switching sandbox mode
 
