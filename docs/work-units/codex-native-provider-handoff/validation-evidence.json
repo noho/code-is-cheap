@@ -1,0 +1,33 @@
+{
+  "source_log": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.UFBL0CeO/output.jsonl",
+  "verified_current_hashes": true,
+  "commands": [
+    {
+      "source_item_id": "item_9",
+      "command_sha256": "b50293abde9e67aa91621ca073b851ba440669eebb8cd9dbda65a8cc7433833c",
+      "invocation": "python3 -m unittest discover -s tests -p test_repair_codex_reasoning_history.py",
+      "exit_code": 0,
+      "result_excerpt": "Ran 12 tests in 2.403s\n\nOK"
+    },
+    {
+      "source_item_id": "item_11",
+      "command_sha256": "913bd6186f72363cf92bb245bfbac46b426da9ef7321800e9cb491ce8d02d7d6",
+      "invocation": "python3 -m unittest discover -s tests -p test_install_endpoints.py",
+      "exit_code": 0,
+      "result_excerpt": "Ran 38 tests in 34.095s\n\nOK"
+    },
+    {
+      "source_item_id": "item_14",
+      "command_sha256": "77d9b1ca287395ebadb93905e699f046833bd822430d78fc59891369168d52ba",
+      "invocation": "python3 -m unittest discover -s tests -p test_repair_codex_reasoning_history.py",
+      "exit_code": 0,
+      "result_excerpt": "Ran 12 tests in 1.969s\n\nOK"
+    },
+    {
+      "source_item_id": "item_17",
+      "invocation": "zsh -n scripts/agent-tools.zsh",
+      "exit_code": 0,
+      "output": ""
+    }
+  ]
+}

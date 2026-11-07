@@ -268,12 +268,12 @@ preflight 可加 `--deny-list /absolute/denied.json` 生成完整封装命令；
 
 受版本控制的真源是 `scripts/agent-tools.zsh`、`scripts/claude-agent-run` 和 `scripts/codex-agent-run`，安装副本位于
 `~/.config/zsh` 和 `~/.local/bin`。应修改仓库真源并重新同步，不要直接编辑安装副本。
-`sync-agent-tools.sh` 还会把 URL helper、默认 URL 资源和 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
+`sync-agent-tools.sh` 还会把 URL helper、默认 URL 资源和手动旧版恢复工具 `repair-codex-reasoning-history.py` 安装到 `~/.local/bin`。
 
 前置要求：
 
 - `zsh`、`claude`、`codex`、`jq` 和 `curl` 已在 `PATH` 中。
-- URL 读取和 `--resume` 修复需要 `python3` 3.11 或更新版本；`agent-endpoint.py` 应与其它 runner 一起在 `PATH` 中。
+- URL 读取、连接 helper/runner 和独立的手动旧版恢复工具需要 `python3` 3.11 或更新版本；`agent-endpoint.py` 应与其它 runner 一起在 `PATH` 中。
 - `~/.local/bin` 已在 `PATH` 中，可以直接调用子 Agent runner。
 - 私有连接 JSON 中选定云端 runtime 的 `api_key` 已填入非空值。
 - 每个 Codex profile 的模型卡已部署为可读的 `~/.codex/<agent-id>.config.toml`（`business` 例外：`~/.codex-agent/business/config.toml`）。
@@ -322,8 +322,9 @@ CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgen
 app 启动命令会使用所选 profile 和可选 workspace 打开一个新的 Codex app 实例。桌面 app 只读 `$CODEX_HOME/config.toml`
 全文（没有 `-p` 叠加），所以每个受管 app 实例在自己的 user-data 目录里拿一份**合成 home**（共享 base ＋ 所选模型卡，
 `compose-codex-app-config.py` 每次启动幂等合成）——启动即所选模型；各 app home 的会话记录彼此隔离。
-CLI 会话若要跨模型续接，请在共享 home 中显式指定目标 profile（
-`gpt-6-sol_codex resume <session-id>` 或 `codex resume -p gpt-6-sol <session-id>`）。
+CLI 会话若要选择另一模型，请在共享 home 中显式指定目标 profile（
+`gpt-6-sol_codex resume <session-id>` 或 `codex resume -p gpt-6-sol <session-id>`）。兼容性由 Codex 判断：
+同 provider 换模型可能出现警告；不同 provider 可能使原会话只读，并提供在新对话中继续的入口（见下文）。
 
 ```bash
 mimo_claude --title
@@ -424,7 +425,7 @@ runner 的 `AGENT_RUN_ERROR_FD` 指向仅报告 exec 前错误的内部 pipe；e
 
 所有受管 profile 共享一个 Codex home（`~/.codex`，Codex 默认 home，**必须是真目录**——桌面 app 沙箱拒绝路径中的 symlink 成分）：base `config.toml` 承载政策与
 机器本地运行时状态，每个 profile 是一张模型卡 `~/.codex/<agent-id>.config.toml`，launcher 用
-`codex -p <agent-id>` 叠加加载——启动选卡即切模型，会话池共享。换模型续同一段对话时，用目标模型的
+`codex -p <agent-id>` 叠加加载——启动选卡即选择模型，会话池共享。通过目标模型请求 Codex 恢复会话时，用对应的
 launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profile（如
 `codex resume -p gpt-6-sol <session-id>`）。单独执行 `codex resume <session-id>` 可能恢复会话上次选中的模型，
 不能保证使用 base config 的默认模型。十个第三方 profile（`ds-flash`、`glm`、`glm-flash`、`kimi`、
@@ -432,15 +433,17 @@ launcher（如 `gpt-6-sol_codex resume <session-id>`），或显式传入 profil
 `codex-agent/profiles/` 下维护；`business` 保留独立的 CODEX_HOME（`~/.codex-agent/business`，另一账号）。
 共享 base 配置仍归本机管理，只有带标记的 provider 注册块由本仓库管理。
 
-要一条命令修复并恢复跨模型会话，先退出其他正在使用它的 Codex 窗口，再运行
-`gpt-6-sol_codex resume <session-id> [prompt]` 或 `gpt-6-sol_codex --resume <session-id> [prompt]`
-（将 launcher 换成目标模型；也支持 `--resume=<session-id>`）。两种写法都会在其 Codex home 中定位会话，
-需要修复时保存私有备份、删除来源模型与目标模型不同的 reasoning 记录，然后以目标模型执行
-`codex resume`。对话和工具历史保留；其他模型的推理及摘要在修复后的会话中不可用，但仍在备份里。
-若没有待删记录，原会话保持不变，也不会生成备份。
-使用前运行 `./scripts/sync-agent-tools.sh` 并打开新 shell。不带 ID 的 `resume`，以及 `--help`、`--last` 等
-Codex 原生选项仍直接交给 Codex，因为尚未选定要修复的会话。
-`gpt_codex` 是 `gpt-6-sol_codex` 的快捷入口，包括相同的 resume 修复和参数转发。
+launcher 把原生 `resume` 及其参数交给 Codex，包括会话名称、选择器选项、`--help`、`--last` 和 prompt。
+开头的 `--resume` 与 `--resume=<session-id>` 仅分别规范化为 `resume` 与 `resume <session-id>`，
+其余参数的顺序和边界保持不变。不带 ID 的 `--resume` 打开原生选择器；`--resume=` 把空会话参数交给 Codex 解释。
+launcher 恢复会话时不会检查或修复 rollout。`gpt_codex` 通过 `gpt-6-sol_codex` 提供相同的参数转发。
+
+provider 兼容性和后续续接由 Codex 负责。官方[启动/恢复文档](https://learn.chatgpt.com/docs/app-server#start-or-resume-a-thread)
+说明 provider 不匹配时会拒绝向原线程输入；同 provider 切换模型则有单独的警告。
+用户在当前 TUI 中观察到：provider 不匹配会让原会话变为只读，并提供按 `c` 在新对话中继续的入口；
+新对话收到读取已保存对话记录并继续工作的 prompt。请按已安装 Codex 版本提供的操作继续，界面文字和快捷键可能变化。
+这不保证转移全部内部状态或工具执行，观察到的 TUI 流程也不一定等同于 app-server 的 `thread/fork`。
+launcher 将流程交给 Codex，不改写会话元数据，也不自动选择续接操作。
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 Astra 和 Sol 均提供三档 provider：默认名称使用 high，`-x` 使用 xhigh，`-max` 使用 max。
@@ -541,16 +544,20 @@ Native 读写/收集和内核测试需要允许 Seatbelt 执行的父环境。�
 应标为失败/未验证，不使用更弱 fallback。[实施证据](docs/gateflow/official-provider-catalogs/implementation.md)
 记录实际结果；真实厂商接受情况与 desktop/未来 runtime 兼容性另行验证。
 
-### 修复跨 provider 恢复时的 reasoning 历史
+### 手动恢复旧版 reasoning 历史
 
-第三方 Responses 网关可能在 reasoning 记录的 `content` 数组里保存 `reasoning_text`。切换到 OpenAI 官方端点
-恢复会话时，可能收到 `Invalid 'input[n].content': array too long`（见 [Codex 上游问题 #36551](https://github.com/openai/codex/issues/36551)）。
-先退出所有正在使用该会话的 Codex 窗口，在 `~/.codex/sessions/` 中找到对应的 rollout 文件，再执行：
+`repair-codex-reasoning-history.py` 保留用于明确手动执行的旧版 payload 恢复。launcher 不会调用它，
+它也不能绕过 Codex 的 provider 不匹配边界。原会话只读时，请使用上文的原生续接流程。
+此工具在指定 `--apply` 时会主动修改已保存的 reasoning 历史。
+
+旧版 Responses 历史可能在 reasoning 记录的 `content` 数组里保存 `reasoning_text`，导致 OpenAI payload
+校验报错 `Invalid 'input[n].content': array too long`（见[历史上游问题 #36551](https://github.com/openai/codex/issues/36551)）。
+若要手动恢复这类旧版 payload，先退出所有正在使用该会话的 Codex 窗口，在 `~/.codex/sessions/` 中找到对应的 rollout，再执行：
 
 ```bash
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --apply
-# 若随后出现 invalid_encrypted_content 或 reasoning item ID 不存在：
+# 针对旧版 payload 的加密推理错误或 reasoning item ID 不存在：
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro
 python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.jsonl --drop-reasoning-model k3 --drop-reasoning-model kimi-k3 --drop-reasoning-model mimo-v2.6-pro --apply
 ```
@@ -562,10 +569,11 @@ python3 scripts/repair-codex-reasoning-history.py /path/to/rollout-<session-id>.
 参数精确匹配 `turn_context` 记录的逻辑模型名，而非 endpoint 的上游 wire 模型名或 profile 别名。
 示例同时覆盖当前 Kimi `k3`、旧 Kimi `kimi-k3` 和 MiMo `mimo-v2.6-pro`；没有匹配项时工具会警告。
 修复后的 rollout 和备份均收紧为仅所有者可访问（原文件允许所有者写入时为 `0600`）。
-再次运行相同修复命令应显示零条命中，然后用目标模型的 profile 恢复会话。
+再次运行相同修复命令应显示零条命中。恢复后的线程能否使用所选 provider 仍由 Codex 决定；
+删除 reasoning 并不能让原线程接受跨 provider 输入。
 若工具报告不支持的 reasoning 内容或 JSONL 损坏，会保持原文件不变；需单独检查报错行。需要回滚时，
 先再次退出会话，再把命令输出的 `rollout-*.jsonl.backup-<timestamp>` 文件复制覆盖原 rollout。
-确认恢复后的对话可用前保留备份。
+确认手动恢复结果前保留备份。
 
 ### 切换 sandbox 模式
 
