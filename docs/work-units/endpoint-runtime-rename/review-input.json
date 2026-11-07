@@ -1,0 +1,23 @@
+{
+  "base": "f5e16766a94b7f19680296b0aee1c7a16a1402a3",
+  "product": [
+    {
+      "path": "README.md",
+      "sha256": "3a1d72f816726f055040274d4ed0309c476aa7aa58bfd9dec7dbee99a09c5094"
+    },
+    {
+      "path": "README.zh.md",
+      "sha256": "7e384fb1008f7eaa4737e8fad864b1c57114ecd6c201952257826a522116ad9b"
+    },
+    {
+      "path": "scripts/agent-endpoint.py",
+      "sha256": "0a793d1766fdbf0a68a8a655faf3d3c67f118b012ad519d3e501ed50952ea220"
+    },
+    {
+      "path": "tests/test_install_endpoints.py",
+      "sha256": "1a58b0f1d7c4d6629a11d6fe50f42a8e3ed7d0d1bb52fd2629d367aaefe930c5"
+    }
+  ],
+  "source_archive": "/private/tmp/endpoint-runtime-rename/review-source.tar.gz",
+  "source_archive_sha256": "9b8323a31a0188a30bb35a8c5735b584c437b67e2d08a6023739745089383946"
+}

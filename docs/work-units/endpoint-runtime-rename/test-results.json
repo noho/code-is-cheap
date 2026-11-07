@@ -1,0 +1,22 @@
+[
+  {
+    "command": "/bin/zsh -c 'PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests python3 -m unittest -v test_install_endpoints.EndpointTests.test_hy_factory_override_mapping_and_old_schema_ordering test_install_endpoints.EndpointTests.test_rename_disable_restore_uses_whole_defaults_without_writes test_install_endpoints.EndpointTests.test_runtime_rename_restore_preserves_siblings_snapshots_and_private_file test_install_endpoints.EndpointTests.test_empty_and_all_disabled_runtime_maps_contribute_no_overrides test_install_endpoints.EndpointTests.test_unknown_runtime_values_are_inert_until_exact_name_restoration test_install_endpoints.EndpointTests.test_malformed_backups_are_inert_until_exact_name_restoration test_install_endpoints.EndpointTests.test_backup_selection_keeps_default_factory_and_json_validation_strict test_install_endpoints.EndpointTests.test_mimo_native_launch_with_disabled_overrides_and_no_backup_key_fallback'",
+    "exit_code": 0,
+    "output": "test_hy_factory_override_mapping_and_old_schema_ordering (test_install_endpoints.EndpointTests.test_hy_factory_override_mapping_and_old_schema_ordering) ... ok\ntest_rename_disable_restore_uses_whole_defaults_without_writes (test_install_endpoints.EndpointTests.test_rename_disable_restore_uses_whole_defaults_without_writes) ... ok\ntest_runtime_rename_restore_preserves_siblings_snapshots_and_private_file (test_install_endpoints.EndpointTests.test_runtime_rename_restore_preserves_siblings_snapshots_and_private_file) ... ok\ntest_empty_and_all_disabled_runtime_maps_contribute_no_overrides (test_install_endpoints.EndpointTests.test_empty_and_all_disabled_runtime_maps_contribute_no_overrides) ... ok\ntest_unknown_runtime_values_are_inert_until_exact_name_restoration (test_install_endpoints.EndpointTests.test_unknown_runtime_values_are_inert_until_exact_name_restoration) ... ok\ntest_malformed_backups_are_inert_until_exact_name_restoration (test_install_endpoints.EndpointTests.test_malformed_backups_are_inert_until_exact_name_restoration) ... ok\ntest_backup_selection_keeps_default_factory_and_json_validation_strict (test_install_endpoints.EndpointTests.test_backup_selection_keeps_default_factory_and_json_validation_strict) ... ok\ntest_mimo_native_launch_with_disabled_overrides_and_no_backup_key_fallback (test_install_endpoints.EndpointTests.test_mimo_native_launch_with_disabled_overrides_and_no_backup_key_fallback) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 7.281s\n\nOK\n"
+  },
+  {
+    "command": "/bin/zsh -c 'git diff --check && git diff --numstat && git status --short'",
+    "exit_code": 0,
+    "output": "3\t3\tREADME.md\n3\t3\tREADME.zh.md\n11\t4\tscripts/agent-endpoint.py\n140\t8\ttests/test_install_endpoints.py\n M README.md\n M README.zh.md\n M scripts/agent-endpoint.py\n M tests/test_install_endpoints.py\n?? docs/reviews/runner-handle-loss-20261023-evidence.json\n?? docs/reviews/runner-handle-loss-20261023-investigation.md\n?? docs/reviews/runner-handle-loss-20261023-notification.json\n?? docs/work-units/endpoint-runtime-rename/\n"
+  },
+  {
+    "command": "/bin/zsh -c \"PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_install_endpoints.py'\"",
+    "exit_code": 0,
+    "output": ".....................................\n----------------------------------------------------------------------\nRan 37 tests in 35.340s\n\nOK\n"
+  },
+  {
+    "command": "/bin/zsh -c 'git diff --check && git diff --name-only && git status --short'",
+    "exit_code": 0,
+    "output": "README.md\nREADME.zh.md\nscripts/agent-endpoint.py\ntests/test_install_endpoints.py\n M README.md\n M README.zh.md\n M scripts/agent-endpoint.py\n M tests/test_install_endpoints.py\n?? docs/reviews/runner-handle-loss-20261023-evidence.json\n?? docs/reviews/runner-handle-loss-20261023-investigation.md\n?? docs/reviews/runner-handle-loss-20261023-notification.json\n?? docs/work-units/endpoint-runtime-rename/\n"
+  }
+]

@@ -48,7 +48,7 @@ def validate_url(url):
 
 
 def validate_document(doc, known=None):
-    """Return active sections; only private backup roots/providers are inert."""
+    """Return active sections, selecting private overrides by exact schema names."""
     if (
         not isinstance(doc, dict)
         or "default" not in doc
@@ -60,13 +60,20 @@ def validate_document(doc, known=None):
         providers = doc.get(section, {})
         if not isinstance(providers, dict):
             raise ValueError("invalid configuration section")
-        if section == "override" and known is not None:
+        private_override = section == "override" and known is not None
+        if private_override:
             # Select by exact factory provider name before inspecting contents.
             providers = {p: r for p, r in providers.items() if p in known}
-        active[section] = providers
+        active[section] = {}
         for provider, runtimes in providers.items():
-            if not isinstance(runtimes, dict) or not runtimes:
+            if not isinstance(runtimes, dict):
                 raise ValueError("invalid provider settings")
+            if private_override:
+                # Ignore unknown runtime values before validating their shape.
+                runtimes = {r: v for r, v in runtimes.items() if r in known[provider]}
+            elif not runtimes:
+                raise ValueError("invalid provider settings")
+            active[section][provider] = runtimes
             for runtime, value in runtimes.items():
                 if runtime not in {"codex", "claude"} or (
                     known is not None and runtime not in known.get(provider, {})
