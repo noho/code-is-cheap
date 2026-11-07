@@ -101,9 +101,10 @@ class EndpointTests(unittest.TestCase):
         del old['hy']['codex']
         plan = conn('https://tokenhub.tencentmaas.com/plan/v3','hy4','fake-plan-key')
         doc = {'default':{}, 'override':{'hy':{'codex':plan}}}
+        self.assertEqual(module.validate_document(doc, old)['override'], {'hy': {}})
+        self.assertEqual(module.validate_document(doc, FACTORY['default'])['override'], doc['override'])
         with self.assertRaises(ValueError):
-            module.validate_document(doc, old)
-        module.validate_document(doc, FACTORY['default'])
+            module.validate_document({'default': {'hy': {'codex': plan}}}, old)
         with tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, {'HOME':temp}):
             direct = FACTORY['default']['hy']['codex'] | {'api_key':'fake-direct-key'}
             path = private_doc(temp, {'default':{'hy':{'codex':direct}}, 'override':{}})
@@ -233,20 +234,133 @@ class EndpointTests(unittest.TestCase):
                 self.assertEqual(selected, overrides["ds-flash"]["codex"])
                 self.assertEqual(disabled, expected)
 
+    def test_runtime_rename_restore_preserves_siblings_snapshots_and_private_file(self):
+        module = shim.endpoint_module()
+        overrides = {
+            provider: {
+                runtime: conn(f"https://override.example/{provider}/{runtime}",
+                              f"{provider}/{runtime}", f"fake-{provider}-{runtime}")
+                for runtime in ("codex", "claude")
+            }
+            for provider in ("ds-flash", "mimo")
+        }
+        for runtime in ("codex", "claude"):
+            for backup in (f"{runtime}-bak", "saved connection"):
+                for use_private_default in (False, True):
+                    with self.subTest(runtime=runtime, backup=backup, private=use_private_default), \
+                         tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, {"HOME": temp}):
+                        defaults = {"ds-flash": {runtime: conn(
+                            f"https://default.example/{runtime}", f"default/{runtime}",
+                            "fake-default-key")}} if use_private_default else {}
+                        doc = {"default": defaults, "override": copy.deepcopy(overrides)}
+                        path = private_doc(temp, doc)
+                        snapshot = module.load_endpoints()
+                        selected = module.connection("ds-flash", runtime, snapshot, require_key=True)
+                        saved = doc["override"]["ds-flash"].pop(runtime)
+                        doc["override"]["ds-flash"][backup] = saved
+                        path.write_text(json.dumps(doc, indent=3) + "\n")
+                        before = path.read_bytes(), path.stat().st_mode
+                        original = copy.deepcopy(doc)
+                        active = module.validate_document(doc, FACTORY["default"])
+                        self.assertEqual(doc, original)
+                        self.assertNotIn(backup, active["override"]["ds-flash"])
+                        expected = copy.deepcopy(snapshot)
+                        expected["ds-flash"][runtime] = (
+                            defaults["ds-flash"][runtime] if use_private_default else
+                            FACTORY["default"]["ds-flash"][runtime]
+                        )
+                        disabled = module.load_endpoints()
+                        self.assertEqual(disabled, expected)
+                        for args in (("--check",), ("--initialize",)):
+                            done = self.run_helper(temp, *args)
+                            self.assertEqual(done.returncode, 0, done.stderr)
+                        self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+                        doc["override"]["ds-flash"][runtime] = doc["override"]["ds-flash"].pop(backup)
+                        path.write_text(json.dumps(doc))
+                        restored_bytes = path.read_bytes(), path.stat().st_mode
+                        self.assertEqual(module.load_endpoints(), snapshot)
+                        self.assertEqual(snapshot["ds-flash"], overrides["ds-flash"])
+                        self.assertEqual(selected, saved)
+                        self.assertEqual(disabled, expected)
+                        self.assertEqual((path.read_bytes(), path.stat().st_mode), restored_bytes)
+
+    def test_empty_and_all_disabled_runtime_maps_contribute_no_overrides(self):
+        module = shim.endpoint_module()
+        for runtimes in ({}, {"codex-bak": conn()},
+                         {"codex-bak": conn(), "arbitrary": conn()},
+                         {"codex-bak": None, "claude-bak": []}):
+            with self.subTest(runtimes=runtimes), tempfile.TemporaryDirectory() as temp, \
+                 patch.dict(os.environ, {"HOME": temp}):
+                defaults = {"ds-flash": {"codex": conn(key="fake-default")}}
+                doc = {"default": defaults, "override": {"ds-flash": runtimes}}
+                original = copy.deepcopy(doc)
+                path = private_doc(temp, doc)
+                before = path.read_bytes(), path.stat().st_mode
+                active = module.validate_document(doc, FACTORY["default"])
+                self.assertEqual(active["override"], {"ds-flash": {}})
+                self.assertEqual(doc, original)
+                expected = copy.deepcopy(FACTORY["default"])
+                expected["ds-flash"].update(defaults["ds-flash"])
+                self.assertEqual(module.load_endpoints(), expected)
+                for args in (("--check",), ("--initialize",)):
+                    done = self.run_helper(temp, *args)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+
+    def test_unknown_runtime_values_are_inert_until_exact_name_restoration(self):
+        module = shim.endpoint_module()
+        invalid = [
+            None, 17, "saved", [], {}, {"base_url": "https://partial.example"},
+            conn() | {"api_key_bak": "fake-extra"},
+            {"base_url_bak": conn()["base_url"], "upstream_model": "model", "api_key": "fake"},
+            conn(url="file:///invalid"), conn(model="invalid model"),
+            conn(model=None), conn(key=17), conn(key="fake\ninvalid"), conn(key=""), conn(key=" "),
+        ]
+        for runtime, sibling in (("codex", "claude"), ("claude", "codex")):
+            for value in invalid:
+                with self.subTest(runtime=runtime, value=value), tempfile.TemporaryDirectory() as temp, \
+                     patch.dict(os.environ, {"HOME": temp}):
+                    runtimes = {"anything": value, sibling: conn(key="fake-sibling")}
+                    doc = {"default": {}, "override": {"ds-flash": runtimes}}
+                    path = private_doc(temp, doc)
+                    before = path.read_bytes(), path.stat().st_mode
+                    original = copy.deepcopy(doc)
+                    active = module.validate_document(doc, FACTORY["default"])
+                    self.assertEqual(active["override"], {"ds-flash": {sibling: conn(key="fake-sibling")}})
+                    self.assertEqual(doc, original)
+                    effective = module.load_endpoints()
+                    self.assertNotIn("anything", effective["ds-flash"])
+                    self.assertEqual(effective["ds-flash"][runtime], FACTORY["default"]["ds-flash"][runtime])
+                    self.assertEqual(effective["ds-flash"][sibling], runtimes[sibling])
+                    done = self.run_helper(temp, "--check")
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                    self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+                    runtimes[runtime] = runtimes.pop("anything")
+                    # Ignored siblings cannot shelter malformed active data.
+                    runtimes["still disabled"] = None
+                    path.write_text(json.dumps(doc))
+                    before = path.read_bytes(), path.stat().st_mode
+                    with self.assertRaises(ValueError):
+                        module.connection("mimo", "claude")
+                    for args in (("--check",), ("--initialize",)):
+                        done = self.run_helper(temp, *args)
+                        self.assertNotEqual(done.returncode, 0)
+                        self.assertNotIn("fake", done.stderr)
+                        self.assertNotIn("Traceback", done.stderr)
+                    self.assertEqual((path.read_bytes(), path.stat().st_mode), before)
+
     def test_malformed_backups_are_inert_until_exact_name_restoration(self):
         module = shim.endpoint_module()
         cases = [
             ("root", None), ("root", 17), ("root", []),
             ("root", {"ds-flash": None}),
-            ("provider", None), ("provider", "backup"), ("provider", []),
-            ("provider", {}),
+            ("provider", None), ("provider", "backup"), ("provider", 17), ("provider", []),
             ("provider", {"codex": {"base_url": "https://partial.example"}}),
             ("provider", {"codex": conn() | {"api_key_bak": "fake-extra"}}),
             ("provider", {"codex": conn(key=" ")}),
             ("provider", {"codex": conn(url="file:///invalid")}),
             ("provider", {"claude": conn(model="invalid model")}),
             ("provider", {"codex": conn(key="fake\ninvalid")}),
-            ("provider", {"codex-bak": conn()}),
         ]
         for scope, value in cases:
             with self.subTest(scope=scope, value=value), tempfile.TemporaryDirectory() as temp, \
@@ -288,11 +402,23 @@ class EndpointTests(unittest.TestCase):
                 {"default": {}, "override": {"local": {"codex": conn()}}},
                 FACTORY["default"],
             )
+        self.assertEqual(module.validate_document(
+            {"default": {}, "override": {"local": {"saved": conn()}}},
+            FACTORY["default"],
+        )["override"], {"local": {}})
+        for section in ("default", "override"):
+            for runtimes in ({}, {"codex-bak": conn(key="")}):
+                with self.subTest(factory_section=section, runtimes=runtimes), \
+                     self.assertRaises(ValueError):
+                    module.validate_document({"default": {}, section: {"ds-flash": runtimes}})
         invalid_json = [
             '{"default":{},"overridexxx":{"x":1,"x":2}}',
             '{"default":{},"override":{"ds-flash-bak":{"codex":{"api_key":"a","api_key":"b"}}}}',
+            '{"default":{},"override":{"ds-flash":{"saved":{"api_key":"a","api_key":"b"}}}}',
+            '{"default":{},"override":{"ds-flash":{"saved":1,"saved":2}}}',
             '{"default":{},"overridexxx":',
             '{"default":{},"override":{"ds-flash-bak":}}',
+            '{"default":{},"override":{"ds-flash":{"saved":}}}',
         ]
         for content in invalid_json:
             with self.subTest(content=content), tempfile.TemporaryDirectory() as temp:
@@ -302,7 +428,7 @@ class EndpointTests(unittest.TestCase):
                 self.assertEqual(path.read_text(), content)
 
     def test_mimo_native_launch_with_disabled_overrides_and_no_backup_key_fallback(self):
-        for backup in ("overrideds-flash-bak", "overridexxx"):
+        for backup in ("overrideds-flash-bak", "overridexxx", "runtime names"):
             with self.subTest(backup=backup), tempfile.TemporaryDirectory() as temp:
                 home = Path(temp)
                 bins = home / "bin"
@@ -317,8 +443,14 @@ class EndpointTests(unittest.TestCase):
                 stub.chmod(0o755)
                 mimo = conn("https://mimo-default.example/anthropic", "mimo/default", "fake-mimo-key")
                 ds = {runtime: conn(key="fake-backup-key") for runtime in ("codex", "claude")}
-                disabled = ({"overridexxx": {"ds-flash": ds}} if backup == "overridexxx" else
-                            {"override": {backup: ds}})
+                if backup == "runtime names":
+                    disabled = {"override": {"ds-flash": {
+                        "codex-bak": ds["codex"], "saved claude": ds["claude"],
+                    }}}
+                elif backup == "overridexxx":
+                    disabled = {"overridexxx": {"ds-flash": ds}}
+                else:
+                    disabled = {"override": {backup: ds}}
                 path = private_doc(home, {"default": {"mimo": {"claude": mimo}}} | disabled)
                 before = path.read_bytes(), path.stat().st_mode
                 env = fixture_env(

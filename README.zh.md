@@ -146,9 +146,9 @@ bash install-code-is-cheap.sh
 - `override`：可选的覆盖连接，沿用 provider/runtime 层级。覆盖必须**同时填写这三个字段**，避免新云商沿用旧云商的 key。其他 runtime/provider 保持默认连接；删除该 runtime 的 override 即可恢复。
 - 缺少文件或某个 runtime 连接时使用程序默认资源。云端启动仍需要有效连接中的非空 key，不能从备份节点或继承的环境变量补充。空字符串不表示继承。
 
-临时停用某个 provider 的覆盖时，可将 `override.ds-flash` 改名为未识别的名称，例如 `override.ds-flash-bak` 或 `override.overrideds-flash-bak`。停用全部覆盖时，将根节点 `override` 改名为 `overridexxx`，保留 `default`。受影响的连接回退到你完整的 default 连接三元组，缺少的连接再使用程序默认资源。恢复精确的受识别名称后，会重新校验并启用保存的覆盖；helper 不修改私有文件。
+临时停用单个 runtime 的覆盖时，可将 `override.ds-flash.codex` 改名为 `override.ds-flash.codex-bak` 或任意其他未识别的 runtime 名称，例如 `override.ds-flash.saved`。同级 `claude` 和其他 provider 的覆盖保持激活。停用某个 provider 的覆盖时，可将 `override.ds-flash` 改名为未识别的名称，例如 `override.ds-flash-bak` 或 `override.overrideds-flash-bak`。停用全部覆盖时，将根节点 `override` 改名为 `overridexxx`，保留 `default`。空的 override-provider 对象（`"ds-flash": {}`）或所有 runtime 名称均未识别的对象都不提供任何覆盖。受影响的连接回退到你完整的 default 连接三元组，缺少的连接再使用程序默认资源。恢复精确的受识别名称后，会重新校验并启用保存的覆盖；helper 不修改私有文件。
 
-只有精确命名的根节点 `override` 及其下受识别的 provider 名称会激活。未知私有根字段和未知 override-provider 名称下的内容无论形状如何都被忽略，但整个文件仍须是有效 JSON，包括备份内部在内的重复字段也会被拒绝。`default` 和所有激活的 override 仍严格校验 provider/runtime 和连接字段：字段缺失或多余、不支持的 runtime、无效 URL/模型/key、空白云端 override key，即使查询无关连接也会报错。修改 runtime 或连接字段的名称不能停用配置。文件必须是当前用户拥有、权限为 `600` 的普通文件，不能是符号链接。程序默认资源仍严格校验结构，且不得包含云端凭据。
+只有精确命名的根节点 `override` 及其下被已安装 factory 识别的精确 provider/runtime 名称会激活，不使用特殊备份后缀或名称归一化。未知私有根字段、override-provider 和 override-runtime 名称会在检查其值之前被忽略，但整个文件仍须是有效 JSON，包括备份内部在内的重复字段也会被拒绝。受识别的 override provider 必须是对象，不能是 null、标量或列表。`default` 仍严格校验：未知 provider/runtime 和空 provider 对象均会报错。所有激活的 override 仍严格校验连接字段：字段缺失或多余、无效 URL/模型/key、空白云端 override key，即使查询无关连接也会报错。修改激活连接三元组内的字段名称仍会校验失败。文件必须是当前用户拥有、权限为 `600` 的普通文件，不能是符号链接。程序默认资源仍严格校验结构，且不得包含云端凭据。
 
 例如在 `override` 中添加以下连接，仅切换 `ds-flash_codex`（填入网关实际 URL/模型/key）：
 
@@ -310,7 +310,7 @@ source ~/.zshrc
 CLI 启动命令可传入 `--title`，设置 `ClaudeAgent-DS-Flash`、`CodexAgent-GPT-6-Astra` 这类稳定的 tmux pane title。
 `hy` 的 Claude 与 Codex 均选择 `hy4`；提供 `hy_codex`、`hy_codex_app` 与 runner 别名 `hunyuan`。Codex 工厂默认直连 `https://tokenhub.tencentmaas.com/v1`，shim 端口 8796。2026-11-05 的一次有界 native workflow 完成实际工具续接和自动安全审核；这仅是运行时集成证据，不保证可用率或模型能力。Hy 使用仓库独立编写的纯文本兼容元数据、`high` effort 和常规 1048576 / 786432 上下文及压缩配置，未实测这些容量。独立 bundled guardian 保留 native 安全元数据，沿用 direct/non-Lite 传输。
 
-下列 Token Plan override 替换完整 URL/model/key 元组，密钥均为占位符。当前测试 key 返回 HTTP 403 / `403001`（套餐禁用或无调用权限），这是账号权限阻塞，不能解释为 Hy 不兼容。仅使用有权限的账号启用。添加 `override.hy.codex` 前先更新两处 endpoint factory；旧 helper 遇到未知 runtime 会拒绝整个文件。私有配置不得进入 Git。
+下列 Token Plan override 替换完整 URL/model/key 元组，密钥均为占位符。当前测试 key 返回 HTTP 403 / `403001`（套餐禁用或无调用权限），这是账号权限阻塞，不能解释为 Hy 不兼容。仅使用有权限的账号启用。更新两处 endpoint factory 后才能激活 `override.hy.codex`。支持 runtime 改名停用的 helper 会忽略已安装 factory 中不存在的 runtime override；历史 helper 则可能拒绝整个文件。`default` 中未知 runtime 仍会报错。私有配置不得进入 Git。
 
 ```json
 {"override":{"hy":{
