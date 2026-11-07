@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "python3",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+    "--aggregate-evidence-dir",
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2",
+    "--aggregate-evidence-dir",
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2"
+  ],
+  "exit": 0
+}

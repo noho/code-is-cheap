@@ -479,7 +479,9 @@ runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 | `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 
-仅 DeepSeek 路由启用 `agent_message_fix`（其余默认关闭），将 Codex 0.167.0 原生 Agent 间消息适配为标准 user 消息，保留内容顺序，以文本携带来源、接收者与元数据；原生 rollout 不变。适配假设实测 `agent_message` 的 `encrypted_content` 槽内是明文，无法解密真正的不透明密文；不处理 reasoning 或工具参数。未知或非法 Agent 内容返回不含正文的 HTTP 400，避免转发残缺任务。仅在获授权后通过 `./scripts/sync-codex-agent.sh` 部署代码与路由，安装服务需要加载更新后的代码和路由。
+九条 managed cloud 路由（`ds-flash`、`glm`、`glm-flash`、`kimi`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`hy`）均显式启用 `agent_message_fix`；其他、新增及环境变量单路由默认关闭。`local` 和 OpenAI 订阅 profiles 不走此 shim。该适配将 Codex 0.167.0 原生 Agent 间消息适配为标准 user 消息，保留内容顺序，以文本携带来源、接收者与元数据；原生 rollout 不变。适配假设实测 `agent_message` 的 `encrypted_content` 槽内是明文，无法解密真正的不透明密文；reasoning、工具参数和其他原生顶层 item 类型保持原样。实际 `agent_message` 中的未知或非法内容返回不含正文的 HTTP 400，避免转发残缺任务。仅在获授权后通过 `./scripts/sync-codex-agent.sh` 部署代码与路由，安装服务需要加载更新后的代码和路由。
+
+兼容开关 `agent_message_fix`、`native_agent_request_flatten` 与 `native_agent_response_restore` 仅在 route 级生效且默认关闭，必须在各路由中显式启用，不继承文件顶层默认值；已有 legacy flags 保持历史继承惯例。Kimi 同时启用两者，仅针对实际广告的 `multi_agent_v1` / `collaboration`；MiMo Flash 仅启用响应恢复。映射限于当前请求，只给已广告原生函数调用补回缺失或 null 的 namespace，保留参数和 ID；其他 MCP/Code Mode 组与历史保持原样。存在有效映射的 Responses 成功响应要求 identity 编码及 SSE/JSON；SSE 逐事件转发，单事件与非流式 JSON 均限 8 MiB。Guardian 明确绕过两阶段。Kimi 请求 flatten 与映射仅使用顶层 `tools` 原生描述符。MiMo Flash 的 response-only 映射可读取当前请求顶层 `tools` 及直接位于 `input[type=additional_tools].tools` 容器中的原生描述符，完整请求字节保持不变。
 
 云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。七个 OpenAI profile 对应三个上游模型，共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
 

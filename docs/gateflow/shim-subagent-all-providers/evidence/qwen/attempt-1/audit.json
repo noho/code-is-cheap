@@ -1,0 +1,183 @@
+{
+  "profile": "qwen",
+  "attempt": "1",
+  "passed": true,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae": {
+        "provider": "qwen",
+        "contexts": [
+          {
+            "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+            "model": "qwen3.8-max",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b675-2246-7f63-a9d2-6fc3387dee9f": {
+        "provider": "qwen",
+        "contexts": [
+          {
+            "turn_id": "01a1b675-2252-7061-8bdc-2f349c156e5a",
+            "model": "qwen3.8-max",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b675-4eac-73c3-933f-c952c7fec493",
+            "model": "qwen3.8-max",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b675-81db-79c2-9dae-7ab15f873f7e": {
+        "provider": "qwen",
+        "contexts": [
+          {
+            "turn_id": "01a1b675-81df-7c02-8ee4-1e1e60d21701",
+            "model": "qwen3.8-max",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "call_436d0f3c9606481bb5409650",
+        "args": {
+          "message": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_fef553f9cc3c. Do not use tools, read/write files, or delegate.",
+          "fork_context": false
+        }
+      },
+      {
+        "name": "send_input",
+        "call_id": "call_85598894fc704124b045ce35",
+        "args": {
+          "target": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+          "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_b9bc61ebbf56. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "spawn_agent",
+        "call_id": "call_f94017943d8b460f8dc724b8",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b675-2252-7061-8bdc-2f349c156e5a",
+        "text": "LIVE_INITIAL_fef553f9cc3c",
+        "completed_at": 1794062496
+      },
+      {
+        "turn_id": "01a1b675-4eac-73c3-933f-c952c7fec493",
+        "text": "LIVE_FOLLOWUP_b9bc61ebbf56",
+        "completed_at": 1794062506
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "call_27f6b4c603f4409497abd391",
+      "tool": "exec_command",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "call_27f6b4c603f4409497abd391",
+        "process_id": "36505",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_66a93f570a294d51a3e61706b0c9e1c3",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 8875
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b675-81df-7c02-8ee4-1e1e60d21701",
+          "text": "HARMLESS_NATIVE_CONTENT_66a93f570a294d51a3e61706b0c9e1c3",
+          "completed_at": 1794062526
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 11,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 11
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "d5332dd79ee1ed541e3238902bf65f7ef88ebf63ed62edc92ca9e0c33e209dc9",
+    "wire.json": "a37a26130312ad08441b28f7bf57b88ee8f85bb91083ebbba1f440d2376852aa",
+    "rollouts-sanitized.json": "363f8192c4f8e97add5f2e3041f34b42e33d8b2eb00e67086f5caa8310e9f3c1",
+    "native-rollout-supplement.json": "91a36177ba08d72603653ceefd289a181c06997ad152821b678976d2a53fbeca"
+  }
+}

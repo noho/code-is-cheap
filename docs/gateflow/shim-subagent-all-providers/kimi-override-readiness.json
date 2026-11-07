@@ -1,0 +1,11 @@
+{
+  "http_status": 200,
+  "response_model": "kimi-k3",
+  "assistant_text": [
+    "KIMI_TOKENHUB_ROUTE_OK"
+  ],
+  "case": "User-authorized Kimi TokenHub override readiness check, before native matrix",
+  "route": "kimi / 8790 /coding/v1",
+  "not_native_subagent_acceptance": true,
+  "observed_at": "2026-11-07T22:32:40.779765+08:00"
+}

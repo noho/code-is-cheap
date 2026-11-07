@@ -1,0 +1,39 @@
+{
+  "checks": [
+    {
+      "source": "tests/test_install_endpoints.py",
+      "source_sha256": "0f9ded83ea09776f822161b38622ffc67965e64c90ce2f50e08c7c43b690a004",
+      "tests": 38,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_install_endpoints.py.log",
+      "log_sha256": "26e90ff3324512c61b153f6fb19ef2d1f37aaf032e10067c505035bf6e2d7d2f",
+      "archived_exit": 0
+    },
+    {
+      "source": "tests/test_provider_registry.py",
+      "source_sha256": "eced8400483ea7e9f4a80aaee7a40e3c118c59a09da808dfb2939cbc2c2c2793",
+      "tests": 11,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_provider_registry.py.log",
+      "log_sha256": "82528427ef95263415a46d6220b62d4ad71ee6aff9ff6fab9d0196be0e918248",
+      "archived_exit": 0
+    },
+    {
+      "source": "tests/test_shim_service.py",
+      "source_sha256": "08956245cf2e1de44677c96ab2406b75d13cda880f61297c1e959c01a8948e9b",
+      "tests": 11,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_shim_service.py.log",
+      "log_sha256": "02b15a55f95ac4d0e8d7cdb3ba903ce903263bbf5b6b9692741e2f11fd491288",
+      "archived_exit": 0
+    },
+    {
+      "source": "tests/test_model_catalog_generation.py",
+      "source_sha256": "b2feb21cae4b5ba784fcb9cb012ef501380cea7a01928db54f819e389b8db4f7",
+      "tests": 30,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_model_catalog_generation.py.log",
+      "log_sha256": "55b322cf07ca0f0f0ff3d1799bfe773c29fb99cdee1f0ca1859d0f825f345c03",
+      "archived_exit": 0
+    }
+  ],
+  "count": 90,
+  "new_execution": false,
+  "applicability": "Entry sources and archived passing logs match exact hashes. All helper module definitions except diagnostic _summary and relocation of the unchanged standard log block are AST-identical to a6246; affected handler paths were actually rerun. Prior native/configuration/source applicability limits remain in force."
+}

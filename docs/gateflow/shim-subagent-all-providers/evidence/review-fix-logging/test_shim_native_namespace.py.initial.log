@@ -1,0 +1,231 @@
+test_guardian_waits_for_eof_flags_off_and_empty_map_bytes_equivalence (test_shim_native_namespace.AdditionalServiceContracts.test_guardian_waits_for_eof_flags_off_and_empty_map_bytes_equivalence) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=72B completed=True
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=58B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=58B completed=False
+ok
+test_transfer_decoding_connection_tokens_and_legitimate_error_event (test_shim_native_namespace.AdditionalServiceContracts.test_transfer_decoding_connection_tokens_and_legitimate_error_event) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: restored=1 relayed=258B
+ok
+test_additional_only_request_isolation_flags_guardian_and_empty_map (test_shim_native_namespace.LiteLocationContracts.test_additional_only_request_isolation_flags_guardian_and_empty_map) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0] native response: restored=1 relayed=205B
+[shim:0] native response: restored=1 relayed=206B
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=62B completed=True
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=none
+[shim:0]   ^ status=200 stream=ok relayed=62B completed=True
+ok
+test_all_23_actual_parent_child_six_entry_maps_and_whitespace_identity (test_shim_native_namespace.LiteLocationContracts.test_all_23_actual_parent_child_six_entry_maps_and_whitespace_identity) ... ok
+test_combined_source_collision_and_duplicates_zero_upstream (test_shim_native_namespace.LiteLocationContracts.test_combined_source_collision_and_duplicates_zero_upstream) ... [shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+ok
+test_current_observer_source_proof_and_adversarial_missing_or_wrong_paths (test_shim_native_namespace.LiteLocationContracts.test_current_observer_source_proof_and_adversarial_missing_or_wrong_paths) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0] native response: restored=1 relayed=267B
+ok
+test_disjoint_sources_self_exclusion_and_exact_allowlist (test_shim_native_namespace.LiteLocationContracts.test_disjoint_sources_self_exclusion_and_exact_allowlist) ... ok
+test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence (test_shim_native_namespace.LiteLocationContracts.test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence) ... FAIL
+test_real_additional_only_handler_bytes_streaming_identity_and_json (test_shim_native_namespace.LiteLocationContracts.test_real_additional_only_handler_bytes_streaming_identity_and_json) ... [shim:0] POST /responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0] native response: restored=1 relayed=267B
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0] native response: restored=1 relayed=116B
+ok
+test_saved_bare_wait_new_lite_map_namespace_only_at_all_response_locations (test_shim_native_namespace.LiteLocationContracts.test_saved_bare_wait_new_lite_map_namespace_only_at_all_response_locations) ... ok
+test_a4_baseline_all_nonlogging_source_semantics_unchanged (test_shim_native_namespace.LoggingContracts.test_a4_baseline_all_nonlogging_source_semantics_unchanged) ... FAIL
+test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) ... ok
+test_both_active_paths_log_before_first_event_without_waiting_for_eof (test_shim_native_namespace.LoggingContracts.test_both_active_paths_log_before_first_event_without_waiting_for_eof) ... ok
+test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) ... ok
+test_actual_handler_observers_and_independent_auditor_mutations (test_shim_native_namespace.ObserverAuditContracts.test_actual_handler_observers_and_independent_auditor_mutations) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: restored=1 relayed=268B
+ok
+test_empty_non_json_and_non_object_requests_reach_upstream_with_minimal_metadata (test_shim_native_namespace.ObserverPassthroughContracts.test_empty_non_json_and_non_object_requests_reach_upstream_with_minimal_metadata) ... ok
+test_observed_passthrough_and_native_first_chunk_arrive_before_upstream_eof (test_shim_native_namespace.ObserverPassthroughContracts.test_observed_passthrough_and_native_first_chunk_arrive_before_upstream_eof) ... ok
+test_passthrough_http_error_is_returned_and_recorded_without_body_or_headers (test_shim_native_namespace.ObserverPassthroughContracts.test_passthrough_http_error_is_returned_and_recorded_without_body_or_headers) ... ok
+test_same_worker_native_post_then_get_does_not_mutate_previous_native_record (test_shim_native_namespace.ObserverPassthroughContracts.test_same_worker_native_post_then_get_does_not_mutate_previous_native_record) ... ok
+test_untracked_json_still_uses_guardian_model_and_encoding_transforms (test_shim_native_namespace.ObserverPassthroughContracts.test_untracked_json_still_uses_guardian_model_and_encoding_transforms) ... ok
+test_actual_descriptors_native_only_history_and_schema_preservation (test_shim_native_namespace.RequestContracts.test_actual_descriptors_native_only_history_and_schema_preservation) ... ok
+test_loader_flags_defaults_and_invalid_combination (test_shim_native_namespace.RequestContracts.test_loader_flags_defaults_and_invalid_combination) ... ok
+test_no_group_original_bytes_and_unrelated_duplicates (test_shim_native_namespace.RequestContracts.test_no_group_original_bytes_and_unrelated_duplicates) ... ok
+test_scoped_collisions_all_known_declarations (test_shim_native_namespace.RequestContracts.test_scoped_collisions_all_known_declarations) ... ok
+test_selected_structure_and_choices (test_shim_native_namespace.RequestContracts.test_selected_structure_and_choices) ... ok
+test_captured_kimi_spawn_and_mimo_wait_field_invariants (test_shim_native_namespace.ResponseContracts.test_captured_kimi_spawn_and_mimo_wait_field_invariants) ... ok
+test_malformed_truncated_utf8_conflict_and_event_bound (test_shim_native_namespace.ResponseContracts.test_malformed_truncated_utf8_conflict_and_event_bound) ... ok
+test_sse_arbitrary_chunks_utf8_crlf_multidata_interleave_raw_passthrough (test_shim_native_namespace.ResponseContracts.test_sse_arbitrary_chunks_utf8_crlf_multidata_interleave_raw_passthrough) ... ok
+test_concurrent_same_bare_name_distinct_native_maps (test_shim_native_namespace.ServiceContracts.test_concurrent_same_bare_name_distinct_native_maps) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[collaboration]
+[shim:0] native response: restored=1 relayed=206B
+[shim:0] native response: restored=1 relayed=205B
+ok
+test_first_event_read1_before_eof_and_midstream_conflict_no_fabrication (test_shim_native_namespace.ServiceContracts.test_first_event_read1_before_eof_and_midstream_conflict_no_fabrication) ... [shim:0] POST /responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+ok
+test_guardian_bypass_original_buffer_and_retry_unchanged (test_shim_native_namespace.ServiceContracts.test_guardian_bypass_original_buffer_and_retry_unchanged) ... [shim:0]   ^ attempt 1: incomplete stream (35B), retrying
+[shim:0]   ^ attempt 2: incomplete stream (35B), retrying
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=nostream relayed=37B completed=True
+ok
+test_json_headers_compression_and_non2xx_preservation (test_shim_native_namespace.ServiceContracts.test_json_headers_compression_and_non2xx_preservation) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: restored=1 relayed=173B
+[shim:0] POST /v1/responses -> 200 model=test enc=gzip rewrite=none tools=[spawn_agent]
+[shim:0] native response: restored=1 relayed=173B
+[shim:0] POST /v1/responses -> 200 model=test enc=deflate rewrite=none tools=[spawn_agent]
+[shim:0] native response: restored=1 relayed=173B
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpzmjtfc3p/0-1794074444-req-429.json
+[shim:0] POST /v1/responses -> 429 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0]   ^ status=429 stream=http429 relayed=20B completed=False
+[shim:0]   ^ resp 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpzmjtfc3p/0-1794074444-resp-429.json
+ok
+test_json_limit_and_first_event_errors_502_no_retry (test_shim_native_namespace.ServiceContracts.test_json_limit_and_first_event_errors_502_no_retry) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+ok
+test_request_failures_zero_upstream_and_safe_error (test_shim_native_namespace.ServiceContracts.test_request_failures_zero_upstream_and_safe_error) ... [shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+ok
+test_success_encoding_media_rejected_before_headers_and_empty_map_bypass (test_shim_native_namespace.ServiceContracts.test_success_encoding_media_rejected_before_headers_and_empty_map_bypass) ... [shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0] native response: invalid protocol
+ok
+test_flags_off_success_request_and_response_match_saved_baseline (test_shim_native_namespace.SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline) ... [shim:0] POST /v1/responses -> 200 model=deepseek-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=deepseek-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074455-req-429.json
+[shim:0] POST /v1/responses -> 429 model=deepseek-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074456-req-429.json
+[shim:0] POST /v1/responses -> 429 model=deepseek-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=glm-5.3 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=glm-5.3 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074457-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074458-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074460-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074460-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=qwen3.8-max enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=qwen3.8-max enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074462-req-429.json
+[shim:0] POST /v1/responses -> 429 model=qwen3.8-max enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074462-req-429.json
+[shim:0] POST /v1/responses -> 429 model=qwen3.8-max enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074464-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro-ultraspeed enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074464-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro-ultraspeed enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=glm-5.3-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=glm-5.3-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074466-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074466-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=hy4 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=hy4 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074468-req-429.json
+[shim:0] POST /v1/responses -> 429 model=hy4 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpvv8p3v0j/0-1794074468-req-429.json
+[shim:0] POST /v1/responses -> 429 model=hy4 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+ok
+
+======================================================================
+FAIL: test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence (test_shim_native_namespace.LiteLocationContracts.test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 698, in test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence
+    self.assertEqual(*(LoggingContracts.without_request_diagnostics(h) for h in handlers))
+AssertionError: "Clas[33404 chars]ues=[Name(id='native_map', ctx=Load()), Compar[9792 chars]=[])" != "Clas[33404 chars]ues=[UnaryOp(op=Not(), operand=Compare(left=Co[9792 chars]=[])"
+Diff is 156455 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_a4_baseline_all_nonlogging_source_semantics_unchanged (test_shim_native_namespace.LoggingContracts.test_a4_baseline_all_nonlogging_source_semantics_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 302, in test_a4_baseline_all_nonlogging_source_semantics_unchanged
+    self.assertEqual(self.without_request_diagnostics(old_handler),
+AssertionError: "Clas[33404 chars]ues=[Name(id='native_map', ctx=Load()), Compar[9792 chars]=[])" != "Clas[33404 chars]ues=[UnaryOp(op=Not(), operand=Compare(left=Co[9792 chars]=[])"
+Diff is 156455 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 36 tests in 61.734s
+
+FAILED (failures=2)

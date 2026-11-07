@@ -1,0 +1,14 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4
+PARENT_ID=01a1b6f0-9a8e-7bd2-a4a2-a9568adffb5a
+[shim:53881] native response: restored=0 relayed=12551B
+[shim:53881] native response: restored=0 relayed=5811B
+[shim:53881] native response: restored=0 relayed=6173B
+[shim:53881] native response: restored=0 relayed=7977B
+[shim:53881] native response: restored=0 relayed=6702B
+[shim:53881] native response: restored=0 relayed=33995B
+[shim:53881] native response: restored=0 relayed=10214B
+[shim:53881] native response: restored=0 relayed=45324B
+[shim:53881] native response: restored=0 relayed=6694B
+[shim:53881] native response: restored=0 relayed=30279B
+[shim:53881] native response: restored=0 relayed=29529B
+{"profile": "mimo-flash", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 11, "elapsed_seconds": 74.83}

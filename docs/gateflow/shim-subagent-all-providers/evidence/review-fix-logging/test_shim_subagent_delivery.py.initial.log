@@ -1,0 +1,18 @@
+test_actual_http_handler_framing_compression_and_sanitized_400 (test_shim_subagent_delivery.DeliveryTests.test_actual_http_handler_framing_compression_and_sanitized_400) ... ok
+test_all_routes_preserve_native_items_and_existing_transform_contracts (test_shim_subagent_delivery.DeliveryTests.test_all_routes_preserve_native_items_and_existing_transform_contracts) ... ok
+test_body_only_plaintext_and_empty_strings_are_not_lost (test_shim_subagent_delivery.DeliveryTests.test_body_only_plaintext_and_empty_strings_are_not_lost) ... ok
+test_environment_only_route_does_not_enable_adapter (test_shim_subagent_delivery.DeliveryTests.test_environment_only_route_does_not_enable_adapter) ... ok
+test_guardian_original_identity_buffer_retry_and_adapter (test_shim_subagent_delivery.DeliveryTests.test_guardian_original_identity_buffer_retry_and_adapter) ... ok
+test_handler_disabled_noop (test_shim_subagent_delivery.DeliveryTests.test_handler_disabled_noop) ... ok
+test_handler_encoding_model_credentials_stream_and_other_transforms (test_shim_subagent_delivery.DeliveryTests.test_handler_encoding_model_credentials_stream_and_other_transforms) ... ok
+test_handler_invalid_rejected_before_any_upstream_or_dump (test_shim_subagent_delivery.DeliveryTests.test_handler_invalid_rejected_before_any_upstream_or_dump) ... ok
+test_handler_invalid_unicode_is_sanitized_before_model_swap (test_shim_subagent_delivery.DeliveryTests.test_handler_invalid_unicode_is_sanitized_before_model_swap) ... ok
+test_known_envelopes_preserve_content_routing_metadata_order_and_others (test_shim_subagent_delivery.DeliveryTests.test_known_envelopes_preserve_content_routing_metadata_order_and_others) ... ok
+test_no_targets_byte_noop_and_opaque_reasoning_untouched (test_shim_subagent_delivery.DeliveryTests.test_no_targets_byte_noop_and_opaque_reasoning_untouched) ... ok
+test_route_flag_explicit_default_off_all_managed (test_shim_subagent_delivery.DeliveryTests.test_route_flag_explicit_default_off_all_managed) ... ok
+test_unknown_invalid_shapes_reject_whole_request_sanitized (test_shim_subagent_delivery.DeliveryTests.test_unknown_invalid_shapes_reject_whole_request_sanitized) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.543s
+
+OK

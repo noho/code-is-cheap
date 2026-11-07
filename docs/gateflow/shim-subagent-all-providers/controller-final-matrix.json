@@ -1,0 +1,98 @@
+{
+  "scope": "Final validation-source applicability, not fresh all-nine inference or release closeout",
+  "final_helper_sha256": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+  "native_matrix_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "native_matrix": "docs/gateflow/shim-subagent-all-providers/evidence/location-current-matrix.json",
+  "profiles": [
+    {
+      "profile": "ds-flash",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/ds-reuse-check.json",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "glm",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "glm-flash",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo-fast",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "qwen",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "hy",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "kimi",
+      "whole_profile_pass": true,
+      "coverage": {
+        "a": true,
+        "b": true
+      },
+      "evidence": [
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2"
+      ],
+      "namespace_restore_actual_activation": true,
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo-flash",
+      "whole_profile_pass": true,
+      "coverage": {
+        "a": true,
+        "b": true
+      },
+      "evidence": [
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2"
+      ],
+      "receipt_decision": "controller-wait-receipt-decision.md",
+      "namespace_restore_actual_activation": true,
+      "limitation": "Upstream actual calls already had valid namespaces; zero additions is observed, while six-entry maps and actual native parser prove activation. Missing namespace restoration separately replayed/tested.",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json",
+      "historical_a1_workflow_pass": true
+    }
+  ],
+  "all_nine_validation_pass": true,
+  "applicable_checks": 176,
+  "current_checks_run": 86,
+  "prior_unchanged_checks_reused": 90,
+  "post_native_equivalence": [
+    "docs/gateflow/shim-subagent-all-providers/review-fix-validation.md",
+    "docs/gateflow/shim-subagent-all-providers/review-logging-fix-validation.md"
+  ],
+  "live_code_synced": false,
+  "original_parent_callback": "withheld until user-authorized live sync"
+}

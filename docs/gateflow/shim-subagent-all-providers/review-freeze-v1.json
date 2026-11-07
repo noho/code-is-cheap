@@ -1,0 +1,1940 @@
+{
+  "created_at": "2026-11-07T17:02:22.286306+00:00",
+  "head_before_source_commit": "901cea16928ef2db01ce774c99652f62fb3dca68",
+  "base_ref": "09337967910277785b82874326d7f49156c9395b",
+  "source_files": {
+    "README.md": {
+      "sha256": "88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e",
+      "bytes": 69814
+    },
+    "README.zh.md": {
+      "sha256": "448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a",
+      "bytes": 63070
+    },
+    "codex-agent/bin/codex-auto-review-shim": {
+      "sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "bytes": 37422
+    },
+    "codex-agent/shim-routes.json": {
+      "sha256": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "bytes": 3062
+    },
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": {
+      "sha256": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "bytes": 35476
+    },
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": {
+      "sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "bytes": 47700
+    },
+    "tests/test_shim_subagent_delivery.py": {
+      "sha256": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4",
+      "bytes": 18312
+    },
+    "tests/test_shim_native_evidence.py": {
+      "sha256": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "bytes": 28691
+    },
+    "tests/test_shim_native_namespace.py": {
+      "sha256": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "bytes": 40850
+    }
+  },
+  "evidence_files": {
+    "docs/gateflow/shim-subagent-all-providers/controller-native-diagnostics.md": {
+      "sha256": "279ed6e51ab441d9bd13d34b0977bc5e7ba947e3f07f802aff9f667ee63d05e8",
+      "bytes": 2722
+    },
+    "docs/gateflow/shim-subagent-all-providers/controller-wait-receipt-decision.md": {
+      "sha256": "b464cb7c00fc6e0ba17cc4cfd30654cef5a81bc3820daaf42c55f758d0906207",
+      "bytes": 2865
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/attempt-matrix.json": {
+      "sha256": "8d9e81d0b1910bec803838c54dc7e65104c0d4169caf8483c1e15cbd83ee52b3",
+      "bytes": 4352
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/ds-reuse-check.json": {
+      "sha256": "de7bde80229b38bcedaa05559766f51e25688e0eaaf2c87209e86a9b47cf88f1",
+      "bytes": 867
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/audit.json": {
+      "sha256": "5c23f6cfacc3f56e6f53ae1ef89a73deccee0d8d3a3b980be63590341b7228dc",
+      "bytes": 1607
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/launch.json": {
+      "sha256": "30e0382bfaa7505de378c8da1a2d7d458ae3a90a9bf437b9d0e7692cab062545",
+      "bytes": 3671
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/omitted-global-dumps.json": {
+      "sha256": "93ff21043ddc6d8a2db1f67799222eb268e7f26be38545ee8b655692f4784223",
+      "bytes": 3297
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/rollouts-sanitized.json": {
+      "sha256": "7746c83d1481f54b52fb86e24b9438b76a7a7f82ef2e0477f2878270e97d3368",
+      "bytes": 2040
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/summary.json": {
+      "sha256": "af9d07e022b6d5599ee2b45e50478a2481e43d02b104b3945519e6d044864ae6",
+      "bytes": 6520
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1/wire.json": {
+      "sha256": "0bbaa986a00d97d1363876175e15df2f2c9b4a097f6fdeb454559ff3fd9314c3",
+      "bytes": 127772
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/audit.json": {
+      "sha256": "2ac8d86761997795bdbed2dea441bf50925efc3dfb4393b6b59536d0c70af873",
+      "bytes": 6476
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/candidate-transport.log": {
+      "sha256": "b4e235b1fb77fabc4d51a14295f383eddb50dc99cb4c4a5b6eb699ba60ccd47c",
+      "bytes": 4057
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/launch.json": {
+      "sha256": "c705aaa927ae24eb3480f044e996ad1ff9a300186dee654a6d95d37332cc0da0",
+      "bytes": 3671
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/native-rollout-supplement.json": {
+      "sha256": "830cf11484b5377abadd895fe1f04599b07515ba8871710d846c300aa92ffe17",
+      "bytes": 11564
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/rollouts-sanitized.json": {
+      "sha256": "7921f9833889144a6b8b493be2ca51d378ea4c8bfbb40db59b420718771db777",
+      "bytes": 19522
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/summary.json": {
+      "sha256": "8e7c78f34e6e8011646292068df78f607100e4f63aa98246530fc4c1da7956ec",
+      "bytes": 6506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2/wire.json": {
+      "sha256": "4163e2dccc427f2ad407d8daf4f3b91d5d97b2ea559062a8241fe4f9077574cd",
+      "bytes": 140450
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/audit.json": {
+      "sha256": "78e735b9db245d2db23a304183c2eb42827145886d4856b73cb181c1d93076a3",
+      "bytes": 6462
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/candidate-transport.log": {
+      "sha256": "446c096140447403337cf209edaf6e019024170bd36541de75716a1cdad93cac",
+      "bytes": 4131
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/launch.json": {
+      "sha256": "011d08f387d49f17db9d90fb51541a0843b438eac7a92a3fbd0ea85280693d14",
+      "bytes": 3797
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/native-rollout-supplement.json": {
+      "sha256": "726dc58f92c91062bb01776621fe3c5239c82443e4d55cd1673219af4f0e69f3",
+      "bytes": 11656
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/rollouts-sanitized.json": {
+      "sha256": "12ce848ff65b0a996bd98e712b3e737cc7d8f2f7785bda20e02b018556e4200f",
+      "bytes": 21203
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/summary.json": {
+      "sha256": "4b332405276461c790aa7f3f4307c0ced2c78265698f57bf1d49c6871834588b",
+      "bytes": 6649
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1/wire.json": {
+      "sha256": "860153f010b2c2b0e0985af79a19091dd2f4fddc333223cc0d9df9d74619363d",
+      "bytes": 141521
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/app-server.stderr": {
+      "sha256": "7bfdc250438146b5c85a23ef92d0ae64545bc33d90d8147cdf7fddef3267cb5e",
+      "bytes": 155438
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/audit.json": {
+      "sha256": "3efcef1cc750859acce5c73212659a9a9deba6c63b7cb1165ed487eee833622c",
+      "bytes": 5208
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/candidate-transport.log": {
+      "sha256": "1f8f89981c19ff2c19053fd2a8c3f9aa8bc56351083b714ed01d072c376b99e6",
+      "bytes": 5146
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/launch.json": {
+      "sha256": "2e81fcb9d2997fc83995f1e831a573b18b2d2936e9ce4119fce5ddefc152834a",
+      "bytes": 3629
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/native-rollout-supplement.json": {
+      "sha256": "c8091add29074cc59b66b0538fca0b75998beb29d1ebb0ac59fc1a031d777eb3",
+      "bytes": 11551
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/rollouts-sanitized.json": {
+      "sha256": "b8878c3edadafebf9d8633ee1b6d478954369ed6d86fdf28334000651fbfbf2e",
+      "bytes": 27335
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/summary.json": {
+      "sha256": "2b2408a12c937d2598ac9bdbbc87b4270a636d9b9b82421f069916703f7cbde7",
+      "bytes": 6460
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1/wire.json": {
+      "sha256": "f6380fb5f8cd57be650439e1684e4177f4b9e38216ede5098b2b64dfefadcd81",
+      "bytes": 191262
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/app-server.stderr": {
+      "sha256": "34558e603c483f1efab52007bb08c141c570eebe2b40cdf9a5b5ba4ec677fae2",
+      "bytes": 180242
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/audit.json": {
+      "sha256": "2b3c7ec957e8c8b0f2a63cfefa4e8cea93f6cca018f3c1467eafaeecad0eb4e4",
+      "bytes": 6368
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/candidate-transport.log": {
+      "sha256": "582c3eeb719359db2834495c1e34772a144ec435202b26c66e16ebfff242ee47",
+      "bytes": 4131
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/launch.json": {
+      "sha256": "f14b6ab27faa432d63057f3d32ad5c1dca66c221be374fe74c5b155d27078902",
+      "bytes": 3629
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/native-rollout-supplement.json": {
+      "sha256": "00c7abc91b87013189a8b51fd11c9285faaca5907e3e71a51ef71aa3642c0513",
+      "bytes": 11550
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/rollouts-sanitized.json": {
+      "sha256": "f227d587be75ef6c9f35c7db22ee044831cb038bb875fbace781a67799a7f5e3",
+      "bytes": 18973
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/summary.json": {
+      "sha256": "b929e1915ad830f7a0807819c15a2891228cf888b0f9a5cbbdbc402a388e872c",
+      "bytes": 8487
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2/wire.json": {
+      "sha256": "1b41c8efd3bcba9076a64798f3627dbd833ecaaa360c5b224166be812b6c5bd5",
+      "bytes": 139311
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/app-server.stderr": {
+      "sha256": "8f1018e7755ca821293432993f0d2b5cb333407b7789c058e4f3c36028029034",
+      "bytes": 883
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/audit.json": {
+      "sha256": "bd6ea6c1837cbc378e1afe3dba32c23e1efbeb55bd6d9134fbf1c7bca9a6760a",
+      "bytes": 2046
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/candidate-transport.log": {
+      "sha256": "05ff4b240693ee68f1ddfd42f93e20502c6e1a676e9902396ad544a0e5354dc1",
+      "bytes": 3064
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/launch.json": {
+      "sha256": "585619d2a48b68650b318bda105d61ea2fd690249b1a1396752ea4e35d863ea3",
+      "bytes": 3725
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/native-rollout-supplement.json": {
+      "sha256": "4f5f11a256f891472a8524629ca7880347cd3d00c4e1f6fbfa258efa8378b86a",
+      "bytes": 1021
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/rollouts-sanitized.json": {
+      "sha256": "26a02dd45d5aa415c8cc517b26e86f89af4d3dd2c9c882483dab2c037dd9291f",
+      "bytes": 16895
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/summary.json": {
+      "sha256": "dddbc13d75fde16d8d14c69eca92dd75257ab05aa6a939753c64588dd94d6a10",
+      "bytes": 6555
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1/wire.json": {
+      "sha256": "ff525695d4682524e46986c952945192e4d8cd9c8c8426c5cf6eea3fea9100de",
+      "bytes": 139845
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666.source.gz": {
+      "sha256": "13fad037ffe24405ab815d725ade477c4c60535b991c463fad76492b9f6177f3",
+      "bytes": 10594
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729.source.gz": {
+      "sha256": "5872f26908a95d026ab2a383bd2fe9888df0a70cba0942d5374b6a90a2330aea",
+      "bytes": 321
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea.source.gz": {
+      "sha256": "7baa6c24254fabebb969d764ae2945e9e4235650fadb567e175f8303b436905c",
+      "bytes": 10113
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12.source.gz": {
+      "sha256": "1570690d6d0186e74af3c285fe55abda8e9181961b5933583e03ea61bb9dbf3e",
+      "bytes": 10740
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21.source.gz": {
+      "sha256": "84fe1a8628a2e9416f267711d9a4c29a59245d2c5c909c1668662dd7afc27cd9",
+      "bytes": 21223
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/app-server.stderr": {
+      "sha256": "08740067575608564690f7323228cfc521620a26bec005b8292946842c1a73e3",
+      "bytes": 171
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/audit-final-current-reader.json": {
+      "sha256": "5e476fe31b114f2c89367642995b47ed176da153331ba5a4e97d5eae86b6dbf8",
+      "bytes": 2615
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/audit.json": {
+      "sha256": "5e476fe31b114f2c89367642995b47ed176da153331ba5a4e97d5eae86b6dbf8",
+      "bytes": 2615
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/launch.json": {
+      "sha256": "f2625e69be646bceef65e878451190c37857b78e09f139f6273e2ed7809851ef",
+      "bytes": 3910
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/native-rollout-supplement.json": {
+      "sha256": "07945296b316c01c96120a4c3b0d2dbf06ea72bf1fd76c57d23dedeee70986a8",
+      "bytes": 1021
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/rollouts-sanitized.json": {
+      "sha256": "ca97b6cfe84f292786ee7007d212cf77ca1f1d802cf7be9ef4372c419ae3838f",
+      "bytes": 6433
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/summary.json": {
+      "sha256": "aaad530c3e35a0ee596b971ddb7a30ea1af78fb1dcdcaa2bf8fc93965abb175a",
+      "bytes": 8028
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/transport.log": {
+      "sha256": "8b001774d4309e91f2363870cd0bce34cc264e0c8997e0737a0db8f08d3d8807",
+      "bytes": 383
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/wire.json": {
+      "sha256": "7d751dc2485a225b07a3398a5c59f96391a47d9ac4071e117fe390b1f4babe87",
+      "bytes": 814027
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729.source.gz": {
+      "sha256": "5872f26908a95d026ab2a383bd2fe9888df0a70cba0942d5374b6a90a2330aea",
+      "bytes": 321
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21.source.gz": {
+      "sha256": "84fe1a8628a2e9416f267711d9a4c29a59245d2c5c909c1668662dd7afc27cd9",
+      "bytes": 21223
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d.source.gz": {
+      "sha256": "1dc8ed4eb40dc94e1c59f9246316dc8cf4eb00c791714b7a6d94c98dcc852628",
+      "bytes": 10744
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/audit-command.json": {
+      "sha256": "6c857c88bfa75f5d36ca045555f58e00cd61d0793803d03dbf7d22b4065601fb",
+      "bytes": 258
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/audit.json": {
+      "sha256": "49f8cb59ac88b4eb79d6309d94e6725bdf03373649e9e63937d8db1ae8e6ca0b",
+      "bytes": 4644
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146.source.gz": {
+      "sha256": "66dff856fa4acc2df8f3d7d55633264f1fb7d417557a1654857d3e233512fa3e",
+      "bytes": 11466
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2.source.gz": {
+      "sha256": "6c6fc1999d76f44bb49ce05bff15163575ff878071e8c5707751eebb8fafa208",
+      "bytes": 10234
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/launch.json": {
+      "sha256": "da828382ab5b61939d5b64adc97e00983ac88b93b6ce95bdb87a58ae837c6446",
+      "bytes": 3910
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/native-rollout-supplement.json": {
+      "sha256": "9d71f3e9118170884e5ade25f7a4a5d7af57475826b051ca049d8a50c70ef4be",
+      "bytes": 6432
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/rollouts-sanitized.json": {
+      "sha256": "cbe51924727fde5182047e0f70c2b2a73bf4d30f869ac4caf26c63f3f5126bca",
+      "bytes": 12249
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/summary.json": {
+      "sha256": "5c9a5e4fed761b9f35604cb52be0931279f0e903c67d204f83326e20b726fb0a",
+      "bytes": 8323
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/transport.log": {
+      "sha256": "dfef438dd08138a8257f99f691c6cef1a22443ec0aee067e1abb6598b07dadc0",
+      "bytes": 1264
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/wire.json": {
+      "sha256": "aae16bec42300478c7a6368ee49e1378e7f764500356049c41f0a48af2b136bf",
+      "bytes": 2751405
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666.source.gz": {
+      "sha256": "13fad037ffe24405ab815d725ade477c4c60535b991c463fad76492b9f6177f3",
+      "bytes": 10594
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729.source.gz": {
+      "sha256": "5872f26908a95d026ab2a383bd2fe9888df0a70cba0942d5374b6a90a2330aea",
+      "bytes": 321
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea.source.gz": {
+      "sha256": "7baa6c24254fabebb969d764ae2945e9e4235650fadb567e175f8303b436905c",
+      "bytes": 10113
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12.source.gz": {
+      "sha256": "1570690d6d0186e74af3c285fe55abda8e9181961b5933583e03ea61bb9dbf3e",
+      "bytes": 10740
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21.source.gz": {
+      "sha256": "84fe1a8628a2e9416f267711d9a4c29a59245d2c5c909c1668662dd7afc27cd9",
+      "bytes": 21223
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/audit-final-current-reader.json": {
+      "sha256": "c3fc8f5bb97a1fb14a18a36bfc75d57764dc309ff173fa3e0f53fadb3d747e82",
+      "bytes": 5169
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/audit.json": {
+      "sha256": "c3fc8f5bb97a1fb14a18a36bfc75d57764dc309ff173fa3e0f53fadb3d747e82",
+      "bytes": 5169
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/launch.json": {
+      "sha256": "474fa8b7ab8cbd7d06e260cae292d5ca6eb84d29ef5d0dbdf91afc3d7f63b04a",
+      "bytes": 3877
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/native-rollout-supplement.json": {
+      "sha256": "52eb3ec0787b42ca4ee3ccb74fa1dabcebc650896ca256b5a6d654c35c672cb1",
+      "bytes": 5979
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/rollouts-sanitized.json": {
+      "sha256": "9b16e304a23cab311362983d23044ba4575f04b9955e9f0750a0e98e9faefabf",
+      "bytes": 12373
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/summary.json": {
+      "sha256": "9667f82508caf1bf25ee4ba853ffcc68a17c9926aa266ad2e854a3bdf9aca057",
+      "bytes": 7269
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/transport.log": {
+      "sha256": "b3aa31219d58bb6e1645348d307d59d2688ea4e6f4993ee2e692fd27f63e9829",
+      "bytes": 1150
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/wire.json": {
+      "sha256": "d35a5fc8db31d6b02885b518f45e0fe12d72dfff0b4e631ce939a4238f0a5076",
+      "bytes": 1719522
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729.source.gz": {
+      "sha256": "5872f26908a95d026ab2a383bd2fe9888df0a70cba0942d5374b6a90a2330aea",
+      "bytes": 321
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21.source.gz": {
+      "sha256": "84fe1a8628a2e9416f267711d9a4c29a59245d2c5c909c1668662dd7afc27cd9",
+      "bytes": 21223
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d.source.gz": {
+      "sha256": "1dc8ed4eb40dc94e1c59f9246316dc8cf4eb00c791714b7a6d94c98dcc852628",
+      "bytes": 10744
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/audit-command.json": {
+      "sha256": "2e67c7f13ab31305a42fe826145978ac00e05fc18a93d58e0ddea726dcc0d4f9",
+      "bytes": 258
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/audit.json": {
+      "sha256": "71068265c8477f8136dac6ee79aa1245cf28c87b99cf6baadf6b9b156bf563b0",
+      "bytes": 5250
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146.source.gz": {
+      "sha256": "66dff856fa4acc2df8f3d7d55633264f1fb7d417557a1654857d3e233512fa3e",
+      "bytes": 11466
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2.source.gz": {
+      "sha256": "6c6fc1999d76f44bb49ce05bff15163575ff878071e8c5707751eebb8fafa208",
+      "bytes": 10234
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/launch.json": {
+      "sha256": "4738361e112d48533877f0ee5fdb251568c92db3bc63363f6fbe04ab791197e1",
+      "bytes": 3877
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/native-rollout-supplement.json": {
+      "sha256": "fa7c62718b88a9d64586219c3045cfa2d0c9201d7a5a3cc061562ae5971a6f81",
+      "bytes": 5979
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/rollouts-sanitized.json": {
+      "sha256": "58cfe73ce78daea314b620b9e8bfea27913461aa60fbcab82461f0c917500301",
+      "bytes": 9363
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/summary.json": {
+      "sha256": "c0a8f0ae55065101195972035b21755bf015acfe138d4e71b80a70890d6656f6",
+      "bytes": 7565
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/transport.log": {
+      "sha256": "0e24346cde559c8c943aa9deaed6beabea3686baedc8e3f2a8dacec12156dc73",
+      "bytes": 1150
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/wire.json": {
+      "sha256": "aad34d720c353c05f8c27d8237f1b725f595f092b05b6f76c49e26c149f29eff",
+      "bytes": 1746637
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/app-server.stderr": {
+      "sha256": "cae3fe1e9bce38f6682b6014af665ca6d29ea951ca4f9559e43f069612b2ced9",
+      "bytes": 97
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/launch.json": {
+      "sha256": "ee272d271a4011f704a2bf919d61d6ce96996ccd1fbaf3481591bec30631aeb6",
+      "bytes": 3916
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/namespace-transform.json": {
+      "sha256": "1b37785e3951b977babb8d2143560975fbe2bb51dcf3ebfdbb18ecc787f4a325",
+      "bytes": 62050
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/native-rollout-supplement.json": {
+      "sha256": "b91688369206fafb908fbccba7e45e6881e50b5b4046ef14a5b91d9508be09b4",
+      "bytes": 1021
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/response-native-calls.json": {
+      "sha256": "402a1a03bb635888771fb5b02d57cb0d5fd904e186b9447fc0e43c92f788467e",
+      "bytes": 2139
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/rollouts-sanitized.json": {
+      "sha256": "45d0704432a15f0e1184154dbfc113ba16cbfa9d685a3e781fef19adbedbdeb1",
+      "bytes": 5070
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/source-snapshots/28f751309b10dcf4062ba3743f749b72cec46277a3f18f159c99ac32590a8813.py.gz": {
+      "sha256": "48a39ae7b5092a9fc1011cf8742249ad84889233788d31c080c39ad830a5f81a",
+      "bytes": 8155
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/summary.json": {
+      "sha256": "0f97790b2a385e3d60186537dbf5ca3207488f1cbaf596cea404eb0c04d554a9",
+      "bytes": 5268
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1/wire.json": {
+      "sha256": "b53181abd1264254bee6a454c338e109de59c678dee9d06e724999dfa08fb206",
+      "bytes": 35541
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/codex-routing-source.json": {
+      "sha256": "637b3c3b603b173a13953d2b0090ef6d17af4f184ccf086727c4546a5b759b58",
+      "bytes": 10321
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/diagnostic-scripts/077c99eab047c767ffc0a2d4e5c5a1dfd222f29401cf896aa52901758afd5f71.py.gz": {
+      "sha256": "6172bc6a3d90f960815786ad14baa13fcb090353f75c1ae89dd3f002dad1ceb5",
+      "bytes": 3118
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/diagnostic-scripts/54dc4a1f2760c1609bd1ddb5b0ce9ea2710a66e34c44d48adeecd191bfdb9118.py.gz": {
+      "sha256": "f41373ee29731f812a21d1075473f5820407ef92fe63049b8b9e2f54fe0b64a7",
+      "bytes": 1577
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/diagnostic-scripts/551b5e512a398440f5d61e3e98faf5e0c7c979b063b27d99c101531fdce8399a.py.gz": {
+      "sha256": "52a1b4d295082d06b209050112b98da0263421cf84e47f5c62a04960106aa625",
+      "bytes": 1395
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/diagnostic-scripts/a7b5e50d6e981f7fcaece7b404b12c72e405cfe092781abc2a4ab3f941a9fa1d.py.gz": {
+      "sha256": "c4098921633fbb8ad84ee53a3ee8c9e05047a5b59d495698f568733405140d13",
+      "bytes": 1521
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/diagnostic-scripts/d31f76d841b5390dd06e2185fb4006d16cf145176c8201077739f14081096863.py.gz": {
+      "sha256": "6d8aa6fc8ae560fd3dbbd9f54c2d0a218bc629690c38e377312c904ad17a8066",
+      "bytes": 3940
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/final-check.json": {
+      "sha256": "fb673b24589e660fb9cef212e3f66359493cfac7d7e58ff57a20a5bf22bded00",
+      "bytes": 1992
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/manifest.json": {
+      "sha256": "3dea7c9555bcbddda033f823daf792534259eedec38bbeff530070afb2778292",
+      "bytes": 3308
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/privacy-processing.json": {
+      "sha256": "d1cba8b7ae762e58e4a0014f370eb1d87b80118a80035dd7c6134ab8a9956dec",
+      "bytes": 531
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/prototype-invariants.json": {
+      "sha256": "fcb4bab8f9190910dd13048e9edf9d501be024b0172a7c297fd81558eb27c725",
+      "bytes": 827
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/routing-verdict.json": {
+      "sha256": "19ff31efb1a357015e147e43119292c1e413426c20a4fba757d17253279cbf41",
+      "bytes": 4020
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/legacy-ds-audit.json": {
+      "sha256": "d811645291a6cb75ea4fd9ed4b50f90528bc4d080ff82d789de5bafe344e135f",
+      "bytes": 1124
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-current-matrix.json": {
+      "sha256": "49c39cfda3b15a1f35c4949351154903b9e8d36ce58cb6a3cd6220a2e3796ea6",
+      "bytes": 55702
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/a3-live-progress-sanitized.json": {
+      "sha256": "4ebb52e908f9e98097fe925319b2845390872f294d88270b2b7ec34d27ef26fc",
+      "bytes": 2936
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/a4-b2-source-applicability.json": {
+      "sha256": "f8b0c0ae66fc27e3e635fb0d3565508a5c0b81479e064eeb0486d02238ce86c5",
+      "bytes": 3190
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/controller-a3-fixture-abort.json": {
+      "sha256": "91f4b3863daf1667d0de7d3bdb171effed6fa689b478bf06a6e222d3f726b60b",
+      "bytes": 765
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/declared-mimo-flash-a3-setup-correction.json": {
+      "sha256": "5a7683f7baf0a65e964cad1474bdf6917d213475ee18f3051cbeda0f4d617266",
+      "bytes": 3317
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/declared-mimo-flash-a4-receipt-fix.json": {
+      "sha256": "9f7fd350b96992f950795871d1edbf56b11e6502c1d3d86266885da855832e38",
+      "bytes": 2552
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/declared-mimo-flash-attempt-2.json": {
+      "sha256": "941bccfcd12a20da17eb05d3bdfa8931c1c822a7c84bbd73a8bbdc8f9be1aafa",
+      "bytes": 2488
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/delivery.log": {
+      "sha256": "509dd5f030878e01d9ed08746597da61faddbb5319aac43aa997abbb84ae6099",
+      "bytes": 112
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-final.log": {
+      "sha256": "87f3dafae94659f49996a249245a183bb9aadeafb5e86b541f6cd450c7ee8947",
+      "bytes": 129
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-initial.log": {
+      "sha256": "35d86a187b43d0f4dc60a48f4713cac93b10d5738c479d7c2d93a0eb3002231e",
+      "bytes": 129
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-receipt-fix-initial.log": {
+      "sha256": "abbc48efe6167bce567beb1587b5cf8b6493697fe3ef59e82dd2f3e04a2b00d7",
+      "bytes": 132
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-source-final.log": {
+      "sha256": "09a843a7e9db36a3fe75ca2040755f485b2f1e63b44255987fec7892e08d1a5a",
+      "bytes": 129
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-closeout-check.json": {
+      "sha256": "7d6675711c4d67c6b994a0b82a333d59608d5c7409c47b37f2c7135697701cb7",
+      "bytes": 680
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json": {
+      "sha256": "9c8328bc27b2467330d8066e8ba27384cefa8dd6af74f1f91226b687c1ddee2e",
+      "bytes": 8807
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/fresh-active-wire-validation.json": {
+      "sha256": "f77c6d681058110a2e913d30d7e7a6fe178babc46b9d7e4c252516389407e27e",
+      "bytes": 291956
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-a2-b2-final-receipt-reader-aggregate.json": {
+      "sha256": "7cf9d7f57fd4fbf7dcefb8b777fc33d108cb7a8480e4fd3693a1e2a153026d13",
+      "bytes": 13034
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-auditor-container-check.log": {
+      "sha256": "ec80c07c49dc5df2a63bdd21d5167d5ffbd601ebaea45c755d9e9d50225c9599",
+      "bytes": 424
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-auditor-container-check.py": {
+      "sha256": "fa068daee0f27d92bc12dbbeeb0f54bf28d965f698f428f87cb2970b94879396",
+      "bytes": 2299
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-auditor-receipt-fix.log": {
+      "sha256": "ec80c07c49dc5df2a63bdd21d5167d5ffbd601ebaea45c755d9e9d50225c9599",
+      "bytes": 424
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-b1-current-reader-reaudit.json": {
+      "sha256": "57fefd3a1de78926e1a45b787dcb17c182e3fac340e85afb705f189068225e9f",
+      "bytes": 5250
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-corrected-a2-b2-current-audit.json": {
+      "sha256": "a0a3043f7aca53c3c90c6ab307e39d06034e3535ab35f14d38eb9f3cd862c537",
+      "bytes": 13020
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/legacy-ds-audit-final.json": {
+      "sha256": "0d21aaaa0716917cc24db04e86efcf8fb34f46f93e186a9fa0fcc6a582b3b9a2",
+      "bytes": 1125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/legacy-ds-audit.json": {
+      "sha256": "0d21aaaa0716917cc24db04e86efcf8fb34f46f93e186a9fa0fcc6a582b3b9a2",
+      "bytes": 1125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-a1-current-reader-reaudit.json": {
+      "sha256": "21cab248864985b1ad2a3b2509095d1b0f0d3221d0db07899f6467fbf314156b",
+      "bytes": 7089
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-b1-current-reader-reaudit.json": {
+      "sha256": "0872d1df36ec78c3013af05f9f62fb0fc8cf2d3c0ac83c3a626cc6feb47eeb6b",
+      "bytes": 5963
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a2-b2-aggregate.json": {
+      "sha256": "f0fd66095b6b0ff97e0c31250d43c4b21a652ee1ebbec9f1f2a97fde4ea92877",
+      "bytes": 11711
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a3-b2-aggregate.json": {
+      "sha256": "6a76bda0860c2426fba817074fa0e3ce31d09e7dbe644a161443f8cf81b04362",
+      "bytes": 13533
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a4-b2-aggregate.json": {
+      "sha256": "00e1673ef492ff1363b2958974fcfb91e2f5ea94ddf12fbf155192219abd9391",
+      "bytes": 17204
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/namespace-final.log": {
+      "sha256": "fe124c94d8edca3137813197bcdf33017aa99b578c6f671947164190b599ab55",
+      "bytes": 11067
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/namespace-initial.log": {
+      "sha256": "32b9ff50bc9ff05469246f18eea7528ff44f57787a565cdb8278367fdb3f6c9e",
+      "bytes": 11067
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/native-a2-driver.log": {
+      "sha256": "e4b04533b054be54ee31966124ef729b0f4d9faf37ac5ef08b2ffd0cda7f09f7",
+      "bytes": 374
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/native-a3-driver.log": {
+      "sha256": "c9ce51b94179f232412a66cdbfaa1f441b544171b0e99bac8f19dea3f682a675",
+      "bytes": 1618
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/native-a4-driver.log": {
+      "sha256": "446ffa5dbb4bc7d771a80c79f05246068d575f54aea7b3d60940db4f6a4b1b3f",
+      "bytes": 891
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/native-b2-driver.log": {
+      "sha256": "16365f9958e1e5d000ee7468fa74f1fb70495084086a61a829e68e0263ca58de",
+      "bytes": 558
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/observer-receipt-fix.log": {
+      "sha256": "18c0b2d370a8478d0f1b641f638cfb12ad9cc279c93e01a6a31df5d804e1be16",
+      "bytes": 200
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/observer-source-final.log": {
+      "sha256": "00967715146539d690eed639e21d0594907216380a480b69a8a4749d052b6668",
+      "bytes": 200
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/offline-validation.json": {
+      "sha256": "bd078c1e16299ed0c6a75a3acf42738dd48965650da570d204bde761ef2eb5fb",
+      "bytes": 4660
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/preexisting-files.json": {
+      "sha256": "867fb52f053219eb5de48ede098b06be307e22d73c0777f2b48d59106b82786b",
+      "bytes": 205619
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/preservation-check.json": {
+      "sha256": "90827e05d4fb231462647a0e588d958e57845daf9615ce33931dadeea14e60a7",
+      "bytes": 1368
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/audit.json": {
+      "sha256": "d5d76473b1f5d4ef936162205c5ce953e83052760fae681d3f97b9acb92bcc50",
+      "bytes": 1582
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/launch.json": {
+      "sha256": "f176f7b7f1e64a6795d3bf6254d3dd93d55eba4ff3231b873c1ee6ee31784921",
+      "bytes": 3731
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/omitted-global-dumps.json": {
+      "sha256": "08416223a28b11744c07dd1b95657eeffe371a194df5de302e6facca4dabc442",
+      "bytes": 3627
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/rollouts-sanitized.json": {
+      "sha256": "07c32a6ba10f37023caa5b524e676ce2ee92d53f37d8cbd86743edf22056ae65",
+      "bytes": 2049
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/summary.json": {
+      "sha256": "a4fd9d5d793d338fe3cd78116f8ad91bed50fb7901a2eaab37a4771ec367a301",
+      "bytes": 6593
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1/wire.json": {
+      "sha256": "8a3a1e1e6988617afbd242b5ba09a39ff811280453c09676be990622bbdf8dea",
+      "bytes": 57902
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/audit.json": {
+      "sha256": "0bfb7398a1fb3e14e651543409d61d685c8cafd882d05d3a2bbf717271dc32fa",
+      "bytes": 7695
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/candidate-transport.log": {
+      "sha256": "19627595f1b7fbb810e19234cf35ff0467eeb4e617bb2dd9b0beb132c9e91f23",
+      "bytes": 2720
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/launch.json": {
+      "sha256": "a96913ecd8b38ae26fa80c057d1c3446563d6111fb8bf9e35e46c85370aa6e64",
+      "bytes": 3731
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/native-rollout-supplement.json": {
+      "sha256": "cc1b9781fa22e2871c7cc535319f0b7c5fbdf6991f12cb75472731a18901b11e",
+      "bytes": 13335
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/rollouts-sanitized.json": {
+      "sha256": "edfb5c66ede06d5bfba5d183e194f4189f64a80c38da33eb5f5984084185d8c7",
+      "bytes": 33903
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/summary.json": {
+      "sha256": "a9f0e399265635224d11cc50b344987feb3151b90411e3343ea3b44a90d2c705",
+      "bytes": 6579
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2/wire.json": {
+      "sha256": "1c7274c5bea11e15f61d923c10a10beddf600c41b7cbee7199372296725c487b",
+      "bytes": 1531250
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/audit.json": {
+      "sha256": "d27c579b42bd9d11e22820367307619311592a989cf5b4b6c92aa19242bba3ab",
+      "bytes": 7769
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/candidate-transport.log": {
+      "sha256": "e38ca4483439c7fb062303c74f39de7698bdb78a2d6fc66dca799a9f0e0bbbd6",
+      "bytes": 2898
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/launch.json": {
+      "sha256": "c1a3186ad21749e13a0d3c5fff9c6cb80a4e791f1660ca835fcf4de5942310fd",
+      "bytes": 3863
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/native-rollout-supplement.json": {
+      "sha256": "915e30da8c9026f302e254d037b671733d4fb7788aa3bd2bdbc94a469bad1cf5",
+      "bytes": 12054
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/rollouts-sanitized.json": {
+      "sha256": "58542db35ee2c204dd4adb5ff011ce92c5814ebe69f104669348de53c58d61f3",
+      "bytes": 32190
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/summary.json": {
+      "sha256": "2e4a2d5246d940ca266718b87856c3f3b3b7ef6b3b418def769665b3283f5cf4",
+      "bytes": 6727
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1/wire.json": {
+      "sha256": "1fa516d9083d2c644d7a7d2b8bf1b6ead244bb173bf92b41b32c1afa2ecefab6",
+      "bytes": 1531600
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/audit.json": {
+      "sha256": "15298e6e7e5b50cf193d47d1b9962ad79ddf3af6e3492003bb491720c9c70e74",
+      "bytes": 5843
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/candidate-transport.log": {
+      "sha256": "4529665f3f8a4012e6765f5d863648fa44e6001962f60f9ef9fbdc8ab67d65a5",
+      "bytes": 3133
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/launch.json": {
+      "sha256": "83979bfb3c6de44387d57daceaecedd8ad550eb493a5c2a718510fec36fe43e3",
+      "bytes": 3824
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/native-rollout-supplement.json": {
+      "sha256": "5ce1e6fd1d02d6791396b7221e464bc41bb87593c30e8217357437efb14257f7",
+      "bytes": 13361
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/rollouts-sanitized.json": {
+      "sha256": "5976e4542be26feb744d3ec648b1c7786e00d74f222bec522e297b90e51d69e3",
+      "bytes": 37054
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/summary.json": {
+      "sha256": "4cdc1fb82400d7f6ffc4bd635bd5b40a541f3aba24254aac8b944ffec477c747",
+      "bytes": 6682
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1/wire.json": {
+      "sha256": "c3657cb7b36ab67be0099f08f591d410d328a7caff3bc5fff89ec7002875c105",
+      "bytes": 1464588
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/audit.json": {
+      "sha256": "de16d4ad9068018b499bfe086e81d0bc72a73af215e77b54f855d8bbf5bf1ef7",
+      "bytes": 2425
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/candidate-transport.log": {
+      "sha256": "3130ba9809babba50cd98aee24e7575f357f7ae3e220686ca1ecbd0e96ad6151",
+      "bytes": 2090
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/launch.json": {
+      "sha256": "dd1c19d7f185d9639806203e214a24153e1aba8a1aa0d5bae2dfb384d85e405c",
+      "bytes": 3824
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/native-rollout-supplement.json": {
+      "sha256": "f0fbb36f6ef65e9c7c96c7200c45b7e94b8b398ade0a4872aa3bc44d091e7ea7",
+      "bytes": 7437
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/rollouts-sanitized.json": {
+      "sha256": "7e09656bcc24deb09c639cf1f22db03779dee083f1a92b0d523cc2a4eace5fed",
+      "bytes": 21476
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/summary.json": {
+      "sha256": "2ce698d62b8cedaecd3b7103438239fc31d594827f89fb131ff738d3a90d6a66",
+      "bytes": 8708
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2/wire.json": {
+      "sha256": "ffced49e47efd9542ff0feea10dd2f0538da32cc7d88d5d8b82f1604b44c71c0",
+      "bytes": 1141791
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666.source.gz": {
+      "sha256": "13fad037ffe24405ab815d725ade477c4c60535b991c463fad76492b9f6177f3",
+      "bytes": 10594
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea.source.gz": {
+      "sha256": "7baa6c24254fabebb969d764ae2945e9e4235650fadb567e175f8303b436905c",
+      "bytes": 10113
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12.source.gz": {
+      "sha256": "1570690d6d0186e74af3c285fe55abda8e9181961b5933583e03ea61bb9dbf3e",
+      "bytes": 10740
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/audit-final-current-reader.json": {
+      "sha256": "d287171668804f963c1f54059ab138bb200139d187517aca32ceadc1513970de",
+      "bytes": 5818
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/audit-receipt-aware.json": {
+      "sha256": "8b9053fd1cb80418aa9f5456986d9ab018c43224bb68a8c1db98a3c9b5e13699",
+      "bytes": 7089
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/audit.json": {
+      "sha256": "d287171668804f963c1f54059ab138bb200139d187517aca32ceadc1513970de",
+      "bytes": 5818
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/launch.json": {
+      "sha256": "c61c99d79c187f605e9ccdab551f4fec6102cfba9440a9f8cd0dba816adcd86e",
+      "bytes": 4010
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/native-rollout-supplement.json": {
+      "sha256": "69b7228d8781a52fb592a0616443ebb6f93e48007928ef439206292667f2ebcb",
+      "bytes": 12235
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/rollouts-sanitized.json": {
+      "sha256": "004ab722258de5cadfb659baa58dfa183bc75e75b704b149dc12b54f8fcfdcc7",
+      "bytes": 29899
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/summary.json": {
+      "sha256": "c27662073569a4f857bc876f0a23c2398c580a360c60b9d519e41554855f9ae6",
+      "bytes": 8148
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/transport.log": {
+      "sha256": "f8827644a615d8085b796cbaa34754743fa362e52526b2a158e3c113a42d8fdb",
+      "bytes": 3518
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/wire.json": {
+      "sha256": "f6a42235e5a9218e405e2080972385fdfbab86afabd1ac3bbd6b7659a6d7359e",
+      "bytes": 1838255
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99.source.gz": {
+      "sha256": "af3fce31639ef3b9c2fa5dcdd65b43dec347663f87c018caf955744d99a9e8cf",
+      "bytes": 10706
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2.source.gz": {
+      "sha256": "bb971705c201247c06a9b9bfb99145330dd1f5f5af7c472157da2f1324da38f2",
+      "bytes": 5492
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6.source.gz": {
+      "sha256": "8db7e484b063c248d26363d53493a0f621c98053aa4b2ccd0cebbfc18668341a",
+      "bytes": 10796
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7.source.gz": {
+      "sha256": "d0f07e4e146ba79613a7b7007b7fc7628bc0132bb88e98b3de706913e7b2e358",
+      "bytes": 9563
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/app-server.stderr": {
+      "sha256": "8c45f9a398008cc885af677c566d3d754f2028dbea3634d1125e65cbebc34de7",
+      "bytes": 148
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/audit-location.json": {
+      "sha256": "6a4b7050fd7255b427932cdfa6198b6adcba1bfa23bc8bf926deffeae0ddb7d5",
+      "bytes": 2184
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4.source.gz": {
+      "sha256": "873d17022f126b79126fd5c3d4788dbb1ea2a75ad7f35dfde1c68216e232efb7",
+      "bytes": 4820
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2.source.gz": {
+      "sha256": "6ad785dbe92f61e1d89c7250bd4d01c6e2db10ab233eaed53be5c586dd5bdf82",
+      "bytes": 12555
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/launch.json": {
+      "sha256": "fc4775b6aa54d1c79949f86ccfe3b48e38cb211d80022bc3375895bd501243c9",
+      "bytes": 4343
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/native-rollout-supplement.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/rollouts-sanitized.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/summary.json": {
+      "sha256": "5252636fc3195fe1f0d3cd8453906563adbda399d739c637997b242fea4f5942",
+      "bytes": 8493
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/wire.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99.source.gz": {
+      "sha256": "af3fce31639ef3b9c2fa5dcdd65b43dec347663f87c018caf955744d99a9e8cf",
+      "bytes": 10706
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2.source.gz": {
+      "sha256": "bb971705c201247c06a9b9bfb99145330dd1f5f5af7c472157da2f1324da38f2",
+      "bytes": 5492
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6.source.gz": {
+      "sha256": "8db7e484b063c248d26363d53493a0f621c98053aa4b2ccd0cebbfc18668341a",
+      "bytes": 10796
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7.source.gz": {
+      "sha256": "d0f07e4e146ba79613a7b7007b7fc7628bc0132bb88e98b3de706913e7b2e358",
+      "bytes": 9563
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/audit-launch-reader.json": {
+      "sha256": "5b29537578263686df0f0d436971a646acc2fe57b792dc816c437b4476cd7b5e",
+      "bytes": 3759
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/audit-location.json": {
+      "sha256": "8e1f12dadcf0a2dbc72a565921ce296b5ab57e113781997e405e9796403b399a",
+      "bytes": 3759
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/cleanup-observed.json": {
+      "sha256": "326fa9de23c17fb7a7905a19999e1b0bfeaeaecf1c6952815f604d656283c8d5",
+      "bytes": 666
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4.source.gz": {
+      "sha256": "873d17022f126b79126fd5c3d4788dbb1ea2a75ad7f35dfde1c68216e232efb7",
+      "bytes": 4820
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2.source.gz": {
+      "sha256": "6ad785dbe92f61e1d89c7250bd4d01c6e2db10ab233eaed53be5c586dd5bdf82",
+      "bytes": 12555
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/launch.json": {
+      "sha256": "8310d175c8d2fa1075160b643fd14a4f490b1d0638eff16ce316ea1c57917d32",
+      "bytes": 4343
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/native-rollout-supplement.json": {
+      "sha256": "aaba799121c4bbe38439a1403a0822527511c3ef0f7aa89638802d264e39994b",
+      "bytes": 8190
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/rollouts-sanitized.json": {
+      "sha256": "3c6685e3e91e2173512bce098563212319231ef83e945ea6b7f74a56df6b1b35",
+      "bytes": 17857
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/summary.json": {
+      "sha256": "cb7bb9659a77d006db61a7ade8b0cdcd0cded930a3ae8954e4bf2824f8fb0b5a",
+      "bytes": 8771
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/wire.json": {
+      "sha256": "7b190cc07ed8ac7431754b177de886fa501a7117e08e5328663aac7ec0dcba69",
+      "bytes": 1394271
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7.source.gz": {
+      "sha256": "d8028c728b7d25653e0e2b875ff1022e36b5e898d142542a916db5d05878a7dc",
+      "bytes": 6230
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6.source.gz": {
+      "sha256": "5d70dad40bf30d9525118c88e0ebe6eaf785aaa9ed826ecce1e63faff303aef1",
+      "bytes": 12576
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f.source.gz": {
+      "sha256": "cdf8f3f7ffbd290c331f36d1bf0a5db76e6b37bce46953d8bc50c5b574d61592",
+      "bytes": 11157
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6.source.gz": {
+      "sha256": "8db7e484b063c248d26363d53493a0f621c98053aa4b2ccd0cebbfc18668341a",
+      "bytes": 10796
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7.source.gz": {
+      "sha256": "d0f07e4e146ba79613a7b7007b7fc7628bc0132bb88e98b3de706913e7b2e358",
+      "bytes": 9563
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/audit-location.json": {
+      "sha256": "49fb939046b1dc6e83d5f563fc295b5b7979388ec4723bebd85b4a8733054b1b",
+      "bytes": 7095
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4.source.gz": {
+      "sha256": "873d17022f126b79126fd5c3d4788dbb1ea2a75ad7f35dfde1c68216e232efb7",
+      "bytes": 4820
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/launch.json": {
+      "sha256": "5cda0b1bea14ffed10994732de818a436a9ad41ff6a1c4fb869595c94cde7adb",
+      "bytes": 4343
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/native-rollout-supplement.json": {
+      "sha256": "18e45366dc457ddb4763648ba94b51752801b0a111e61b9d6906f8defc6eda38",
+      "bytes": 6752
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/rollouts-sanitized.json": {
+      "sha256": "517041fb0e792547c92e47cce1baec9c7ce3db5f4aad97dd1fab6cfd16ed3a00",
+      "bytes": 21545
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/summary.json": {
+      "sha256": "508f24fa77a3c450077fe22c10d2d2cbff3423276b8c64bfeceedb9154355ebe",
+      "bytes": 9114
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/wire.json": {
+      "sha256": "773838fe92f7e9bf39ab6449601f48b82dc88001b97180e9fc842676c51f472e",
+      "bytes": 1348641
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666.source.gz": {
+      "sha256": "13fad037ffe24405ab815d725ade477c4c60535b991c463fad76492b9f6177f3",
+      "bytes": 10594
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea.source.gz": {
+      "sha256": "7baa6c24254fabebb969d764ae2945e9e4235650fadb567e175f8303b436905c",
+      "bytes": 10113
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12.source.gz": {
+      "sha256": "1570690d6d0186e74af3c285fe55abda8e9181961b5933583e03ea61bb9dbf3e",
+      "bytes": 10740
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/audit-final-current-reader.json": {
+      "sha256": "109508c6a494dbb78ebc10be6c8ababe31adc9c73fac8f22aa3d72f46ed03c9c",
+      "bytes": 5455
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/audit-receipt-aware.json": {
+      "sha256": "682de6b8511b59e382b3a223e8efad6a6ad8cfdedf3beb25323646ce160c440d",
+      "bytes": 5963
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/audit.json": {
+      "sha256": "109508c6a494dbb78ebc10be6c8ababe31adc9c73fac8f22aa3d72f46ed03c9c",
+      "bytes": 5455
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/launch.json": {
+      "sha256": "592015788f18ea794329aeb77e410b8582e79b5934d0d5494965524a16e49143",
+      "bytes": 3977
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/native-rollout-supplement.json": {
+      "sha256": "1d5c26bf8cc21c3db0b231083fd45688ec94f2aff0357f7bf6c2b42216f9a92d",
+      "bytes": 5629
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/rollouts-sanitized.json": {
+      "sha256": "f90ce0c24fc2897ca71b9bea42aed2dc7434ebbbf36baa9a20efc3420ea86b90",
+      "bytes": 12139
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/summary.json": {
+      "sha256": "1f7c311e818c0ab84a6942a0b1543b819c1457a9e0f40c1d74ca14422bfd1527",
+      "bytes": 7394
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/transport.log": {
+      "sha256": "cc34d531c4d7953e6a834e6b8119e0a331fc410173aa0e7c9ab660010bdd1ed4",
+      "bytes": 1101
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/wire.json": {
+      "sha256": "66ad063e429800598092aafe2eb223fad7feaf0d87c679899044e910323c931f",
+      "bytes": 495607
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99.source.gz": {
+      "sha256": "af3fce31639ef3b9c2fa5dcdd65b43dec347663f87c018caf955744d99a9e8cf",
+      "bytes": 10706
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2.source.gz": {
+      "sha256": "bb971705c201247c06a9b9bfb99145330dd1f5f5af7c472157da2f1324da38f2",
+      "bytes": 5492
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2.source.gz": {
+      "sha256": "6dd0b6e38d969898a585c680e47d52e22c92a6310c221353d9054e889dbcc6e9",
+      "bytes": 506
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6.source.gz": {
+      "sha256": "8db7e484b063c248d26363d53493a0f621c98053aa4b2ccd0cebbfc18668341a",
+      "bytes": 10796
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7.source.gz": {
+      "sha256": "d0f07e4e146ba79613a7b7007b7fc7628bc0132bb88e98b3de706913e7b2e358",
+      "bytes": 9563
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1.source.gz": {
+      "sha256": "bb4e5512736517eeeec90bcd383626399c7edf065f5566aa427e9ec2a301ff45",
+      "bytes": 347
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/audit-location.json": {
+      "sha256": "6d9ef12ca24b6675ea39fdaddee4b5f7533fbef4b13857c1a0badf5af680fdf4",
+      "bytes": 5962
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/audit-receipt-final.json": {
+      "sha256": "f51155169fddfc02e7fb1bc9cfca20d8a3e6252591beae00ff6a9c6d2092a5bf",
+      "bytes": 5969
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955.source.gz": {
+      "sha256": "989fbd53b455754ea8b3932b08a929818231e86d98e1574eef63c07cf088544b",
+      "bytes": 26543
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4.source.gz": {
+      "sha256": "873d17022f126b79126fd5c3d4788dbb1ea2a75ad7f35dfde1c68216e232efb7",
+      "bytes": 4820
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2.source.gz": {
+      "sha256": "6ad785dbe92f61e1d89c7250bd4d01c6e2db10ab233eaed53be5c586dd5bdf82",
+      "bytes": 12555
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/launch.json": {
+      "sha256": "a59845d0add62e93703aa02deabb973af36ac207e132c02db3133e14f8b2c688",
+      "bytes": 4310
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/native-rollout-supplement.json": {
+      "sha256": "df33a9c26bddcf3b55c6a0f520873e3397e49c1f799be5cbf8aba36547e55f16",
+      "bytes": 5628
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/rollouts-sanitized.json": {
+      "sha256": "9653bd528e3933528d8d5d84075474f5a955dcb1a068fee2e93263ad9b8495d2",
+      "bytes": 11730
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/summary.json": {
+      "sha256": "c9fcbb3ead5c5fbfaf9dfa2984e076804818dd53d01e4dadd261acc1712cbf30",
+      "bytes": 8023
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/wire.json": {
+      "sha256": "8c40b6b27202a971525ca84c03c22c437db85eb75fba45c7307f20f5e95967e6",
+      "bytes": 535715
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/1b2d47852afa6ee0b489dcad72da8105aea0631297dc86e911856c915a761653.audit.py.gz": {
+      "sha256": "99ec9b109134540fa85dadc452ba544d3804e655e0619369eb3d29454389c745",
+      "bytes": 8537
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/app-server.stderr": {
+      "sha256": "cca746069792335976fe8e10030abc117fd363a1ec3880c62914fb6e9b1ec3a4",
+      "bytes": 96
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/audit-at-launch-auditor.json": {
+      "sha256": "042b84be89567160674bbb4ac1ef7a34553d98273aaf8ceca10c6cbac9201a0a",
+      "bytes": 3348
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/audit.json": {
+      "sha256": "62a5f39eb864b99b47f7fb2b23fb8db10d35221867485f50075d67946d6a0862",
+      "bytes": 3324
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42.py.gz": {
+      "sha256": "d94eb7f58b117ad0fad940c6ab02675d6de86b2354b5a300037e240ee8a78174",
+      "bytes": 8195
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/driver.log": {
+      "sha256": "d5585fe144a7793b660045fcafc6a2de1652582bbb45f6e39e5a3936f74846c1",
+      "bytes": 1090
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/launch.json": {
+      "sha256": "d95aa6c7802728df4c6f0116d130b2e8dc07f778641b5156c44fb35f0b7305c8",
+      "bytes": 3881
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/native-rollout-supplement.json": {
+      "sha256": "636f7b62341cb1ec40e39c8b09ae95e6d39f98db12261b66ff9ff05ff753fc8f",
+      "bytes": 3434
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/offline-validation.json": {
+      "sha256": "fab3ffdb06de6560d4eaaeeb58503ea06ee6d0cbddef036a4835e82873737017",
+      "bytes": 4929
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/preservation.json": {
+      "sha256": "47b235a12b3f21e3743b6ae259f50b4a488e34676cba479027398ed0a60c93e7",
+      "bytes": 36140
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/rollouts-sanitized.json": {
+      "sha256": "4f68a38f80aefe040f3aa169b94aefd620fa452495ee3e79be6e3bb848ae8285",
+      "bytes": 9811
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/summary.json": {
+      "sha256": "0e1f7ad88b07229dcdfa8ef0ac6be3977fa38ed6c5e27c676d6559ffb00f6a5c",
+      "bytes": 8075
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1/wire.json": {
+      "sha256": "2f599646093d27a7c3fd3d45cea7837129e01aec93c6909aad32cb826178a1d8",
+      "bytes": 415717
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/1b2d47852afa6ee0b489dcad72da8105aea0631297dc86e911856c915a761653.audit.py.gz": {
+      "sha256": "99ec9b109134540fa85dadc452ba544d3804e655e0619369eb3d29454389c745",
+      "bytes": 8537
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/aggregate-a-b-audit.json": {
+      "sha256": "d3453b8170169fb7df519df0bd5821b4fc4cf44e760f29a7a4e09fa6e43deffc",
+      "bytes": 9762
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/audit-at-launch-auditor.json": {
+      "sha256": "74d50cec9fe52ae8cbf007705798a39e448871ecaf6c2c4e082bed02413560c3",
+      "bytes": 5301
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/audit.json": {
+      "sha256": "a4af3390f0fecd5615d2cd27b705eb1406c7fa72213c74037f2ca13447290dd2",
+      "bytes": 5301
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42.py.gz": {
+      "sha256": "d94eb7f58b117ad0fad940c6ab02675d6de86b2354b5a300037e240ee8a78174",
+      "bytes": 8195
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/driver.log": {
+      "sha256": "9131ccb12a35171785aed1b78b19f388aec49cc361a77aa590b3061c8ba6965f",
+      "bytes": 1092
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/dump-metadata.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/launch.json": {
+      "sha256": "dc2228df040ca29221d945c52fc5081effcb9bf023796e3fc3d72aef125a9091",
+      "bytes": 3881
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/native-rollout-supplement.json": {
+      "sha256": "ff4eb8be446a8cd9d7c66ad70b841f591a6fa870c8e51d77b0f5822c442cc234",
+      "bytes": 5629
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/rollouts-sanitized.json": {
+      "sha256": "379e0b05ea20d00088852b007b0abb96209688997608617cdc3a28cc92b86912",
+      "bytes": 12097
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/summary.json": {
+      "sha256": "0d5de7762821b89e91bf6e4fe761a288b80d5c6db9f43f88c25f35f2c82e7e8c",
+      "bytes": 7298
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1/wire.json": {
+      "sha256": "6513043a6a725814b4506839c4d89a420f6d2ea532ae03b94a39bcdc4d0a95cd",
+      "bytes": 385587
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-baseline/28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88.gz": {
+      "sha256": "0f3213e7d66b333705264db497e94b26f9782025848f98e25f862af50eaa1d7d",
+      "bytes": 374
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-baseline/54329420f48692f26d97512f6a8cca365307b81db3a9c06f22dc69d3a185c3c5.gz": {
+      "sha256": "b079eb66c01397bb47e964d5be668e0e9f36d80cdf1f3889c2e63de7f6f5408d",
+      "bytes": 8822
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-baseline/cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42.gz": {
+      "sha256": "d94eb7f58b117ad0fad940c6ab02675d6de86b2354b5a300037e240ee8a78174",
+      "bytes": 8195
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-baseline/cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda.gz": {
+      "sha256": "e172a54033a6d17275c09c9daa251348db8354ac5355230ce7ac7f350134b1c7",
+      "bytes": 8226
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-current-matrix.json": {
+      "sha256": "3457908fdb70cc1735cb04f2100c156ce9c21d9e11099ac22c2a48fdf56eef16",
+      "bytes": 39800
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/declared-kimi-corrected-attempt-2.json": {
+      "sha256": "0017cdd39df2f27af4b6e848e9de0828e17e18ceedbd02bfef5acf7cce518f75",
+      "bytes": 2384
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/declared-native-attempts.json": {
+      "sha256": "07ec6f8af1c66d988575a20510f41679fee31d2a3e1a4234f913ffead60497d9",
+      "bytes": 2998
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-single-case-audit-commands.json": {
+      "sha256": "a56a35b6fdb17d4e2d097c490cc27e2d2a6a39908377d07aa847183c7d041c36",
+      "bytes": 1866
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-manifest.json": {
+      "sha256": "ebfcbff656c4df19983f7a3f5bbd4f413961b85adc7b6172940f2b1c6e1c9033",
+      "bytes": 3227
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-native-applicability.json": {
+      "sha256": "348290081c09c832f69c6a06a08f2ba67645ea618dbe36270e597eb58c30cd44",
+      "bytes": 1862
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz": {
+      "sha256": "17b38bc27fefd9cf4e423da1008fb8d8ff670df43490d2ba12a174426903265e",
+      "bytes": 421
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/3457908fdb70cc1735cb04f2100c156ce9c21d9e11099ac22c2a48fdf56eef16.source.gz": {
+      "sha256": "e076610235a241ecc95eaccda11c314440e9150c6135208845c260bbb49c43f5",
+      "bytes": 4679
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a.source.gz": {
+      "sha256": "ee48679de00cb6f6c272b9f14e979f4b1fa993c7108b9ea371b0216c6d297de8",
+      "bytes": 25265
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/4cf56584a9ac1b971df51b22de2e21943c9f596703d4f7abc77344d0570a745f.source.gz": {
+      "sha256": "349de954aceecaea3822f42b597486843d2390d249754e6e253cd7bbd17a555b",
+      "bytes": 7204
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d.source.gz": {
+      "sha256": "1dc8ed4eb40dc94e1c59f9246316dc8cf4eb00c791714b7a6d94c98dcc852628",
+      "bytes": 10744
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/7da611208e5f1bfcd29921149ecf6a360e8bb7c5aa4aaef4fc8464e81ee0dd80.source.gz": {
+      "sha256": "cf180fef716f490c74aca9106dd9ab32aa2a59571daf757b651cfcaa56e30342",
+      "bytes": 4986
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e.source.gz": {
+      "sha256": "f622038d87855b17e999c51db54b709938dcf232945a5ca6ff1cf50def276a99",
+      "bytes": 24223
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146.source.gz": {
+      "sha256": "66dff856fa4acc2df8f3d7d55633264f1fb7d417557a1654857d3e233512fa3e",
+      "bytes": 11466
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2.source.gz": {
+      "sha256": "6c6fc1999d76f44bb49ce05bff15163575ff878071e8c5707751eebb8fafa208",
+      "bytes": 10234
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/f571ab58d4e723f241f3f2d31d01bc9aac3c822cfe66d1c73ef68f78fa61d766.source.gz": {
+      "sha256": "8d9a1189352d229bd536cdd8042d8889fdda818dfee771409cdf0efda5e0a0d8",
+      "bytes": 6602
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/historical-preservation-after.json": {
+      "sha256": "200ed6b23ba7db0dbd27dc134ce46db22ae7bccd33811d18ae4693cf570abec1",
+      "bytes": 30935
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/historical-preservation-before.json": {
+      "sha256": "95a7514356e99665ff1d2c9f183290e073c6a318a0202901ce3124f3d37a004d",
+      "bytes": 30005
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/implementation-native-namespace-initial-reader.md": {
+      "sha256": "0229fec091c90d665b8edf2ae8c600026c38199e7c9f54fc2122e052e9c7f997",
+      "bytes": 15007
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/kimi-aggregate-a-b-audit.json": {
+      "sha256": "61a70f21d28be07a27ce14e8263934da096c975918224d724592999b60959304",
+      "bytes": 8781
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/kimi-corrected-aggregate-command.json": {
+      "sha256": "180563f853a82baca4e8851ff177e814379e92dd9f80df324d2ac116c6298675",
+      "bytes": 367
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/kimi-corrected-attempt-2-aggregate.json": {
+      "sha256": "4f842184ecd2f6d72851b2d107fb2f57fc8fed1e52d5df2045b3f239817702e5",
+      "bytes": 11150
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/mimo-flash-aggregate-a-b-audit.json": {
+      "sha256": "b5c731915b2e01b086db230b5c150cfc4c147cf2dabf8527647bf33fe9312074",
+      "bytes": 12706
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/mimo-flash-receipt-aware-aggregate.json": {
+      "sha256": "44f74b5662a3cd50097a1769966e471a495e078be69b9e0d057674551c78fcbe",
+      "bytes": 14620
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-current-matrix-initial-reader.json": {
+      "sha256": "066561f971fc0b6f236c986ed33dfaadd7b1af0b847f6191f938e307612d9b51",
+      "bytes": 35057
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_install_endpoints.py.log": {
+      "sha256": "26e90ff3324512c61b153f6fb19ef2d1f37aaf032e10067c505035bf6e2d7d2f",
+      "bytes": 138
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_model_catalog_generation.py.log": {
+      "sha256": "55b322cf07ca0f0f0ff3d1799bfe773c29fb99cdee1f0ca1859d0f825f345c03",
+      "bytes": 4430
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_provider_registry.py.log": {
+      "sha256": "82528427ef95263415a46d6220b62d4ad71ee6aff9ff6fab9d0196be0e918248",
+      "bytes": 110
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_shim_service.py.log": {
+      "sha256": "02b15a55f95ac4d0e8d7cdb3ba903ce903263bbf5b6b9692741e2f11fd491288",
+      "bytes": 110
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_shim_subagent_delivery.py.log": {
+      "sha256": "6a6f2a6c90fca160bd177ddaf51f76cfbe29a70219a8323a2f536acc1d0e7ddd",
+      "bytes": 112
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-audit-accepted.log": {
+      "sha256": "4f4285bf76ba04e4fee3d4a6c18760add36235a908f213257d2f8cc53b921b75",
+      "bytes": 123
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-audit-commands.json": {
+      "sha256": "5597a8c68dfef8e79ff75355689a702e1d22c2d36b1cfc3b4fe20a97e068bd43",
+      "bytes": 1443
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-audit-current-cases.log": {
+      "sha256": "4998bfd75cfa0a81bd0018066b01a619e0d743303442ccd7c71a78c11723e554",
+      "bytes": 125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-audit-final-28.log": {
+      "sha256": "2560669ec19a7a7a4fcb8276d36e2ae0b0ab4a4dcb80b7b51ba864fcf5f73533",
+      "bytes": 127
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-audit-prelaunch.log": {
+      "sha256": "05ce66a3c74e0eb03818c534e8618165559382dc1db26887bec7577d236e2d73",
+      "bytes": 123
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-delivery-before-kimi2.log": {
+      "sha256": "59dd58d9a82354f28ae7405e62af928f4ffb96cc5bb03268236fa1f614e5b56b",
+      "bytes": 112
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-delivery-close.log": {
+      "sha256": "d3bb4b93d5d58c55520364fc52da9ac84e90bc334746266f65cc4e34654c1e81",
+      "bytes": 112
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-legacy-before-kimi2.json": {
+      "sha256": "0d21aaaa0716917cc24db04e86efcf8fb34f46f93e186a9fa0fcc6a582b3b9a2",
+      "bytes": 1125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-legacy-final.json": {
+      "sha256": "0d21aaaa0716917cc24db04e86efcf8fb34f46f93e186a9fa0fcc6a582b3b9a2",
+      "bytes": 1125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-legacy-prelaunch.json": {
+      "sha256": "0d21aaaa0716917cc24db04e86efcf8fb34f46f93e186a9fa0fcc6a582b3b9a2",
+      "bytes": 1125
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-namespace-before-kimi2.log": {
+      "sha256": "0019a61231ea3c5e6cda311a1ef0ffc3665505bbf3fd9899034df771dea2e27c",
+      "bytes": 9653
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-receipt-final.log": {
+      "sha256": "1af828ee94d26620e82ad4e1bfb41cd4374a8fd8745e8eae10b6810c692fc50c",
+      "bytes": 126
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-receipt-first.log": {
+      "sha256": "8380498c241e2e20b090da6e328960257bc6e569c71cc923c70b6c4fbcea8850",
+      "bytes": 15745
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-receipt-second.log": {
+      "sha256": "13f96ca5ebcbaa88de1295e0f2e5639b455fe1688b5e24867a60c919938d7dfd",
+      "bytes": 126
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-accepted.log": {
+      "sha256": "f93a7204e4609587f368d6834d57f47e3b7ced45b708b2ba400b0ebedaf5b505",
+      "bytes": 8015
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-close.log": {
+      "sha256": "1f73cd5553b09e0ecda0e2356b7854a4269e510d6c1198ed3a6b45c3a90e21b7",
+      "bytes": 9653
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-final.log": {
+      "sha256": "8517bbb07273822be44b73d302bd388385619faf78587866d0dad4d3dfc2dd53",
+      "bytes": 3264
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-first.log": {
+      "sha256": "471bbe7fa2e590a528fcb63392f15694a855b332395bc61f50b7204c7f937931",
+      "bytes": 3453
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-prelaunch.log": {
+      "sha256": "a57c9f45c4fd7b285a555457c0654fe03f77a556eb1709672b3cdd0f8dd7b9e7",
+      "bytes": 8015
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-second.log": {
+      "sha256": "6e7f1bbe5f65b366e826549dec344c572a30c303e9620c4fb17a673513f07c6d",
+      "bytes": 2724
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-unit-third.log": {
+      "sha256": "2424b1a18d6eb4ffc0a5a2d1cd511d34a2467220e8fc51b72c6183a0eae2d4b9",
+      "bytes": 2775
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/offline-validation.json": {
+      "sha256": "e566267fce5130539fb8c12ecb1fe58b391d368a009a67c2087f46042c24f2dc",
+      "bytes": 2865
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/receipt-aware-audit-commands.json": {
+      "sha256": "8ea6760f244420058774d01eb97124ccd9810f3598b75b2593ab2a190e58a33e",
+      "bytes": 1308
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/scheduling-note.json": {
+      "sha256": "26036d8ac60b4dc68d7ff61791c4e9a145daa0de075e4b51c5a5e90124b91928",
+      "bytes": 301
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/seven-route-bounded-reuse.json": {
+      "sha256": "96c8e8660011582e5570cd473a407f4ab3d0053bccf1c0d7f7a9058f90e26228",
+      "bytes": 9329
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/offline-validation.json": {
+      "sha256": "37c31aca4085699af1abbde1e4e902537159e8beb3e00bf1b6a7c805faad0eb2",
+      "bytes": 2993
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/privacy-check.json": {
+      "sha256": "1c36c6ace3c75ce40eee07e2937caef52b6116655de2d308a579f462b865ed93",
+      "bytes": 1160
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/probe-source-integrity.json": {
+      "sha256": "3ca6572b82841888670f2f325193336ed2cd517de185d9cec940ac0ca62002af",
+      "bytes": 2904
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/app-server.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/audit.json": {
+      "sha256": "132c67db2fc318b40f80bda56d9705be4877c46057bde040de815bc51b2ea26d",
+      "bytes": 6408
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/candidate-transport.log": {
+      "sha256": "1667b9aee668d608fee4b6ab5b95c183c66cf10ce59aecd73c727011f00b97a5",
+      "bytes": 4336
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/launch.json": {
+      "sha256": "276bbdeece485de0722a3e40c54c7bee5389515f2689a87d57ad389dbed431c9",
+      "bytes": 3737
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/native-events.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/native-rollout-supplement.json": {
+      "sha256": "91a36177ba08d72603653ceefd289a181c06997ad152821b678976d2a53fbeca",
+      "bytes": 11598
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/rollouts-sanitized.json": {
+      "sha256": "363f8192c4f8e97add5f2e3041f34b42e33d8b2eb00e67086f5caa8310e9f3c1",
+      "bytes": 25322
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/summary.json": {
+      "sha256": "d5332dd79ee1ed541e3238902bf65f7ef88ebf63ed62edc92ca9e0c33e209dc9",
+      "bytes": 6578
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1/wire.json": {
+      "sha256": "a37a26130312ad08441b28f7bf57b88ee8f85bb91083ebbba1f440d2376852aa",
+      "bytes": 143215
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/source-snapshots/1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c.py.gz": {
+      "sha256": "9d16488bb53016d89d5435098406d8c424aeeb45013348127c43a75c37b07f98",
+      "bytes": 6871
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/source-snapshots/23d6e459aaa2436c0645a2f3310e11afc8fd6b3ed509db44355fcd26041a7764.py.gz": {
+      "sha256": "553cd6c5139d4507e5b78484c84265004a0f6f5a3113f6be6c8d6cb46df5519a",
+      "bytes": 6288
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/source-snapshots/4f5f65ac6b7b799ef08908b9169fa6065c6c7604f5c5b47c3e64804a1f8885d6.py.gz": {
+      "sha256": "d777f74a6bb8fae45e3af44f4823a2019d2f61c7d06b7da60f656fd482f22d20",
+      "bytes": 7813
+    },
+    "docs/gateflow/shim-subagent-all-providers/evidence/source-snapshots/f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68.py.gz": {
+      "sha256": "3c4e7b25515a1d51e8a6659e0c2af6cc6d14f7015aeeaf387d97dfa9be1e07f7",
+      "bytes": 6574
+    },
+    "docs/gateflow/shim-subagent-all-providers/implementation-native-namespace.md": {
+      "sha256": "f571ab58d4e723f241f3f2d31d01bc9aac3c822cfe66d1c73ef68f78fa61d766",
+      "bytes": 15491
+    },
+    "docs/gateflow/shim-subagent-all-providers/implementation-validation.md": {
+      "sha256": "d35b84480846955e0b83bb385faeb4539948e6cc5f34a2cc910e4a23e98e918b",
+      "bytes": 18265
+    },
+    "docs/gateflow/shim-subagent-all-providers/kimi-namespace-plan.md": {
+      "sha256": "60988754a591d6c487d79bc85cf45eba0a187a35dd31334c8542ac48b1c49705",
+      "bytes": 18345
+    },
+    "docs/gateflow/shim-subagent-all-providers/kimi-override-readiness.json": {
+      "sha256": "01fd0d50228d03fa403697e22f8794d8db1b65586aa06accf766f13a1ebff7d2",
+      "bytes": 334
+    },
+    "docs/gateflow/shim-subagent-all-providers/kimi-tool-namespace-diagnostic.json": {
+      "sha256": "8e46329bf07e627f42fa1d42071a19b13eaf0f256df32980fa2f4222b4bf5a2d",
+      "bytes": 1431
+    },
+    "docs/gateflow/shim-subagent-all-providers/live-boundary-before-deployment.json": {
+      "sha256": "ee4bf84fe4710c974f4d09c1cf5489d4f3daa747ec8bf6266e555f15b80cf4a4",
+      "bytes": 2272
+    },
+    "docs/gateflow/shim-subagent-all-providers/local-endpoint-override.json": {
+      "sha256": "244e42f6bb397c5eb6daf072824a93371677571855c140bd9be5db772bed2be0",
+      "bytes": 783
+    },
+    "docs/gateflow/shim-subagent-all-providers/location-implementation-validation.md": {
+      "sha256": "428914d34b6268ae523b495efe20a0dcec1670d6fdef0f67333a33598c5dca54",
+      "bytes": 17218
+    },
+    "docs/gateflow/shim-subagent-all-providers/native-descriptor-location-plan.md": {
+      "sha256": "4c979cf413d610705fd5ad26d3ca86355e097a72daa3d17e21cf78f5856dbd2f",
+      "bytes": 10691
+    },
+    "docs/gateflow/shim-subagent-all-providers/native-namespace-plan.md": {
+      "sha256": "e6d474dd431c2ccf8e43bd31ee78c0dab043b62e8dad1d57ef94d961b0500188",
+      "bytes": 25271
+    },
+    "docs/gateflow/shim-subagent-all-providers/plan.md": {
+      "sha256": "f855ce7796ea0404cbb9d4b0b90dbbe35a84b4c41c5b44f1f13be00dd635cddb",
+      "bytes": 19228
+    },
+    "docs/gateflow/shim-subagent-all-providers/probe-conformance-fix.md": {
+      "sha256": "347b6a37ccf95ca28aa518ec08846d6762826a75f5f00e0f8a2a4398dda36da0",
+      "bytes": 8470
+    },
+    "docs/gateflow/shim-subagent-all-providers/scenario-validation.md": {
+      "sha256": "2b4ea6d76cc8348fd5fd4c3d5ce005f2012fbb9afb484e4b01b34df00952b6bd",
+      "bytes": 9986
+    },
+    "docs/gateflow/shim-subagent-all-providers/sha256-manifest.json": {
+      "sha256": "bbf23834226f5be64eb58669cc9f9dac730144946234955ddd7bcac8713cc362",
+      "bytes": 11924
+    }
+  },
+  "mutable_controller_records_excluded": [
+    "control.md",
+    "review-adjudication.md",
+    "closeout.md",
+    "delivery-verification.json"
+  ],
+  "scope": "Final combined source/test/probe and immutable evidence freeze before independent parallel code review; unrelated runner artifacts excluded"
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "thread_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+    "source_rollout_sha256": "76fe2ad6355d9fe8f6ec153d11ceecd879c4f912c8f8389986fdae4f5ebe80d2",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-flash",
+          "model_provider_id": "mimo_flash",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-k30_5piy"
+        }
+      },
+      {
+        "line": 18,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+          "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": "mimo-v2.6-flash",
+            "reasoning_effort": "max",
+            "id": "fc_813e8041fb684edcbf85ce613f05bac7",
+            "kind": "started",
+            "agent_thread_id": "01a1b69c-f506-7fe0-b93b-7180f2f3b084",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794065102092,
+          "completed_at_ms": 1794065102092
+        }
+      },
+      {
+        "line": 24,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+          "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+            "kind": "completed",
+            "agent_thread_id": "01a1b69c-f506-7fe0-b93b-7180f2f3b084",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794065105213,
+          "completed_at_ms": 1794065105213
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b69c-f506-7fe0-b93b-7180f2f3b084",
+    "source_rollout_sha256": "086f558f32a9f0700b443d2522be9cba0806918f385a10f8eafb6f901832ce36",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-flash",
+          "model_provider_id": "mimo_flash",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-k30_5piy"
+        }
+      }
+    ]
+  }
+]

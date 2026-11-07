@@ -1,0 +1,13 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1
+PARENT_ID=01a1b6c3-c25b-7f13-88a8-536879f1783e
+[shim:49299] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:49299]   ^ status=200 stream=ok relayed=10226B completed=True
+[shim:49299] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:49299]   ^ status=200 stream=ok relayed=5598B completed=True
+[shim:49299] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:49299]   ^ status=200 stream=ok relayed=6062B completed=True
+[shim:49299] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:49299]   ^ status=200 stream=ok relayed=5283B completed=True
+[shim:49299] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:49299]   ^ status=200 stream=ok relayed=42406B completed=True
+{"profile": "mimo-flash", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 5, "elapsed_seconds": 31.36}

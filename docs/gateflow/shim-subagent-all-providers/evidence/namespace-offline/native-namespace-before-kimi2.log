@@ -1,0 +1,125 @@
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=72B completed=True
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=58B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=58B completed=False
+.[shim:0] native response: restored=1 relayed=258B
+.[shim:0] native response: restored=1 relayed=268B
+.........[shim:0] native response: restored=1 relayed=205B
+[shim:0] native response: restored=1 relayed=206B
+.[shim:0] native response: invalid protocol
+.[shim:0]   ^ attempt 1: incomplete stream (35B), retrying
+[shim:0]   ^ attempt 2: incomplete stream (35B), retrying
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=nostream relayed=37B completed=True
+.[shim:0] native response: restored=1 relayed=173B
+[shim:0] native response: restored=1 relayed=173B
+[shim:0] native response: restored=1 relayed=173B
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmphu22430c/0-1794068184-req-429.json
+[shim:0] POST /v1/responses -> 429 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0]   ^ status=429 stream=http429 relayed=20B completed=False
+[shim:0]   ^ resp 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmphu22430c/0-1794068184-resp-429.json
+.[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+.[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+.[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+.[shim:0] POST /v1/responses -> 200 model=deepseek-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=deepseek-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068195-req-429.json
+[shim:0] POST /v1/responses -> 429 model=deepseek-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068196-req-429.json
+[shim:0] POST /v1/responses -> 429 model=deepseek-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=glm-5.3 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=glm-5.3 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068197-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068198-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068200-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068200-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=qwen3.8-max enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=qwen3.8-max enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068202-req-429.json
+[shim:0] POST /v1/responses -> 429 model=qwen3.8-max enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068203-req-429.json
+[shim:0] POST /v1/responses -> 429 model=qwen3.8-max enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068205-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro-ultraspeed enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068205-req-429.json
+[shim:0] POST /v1/responses -> 429 model=mimo-v2.6-pro-ultraspeed enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=glm-5.3-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=glm-5.3-flash enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068207-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068207-req-429.json
+[shim:0] POST /v1/responses -> 429 model=glm-5.3-flash enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0] POST /v1/responses -> 200 model=hy4 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0] POST /v1/responses -> 200 model=hy4 enc=- rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068209-req-429.json
+[shim:0] POST /v1/responses -> 429 model=hy4 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpa3g3upa6/0-1794068209-req-429.json
+[shim:0] POST /v1/responses -> 429 model=hy4 enc=gzip rewrite=none+agentmsg1 tools=[multi_agent_v1]
+[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False
+.
+----------------------------------------------------------------------
+Ran 19 tests in 32.319s
+
+OK

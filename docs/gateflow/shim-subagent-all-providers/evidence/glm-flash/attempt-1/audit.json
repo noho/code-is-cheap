@@ -1,0 +1,183 @@
+{
+  "profile": "glm-flash",
+  "attempt": "1",
+  "passed": true,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b672-d9c4-7ff1-b4ed-5a917acc1f07": {
+        "provider": "glm_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b672-d9d4-7933-a0da-2a024a606ee1",
+            "model": "glm-5.3-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b673-1b87-7983-89ba-d3ff87b3ef2a": {
+        "provider": "glm_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b673-1b94-7d40-adfa-6eb6db0f085f",
+            "model": "glm-5.3-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b673-55df-7390-9a6d-57aa0b613aec",
+            "model": "glm-5.3-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b673-864c-7492-8631-53aa7d3fe772": {
+        "provider": "glm_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b673-8657-73a1-b66b-f880de59e3a1",
+            "model": "glm-5.3-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "call_76b64cc16c8f403ea4829aa4",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_e199423c3b49. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "send_input",
+        "call_id": "call_9a0bc72aeafa4986bc9ee2d5",
+        "args": {
+          "target": "01a1b673-1b87-7983-89ba-d3ff87b3ef2a",
+          "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_7999978f84f1. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "spawn_agent",
+        "call_id": "call_69648ad9bd54450eb36c195c",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-flash-qj3s6j18/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b673-1b94-7d40-adfa-6eb6db0f085f",
+        "text": "LIVE_INITIAL_e199423c3b49",
+        "completed_at": 1794062368
+      },
+      {
+        "turn_id": "01a1b673-55df-7390-9a6d-57aa0b613aec",
+        "text": "LIVE_FOLLOWUP_7999978f84f1",
+        "completed_at": 1794062378
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "call_b7c22faa11fb4a96bad63f94",
+      "tool": "exec_command",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "call_b7c22faa11fb4a96bad63f94",
+        "process_id": "54382",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-flash-qj3s6j18/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-flash-qj3s6j18",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-flash-qj3s6j18/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-flash-qj3s6j18/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_47ab26e5425b4561997dd1271fb6acff",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 21417
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b673-8657-73a1-b66b-f880de59e3a1",
+          "text": "HARMLESS_NATIVE_CONTENT_47ab26e5425b4561997dd1271fb6acff",
+          "completed_at": 1794062400
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 11,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 11
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "4b332405276461c790aa7f3f4307c0ced2c78265698f57bf1d49c6871834588b",
+    "wire.json": "860153f010b2c2b0e0985af79a19091dd2f4fddc333223cc0d9df9d74619363d",
+    "rollouts-sanitized.json": "12ce848ff65b0a996bd98e712b3e737cc7d8f2f7785bda20e02b018556e4200f",
+    "native-rollout-supplement.json": "726dc58f92c91062bb01776621fe3c5239c82443e4d55cd1673219af4f0e69f3"
+  }
+}

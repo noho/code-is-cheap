@@ -1,0 +1,70 @@
+{
+  "diagnostic_only": true,
+  "native_matrix_acceptance": false,
+  "attempts": [
+    {
+      "attempt": "namespace-prototype-1",
+      "parent_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+      "native_version": "codex-cli 0.167.0",
+      "requests": 2,
+      "http_statuses": [
+        200,
+        200
+      ],
+      "runtime_exit": 0,
+      "parent_turn_completed": true,
+      "child_created": false,
+      "native_collaboration_events": 0,
+      "bare_function_call": {
+        "type": "function_call",
+        "id": "fc_spawn_agent:0",
+        "status": "completed",
+        "name": "spawn_agent",
+        "call_id": "spawn_agent:0",
+        "arguments": "{\"message\": \"KIMI_NAMESPACE_ROUTING_DIAGNOSTIC. Reply exactly one line LIVE_INITIAL_cbda008fdb10. Do not use tools, read/write files, or delegate.\", \"fork_context\": false}"
+      },
+      "matching_native_call_output": {
+        "type": "function_call_output",
+        "id": "fco_01a1b688-321d-7f42-a735-6a6cf8b4e8dd",
+        "call_id": "spawn_agent:0",
+        "output": "unsupported call: spawn_agent",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+          "create_time": 1794063741.469712
+        }
+      },
+      "routing_result": "FAIL: unsupported call: spawn_agent"
+    }
+  ],
+  "request_only_flattening_sufficient": false,
+  "response_rewrite_performed": false,
+  "tool_choice_observed": "auto (present; preserved exactly)",
+  "parallel_tool_calls_observed": true,
+  "non_tools_fields_unchanged": true,
+  "transport_boundary": "Candidate forwards to installed Kimi 127.0.0.1:8790/coding/v1/responses; installed route still owns private URL/key and upstream kimi-k3. Observer does not expose internal vendor gateway code.",
+  "effective_endpoint": {
+    "wire_model": "kimi-k3",
+    "key_present": true,
+    "user_override_destination_equals_ds_flash": true
+  },
+  "policy": "Original card/catalog; read-only, approval never as baseline Kimi probe, inherited approvals_reviewer auto_review, max effort. No forced v2/Lite/Code Mode or disabling review.",
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+    "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+    "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+    "/private/tmp/shim-kimi-namespace-work/native-probe.py": "28f751309b10dcf4062ba3743f749b72cec46277a3f18f159c99ac32590a8813",
+    "/private/tmp/shim-kimi-namespace-work/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+  },
+  "baseline_probe_sha256": "f14aee11f19d9998442355ce8b291e9d5bfc57954e84f9101120e017ae03ca13",
+  "baseline_auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "important_observer_boundary": "Baseline expected_outbound_sha256 intentionally refers to pre-prototype bytes. Its actual_upstream_body_verified is false. Prototype pre/post hashes plus explicit transform manifest, exact prototype source and raw native-call SSE provide the new evidence. No baseline observer/auditor acceptance claimed.",
+  "inference_limits": [
+    "The actual missing namespace caused this installed Codex bare call to fail routing.",
+    "Request-only flattening improved observed emission from no spawn to a real spawn_agent call but did not create a child.",
+    "No claim about internal gateway code or that model refusal alone explains the original failure.",
+    "A bridge restoring namespace is a proposed next design, not implemented or native-validated here.",
+    "No full A/B, native file-read or all-provider acceptance run performed."
+  ]
+}

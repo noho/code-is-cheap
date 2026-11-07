@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-07T16:55:17.423455+00:00",
+  "app_server_exit": -2,
+  "driver_exit": 1,
+  "parent_completed": false,
+  "original_launch_audit_exit": 1,
+  "record": "PID9451 had exact A3 stderr fd2 and codex comm on first check. At subsequent verification lsof had no matching pid, so delegate signal script stopped before os.kill. Driver already observed process EOF/SIGINT exit -2 and preserved actual evidence. No claim that this delegate sent a signal.",
+  "authority": "control.md Controller validation fix: contradictory update-wait prompt",
+  "cause": "incomplete/aborted after contradictory forced update waits; MESSAGE/consume absent; no pass claimed."
+}

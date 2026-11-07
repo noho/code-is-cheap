@@ -1,0 +1,333 @@
+[
+  {
+    "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+    "source_rollout_sha256": "12f872b5a3df3ceb103dce16214fc8630d040f4b2d56129bd6518168e116412a",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "hy4",
+          "model_provider_id": "hy",
+          "reasoning_effort": "high",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o"
+        }
+      },
+      {
+        "line": 34,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-a4414b0ae2872aa2",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-64b0-70d2-909b-30e0b08ed6f9",
+                "agent_nickname": "Mendel"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_ed582d2cdf71. Do not use tools, read/write files, or delegate.",
+            "model": "hy4",
+            "reasoning_effort": "high",
+            "agents_states": {
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9": "pending_init"
+            }
+          },
+          "started_at_ms": 1794062640303,
+          "completed_at_ms": 1794062640319
+        }
+      },
+      {
+        "line": 43,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-9ba694182cf9a9ce",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-64b0-70d2-909b-30e0b08ed6f9",
+                "agent_nickname": "Mendel"
+              }
+            ],
+            "agents_states": {
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9": {
+                "completed": "LIVE_INITIAL_ed582d2cdf71"
+              }
+            }
+          },
+          "started_at_ms": 1794062643122,
+          "completed_at_ms": 1794062644056
+        }
+      },
+      {
+        "line": 50,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-ad536b73bb5d818b",
+            "tool": "send_input",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-64b0-70d2-909b-30e0b08ed6f9",
+                "agent_nickname": "Mendel"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_8421ce4050ca. Do not use tools, read/write files, or delegate.",
+            "agents_states": {
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9": {
+                "completed": "LIVE_INITIAL_ed582d2cdf71"
+              }
+            }
+          },
+          "started_at_ms": 1794062647811,
+          "completed_at_ms": 1794062647814
+        }
+      },
+      {
+        "line": 57,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-86a15572a4f452fc",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-64b0-70d2-909b-30e0b08ed6f9",
+                "agent_nickname": "Mendel"
+              }
+            ],
+            "agents_states": {
+              "01a1b677-64b0-70d2-909b-30e0b08ed6f9": {
+                "completed": "LIVE_FOLLOWUP_8421ce4050ca"
+              }
+            }
+          },
+          "started_at_ms": 1794062650314,
+          "completed_at_ms": 1794062650315
+        }
+      },
+      {
+        "line": 66,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-ac27a132bd0ff1f2",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-c401-7460-948a-7d0b48a726fd"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-c401-7460-948a-7d0b48a726fd",
+                "agent_nickname": "Helmholtz"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.",
+            "model": "hy4",
+            "reasoning_effort": "high",
+            "agents_states": {
+              "01a1b677-c401-7460-948a-7d0b48a726fd": "pending_init"
+            }
+          },
+          "started_at_ms": 1794062664704,
+          "completed_at_ms": 1794062664714
+        }
+      },
+      {
+        "line": 75,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+          "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "chatcmpl-tool-a79b31269d067772",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+            "receiver_thread_ids": [
+              "01a1b677-c401-7460-948a-7d0b48a726fd"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b677-c401-7460-948a-7d0b48a726fd",
+                "agent_nickname": "Helmholtz"
+              }
+            ],
+            "agents_states": {
+              "01a1b677-c401-7460-948a-7d0b48a726fd": {
+                "completed": "HARMLESS_NATIVE_CONTENT_a38c29e303ff447b9a29bf262c43a566"
+              }
+            }
+          },
+          "started_at_ms": 1794062667721,
+          "completed_at_ms": 1794062672505
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b677-64b0-70d2-909b-30e0b08ed6f9",
+    "source_rollout_sha256": "69c0e773e0514b55945b046a2ded6b9da49654fbc704bfb515432b410bc955a1",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "hy4",
+          "model_provider_id": "hy",
+          "reasoning_effort": "high",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o"
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b677-c401-7460-948a-7d0b48a726fd",
+    "source_rollout_sha256": "0c3e62544b7a6be2df313b5d525b75fcf47dffff9a02c9c78c9d33e2f1d487bd",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "hy4",
+          "model_provider_id": "hy",
+          "reasoning_effort": "high",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o"
+        }
+      },
+      {
+        "line": 14,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b677-c401-7460-948a-7d0b48a726fd",
+          "turn_id": "01a1b677-c408-7333-a881-67bcbb3ade52",
+          "item": {
+            "type": "CommandExecution",
+            "id": "chatcmpl-tool-b9cfa78eb7af084c",
+            "process_id": "82120",
+            "command": [
+              "/bin/zsh",
+              "-c",
+              "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt"
+            ],
+            "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o",
+            "parsed_cmd": [
+              {
+                "type": "read",
+                "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt",
+                "name": "harmless-target.txt",
+                "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt"
+              }
+            ],
+            "source": "unified_exec_startup",
+            "status": "completed",
+            "aggregated_output": "HARMLESS_NATIVE_CONTENT_a38c29e303ff447b9a29bf262c43a566",
+            "exit_code": 0,
+            "duration": {
+              "secs": 0,
+              "nanos": 18458
+            }
+          },
+          "started_at_ms": 1794062669672,
+          "completed_at_ms": 1794062669672
+        }
+      }
+    ]
+  }
+]

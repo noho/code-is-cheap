@@ -10,7 +10,9 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "ds-flash",
-      "request_prefix": "/v1"
+      "request_prefix": "/v1",
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8789,
@@ -19,7 +21,10 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "glm",
-      "request_prefix": "/api/v1"
+      "request_prefix": "/api/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8790,
@@ -28,7 +33,10 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "kimi",
-      "request_prefix": "/coding/v1"
+      "request_prefix": "/coding/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": true,
+      "native_agent_response_restore": true
     },
     {
       "port": 8791,
@@ -37,7 +45,10 @@
       "json_fmt_fix": true,
       "drop_tools_item": false,
       "endpoint_id": "mimo",
-      "request_prefix": "/v1"
+      "request_prefix": "/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8792,
@@ -46,7 +57,10 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "qwen",
-      "request_prefix": "/compatible-mode/v1"
+      "request_prefix": "/compatible-mode/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8793,
@@ -55,7 +69,10 @@
       "json_fmt_fix": true,
       "drop_tools_item": false,
       "endpoint_id": "mimo-flash",
-      "request_prefix": "/v1"
+      "request_prefix": "/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": true
     },
     {
       "port": 8794,
@@ -64,7 +81,10 @@
       "json_fmt_fix": true,
       "drop_tools_item": false,
       "endpoint_id": "mimo-fast",
-      "request_prefix": "/v1"
+      "request_prefix": "/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8795,
@@ -73,7 +93,10 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "glm-flash",
-      "request_prefix": "/api/v1"
+      "request_prefix": "/api/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     },
     {
       "port": 8796,
@@ -82,7 +105,10 @@
       "json_fmt_fix": false,
       "drop_tools_item": false,
       "endpoint_id": "hy",
-      "request_prefix": "/v1"
+      "request_prefix": "/v1",
+      "agent_message_fix": true,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
     }
   ]
 }

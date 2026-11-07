@@ -55,6 +55,7 @@ import zlib
 import importlib.util
 from functools import lru_cache
 from pathlib import Path
+from types import MappingProxyType
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 DEFAULT_ROUTES = os.path.expanduser("~/.codex-agent/shim-routes.json")
@@ -270,6 +271,194 @@ def rewrite(body: bytes, encoding: str, src: str, dst: str) -> tuple[bytes, str]
     return _swap(body, src, dst)
 
 
+# Only actual native descriptor groups are eligible. Maps never outlive a request.
+NATIVE_AGENT_GROUPS = frozenset(("multi_agent_v1", "collaboration"))
+NATIVE_RESPONSE_LIMIT = 8 * 1024 * 1024
+
+
+class NativeProtocolError(ValueError):
+    def __init__(self):
+        super().__init__("Invalid native agent protocol")
+
+
+def native_agent_request(body: bytes, flatten: bool):
+    """Map current native declarations; flatten only top-level Kimi tools."""
+    try:
+        doc = json.loads(body)
+    except (ValueError, UnicodeError):
+        return body, MappingProxyType({})
+    tools = doc.get("tools") if isinstance(doc, dict) else None
+    if not isinstance(doc, dict) or (flatten and not isinstance(tools, list)):
+        return body, MappingProxyType({})
+    containers = [tools] if isinstance(tools, list) else []
+    if isinstance(doc.get("input"), list):
+        containers.extend(item["tools"] for item in doc["input"]
+                          if isinstance(item, dict) and item.get("type") == "additional_tools"
+                          and isinstance(item.get("tools"), list))
+    candidates = tools if flatten else [t for container in containers for t in container]
+    selected = [t for t in candidates if isinstance(t, dict) and t.get("type") == "namespace"
+                and isinstance(t.get("name"), str) and t["name"] in NATIVE_AGENT_GROUPS]
+    if not selected:
+        return body, MappingProxyType({})
+    mapping = {}
+    for group in selected:
+        if (not isinstance(group.get("tools"), list)
+                or ("description" in group and not isinstance(group["description"], str))
+                or (flatten and set(group) - {"type", "name", "description", "tools"})):
+            raise NativeProtocolError()
+        for child in group["tools"]:
+            if (not isinstance(child, dict) or child.get("type") != "function"
+                    or not isinstance(child.get("name"), str) or not child["name"]
+                    or (flatten and "description" in child and not isinstance(child["description"], str))
+                    or child["name"] in mapping):
+                raise NativeProtocolError()
+            mapping[child["name"]] = group["name"]
+    if not mapping:
+        return body, MappingProxyType({})
+
+    def declarations(items):
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            # Namespace names label groups, not bare callable declarations.
+            if item.get("type") == "namespace":
+                if isinstance(item.get("tools"), list):
+                    yield from declarations(item["tools"])
+            else:
+                yield item
+
+    others = [t for container in containers for t in container if not any(t is g for g in selected)]
+    for item in declarations(others):
+        name = item.get("name")
+        if isinstance(name, str) and name in mapping:
+            raise NativeProtocolError()
+    if not flatten:
+        return body, MappingProxyType(mapping)
+    choice = doc.get("tool_choice")
+    if isinstance(choice, dict):
+        for target in (choice, choice.get("function")):
+            if isinstance(target, dict) and ((isinstance(target.get("namespace"), str) and target["namespace"] in NATIVE_AGENT_GROUPS)
+                    or (isinstance(target.get("name"), str) and target["name"] in NATIVE_AGENT_GROUPS)
+                    or (isinstance(target.get("name"), str) and target["name"] in mapping
+                        and target.get("namespace") in (None, *NATIVE_AGENT_GROUPS))):
+                raise NativeProtocolError()
+    flat = []
+    for item in tools:
+        if not any(item is g for g in selected):
+            flat.append(item)
+            continue
+        prefix = "Namespace " + item["name"] + ": " + item.get("description", "") + "\n\n"
+        flat.extend({**child, "description": prefix + child.get("description", "")} for child in item["tools"])
+    doc["tools"] = flat
+    try:
+        return json.dumps(doc, ensure_ascii=False).encode("utf-8"), MappingProxyType(mapping)
+    except UnicodeError:
+        raise NativeProtocolError() from None
+
+
+def restore_native_response(payload: bytes, mapping, event=False):
+    """Namespace-only repair at evidenced Responses output locations."""
+    try:
+        doc = json.loads(payload)
+    except (ValueError, UnicodeError):
+        raise NativeProtocolError() from None
+    count = 0
+
+    def restore(item):
+        nonlocal count
+        if not isinstance(item, dict) or item.get("type") != "function_call":
+            return
+        name = item.get("name")
+        if not isinstance(name, str) or name not in mapping:
+            return
+        namespace = item.get("namespace")
+        if namespace is None:
+            item["namespace"] = mapping[name]
+            count += 1
+        elif namespace != mapping[name]:
+            raise NativeProtocolError()
+
+    if isinstance(doc, dict):
+        if event:
+            if doc.get("type") in ("response.output_item.added", "response.output_item.done"):
+                restore(doc.get("item"))
+            elif doc.get("type") == "response.completed" and isinstance(doc.get("response"), dict):
+                for item in doc["response"].get("output", []) or []:
+                    restore(item)
+        else:
+            for item in doc.get("output", []) or []:
+                restore(item)
+    try:
+        return (json.dumps(doc, ensure_ascii=False).encode("utf-8") if count else payload), count
+    except (UnicodeError, TypeError):
+        raise NativeProtocolError() from None
+
+
+def restore_native_sse_event(raw, mapping):
+    try:
+        raw.decode("utf-8")
+    except UnicodeError:
+        raise NativeProtocolError() from None
+    lines = raw.splitlines(keepends=True)
+    data = []
+    for line in lines:
+        content = line.rstrip(b"\r\n")
+        if content == b"data" or content.startswith(b"data:"):
+            value = content[5:] if content.startswith(b"data:") else b""
+            data.append(value[1:] if value.startswith(b" ") else value)
+    if not data or b"\n".join(data) == b"[DONE]":
+        return raw, 0
+    fixed, count = restore_native_response(b"\n".join(data), mapping, event=True)
+    if not count:
+        return raw, 0
+    out, emitted = [], False
+    for line in lines:
+        content = line.rstrip(b"\r\n")
+        if content == b"data" or content.startswith(b"data:"):
+            if not emitted:
+                ending = line[len(content):]
+                out.append(b"data: " + fixed + ending)
+                emitted = True
+        else:
+            out.append(line)
+    return b"".join(out), count
+
+
+def native_sse_events(read, mapping):
+    """Incremental SSE framing; buffer one bounded event, never a whole stream."""
+    pending = bytearray()
+    scan = line_start = 0
+    while True:
+        chunk = read(65536)
+        eof = not chunk
+        pending.extend(chunk)
+        while scan < len(pending):
+            match = re.compile(b"[\r\n]").search(pending, scan)
+            if match is None:
+                scan = len(pending)
+                break
+            end = match.start()
+            if pending[end] == 13 and end + 1 == len(pending) and not eof:
+                scan = end
+                break  # CRLF can be split between reads.
+            after = end + (2 if pending[end:end+2] == b"\r\n" else 1)
+            if after > NATIVE_RESPONSE_LIMIT:
+                raise NativeProtocolError()
+            if end == line_start:
+                raw = bytes(pending[:after])
+                del pending[:after]
+                scan = line_start = 0
+                yield restore_native_sse_event(raw, mapping)
+            else:
+                scan = line_start = after
+        if len(pending) > NATIVE_RESPONSE_LIMIT:
+            raise NativeProtocolError()
+        if eof:
+            if pending:
+                raise NativeProtocolError()
+            return
+
+
 def load_routes() -> list[dict]:
     """Return the resolved route list, or [] for single-route env mode."""
     path = os.environ.get("SHIM_ROUTES") or (
@@ -299,6 +488,8 @@ def load_routes() -> list[dict]:
             upstream = module.endpoint(r["endpoint_id"], "codex", endpoints)
         if not upstream:
             raise SystemExit(f"routes[{i}] missing upstream endpoint")
+        if r.get("native_agent_request_flatten", False) and not r.get("native_agent_response_restore", False):
+            raise SystemExit("native request flatten requires response restore")
         routes.append({
             "listen": f"{r.get('bind', bind)}:{int(r['port'])}",
             "upstream": str(upstream).rstrip("/"),
@@ -310,6 +501,8 @@ def load_routes() -> list[dict]:
             "json_fmt_fix": bool(r.get("json_fmt_fix", doc.get("json_fmt_fix", False))),
             "drop_tools_item": bool(r.get("drop_tools_item", doc.get("drop_tools_item", False))),
             "agent_message_fix": bool(r.get("agent_message_fix", False)),
+            "native_agent_request_flatten": bool(r.get("native_agent_request_flatten", False)),
+            "native_agent_response_restore": bool(r.get("native_agent_response_restore", False)),
         })
     if not routes:
         raise SystemExit(f"no routes defined in {path}")
@@ -359,7 +552,8 @@ class Handler(BaseHTTPRequestHandler):
         if not isinstance(doc, dict):
             return "?", "-"
         names = []
-        for t in doc.get("tools") or []:
+        tools = doc.get("tools")
+        for t in tools if isinstance(tools, list) else []:
             if not isinstance(t, dict):
                 names.append("?"); continue
             fn = t.get("function") if isinstance(t.get("function"), dict) else {}
@@ -368,6 +562,60 @@ class Handler(BaseHTTPRequestHandler):
             return str(doc.get("model")), "none"
         extra = f",+{len(names) - 12}" if len(names) > 12 else ""
         return str(doc.get("model")), "[" + ",".join(names[:12]) + extra + "]"
+
+    def _relay_native_response(self, resp, mapping):
+        """An active map has an explicit identity-only success-body contract."""
+        sent = False
+        count = relayed = 0
+        read = getattr(resp, "read1", None) or resp.read
+        try:
+            encodings = resp.headers.get_all("Content-Encoding", [])
+            if any(value.strip().lower() != "identity" for value in encodings):
+                raise NativeProtocolError()
+            media = (resp.headers.get("Content-Type") or "").split(";", 1)[0].strip().lower()
+            if media == "text/event-stream":
+                events = native_sse_events(read, mapping)
+            elif media == "application/json":
+                data = bytearray()
+                while True:
+                    chunk = read(min(65536, NATIVE_RESPONSE_LIMIT + 1 - len(data)))
+                    if not chunk:
+                        break
+                    data.extend(chunk)
+                    if len(data) > NATIVE_RESPONSE_LIMIT:
+                        raise NativeProtocolError()
+                events = iter((restore_native_response(bytes(data), mapping),))
+            else:
+                raise NativeProtocolError()
+            # Validate the first whole event before committing downstream headers.
+            first = next(events, None)
+            self.send_response(resp.status)
+            hop_headers = HOP_BY_HOP | {"trailer"} | {token.strip().lower() for value in resp.headers.get_all("Connection", []) for token in value.split(",")}
+            for key, value in resp.headers.items():
+                if key.lower() not in hop_headers:
+                    self.send_header(key, value)
+            self.send_header("Connection", "close")
+            self.end_headers()
+            sent = True
+            if first is not None:
+                chunk, n = first
+                self.wfile.write(chunk)
+                self.wfile.flush()
+                relayed += len(chunk)
+                count += n
+            for chunk, n in events:
+                self.wfile.write(chunk)
+                self.wfile.flush()
+                relayed += len(chunk)
+                count += n
+            self._log(f"native response: restored={count} relayed={relayed}B")
+        except (NativeProtocolError, http.client.HTTPException, OSError, ValueError, TypeError):
+            self._log("native response: invalid protocol")
+            if not sent:
+                self.send_error(502, "Invalid native agent protocol")
+        finally:
+            self.close_connection = True
+            resp.close()
 
     def _handle(self):
         route = self.route
@@ -403,6 +651,7 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, AttributeError):
             request_model = None
         guardian = request_model == route["from"]
+        native_map = MappingProxyType({})
         if plain:
             target = selected["upstream_model"] if selected else route["to"]
             source = route["from"] if guardian else route["to"]
@@ -413,6 +662,14 @@ class Handler(BaseHTTPRequestHandler):
                 except ValueError as exc:
                     self._log(str(exc))
                     self.send_error(400, str(exc))
+                    return
+            if (not guardian and route.get("native_agent_response_restore")
+                    and self.path.split("?", 1)[0].endswith("/responses")):
+                try:
+                    transformed, native_map = native_agent_request(transformed, route.get("native_agent_request_flatten", False))
+                except NativeProtocolError:
+                    self._log("native request: invalid protocol")
+                    self.send_error(400, "Invalid native agent protocol")
                     return
             transformed, how = _swap(transformed, source, target)
             if n:
@@ -488,15 +745,19 @@ class Handler(BaseHTTPRequestHandler):
             self.close_connection = True
             return
 
-        if not (200 <= resp.status < 300) and body:
-            self._dump(body, str(resp.status))
-
         warn = "" if how.split("+")[0] in ("bytes", "json", "none") else f"  <<< 未能改写（{how}）"
         model, tools = self._summary(body, encoding)
         self._log(
             f"{self.command} {self.path} -> {resp.status} "
             f"model={model} enc={encoding or '-'} rewrite={how} tools={tools}{warn}"
         )
+
+        if native_map and 200 <= resp.status < 300:
+            self._relay_native_response(resp, native_map)
+            return
+
+        if not (200 <= resp.status < 300) and body:
+            self._dump(body, str(resp.status))
 
         self.send_response(resp.status)
         for k, v in resp.headers.items():
@@ -507,7 +768,7 @@ class Handler(BaseHTTPRequestHandler):
         self.close_connection = True
 
         head = bytearray()
-        if guardian:
+        if guardian or (native_map and not (200 <= resp.status < 300)):
             # Already buffered in full above; forward in one piece.
             relayed = len(data)
             head.extend(data[:8192])

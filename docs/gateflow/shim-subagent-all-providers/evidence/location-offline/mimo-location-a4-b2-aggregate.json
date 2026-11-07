@@ -1,0 +1,402 @@
+{
+  "passed": true,
+  "coverage": {
+    "a": true,
+    "b": true
+  },
+  "errors": [],
+  "results": [
+    {
+      "profile": "mimo-flash",
+      "attempt": "4",
+      "scenario": "a",
+      "passed": true,
+      "coverage": {
+        "a": true,
+        "b": false
+      },
+      "checks": {
+        "declared_scenario_matches_driver_launch": true,
+        "actual_parent_child_identity_policy": true,
+        "native_dispatch_order_same_child_no_parent_read": true,
+        "A_exact_distinct_completed_child_turns": true,
+        "A3_message_or_descriptor_backed_NA": true,
+        "declared_case_native_waits_fresh_completion_order": true,
+        "declared_case_native_event_linkage_actual_modes": true,
+        "wire_helper_and_exact_allowed_outbound_stages": true,
+        "native_lifecycle": true,
+        "namespace_launch_source_snapshots": true
+      },
+      "details": {
+        "declared_scenario_matches_driver_launch": {
+          "scenario": "a",
+          "required_cases": [
+            "a"
+          ]
+        },
+        "observed_mode": "v2",
+        "advertised_names": [
+          "collaboration",
+          "exec",
+          "followup_task",
+          "functions",
+          "interrupt_agent",
+          "list_agents",
+          "request_user_input",
+          "request_user_input_async",
+          "send_message",
+          "spawn_agent",
+          "wait",
+          "wait_agent"
+        ],
+        "actual_parent_child_identity_policy": {
+          "01a1b6f0-9a8e-7bd2-a4a2-a9568adffb5a": {
+            "provider": "mimo_flash",
+            "contexts": [
+              {
+                "turn_id": "01a1b6f0-9a9e-7e00-99aa-c0954a093906",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              }
+            ]
+          },
+          "01a1b6f0-b854-7e60-9bb1-cc6e2483211f": {
+            "provider": "mimo_flash",
+            "contexts": [
+              {
+                "turn_id": "01a1b6f0-b85e-7133-8622-76a93ee3bc00",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              },
+              {
+                "turn_id": "01a1b6f0-dd90-7151-a4b4-502ca991750a",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              },
+              {
+                "turn_id": "01a1b6f1-6651-71f3-9fee-8f56939c9812",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              }
+            ]
+          }
+        },
+        "native_dispatch_order_same_child_no_parent_read": [
+          {
+            "name": "spawn_agent",
+            "call_id": "fc_0eace0a6e6994e17a8a44f44faf5947a",
+            "args": {
+              "task_name": "delivery_a",
+              "fork_turns": "none",
+              "message": "只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件"
+            }
+          },
+          {
+            "name": "followup_task",
+            "call_id": "fc_cbec5e2261d748f2a9bf342da9b10fd6",
+            "args": {
+              "target": "/root/delivery_a",
+              "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_b83399960ae0. Do not use tools, read/write files, or delegate."
+            }
+          },
+          {
+            "name": "send_message",
+            "call_id": "fc_f6a91b3e31da457585dc32552ea168d5",
+            "args": {
+              "target": "/root/delivery_a",
+              "message": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_7c31d20ac519. Remember this token for the next task."
+            }
+          },
+          {
+            "name": "followup_task",
+            "call_id": "fc_bad3acbd2d7f4ece9881c9ba627ab9fd",
+            "args": {
+              "target": "/root/delivery_a",
+              "message": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+            }
+          }
+        ],
+        "A_exact_distinct_completed_child_turns": [
+          {
+            "turn_id": "01a1b6f0-b85e-7133-8622-76a93ee3bc00",
+            "text": "LIVE_PROBE_OK",
+            "completed_at": 1794070594
+          },
+          {
+            "turn_id": "01a1b6f0-dd90-7151-a4b4-502ca991750a",
+            "text": "LIVE_FOLLOWUP_b83399960ae0",
+            "completed_at": 1794070604
+          },
+          {
+            "turn_id": "01a1b6f1-6651-71f3-9fee-8f56939c9812",
+            "text": "LIVE_MESSAGE_OK_7c31d20ac519",
+            "completed_at": 1794070640
+          }
+        ],
+        "A3_message_or_descriptor_backed_NA": "separate native MESSAGE consumed; token absent from followup",
+        "declared_case_native_waits_fresh_completion_order": {
+          "contract": "v2 exact parent FINAL receipts with optional validated waits; v1 persistent wait status",
+          "v2_receipts": [
+            {
+              "dispatch_call_id": "fc_0eace0a6e6994e17a8a44f44faf5947a",
+              "child_id": "01a1b6f0-b854-7e60-9bb1-cc6e2483211f",
+              "child_turn_id": "01a1b6f0-b85e-7133-8622-76a93ee3bc00",
+              "text": "LIVE_PROBE_OK",
+              "parent_receipt_line": 29,
+              "received_at": 1794070596.457897,
+              "child_completed_at": 1794070594
+            },
+            {
+              "dispatch_call_id": "fc_cbec5e2261d748f2a9bf342da9b10fd6",
+              "child_id": "01a1b6f0-b854-7e60-9bb1-cc6e2483211f",
+              "child_turn_id": "01a1b6f0-dd90-7151-a4b4-502ca991750a",
+              "text": "LIVE_FOLLOWUP_b83399960ae0",
+              "parent_receipt_line": 42,
+              "received_at": 1794070614.973657,
+              "child_completed_at": 1794070604
+            },
+            {
+              "dispatch_call_id": "fc_bad3acbd2d7f4ece9881c9ba627ab9fd",
+              "child_id": "01a1b6f0-b854-7e60-9bb1-cc6e2483211f",
+              "child_turn_id": "01a1b6f1-6651-71f3-9fee-8f56939c9812",
+              "text": "LIVE_MESSAGE_OK_7c31d20ac519",
+              "parent_receipt_line": 62,
+              "received_at": 1794070646.057789,
+              "child_completed_at": 1794070640
+            }
+          ]
+        },
+        "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+        "wire_helper_and_exact_allowed_outbound_stages": {
+          "requests": 11,
+          "converted_including_history": 18,
+          "http_statuses": {
+            "200": 11
+          }
+        },
+        "native_lifecycle": {
+          "exit": 0,
+          "parent_turn_status": "completed"
+        },
+        "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+      },
+      "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "input_sha256": {
+        "summary.json": "508f24fa77a3c450077fe22c10d2d2cbff3423276b8c64bfeceedb9154355ebe",
+        "wire.json": "773838fe92f7e9bf39ab6449601f48b82dc88001b97180e9fc842676c51f472e",
+        "rollouts-sanitized.json": "517041fb0e792547c92e47cce1baec9c7ce3db5f4aad97dd1fab6cfd16ed3a00",
+        "native-rollout-supplement.json": "18e45366dc457ddb4763648ba94b51752801b0a111e61b9d6906f8defc6eda38",
+        "launch.json": "5cda0b1bea14ffed10994732de818a436a9ad41ff6a1c4fb869595c94cde7adb"
+      }
+    },
+    {
+      "profile": "mimo-flash",
+      "attempt": "2",
+      "scenario": "b",
+      "passed": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "checks": {
+        "declared_scenario_matches_driver_launch": true,
+        "actual_parent_child_identity_policy": true,
+        "native_dispatch_order_same_child_no_parent_read": true,
+        "B_fixture_absent_from_prompts": true,
+        "B_child_owned_call_result_execution_exact_final": true,
+        "declared_case_native_waits_fresh_completion_order": true,
+        "declared_case_native_event_linkage_actual_modes": true,
+        "wire_helper_and_exact_allowed_outbound_stages": true,
+        "native_lifecycle": true,
+        "namespace_launch_source_snapshots": true
+      },
+      "details": {
+        "declared_scenario_matches_driver_launch": {
+          "scenario": "b",
+          "required_cases": [
+            "b"
+          ]
+        },
+        "observed_mode": "v2",
+        "advertised_names": [
+          "collaboration",
+          "exec",
+          "followup_task",
+          "functions",
+          "interrupt_agent",
+          "list_agents",
+          "request_user_input",
+          "request_user_input_async",
+          "send_message",
+          "spawn_agent",
+          "wait",
+          "wait_agent"
+        ],
+        "actual_parent_child_identity_policy": {
+          "01a1b6dd-4633-76c1-9f77-40460adc61c3": {
+            "provider": "mimo_flash",
+            "contexts": [
+              {
+                "turn_id": "01a1b6dd-4643-7d33-8aa1-4f9dd8320f84",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              }
+            ]
+          },
+          "01a1b6dd-60a5-7472-b0d5-03529bc8ad60": {
+            "provider": "mimo_flash",
+            "contexts": [
+              {
+                "turn_id": "01a1b6dd-60b0-7b10-b175-a511c465f210",
+                "model": "mimo-v2.6-flash",
+                "model_provider": null,
+                "effort": "max",
+                "approval_policy": "never",
+                "sandbox_policy": {
+                  "type": "read-only"
+                }
+              }
+            ]
+          }
+        },
+        "native_dispatch_order_same_child_no_parent_read": [
+          {
+            "name": "spawn_agent",
+            "call_id": "fc_0ac435c987094415a269b90c6ce6e287",
+            "args": {
+              "task_name": "delivery_b",
+              "fork_turns": "none",
+              "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-3nfk3uhv/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          }
+        ],
+        "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+        "B_child_owned_call_result_execution_exact_final": {
+          "call_id": "ctc_769019e494914e6c93d7d16f0e167faa",
+          "tool": "exec",
+          "execution": {
+            "type": "CommandExecution",
+            "id": "exec-c8292e5d-a116-4429-9346-9316795f0c34",
+            "process_id": "7790",
+            "command": [
+              "/bin/zsh",
+              "-c",
+              "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-3nfk3uhv/harmless-target.txt"
+            ],
+            "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-3nfk3uhv",
+            "parsed_cmd": [
+              {
+                "type": "read",
+                "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-3nfk3uhv/harmless-target.txt",
+                "name": "harmless-target.txt",
+                "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-3nfk3uhv/harmless-target.txt"
+              }
+            ],
+            "source": "unified_exec_startup",
+            "status": "completed",
+            "aggregated_output": "HARMLESS_NATIVE_CONTENT_1eb18b32a2044b28a512e991f8ac63fe",
+            "exit_code": 0,
+            "duration": {
+              "secs": 0,
+              "nanos": 9417
+            }
+          },
+          "finals": [
+            {
+              "turn_id": "01a1b6dd-60b0-7b10-b175-a511c465f210",
+              "text": "HARMLESS_NATIVE_CONTENT_1eb18b32a2044b28a512e991f8ac63fe",
+              "completed_at": 1794069341
+            }
+          ]
+        },
+        "declared_case_native_waits_fresh_completion_order": {
+          "contract": "v2 exact parent FINAL receipts with optional validated waits; v1 persistent wait status",
+          "v2_receipts": [
+            {
+              "dispatch_call_id": "fc_0ac435c987094415a269b90c6ce6e287",
+              "child_id": "01a1b6dd-60a5-7472-b0d5-03529bc8ad60",
+              "child_turn_id": "01a1b6dd-60b0-7b10-b175-a511c465f210",
+              "text": "HARMLESS_NATIVE_CONTENT_1eb18b32a2044b28a512e991f8ac63fe",
+              "parent_receipt_line": 33,
+              "received_at": 1794069341.959076,
+              "child_completed_at": 1794069341
+            }
+          ]
+        },
+        "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+        "wire_helper_and_exact_allowed_outbound_stages": {
+          "requests": 5,
+          "converted_including_history": 3,
+          "http_statuses": {
+            "200": 5
+          }
+        },
+        "native_lifecycle": {
+          "exit": 0,
+          "parent_turn_status": "completed"
+        },
+        "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+      },
+      "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "input_sha256": {
+        "summary.json": "c9fcbb3ead5c5fbfaf9dfa2984e076804818dd53d01e4dadd261acc1712cbf30",
+        "wire.json": "8c40b6b27202a971525ca84c03c22c437db85eb75fba45c7307f20f5e95967e6",
+        "rollouts-sanitized.json": "9653bd528e3933528d8d5d84075474f5a955dcb1a068fee2e93263ad9b8495d2",
+        "native-rollout-supplement.json": "df33a9c26bddcf3b55c6a0f520873e3397e49c1f799be5cbf8aba36547e55f16",
+        "launch.json": "a59845d0add62e93703aa02deabb973af36ac207e132c02db3133e14f8b2c688"
+      }
+    }
+  ],
+  "launch_source_hashes": [
+    {
+      "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+      "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+      "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+    },
+    {
+      "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+      "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+      "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+      "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+      "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+    }
+  ],
+  "source_comparison": "production/routes/registry/profile/catalog exact; each harness independently audited with retrievable launch hashes"
+}

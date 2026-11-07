@@ -1,0 +1,23 @@
+{
+  "user_authorized": true,
+  "private_settings_file": "/Users/leo/.config/agent-tools/endpoints.json",
+  "schema_provider_id": "kimi",
+  "override_runtime_checks": {
+    "codex": {
+      "model": "kimi-k3",
+      "base_url_equals_ds_flash": true,
+      "api_key_equals_ds_flash": true
+    },
+    "claude": {
+      "model": "kimi-k3[1m]",
+      "base_url_equals_ds_flash": true,
+      "api_key_equals_ds_flash": true
+    }
+  },
+  "mode": "0o600",
+  "other_settings_semantically_unchanged": true,
+  "shim_code_synced": false,
+  "service_restart_required": false,
+  "model_reference": "https://cloud.tencent.com/document/product/1823/132232",
+  "note": "Kimi Codex/Claude runtime connections copy corresponding effective ds-flash URL/key; no secret values stored in this artifact."
+}

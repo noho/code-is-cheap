@@ -1,0 +1,172 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "1",
+  "scenario": "a",
+  "passed": false,
+  "coverage": {
+    "a": false,
+    "b": false
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "declared_case_native_waits_fresh_completion_order": false,
+    "declared_case_native_event_linkage_actual_modes": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true,
+    "namespace_launch_source_snapshots": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "a",
+      "required_cases": [
+        "a"
+      ]
+    },
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b6be-2464-7403-a828-d7b9676a1d87": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b6be-2473-7423-9894-2a3d855b2a0a",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b6be-59dd-7750-9b15-f25b5917cd63": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b6be-59e8-7f43-a5d5-05afc8a2bbf7",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b6bf-41b9-77a2-b0ca-cf7e6d99c551",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b6c2-55c3-7c43-b27e-38cf2d07cc3d",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "fc_2c7fea6984244e4e93ea1e7a5ea2c0f5",
+        "args": {
+          "task_name": "delivery_a",
+          "fork_turns": "none",
+          "message": "只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件"
+        }
+      },
+      {
+        "name": "followup_task",
+        "call_id": "fc_14decdf7a6d0442fa3236b0943a233ae",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_37c8e6e81c2c. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "send_message",
+        "call_id": "fc_811cfc5036cd44d994a5352d83d8c379",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_854a93755870. Remember this token for the next task."
+        }
+      },
+      {
+        "name": "followup_task",
+        "call_id": "fc_57a40b15bac24e539a4e7729926ee2b3",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+        }
+      }
+    ],
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b6be-59e8-7f43-a5d5-05afc8a2bbf7",
+        "text": "LIVE_PROBE_OK",
+        "completed_at": 1794067295
+      },
+      {
+        "turn_id": "01a1b6bf-41b9-77a2-b0ca-cf7e6d99c551",
+        "text": "LIVE_FOLLOWUP_37c8e6e81c2c",
+        "completed_at": 1794067351
+      },
+      {
+        "turn_id": "01a1b6c2-55c3-7c43-b27e-38cf2d07cc3d",
+        "text": "LIVE_MESSAGE_OK_854a93755870",
+        "completed_at": 1794067554
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": "separate native MESSAGE consumed; token absent from followup",
+    "declared_case_native_waits_fresh_completion_order": "native wait only timed out",
+    "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 18,
+      "converted_including_history": 32,
+      "http_statuses": {
+        "200": 18
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    },
+    "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+  },
+  "auditor_sha256": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666",
+  "input_sha256": {
+    "summary.json": "c27662073569a4f857bc876f0a23c2398c580a360c60b9d519e41554855f9ae6",
+    "wire.json": "f6a42235e5a9218e405e2080972385fdfbab86afabd1ac3bbd6b7659a6d7359e",
+    "rollouts-sanitized.json": "004ab722258de5cadfb659baa58dfa183bc75e75b704b149dc12b54f8fcfdcc7",
+    "native-rollout-supplement.json": "69b7228d8781a52fb592a0616443ebb6f93e48007928ef439206292667f2ebcb",
+    "launch.json": "c61c99d79c187f605e9ccdab551f4fec6102cfba9440a9f8cd0dba816adcd86e"
+  }
+}

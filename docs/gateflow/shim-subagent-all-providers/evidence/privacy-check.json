@@ -1,0 +1,45 @@
+{
+  "checked_utc": "2026-11-07T14:55:15.163742+00:00",
+  "bounded_artifacts_including_decompressed_sources": 108,
+  "effective_key_matches": 0,
+  "new_effective_url_matches": 0,
+  "baseline_existing_documentation_matches": [
+    {
+      "route": "ds-flash",
+      "field": "base_url",
+      "file": "README.md",
+      "preexisting_in_HEAD": true
+    },
+    {
+      "route": "ds-flash",
+      "field": "base_url",
+      "file": "README.zh.md",
+      "preexisting_in_HEAD": true
+    },
+    {
+      "route": "kimi",
+      "field": "base_url",
+      "file": "README.md",
+      "preexisting_in_HEAD": true
+    },
+    {
+      "route": "kimi",
+      "field": "base_url",
+      "file": "README.zh.md",
+      "preexisting_in_HEAD": true
+    },
+    {
+      "route": "hy",
+      "field": "base_url",
+      "file": "README.md",
+      "preexisting_in_HEAD": true
+    },
+    {
+      "route": "hy",
+      "field": "base_url",
+      "file": "README.zh.md",
+      "preexisting_in_HEAD": true
+    }
+  ],
+  "note": "An initial whole-file URL scan matched preexisting README examples; git HEAD bytes confirm these matches predate this task. No URL/key values are recorded here."
+}

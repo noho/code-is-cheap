@@ -1,0 +1,47 @@
+........[shim:0] native response: restored=1 relayed=206B
+[shim:0] native response: restored=1 relayed=205B
+.[shim:0] native response: invalid protocol
+.[shim:0]   ^ attempt 1: incomplete stream (35B), retrying
+[shim:0]   ^ attempt 2: incomplete stream (35B), retrying
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=json tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=nostream relayed=37B completed=True
+.[shim:0] native response: restored=1 relayed=173B
+[shim:0] native response: restored=1 relayed=173B
+[shim:0] native response: restored=1 relayed=173B
+[shim:0]   ^ req 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpp4xd1fd9/0-1794066853-req-429.json
+[shim:0] POST /v1/responses -> 429 model=test enc=- rewrite=none tools=[spawn_agent]
+[shim:0]   ^ status=429 stream=http429 relayed=20B completed=False
+[shim:0]   ^ resp 已存：/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpp4xd1fd9/0-1794066853-resp-429.json
+.[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+.[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+[shim:0] native request: invalid protocol
+.[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=[multi_agent_v1]
+[shim:0]   ^ status=200 stream=ok relayed=10B completed=False
+[shim:0] native response: invalid protocol
+[shim:0] native response: invalid protocol
+.
+----------------------------------------------------------------------
+Ran 15 tests in 13.419s
+
+OK

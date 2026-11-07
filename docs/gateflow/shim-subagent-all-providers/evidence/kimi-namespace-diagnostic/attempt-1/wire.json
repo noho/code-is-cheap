@@ -1,0 +1,647 @@
+[
+  {
+    "thread_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+    "ingress_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+    "egress_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+    "expected_outbound_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+    "model": "k3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "model_swap",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "after_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "changes": []
+      },
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "after_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "after_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "after_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "pre_prototype_body_sha256": "a45137fb694650896e4d3c9ad3f7386ff80c75edf4cda5d9a1c43bb63a9d4b8e",
+        "body_sha256": "d2570461cf7f765e8230cb1538a406442c1370e66739fab8a77e1081886749c6",
+        "path": "/coding/v1/responses",
+        "model": "k3",
+        "prototype": "request-only-unique-namespace-flatten-v1",
+        "http_status": 200
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "namespace",
+        "name": "multi_agent_v1",
+        "description": "Tools for spawning and managing sub-agents.",
+        "tools": [
+          {
+            "type": "function",
+            "name": "close_agent",
+            "description": "Close an agent and any open descendants when they are no longer needed, and return the target agent's previous status before shutdown was requested. Completed agents remain open and count toward the concurrency limit until closed. Don't keep agents open for too long if they are not needed anymore.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "description": "Agent id to close (from spawn_agent)."
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "resume_agent",
+            "description": "Resume a previously closed agent by id so it can receive send_input and wait_agent calls.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Agent id to resume."
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "send_input",
+            "description": "Send a message to an existing agent. Use interrupt=true to redirect work immediately. You should reuse the agent by send_input if you believe your assigned task is highly dependent on the context of a previous task.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "interrupt": {
+                  "type": "boolean",
+                  "description": "True interrupts the current task and handles this message immediately; false or omitted queues it."
+                },
+                "items": {
+                  "type": "array",
+                  "description": "Structured input items. Use this to pass explicit mentions (for example app:// connector paths).",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "audio_url": {
+                        "type": "string",
+                        "description": "Audio data URL when type is audio."
+                      },
+                      "image_url": {
+                        "type": "string",
+                        "description": "Image URL when type is image."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Display name when type is skill or mention."
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "Path when type is local_image/local_audio/skill, or structured mention target such as app://<connector-id> or plugin://<plugin-name>@<marketplace-name> when type is mention."
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text content when type is text."
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Input item type: text, image, local_image, audio, local_audio, skill, or mention."
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Legacy plain-text message to send to the agent. Use either message or items."
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Agent id to message (from spawn_agent)."
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "spawn_agent",
+            "description": "\n        \n        Available model overrides (optional; inherited parent model is preferred):\n- `k3`: K3，1M 上下文 Reasoning efforts: low, high (default), max.\n- `k3-256k`: K3 256K 上下文 Reasoning efforts: low, high (default), max.\n        Spawn a sub-agent for a well-scoped task. Returns the spawned agent id plus the user-facing nickname when available. Spawned agents inherit your current model by default. Omit `model` to use that preferred default; set `model` only when an explicit override is needed.\nThis spawn_agent tool provides you access to sub-agents that inherit your current model by default. Do not set the `model` field unless the user explicitly asks for a different model. You should follow the rules and guidelines below to use this tool.\n\nDo not spawn sub-agents unless the user or applicable AGENTS.md/skill instructions explicitly ask for sub-agents, delegation, or parallel agent work.\nRequests for depth, thoroughness, research, investigation, or detailed codebase analysis do not count as permission to spawn.\nAgent-role guidance below only helps choose which agent to use after spawning is already authorized; it never authorizes spawning by itself.\n\n### When to delegate vs. do the subtask yourself\n- First, quickly analyze the overall user task and form a succinct high-level plan. Identify which tasks are immediate blockers on the critical path, and which tasks are sidecar tasks that are needed but can run in parallel without blocking the next local step. As part of that plan, explicitly decide what immediate task you should do locally right now. Do this planning step before delegating to agents so you do not hand off the immediate blocking task to a submodel and then waste time waiting on it.\n- Use a subagent when a subtask is easy enough for it to handle and can run in parallel with your local work. Prefer delegating concrete, bounded sidecar tasks that materially advance the main task without blocking your immediate next local step.\n- Do not delegate urgent blocking work when your immediate next step depends on that result. If the very next action is blocked on that task, the main rollout should usually do it locally to keep the critical path moving.\n- Keep work local when the subtask is too difficult to delegate well and when it is tightly coupled, urgent, or likely to block your immediate next step.\n\n### Designing delegated subtasks\n- Subtasks must be concrete, well-defined, and self-contained.\n- Delegated subtasks must materially advance the main task.\n- Do not duplicate work between the main rollout and delegated subtasks.\n- Avoid issuing multiple delegate calls on the same unresolved thread unless the new delegated task is genuinely different and necessary.\n- Narrow the delegated ask to the concrete output you need next.\n- For coding tasks, prefer delegating concrete code-change worker subtasks over read-only explorer analysis when the subagent can make a bounded patch in a clear write scope.\n- When delegating coding work, instruct the submodel to edit files directly in its forked workspace and list the file paths it changed in the final answer.\n- For code-edit subtasks, decompose work so each delegated task has a disjoint write set.\n\n### After you delegate\n- Call wait_agent very sparingly. Only call wait_agent when you need the result immediately for the next critical-path step and you are blocked until it returns.\n- Do not redo delegated subagent tasks yourself; focus on integrating results or tackling non-overlapping work.\n- While the subagent is running in the background, do meaningful non-overlapping work immediately.\n- Do not repeatedly wait by reflex.\n- When a delegated coding task returns, quickly review the uploaded changes, then integrate or refine them.\n\n### Parallel delegation patterns\n- Run multiple independent information-seeking subtasks in parallel when you have distinct questions that can be answered independently.\n- Split implementation into disjoint codebase slices and spawn multiple agents for them in parallel when the write scopes do not overlap.\n- Delegate verification only when it can run in parallel with ongoing implementation and is likely to catch a concrete risk before final integration.\n- The key is to find opportunities to spawn multiple independent subtasks in parallel within the same round, while ensuring each subtask is well-defined, self-contained, and materially advances the main task.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "fork_context": {
+                  "type": "boolean",
+                  "description": "True forks the current thread history into the new agent; false or omitted starts with only the initial prompt."
+                },
+                "items": {
+                  "type": "array",
+                  "description": "Structured input items. Use this to pass explicit mentions (for example app:// connector paths).",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "audio_url": {
+                        "type": "string",
+                        "description": "Audio data URL when type is audio."
+                      },
+                      "image_url": {
+                        "type": "string",
+                        "description": "Image URL when type is image."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Display name when type is skill or mention."
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "Path when type is local_image/local_audio/skill, or structured mention target such as app://<connector-id> or plugin://<plugin-name>@<marketplace-name> when type is mention."
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text content when type is text."
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Input item type: text, image, local_image, audio, local_audio, skill, or mention."
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Initial plain-text task for the new agent. Use either message or items."
+                },
+                "model": {
+                  "type": "string",
+                  "description": "Model override for the new agent. Omit unless an explicit override is needed."
+                },
+                "reasoning_effort": {
+                  "type": "string",
+                  "description": "Reasoning effort override for the new agent. Omit to inherit the parent effort."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "wait_agent",
+            "description": "Wait for agents to reach a final status. Completed statuses may include the agent's final message. Returns empty status when timed out. Once the agent reaches a final status, a notification message will be received containing the same completed status.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "targets": {
+                  "type": "array",
+                  "description": "Agent ids to wait on. Pass multiple ids to wait for whichever finishes first.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "timeout_ms": {
+                  "type": "number",
+                  "description": "Timeout in milliseconds. Defaults to 30000, min 10000, max 3600000. Prefer longer waits (minutes) to avoid busy polling."
+                }
+              },
+              "required": [
+                "targets"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    ],
+    "lite_header_observed": {},
+    "pre_prototype_body_verified": true,
+    "actual_upstream_body_verified": false,
+    "prototype_actual_outbound_sha256": "d2570461cf7f765e8230cb1538a406442c1370e66739fab8a77e1081886749c6"
+  },
+  {
+    "thread_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+    "ingress_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+    "egress_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+    "expected_outbound_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+    "model": "k3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3,
+      "reasoning": 1,
+      "function_call": 1,
+      "function_call_output": 1
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "model_swap",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "after_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "changes": []
+      },
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "after_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "after_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "after_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "pre_prototype_body_sha256": "d8840465ab5832007ef239c758b18003728472280eb1e03671649182847efda0",
+        "body_sha256": "292812d18f297c9ee8a119c7245fa490bf35135ccd8fd73a5a6eebfa49224679",
+        "path": "/coding/v1/responses",
+        "model": "k3",
+        "prototype": "request-only-unique-namespace-flatten-v1",
+        "http_status": 200
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "type": "namespace",
+        "name": "multi_agent_v1",
+        "description": "Tools for spawning and managing sub-agents.",
+        "tools": [
+          {
+            "type": "function",
+            "name": "close_agent",
+            "description": "Close an agent and any open descendants when they are no longer needed, and return the target agent's previous status before shutdown was requested. Completed agents remain open and count toward the concurrency limit until closed. Don't keep agents open for too long if they are not needed anymore.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "description": "Agent id to close (from spawn_agent)."
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "resume_agent",
+            "description": "Resume a previously closed agent by id so it can receive send_input and wait_agent calls.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Agent id to resume."
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "send_input",
+            "description": "Send a message to an existing agent. Use interrupt=true to redirect work immediately. You should reuse the agent by send_input if you believe your assigned task is highly dependent on the context of a previous task.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "interrupt": {
+                  "type": "boolean",
+                  "description": "True interrupts the current task and handles this message immediately; false or omitted queues it."
+                },
+                "items": {
+                  "type": "array",
+                  "description": "Structured input items. Use this to pass explicit mentions (for example app:// connector paths).",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "audio_url": {
+                        "type": "string",
+                        "description": "Audio data URL when type is audio."
+                      },
+                      "image_url": {
+                        "type": "string",
+                        "description": "Image URL when type is image."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Display name when type is skill or mention."
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "Path when type is local_image/local_audio/skill, or structured mention target such as app://<connector-id> or plugin://<plugin-name>@<marketplace-name> when type is mention."
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text content when type is text."
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Input item type: text, image, local_image, audio, local_audio, skill, or mention."
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Legacy plain-text message to send to the agent. Use either message or items."
+                },
+                "target": {
+                  "type": "string",
+                  "description": "Agent id to message (from spawn_agent)."
+                }
+              },
+              "required": [
+                "target"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "spawn_agent",
+            "description": "\n        \n        Available model overrides (optional; inherited parent model is preferred):\n- `k3`: K3，1M 上下文 Reasoning efforts: low, high (default), max.\n- `k3-256k`: K3 256K 上下文 Reasoning efforts: low, high (default), max.\n        Spawn a sub-agent for a well-scoped task. Returns the spawned agent id plus the user-facing nickname when available. Spawned agents inherit your current model by default. Omit `model` to use that preferred default; set `model` only when an explicit override is needed.\nThis spawn_agent tool provides you access to sub-agents that inherit your current model by default. Do not set the `model` field unless the user explicitly asks for a different model. You should follow the rules and guidelines below to use this tool.\n\nDo not spawn sub-agents unless the user or applicable AGENTS.md/skill instructions explicitly ask for sub-agents, delegation, or parallel agent work.\nRequests for depth, thoroughness, research, investigation, or detailed codebase analysis do not count as permission to spawn.\nAgent-role guidance below only helps choose which agent to use after spawning is already authorized; it never authorizes spawning by itself.\n\n### When to delegate vs. do the subtask yourself\n- First, quickly analyze the overall user task and form a succinct high-level plan. Identify which tasks are immediate blockers on the critical path, and which tasks are sidecar tasks that are needed but can run in parallel without blocking the next local step. As part of that plan, explicitly decide what immediate task you should do locally right now. Do this planning step before delegating to agents so you do not hand off the immediate blocking task to a submodel and then waste time waiting on it.\n- Use a subagent when a subtask is easy enough for it to handle and can run in parallel with your local work. Prefer delegating concrete, bounded sidecar tasks that materially advance the main task without blocking your immediate next local step.\n- Do not delegate urgent blocking work when your immediate next step depends on that result. If the very next action is blocked on that task, the main rollout should usually do it locally to keep the critical path moving.\n- Keep work local when the subtask is too difficult to delegate well and when it is tightly coupled, urgent, or likely to block your immediate next step.\n\n### Designing delegated subtasks\n- Subtasks must be concrete, well-defined, and self-contained.\n- Delegated subtasks must materially advance the main task.\n- Do not duplicate work between the main rollout and delegated subtasks.\n- Avoid issuing multiple delegate calls on the same unresolved thread unless the new delegated task is genuinely different and necessary.\n- Narrow the delegated ask to the concrete output you need next.\n- For coding tasks, prefer delegating concrete code-change worker subtasks over read-only explorer analysis when the subagent can make a bounded patch in a clear write scope.\n- When delegating coding work, instruct the submodel to edit files directly in its forked workspace and list the file paths it changed in the final answer.\n- For code-edit subtasks, decompose work so each delegated task has a disjoint write set.\n\n### After you delegate\n- Call wait_agent very sparingly. Only call wait_agent when you need the result immediately for the next critical-path step and you are blocked until it returns.\n- Do not redo delegated subagent tasks yourself; focus on integrating results or tackling non-overlapping work.\n- While the subagent is running in the background, do meaningful non-overlapping work immediately.\n- Do not repeatedly wait by reflex.\n- When a delegated coding task returns, quickly review the uploaded changes, then integrate or refine them.\n\n### Parallel delegation patterns\n- Run multiple independent information-seeking subtasks in parallel when you have distinct questions that can be answered independently.\n- Split implementation into disjoint codebase slices and spawn multiple agents for them in parallel when the write scopes do not overlap.\n- Delegate verification only when it can run in parallel with ongoing implementation and is likely to catch a concrete risk before final integration.\n- The key is to find opportunities to spawn multiple independent subtasks in parallel within the same round, while ensuring each subtask is well-defined, self-contained, and materially advances the main task.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "fork_context": {
+                  "type": "boolean",
+                  "description": "True forks the current thread history into the new agent; false or omitted starts with only the initial prompt."
+                },
+                "items": {
+                  "type": "array",
+                  "description": "Structured input items. Use this to pass explicit mentions (for example app:// connector paths).",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "audio_url": {
+                        "type": "string",
+                        "description": "Audio data URL when type is audio."
+                      },
+                      "image_url": {
+                        "type": "string",
+                        "description": "Image URL when type is image."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Display name when type is skill or mention."
+                      },
+                      "path": {
+                        "type": "string",
+                        "description": "Path when type is local_image/local_audio/skill, or structured mention target such as app://<connector-id> or plugin://<plugin-name>@<marketplace-name> when type is mention."
+                      },
+                      "text": {
+                        "type": "string",
+                        "description": "Text content when type is text."
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Input item type: text, image, local_image, audio, local_audio, skill, or mention."
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Initial plain-text task for the new agent. Use either message or items."
+                },
+                "model": {
+                  "type": "string",
+                  "description": "Model override for the new agent. Omit unless an explicit override is needed."
+                },
+                "reasoning_effort": {
+                  "type": "string",
+                  "description": "Reasoning effort override for the new agent. Omit to inherit the parent effort."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          {
+            "type": "function",
+            "name": "wait_agent",
+            "description": "Wait for agents to reach a final status. Completed statuses may include the agent's final message. Returns empty status when timed out. Once the agent reaches a final status, a notification message will be received containing the same completed status.",
+            "strict": false,
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "targets": {
+                  "type": "array",
+                  "description": "Agent ids to wait on. Pass multiple ids to wait for whichever finishes first.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "timeout_ms": {
+                  "type": "number",
+                  "description": "Timeout in milliseconds. Defaults to 30000, min 10000, max 3600000. Prefer longer waits (minutes) to avoid busy polling."
+                }
+              },
+              "required": [
+                "targets"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    ],
+    "lite_header_observed": {},
+    "pre_prototype_body_verified": true,
+    "actual_upstream_body_verified": false,
+    "prototype_actual_outbound_sha256": "292812d18f297c9ee8a119c7245fa490bf35135ccd8fd73a5a6eebfa49224679"
+  }
+]

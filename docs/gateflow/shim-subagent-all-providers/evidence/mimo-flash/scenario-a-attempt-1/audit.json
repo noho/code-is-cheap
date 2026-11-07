@@ -1,0 +1,100 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "1",
+  "scenario": "a",
+  "passed": false,
+  "coverage": {
+    "a": false,
+    "b": false
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": false,
+    "declared_case_native_waits_fresh_completion_order": false,
+    "declared_case_native_event_linkage_actual_modes": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "a",
+      "required_cases": [
+        "a"
+      ]
+    },
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b69c-d26f-72a2-83cc-47ea05d6b51c": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b69c-f506-7fe0-b93b-7180f2f3b084": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": "AssertionError",
+    "declared_case_native_waits_fresh_completion_order": "non-native wait namespace",
+    "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 5,
+      "converted_including_history": 3,
+      "http_statuses": {
+        "200": 5
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "54329420f48692f26d97512f6a8cca365307b81db3a9c06f22dc69d3a185c3c5",
+  "input_sha256": {
+    "summary.json": "0e1f7ad88b07229dcdfa8ef0ac6be3977fa38ed6c5e27c676d6559ffb00f6a5c",
+    "wire.json": "2f599646093d27a7c3fd3d45cea7837129e01aec93c6909aad32cb826178a1d8",
+    "rollouts-sanitized.json": "4f68a38f80aefe040f3aa169b94aefd620fa452495ee3e79be6e3bb848ae8285",
+    "native-rollout-supplement.json": "636f7b62341cb1ec40e39c8b09ae95e6d39f98db12261b66ff9ff05ff753fc8f",
+    "launch.json": "d95aa6c7802728df4c6f0116d130b2e8dc07f778641b5156c44fb35f0b7305c8"
+  }
+}

@@ -1,0 +1,140 @@
+[
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1",
+    "profile": "glm",
+    "attempt": "1",
+    "strict_pass": false,
+    "failed_checks": [
+      "actual_parent_child_identity_policy",
+      "native_dispatch_order_same_child_no_parent_read",
+      "A_exact_distinct_completed_child_turns",
+      "A3_message_or_descriptor_backed_NA",
+      "B_fixture_absent_from_prompts",
+      "B_child_owned_call_result_execution_exact_final",
+      "wire_helper_and_exact_allowed_outbound_stages",
+      "native_lifecycle"
+    ],
+    "requests": 30,
+    "elapsed_seconds": 30.14,
+    "parent_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2",
+    "profile": "glm",
+    "attempt": "2",
+    "strict_pass": true,
+    "failed_checks": [],
+    "requests": 11,
+    "elapsed_seconds": 57.43,
+    "parent_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1",
+    "profile": "glm-flash",
+    "attempt": "1",
+    "strict_pass": true,
+    "failed_checks": [],
+    "requests": 11,
+    "elapsed_seconds": 66.6,
+    "parent_id": "01a1b672-d9c4-7ff1-b4ed-5a917acc1f07",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1",
+    "profile": "hy",
+    "attempt": "1",
+    "strict_pass": false,
+    "failed_checks": [
+      "native_dispatch_order_same_child_no_parent_read"
+    ],
+    "requests": 14,
+    "elapsed_seconds": 108.64,
+    "parent_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1",
+    "profile": "kimi",
+    "attempt": "1",
+    "strict_pass": false,
+    "failed_checks": [
+      "actual_parent_child_identity_policy",
+      "native_dispatch_order_same_child_no_parent_read",
+      "A_exact_distinct_completed_child_turns",
+      "B_fixture_absent_from_prompts",
+      "B_child_owned_call_result_execution_exact_final"
+    ],
+    "requests": 8,
+    "elapsed_seconds": 54.3,
+    "parent_id": "01a1b672-279d-7112-b228-be9877920140",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1",
+    "profile": "mimo",
+    "attempt": "1",
+    "strict_pass": false,
+    "failed_checks": [
+      "actual_parent_child_identity_policy",
+      "native_dispatch_order_same_child_no_parent_read",
+      "A_exact_distinct_completed_child_turns",
+      "A3_message_or_descriptor_backed_NA",
+      "B_fixture_absent_from_prompts",
+      "B_child_owned_call_result_execution_exact_final",
+      "wire_helper_and_exact_allowed_outbound_stages",
+      "native_lifecycle"
+    ],
+    "requests": 30,
+    "elapsed_seconds": 29.86,
+    "parent_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2",
+    "profile": "mimo",
+    "attempt": "2",
+    "strict_pass": true,
+    "failed_checks": [],
+    "requests": 15,
+    "elapsed_seconds": 48.93,
+    "parent_id": "01a1b670-f686-7b51-a242-c38452690c97",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1",
+    "profile": "mimo-fast",
+    "attempt": "1",
+    "strict_pass": true,
+    "failed_checks": [],
+    "requests": 15,
+    "elapsed_seconds": 36.59,
+    "parent_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1",
+    "profile": "mimo-flash",
+    "attempt": "1",
+    "strict_pass": false,
+    "failed_checks": [
+      "native_dispatch_order_same_child_no_parent_read"
+    ],
+    "requests": 17,
+    "elapsed_seconds": 144.13,
+    "parent_id": "01a1b675-aacb-7db1-9394-4a71ec1cd681",
+    "app_server_exit": 0
+  },
+  {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1",
+    "profile": "qwen",
+    "attempt": "1",
+    "strict_pass": true,
+    "failed_checks": [],
+    "requests": 11,
+    "elapsed_seconds": 80.52,
+    "parent_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+    "app_server_exit": 0
+  }
+]

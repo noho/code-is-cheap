@@ -1,0 +1,75 @@
+{
+  "declared_at": "2026-11-07T16:34:44.782652+00:00",
+  "commands": {
+    "a": [
+      "python3",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py",
+      "--profile",
+      "mimo-flash",
+      "--scenario",
+      "a",
+      "--attempt",
+      "2",
+      "--evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2",
+      "--initial-marker",
+      "LIVE_PROBE_OK"
+    ],
+    "b": [
+      "python3",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py",
+      "--profile",
+      "mimo-flash",
+      "--scenario",
+      "b",
+      "--attempt",
+      "2",
+      "--evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2"
+    ]
+  },
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+    "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+    "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+    "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+  },
+  "max_native_concurrency": 1,
+  "order": [
+    "a actual exit",
+    "b actual exit"
+  ],
+  "limit": "exactly one fresh A2 and one fresh B2; keep failures, no same-code retry/fallback; no Kimi inference",
+  "pre_inference_checks": {
+    "namespace": {
+      "tests": 27,
+      "log": "namespace-final.log",
+      "exit": 0
+    },
+    "auditor": {
+      "tests": 30,
+      "log": "evidence-source-final.log",
+      "exit": 0
+    },
+    "delivery": {
+      "tests": 13,
+      "log": "delivery.log",
+      "exit": 0
+    },
+    "final_observer_controls": {
+      "tests": 2,
+      "log": "observer-source-final.log",
+      "exit": 0
+    },
+    "legacy_audit": {
+      "log": "legacy-ds-audit-final.json",
+      "exit": 0
+    },
+    "py_compile": 0,
+    "diff_check": 0
+  }
+}

@@ -1,0 +1,328 @@
+--- entry/README.md
++++ logging-fix/README.md
+@@ -523,7 +523,7 @@
+ 
+ All nine managed cloud routes (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `hy`) explicitly enable `agent_message_fix`; unrelated, new, and environment-only routes default to off. `local` and OpenAI subscription profiles do not use this shim. It adapts Codex 0.167.0 native inter-agent items to standard user messages, preserving content order and routing metadata as text; native rollouts remain unchanged. It assumes the observed `agent_message` `encrypted_content` slots hold plaintext, and cannot decrypt actual opaque ciphertext. Reasoning, tool arguments, and other native top-level item types are untouched. Unknown or invalid content within an actual `agent_message` fails with a sanitized HTTP 400 rather than forwarding a partial task. Deploy shim code/routes with `./scripts/sync-codex-agent.sh` only when authorized; the installed service needs the updated code/routes loaded.
+ 
+-The route flags `native_agent_request_flatten` and `native_agent_response_restore` default to off. Kimi enables both for its advertised `multi_agent_v1` / `collaboration` groups; MiMo Flash enables response restoration only. The request-local map restores only missing/null namespaces on advertised native function calls, preserving their arguments and IDs. Unrelated MCP/Code Mode groups and history remain intact. Active mapped Responses require identity response encoding and SSE or JSON; SSE is relayed incrementally with an 8 MiB per-event limit (also the nonstream JSON limit). Guardian requests explicitly bypass both stages. Kimi request flattening and mapping use only top-level `tools` native descriptors. MiMo Flash's response-only map reads native descriptors from the current request's top-level `tools` and immediate `input[type=additional_tools].tools` containers, preserving the complete request bytes.
++The compatibility flags `agent_message_fix`, `native_agent_request_flatten`, and `native_agent_response_restore` are route-level only and default to off: enable them explicitly in each route; file-level defaults do not apply. Existing legacy flags retain their historical inheritance. Kimi enables both for its advertised `multi_agent_v1` / `collaboration` groups; MiMo Flash enables response restoration only. The request-local map restores only missing/null namespaces on advertised native function calls, preserving their arguments and IDs. Unrelated MCP/Code Mode groups and history remain intact. Active mapped Responses require identity response encoding and SSE or JSON; SSE is relayed incrementally with an 8 MiB per-event limit (also the nonstream JSON limit). Guardian requests explicitly bypass both stages. Kimi request flattening and mapping use only top-level `tools` native descriptors. MiMo Flash's response-only map reads native descriptors from the current request's top-level `tools` and immediate `input[type=additional_tools].tools` containers, preserving the complete request bytes.
+ 
+ Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the seven OpenAI profiles across three upstream models share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
+ 
+--- entry/README.zh.md
++++ logging-fix/README.zh.md
+@@ -481,7 +481,7 @@
+ 
+ 九条 managed cloud 路由（`ds-flash`、`glm`、`glm-flash`、`kimi`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`hy`）均显式启用 `agent_message_fix`；其他、新增及环境变量单路由默认关闭。`local` 和 OpenAI 订阅 profiles 不走此 shim。该适配将 Codex 0.167.0 原生 Agent 间消息适配为标准 user 消息，保留内容顺序，以文本携带来源、接收者与元数据；原生 rollout 不变。适配假设实测 `agent_message` 的 `encrypted_content` 槽内是明文，无法解密真正的不透明密文；reasoning、工具参数和其他原生顶层 item 类型保持原样。实际 `agent_message` 中的未知或非法内容返回不含正文的 HTTP 400，避免转发残缺任务。仅在获授权后通过 `./scripts/sync-codex-agent.sh` 部署代码与路由，安装服务需要加载更新后的代码和路由。
+ 
+-路由开关 `native_agent_request_flatten` 与 `native_agent_response_restore` 默认关闭。Kimi 同时启用两者，仅针对实际广告的 `multi_agent_v1` / `collaboration`；MiMo Flash 仅启用响应恢复。映射限于当前请求，只给已广告原生函数调用补回缺失或 null 的 namespace，保留参数和 ID；其他 MCP/Code Mode 组与历史保持原样。存在有效映射的 Responses 成功响应要求 identity 编码及 SSE/JSON；SSE 逐事件转发，单事件与非流式 JSON 均限 8 MiB。Guardian 明确绕过两阶段。Kimi 请求 flatten 与映射仅使用顶层 `tools` 原生描述符。MiMo Flash 的 response-only 映射可读取当前请求顶层 `tools` 及直接位于 `input[type=additional_tools].tools` 容器中的原生描述符，完整请求字节保持不变。
++兼容开关 `agent_message_fix`、`native_agent_request_flatten` 与 `native_agent_response_restore` 仅在 route 级生效且默认关闭，必须在各路由中显式启用，不继承文件顶层默认值；已有 legacy flags 保持历史继承惯例。Kimi 同时启用两者，仅针对实际广告的 `multi_agent_v1` / `collaboration`；MiMo Flash 仅启用响应恢复。映射限于当前请求，只给已广告原生函数调用补回缺失或 null 的 namespace，保留参数和 ID；其他 MCP/Code Mode 组与历史保持原样。存在有效映射的 Responses 成功响应要求 identity 编码及 SSE/JSON；SSE 逐事件转发，单事件与非流式 JSON 均限 8 MiB。Guardian 明确绕过两阶段。Kimi 请求 flatten 与映射仅使用顶层 `tools` 原生描述符。MiMo Flash 的 response-only 映射可读取当前请求顶层 `tools` 及直接位于 `input[type=additional_tools].tools` 容器中的原生描述符，完整请求字节保持不变。
+ 
+ 云端凭据来自私有连接 JSON，由 shim 添加；`local` 不需要 key。七个 OpenAI profile 对应三个上游模型，共享 home 的 `auth.json`，`business` 保留 `~/.codex-agent/business/` 下的独立登录。
+ 
+--- entry/codex-agent/bin/codex-auto-review-shim
++++ logging-fix/codex-agent/bin/codex-auto-review-shim
+@@ -552,7 +552,8 @@
+         if not isinstance(doc, dict):
+             return "?", "-"
+         names = []
+-        for t in doc.get("tools") or []:
++        tools = doc.get("tools")
++        for t in tools if isinstance(tools, list) else []:
+             if not isinstance(t, dict):
+                 names.append("?"); continue
+             fn = t.get("function") if isinstance(t.get("function"), dict) else {}
+@@ -744,19 +745,19 @@
+             self.close_connection = True
+             return
+ 
+-        if native_map and 200 <= resp.status < 300:
+-            self._relay_native_response(resp, native_map)
+-            return
+-
+-        if not (200 <= resp.status < 300) and body:
+-            self._dump(body, str(resp.status))
+-
+         warn = "" if how.split("+")[0] in ("bytes", "json", "none") else f"  <<< 未能改写（{how}）"
+         model, tools = self._summary(body, encoding)
+         self._log(
+             f"{self.command} {self.path} -> {resp.status} "
+             f"model={model} enc={encoding or '-'} rewrite={how} tools={tools}{warn}"
+         )
++
++        if native_map and 200 <= resp.status < 300:
++            self._relay_native_response(resp, native_map)
++            return
++
++        if not (200 <= resp.status < 300) and body:
++            self._dump(body, str(resp.status))
+ 
+         self.send_response(resp.status)
+         for k, v in resp.headers.items():
+--- entry/tests/test_shim_native_evidence.py
++++ logging-fix/tests/test_shim_native_evidence.py
+@@ -191,9 +191,76 @@
+             (root/'b/summary.json').write_text(json.dumps(b[0])); (root/'b/launch.json').write_text(json.dumps(b[4]))
+             self.assertFalse(audit.aggregate_directories([root/'a',root/'b'])['passed'])
+ 
+-    def namespace_case(self, profile, scenario):
+-        directory=ROOT/'docs/gateflow/shim-subagent-all-providers/evidence'/profile/('namespace-scenario-'+scenario+'-attempt-1')
++    def namespace_case(self, profile, scenario, attempt=1):
++        directory=ROOT/'docs/gateflow/shim-subagent-all-providers/evidence'/profile/('namespace-scenario-'+scenario+'-attempt-'+str(attempt))
+         return [json.loads((directory/(name+'.json')).read_text()) for name in ('summary','wire','rollouts-sanitized','native-rollout-supplement','launch')]
++
++    def test_actual_mimo_a4_strict_pass_has_three_parent_receipts_and_active_maps(self):
++        directory=ROOT/'docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4'
++        result=audit.audit_directory(directory,scenario='a')
++        self.assertTrue(result['passed'],result['details'])
++        self.assertEqual(result['coverage'],{'a':True,'b':False})
++        self.assertTrue(result['checks']['namespace_launch_source_snapshots'])
++        summary,wire,*_=self.namespace_case('mimo-flash','a',4)
++        self.assertEqual(summary['source_hashes_at_launch']['codex-agent/bin/codex-auto-review-shim'],
++                         'a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6')
++        receipts=result['details']['declared_case_native_waits_fresh_completion_order']['v2_receipts']
++        self.assertEqual([r['text'] for r in receipts],
++                         [summary['initial_marker'],summary['followup_marker'],summary['message_token']])
++        self.assertEqual(len({r['child_turn_id'] for r in receipts}),3)
++        self.assertEqual(len({r['child_id'] for r in receipts}),1)
++        self.assertEqual(len(wire),11)
++        self.assertFalse(summary['route']['native_agent_request_flatten'])
++        self.assertTrue(summary['route']['native_agent_response_restore'])
++        for record in wire:
++            stage=record['native_request_stage']
++            self.assertEqual(len(stage['map']),6)
++            self.assertEqual(set(stage['map'].values()),{'collaboration'})
++            self.assertEqual(stage['before_sha256'],stage['after_sha256'])
++            self.assertTrue(record['outbound_attempts'])
++        # A4 took the active relay with already-qualified calls: active does not
++        # imply that this particular upstream response needed a namespace added.
++        calls=[c for w in wire for a in w['outbound_attempts'] for e in a['native_events'] for c in e['after_calls']]
++        self.assertTrue(calls)
++        self.assertTrue(all(c['namespace']=='collaboration' for c in calls))
++        for record in wire:
++            for attempt in record['outbound_attempts']:
++                self.assertEqual(attempt['namespace_added_count'],0)
++                self.assertEqual(attempt['response_pre_sha256'],attempt['response_post_sha256'])
++
++    def test_actual_mimo_a4_receipts_child_turns_and_active_map_are_required(self):
++        good=self.namespace_case('mimo-flash','a',4)
++        for mutation in ('missing-receipts','wrong-author','child-turn','empty-map'):
++            data=copy.deepcopy(good)
++            parent=next(r for r in data[2] if r['identity']['id']==data[0]['parent_id'])
++            receipts=[e for e in parent['events'] if e.get('item',{}).get('type')=='agent_message'
++                      and 'FINAL_ANSWER' in json.dumps(e['item'])]
++            check='declared_case_native_waits_fresh_completion_order'
++            if mutation=='missing-receipts':parent['events']=[e for e in parent['events'] if e not in receipts]
++            elif mutation=='wrong-author':receipts[1]['item']['author']='/root/wrong'
++            elif mutation=='child-turn':
++                child=next(r for r in data[2] if r is not parent)
++                next(e['event'] for e in child['events'] if e.get('event',{}).get('type')=='task_complete')['turn_id']='wrong'
++            else:
++                data[1][0]['native_request_stage']['map']={}
++                check='wire_helper_and_exact_allowed_outbound_stages'
++            with self.subTest(mutation=mutation):
++                result=audit.audit_current(*data)
++                self.assertFalse(result['passed']);self.assertFalse(result['coverage']['a'])
++                self.assertFalse(result['checks'][check],result['details'])
++
++    def test_actual_mimo_a3_incomplete_cannot_supply_a_coverage(self):
++        directory=ROOT/'docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3'
++        result=audit.audit_directory(directory,scenario='a')
++        self.assertFalse(result['passed'])
++        self.assertEqual(result['coverage'],{'a':False,'b':False})
++        self.assertTrue(result['checks']['namespace_launch_source_snapshots'])
++        self.assertTrue(result['checks']['wire_helper_and_exact_allowed_outbound_stages'])
++        for check in ('native_lifecycle','A_exact_distinct_completed_child_turns',
++                      'A3_message_or_descriptor_backed_NA','declared_case_native_waits_fresh_completion_order'):
++            self.assertFalse(result['checks'][check],check)
++        self.assertFalse(audit.aggregate_directories([directory,
++            directory.parent/'namespace-scenario-b-attempt-2'])['passed'])
+ 
+     def test_namespace_actual_cases_preserve_strict_failures_and_b_coverage(self):
+         for profile in ('kimi','mimo-flash'):
+--- entry/tests/test_shim_native_namespace.py
++++ logging-fix/tests/test_shim_native_namespace.py
+@@ -2,7 +2,7 @@
+ import copy
+ import ast
+ import hashlib
+-from contextlib import contextmanager
++from contextlib import contextmanager, redirect_stderr
+ from email.message import Message
+ import gzip
+ import http.client
+@@ -261,6 +261,161 @@
+             status,headers,out=call(port,doc);self.assertEqual(status,200);self.assertEqual(out,complete);self.assertEqual(headers['Content-Encoding'],'gzip');self.assertEqual(len(seen),3)
+             self.assertTrue(all(json.loads(b)['tools']==doc['tools'] for _,_,b in seen))
+ 
++
++
++class LoggingContracts(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        baseline = 'a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6'
++        cls.source = gzip.decompress((EVIDENCE/'mimo-flash/namespace-scenario-a-attempt-4'/
++                                     (baseline+'.source.gz')).read_bytes())
++        assert hashlib.sha256(cls.source).hexdigest() == baseline
++        cls.tmp = tempfile.TemporaryDirectory()
++        path = Path(cls.tmp.name)/'baseline.py'; path.write_bytes(cls.source)
++        loader = importlib.machinery.SourceFileLoader('logging_baseline_shim',str(path))
++        spec = importlib.util.spec_from_loader(loader.name,loader)
++        cls.baseline = importlib.util.module_from_spec(spec); loader.exec_module(cls.baseline)
++        cls.addClassCleanup(cls.tmp.cleanup)
++
++    @staticmethod
++    def without_request_diagnostics(handler):
++        """Compare control flow after removing only the existing standard log block."""
++        handler = copy.deepcopy(handler)
++        handler.body = [n for n in handler.body if getattr(n,'name',None) != '_summary']
++        method = next(n for n in handler.body if getattr(n,'name',None) == '_handle')
++        method.body = [n for n in method.body if not (
++            isinstance(n,ast.Assign) and any(
++                isinstance(t,ast.Name) and t.id == 'warn' or
++                isinstance(t,ast.Tuple) and [getattr(e,'id',None) for e in t.elts] == ['model','tools']
++                for t in n.targets) or
++            isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and
++            isinstance(n.value.func,ast.Attribute) and n.value.func.attr == '_log' and
++            any(isinstance(v,ast.Constant) and isinstance(v.value,str) and 'rewrite=' in v.value
++                for v in ast.walk(n)))]
++        return ast.dump(handler)
++
++    def test_a4_baseline_all_nonlogging_source_semantics_unchanged(self):
++        old, new = (ast.parse(source) for source in
++                    (self.source,(ROOT/'codex-agent/bin/codex-auto-review-shim').read_bytes()))
++        old_handler, new_handler = (next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Handler')
++                                    for tree in (old,new))
++        self.assertEqual(self.without_request_diagnostics(old_handler),
++                         self.without_request_diagnostics(new_handler))
++        old.body.remove(old_handler); new.body.remove(new_handler)
++        self.assertEqual(ast.dump(old),ast.dump(new))
++
++    def test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence(self):
++        current = shim
++        private = ('PROMPT_OFFLINE_PRIVATE','ARGS_OFFLINE_PRIVATE','HEADER_OFFLINE_PRIVATE',
++                   'SESSION_OFFLINE_PRIVATE','https://offline.invalid/private')
++        item = {'type':'function_call','name':'spawn_agent','arguments':private[1],'id':'i','call_id':'c'}
++        for flatten in (True,False):
++            doc = request() if flatten else {'model':'test','input':[{'type':'additional_tools','tools':[group('collaboration')]}]}
++            doc['input'].append({'type':'message','role':'user','content':private[0]+private[4]})
++            doc['client_metadata'] = {'thread_id':private[3]}
++            for media in ('text/event-stream','application/json'):
++                for encoding in ('','gzip','deflate'):
++                    with self.subTest(flatten=flatten,media=media,encoding=encoding):
++                        data = event(item) if media=='text/event-stream' else enc({'output':[item]})
++                        results=[]
++                        for module in (self.baseline,current):
++                            logs=io.StringIO()
++                            def action(h,b,n):
++                                reply(h,data,media,'identity',extra=(('X-Offline',private[2]),))
++                            with patch(__name__+'.shim',module),redirect_stderr(logs):
++                                with service(action,flatten=flatten) as (port,seen):
++                                    status,headers,body=call(port,doc,encoding)
++                            decoder={'gzip':gzip.decompress,'deflate':zlib.decompress}.get(encoding,lambda b:b)
++                            results.append((status,{k:v for k,v in headers.items() if k not in ('Server','Date')},
++                                            body,seen[0][0],decoder(seen[0][2])))
++                            if module is current:
++                                lines=logs.getvalue().splitlines()
++                                standard=[line for line in lines if 'rewrite=' in line]
++                                self.assertEqual(len(standard),1,lines)
++                                self.assertIn('POST /v1/responses -> 200 model=test enc='+
++                                              (encoding or '-')+' rewrite=none tools=',standard[0])
++                                self.assertIn('tools=[spawn_agent]' if flatten else 'tools=none',standard[0])
++                                self.assertTrue(any('native response: restored=1 relayed=' in line for line in lines))
++                                for secret in private:self.assertNotIn(secret,logs.getvalue())
++                        self.assertEqual(results[0],results[1])
++                        self.assertEqual(results[1][0],200)
++                        self.assertNotIn('Content-Length',results[1][1])
++
++    def test_response_only_non_array_top_tools_still_restores_and_logs(self):
++        for top in ('absent',None,{},42,True,'TOOLS_OFFLINE_PRIVATE',{'secret':'TOOLS_OFFLINE_PRIVATE'}):
++            with self.subTest(top=top):
++                doc={'model':'test','input':[{'type':'additional_tools','tools':[group('collaboration')]}]}
++                if top!='absent':doc['tools']=top
++                logs=io.StringIO()
++                with redirect_stderr(logs),service(lambda h,b,n:reply(h,event()),flatten=False) as (port,seen):
++                    status,headers,body=call(port,doc)
++                self.assertEqual(status,200);self.assertEqual(seen[0][2],enc(doc))
++                self.assertEqual(json.loads(body[6:])['item']['namespace'],'collaboration')
++                self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
++                self.assertIn('-> 200 model=test enc=- rewrite=none tools=none',logs.getvalue())
++                self.assertNotIn('TOOLS_OFFLINE_PRIVATE',logs.getvalue())
++
++    def test_active_route_auth_and_model_rewrite_match_a4_baseline(self):
++        current=shim
++        for flatten in (True,False):
++            results=[]
++            for module in (self.baseline,current):
++                original=module._make_server;logs=io.StringIO()
++                with patch.object(module,'endpoint_module') as endpoint:
++                    def make_server(route):
++                        endpoint.return_value.connection.return_value={
++                            'base_url':route['upstream'],'upstream_model':'offline/model',
++                            'api_key':'KEY_OFFLINE_PRIVATE'}
++                        return original({**route,'endpoint_id':'offline','request_prefix':'/offline'})
++                    with patch(__name__+'.shim',module),patch.object(module,'_make_server',make_server),redirect_stderr(logs):
++                        with service(lambda h,b,n:reply(h,event()),flatten=flatten) as (port,seen):
++                            doc=request() if flatten else {'model':'test','input':[{'type':'additional_tools','tools':[group('collaboration')]}]}
++                            conn=http.client.HTTPConnection('127.0.0.1',port,timeout=3)
++                            try:
++                                conn.request('POST','/offline/responses',gzip.compress(enc(doc)),
++                                    {'Content-Encoding':'gzip','Authorization':'Bearer CLIENT_OFFLINE_PRIVATE',
++                                     'X-Api-Key':'CLIENT_OFFLINE_PRIVATE','Api-Key':'CLIENT_OFFLINE_PRIVATE'})
++                                response=conn.getresponse();body=response.read()
++                                results.append((response.status,body,
++                                    {k:v for k,v in response.getheaders() if k not in ('Server','Date')},
++                                    seen[0][0],gzip.decompress(seen[0][2])))
++                            finally:conn.close()
++                            endpoint.return_value.connection.assert_called_once_with('offline','codex',require_key=True)
++                            self.assertEqual(seen[0][1]['Authorization'],'Bearer KEY_OFFLINE_PRIVATE')
++                            self.assertIsNone(seen[0][1].get('X-Api-Key'));self.assertIsNone(seen[0][1].get('Api-Key'))
++                if module is current:
++                    self.assertIn('POST /offline/responses -> 200 model=offline/model enc=gzip rewrite=json tools=',logs.getvalue())
++                    for secret in ('KEY_OFFLINE_PRIVATE','CLIENT_OFFLINE_PRIVATE','127.0.0.1:'):
++                        self.assertNotIn(secret,logs.getvalue())
++            self.assertEqual(results[0],results[1]);self.assertEqual(results[1][3],'/responses')
++            self.assertEqual(json.loads(results[1][4])['model'],'offline/model')
++
++    def test_both_active_paths_log_before_first_event_without_waiting_for_eof(self):
++        current=shim
++        for flatten in (True,False):
++            results=[]
++            for module in (self.baseline,current):
++                started,release=threading.Event(),threading.Event();logs=io.StringIO()
++                last=b'data: {"type":"response.completed","response":{"output":[]}}\n\n'
++                def action(h,b,n):
++                    h.send_response(200);h.send_header('Content-Type','text/event-stream')
++                    h.send_header('Connection','close');h.end_headers()
++                    h.wfile.write(event());h.wfile.flush();started.set();release.wait(5)
++                    h.wfile.write(last);h.wfile.flush();h.close_connection=True
++                with patch(__name__+'.shim',module),redirect_stderr(logs):
++                    with service(action,flatten=flatten) as (port,seen):
++                        conn=http.client.HTTPConnection('127.0.0.1',port,timeout=3)
++                        try:
++                            doc=request() if flatten else {'model':'test','input':[{'type':'additional_tools','tools':[group('collaboration')]}]}
++                            conn.request('POST','/responses',enc(doc));self.assertTrue(started.wait(2))
++                            response=conn.getresponse();first=response.read1(65536)
++                            self.assertFalse(release.is_set());self.assertIn(b'"namespace":',first)
++                            if module is current:
++                                self.assertIn('POST /responses -> 200 model=test enc=- rewrite=none tools=',logs.getvalue())
++                            release.set();rest=response.read()
++                            results.append((response.status,{k:v for k,v in response.getheaders() if k not in ('Server','Date')},first,rest,seen[0][2]))
++                        finally:release.set();conn.close()
++            self.assertEqual(results[0],results[1])
+ 
+ 
+ class ObserverAuditContracts(unittest.TestCase):
+@@ -571,7 +726,11 @@
+         self.assertEqual(hashlib.sha256(source).hexdigest(),baseline)
+         old_defs={n.name:ast.dump(n) for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.ClassDef))}
+         new_defs={n.name:ast.dump(n) for n in ast.parse((ROOT/'codex-agent/bin/codex-auto-review-shim').read_bytes()).body if isinstance(n,(ast.FunctionDef,ast.ClassDef))}
+-        self.assertEqual(set(old_defs),set(new_defs));self.assertEqual([k for k in old_defs if old_defs[k]!=new_defs[k]],['native_agent_request'])
++        self.assertEqual(set(old_defs),set(new_defs))
++        self.assertEqual([k for k in old_defs if k!='Handler' and old_defs[k]!=new_defs[k]],['native_agent_request'])
++        handlers=[next(n for n in ast.parse(s).body if isinstance(n,ast.ClassDef) and n.name=='Handler')
++                  for s in (source,(ROOT/'codex-agent/bin/codex-auto-review-shim').read_bytes())]
++        self.assertEqual(*(LoggingContracts.without_request_diagnostics(h) for h in handlers))
+         with tempfile.TemporaryDirectory() as tmp:
+             path=Path(tmp)/'baseline.py';path.write_bytes(source)
+             loader=importlib.machinery.SourceFileLoader('kimi_location_baseline',str(path));spec=importlib.util.spec_from_loader(loader.name,loader);old=importlib.util.module_from_spec(spec);loader.exec_module(old)

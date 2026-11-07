@@ -1,0 +1,910 @@
+[
+  {
+    "file": "rollout-2026-11-07T22-41-09-01a1b674-cb39-7723-90ab-4025412af2e0.jsonl",
+    "identity": {
+      "id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "mimo_fast",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+        "model": "mimo-v2.6-pro-ultraspeed",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          },
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "started_at": 1794062469,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 16,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_735305ad504042009bbdf37664385f36",
+          "name": "spawn_agent",
+          "namespace": "collaboration",
+          "arguments": "{\"task_name\":\"delivery_a\",\"fork_turns\":\"none\",\"message\":\"NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_e029f03236fb. Do not use tools, read/write files, or delegate.\"}",
+          "call_id": "fc_2ea48584cd7e4aed86db206588039c00",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 19,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b674-de2e-7f51-9dc8-dbae047d4f30",
+          "call_id": "fc_2ea48584cd7e4aed86db206588039c00",
+          "output": "{\"task_name\":\"/root/delivery_a\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062474.798381
+          }
+        }
+      },
+      {
+        "line": 26,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_f0f6ca185a5246e0a1124f1c0829b605",
+          "name": "wait_agent",
+          "namespace": "collaboration",
+          "arguments": "{\"timeout_ms\":3600000}",
+          "call_id": "fc_3af59c5ea25347f98938162e5524a59c",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 30,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b674-e83b-7a93-85dd-bf5ea53c18cb",
+          "call_id": "fc_3af59c5ea25347f98938162e5524a59c",
+          "output": "{\"message\":\"Wait completed.\",\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062477.371428
+          }
+        }
+      },
+      {
+        "line": 33,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b674-e83f-7563-9446-dd321009f6f1",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_INITIAL_e029f03236fb"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062477.375077,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 36,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_34014f3258414535a1bc82c52153935b",
+          "name": "followup_task",
+          "namespace": "collaboration",
+          "arguments": "{\"target\":\"/root/delivery_a\",\"message\":\"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_420f98951a7c. Do not use tools, read/write files, or delegate.\"}",
+          "call_id": "fc_5ad94c261e2b4d8097f993920ba6cd7a",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 39,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b674-f4f9-75e1-8ba5-bf521a2b7159",
+          "call_id": "fc_5ad94c261e2b4d8097f993920ba6cd7a",
+          "output": "",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062480.633881
+          }
+        }
+      },
+      {
+        "line": 46,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-14fa-7e30-9bac-6ceabcb230c2",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_420f98951a7c"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062488.826264,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 49,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_ce8cc14cfe4b462288ac579cf1e61b70",
+          "name": "send_message",
+          "namespace": "collaboration",
+          "arguments": "{\"target\":\"/root/delivery_a\",\"message\":\"NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_903be3509935. Remember this token for the next task.\"}",
+          "call_id": "fc_91b5cd5afab24bb9a6f225018e5970e0",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 52,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b675-1caf-7111-897c-374650d353cc",
+          "call_id": "fc_91b5cd5afab24bb9a6f225018e5970e0",
+          "output": "",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062490.799402
+          }
+        }
+      },
+      {
+        "line": 56,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_8101cdcb767c4c99a835fcfd357a41dc",
+          "name": "followup_task",
+          "namespace": "collaboration",
+          "arguments": "{\"target\":\"/root/delivery_a\",\"message\":\"NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate.\"}",
+          "call_id": "fc_29caa82467ad434bb160c871d34e008e",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 59,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b675-2ac8-74c1-89f6-1f9478c8c88d",
+          "call_id": "fc_29caa82467ad434bb160c871d34e008e",
+          "output": "",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062494.408109
+          }
+        }
+      },
+      {
+        "line": 66,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-310e-7ec2-aec9-17be86ac4bd9",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_903be3509935"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062496.014266,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 69,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_0ec66d2e7b5a4809af2404233c6554e0",
+          "name": "spawn_agent",
+          "namespace": "collaboration",
+          "arguments": "{\"task_name\":\"delivery_b\",\"fork_turns\":\"none\",\"message\":\"NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.\"}",
+          "call_id": "fc_c84643ffba264aee8ce096a315dc1004",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 72,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b675-3bad-7ba0-ae1a-d31c22bb0726",
+          "call_id": "fc_c84643ffba264aee8ce096a315dc1004",
+          "output": "{\"task_name\":\"/root/delivery_b\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062498.733115
+          }
+        }
+      },
+      {
+        "line": 77,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_efad50f985124f3f8303c6e439430f2d",
+          "name": "wait_agent",
+          "namespace": "collaboration",
+          "arguments": "{\"timeout_ms\":3600000}",
+          "call_id": "fc_64e7b555914742b9b792d9a75f72ea8f",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          }
+        }
+      },
+      {
+        "line": 81,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b675-4fb9-7043-a3f4-b0e84dfd28b0",
+          "call_id": "fc_64e7b555914742b9b792d9a75f72ea8f",
+          "output": "{\"message\":\"Wait completed.\",\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062503.865468
+          }
+        }
+      },
+      {
+        "line": 84,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-4fbd-7591-b06d-d97fc7bda089",
+          "author": "/root/delivery_b",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_b\nPayload:\nHARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "create_time": 1794062503.869088,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 88,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_4d5f802e9a97484ab144d0f0e14670f0",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "Observed finals using native collaboration only:\n\n- **A1 / delivery_a initial:** `LIVE_INITIAL_e029f03236fb`\n- **A2 / delivery_a follow-up:** `LIVE_FOLLOWUP_420f98951a7c`\n- **A3 / delivery_a message-consume:** `LIVE_MESSAGE_OK_903be3509935`\n- **B / delivery_b file task:** `HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813`\n\nCapability report: `spawn`, same-child continuation via `followup_task`, separate `send_message`, and child file reading were all available and completed as specified. No unavailable capability.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 91,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "last_agent_message": "Observed finals using native collaboration only:\n\n- **A1 / delivery_a initial:** `LIVE_INITIAL_e029f03236fb`\n- **A2 / delivery_a follow-up:** `LIVE_FOLLOWUP_420f98951a7c`\n- **A3 / delivery_a message-consume:** `LIVE_MESSAGE_OK_903be3509935`\n- **B / delivery_b file task:** `HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813`\n\nCapability report: `spawn`, same-child continuation via `followup_task`, separate `send_message`, and child file reading were all available and completed as specified. No unavailable capability.",
+          "started_at": 1794062469,
+          "completed_at": 1794062506,
+          "duration_ms": 36063,
+          "time_to_first_token_ms": 3685
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-07T22-41-14-01a1b674-de1f-7823-b643-c5567e053ee6.jsonl",
+    "identity": {
+      "id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+      "parent_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+      "cli_version": "0.167.0",
+      "model_provider": "mimo_fast",
+      "agent_path": "/root/delivery_a",
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+            "depth": 1,
+            "agent_path": "/root/delivery_a",
+            "agent_nickname": "Maxwell",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+        "model": "mimo-v2.6-pro-ultraspeed",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      },
+      {
+        "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+        "model": "mimo-v2.6-pro-ultraspeed",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      },
+      {
+        "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+        "model": "mimo-v2.6-pro-ultraspeed",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "initiating_agent_path": "/root",
+            "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          },
+          "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "started_at": 1794062474,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b674-e3f0-7480-ba71-8ccb3ea43e29",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_e029f03236fb. Do not use tools, read/write files, or delegate."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+            "create_time": 1794062476.272412,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 17,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_d684827bb8204c81b8de1de3da488e55",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_INITIAL_e029f03236fb",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 20,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "turn_id": "01a1b674-de28-74a0-90a1-00a7975d109e",
+          "last_agent_message": "LIVE_INITIAL_e029f03236fb",
+          "started_at": 1794062474,
+          "completed_at": 1794062477,
+          "duration_ms": 2559,
+          "time_to_first_token_ms": 2385
+        }
+      },
+      {
+        "line": 21,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "initiating_agent_path": "/root",
+            "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          },
+          "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "started_at": 1794062480,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 24,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b674-f506-7241-918b-efd06035705b",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_420f98951a7c. Do not use tools, read/write files, or delegate."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+            "create_time": 1794062480.646948,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 28,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_edcb2682a1cf4848bf358525c16d8510",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_FOLLOWUP_420f98951a7c",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 31,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "turn_id": "01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+          "last_agent_message": "LIVE_FOLLOWUP_420f98951a7c",
+          "started_at": 1794062480,
+          "completed_at": 1794062481,
+          "duration_ms": 1231,
+          "time_to_first_token_ms": 1126
+        }
+      },
+      {
+        "line": 32,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "initiating_agent_path": "/root",
+            "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          },
+          "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "started_at": 1794062494,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 35,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-2ad5-7e83-98d2-54b4a9cd839a",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: MESSAGE\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_903be3509935. Remember this token for the next task."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+            "create_time": 1794062494.421261,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 37,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-2ad8-7073-8d32-fcbbc5fec76c",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+            "create_time": 1794062494.424301,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 41,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_f72f6d0c062746e8bb8264ebe82e4157",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_MESSAGE_OK_903be3509935",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 44,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "turn_id": "01a1b675-2ac3-7d21-9086-a7177b467909",
+          "last_agent_message": "LIVE_MESSAGE_OK_903be3509935",
+          "started_at": 1794062494,
+          "completed_at": 1794062495,
+          "duration_ms": 1300,
+          "time_to_first_token_ms": 1185
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-07T22-41-38-01a1b675-3b9c-7493-8132-2515ffe72f64.jsonl",
+    "identity": {
+      "id": "01a1b675-3b9c-7493-8132-2515ffe72f64",
+      "parent_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+      "cli_version": "0.167.0",
+      "model_provider": "mimo_fast",
+      "agent_path": "/root/delivery_b",
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+            "depth": 1,
+            "agent_path": "/root/delivery_b",
+            "agent_nickname": "Helmholtz",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+        "model": "mimo-v2.6-pro-ultraspeed",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+            "initiating_agent_path": "/root",
+            "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093"
+          },
+          "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "started_at": 1794062498,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b675-4194-7f42-9fa7-12d853a43f20",
+          "author": "/root",
+          "recipient": "/root/delivery_b",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_b\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+            "create_time": 1794062500.244057,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 16,
+        "item": {
+          "type": "custom_tool_call",
+          "id": "fc_2fdc6df8c8a6465d991a382c70a85554",
+          "status": "completed",
+          "call_id": "ctc_c3ee4bffec0d4553a3e32a36f2b0d87b",
+          "name": "exec",
+          "input": "const r = await tools.exec_command({cmd:\"cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt\",workdir:\"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q\",yield_time_ms:10000,max_output_tokens:10000}); text(r.output);",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62"
+          }
+        }
+      },
+      {
+        "line": 19,
+        "item": {
+          "type": "custom_tool_call_output",
+          "id": "ctco_01a1b675-49e4-7b72-9847-2859090c8584",
+          "call_id": "ctc_c3ee4bffec0d4553a3e32a36f2b0d87b",
+          "output": [
+            {
+              "type": "input_text",
+              "text": "Script completed\nWall time 0.0 seconds\nOutput:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+            "create_time": 1794062502.372224
+          }
+        }
+      },
+      {
+        "line": 24,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_566283f16d4d4fdf8aca4fdb9ca11dfa",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 27,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+          "last_agent_message": "HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813",
+          "started_at": 1794062498,
+          "completed_at": 1794062503,
+          "duration_ms": 5127,
+          "time_to_first_token_ms": 2850
+        }
+      }
+    ]
+  }
+]

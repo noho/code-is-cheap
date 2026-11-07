@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-11-07T17:01:04.296145+00:00",
+  "accepted_actual_requests": 16,
+  "accepted_nonempty_six_entry_maps": 16,
+  "accepted_actual_SSE_parser_invocations": 16,
+  "accepted_namespace_additions": 0,
+  "first_downstream_before_EOF_all": true,
+  "request_native_stage_lexical_identity_all": true,
+  "actual_final_send_hashes_verified_all": true,
+  "response_unchanged_when_namespace_valid_all": true,
+  "all_nine_validation_pass": true,
+  "applicable_offline_tests": 163,
+  "old_evidence_preservation": "preservation-check.json",
+  "helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "reviews_release_deployment_complete": false
+}

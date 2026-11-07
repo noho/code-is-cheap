@@ -1,0 +1,32 @@
+{
+  "offline_only": true,
+  "native_inference_runs": 0,
+  "before_driver_sha256": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+  "candidate_driver_sha256": "8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73",
+  "results": [
+    {
+      "case": "kimi-top-level",
+      "wire_equal_except_monotonic_times": true,
+      "request_and_response_bytes_equal": true,
+      "normalized_wire_sha256": "53600bf974895c3b8dcf8591ef575c1988801ee6a2aee44bef3ee925de769a63"
+    },
+    {
+      "case": "mimo-additional-tools",
+      "wire_equal_except_monotonic_times": true,
+      "request_and_response_bytes_equal": true,
+      "normalized_wire_sha256": "4dab694511a7ec778502e7bce503c8ad6a1d53d4b1a1026a8e1efc2aead00bcb"
+    },
+    {
+      "case": "kimi-gzip",
+      "wire_equal_except_monotonic_times": true,
+      "request_and_response_bytes_equal": true,
+      "normalized_wire_sha256": "8f7d92338f3bbdcc36b13858e55e0a7808ce00f4b3ba03518821c92e630dd288"
+    },
+    {
+      "case": "guardian-bypass",
+      "wire_equal_except_monotonic_times": true,
+      "request_and_response_bytes_equal": true,
+      "normalized_wire_sha256": "0d80a10c4ef141c6b6f884b59e51d3eb29a37d16108ca4da16e3e092748a007a"
+    }
+  ]
+}

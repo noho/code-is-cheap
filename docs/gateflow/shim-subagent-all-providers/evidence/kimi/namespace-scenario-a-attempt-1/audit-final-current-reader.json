@@ -1,0 +1,69 @@
+{
+  "profile": "kimi",
+  "attempt": "1",
+  "scenario": "a",
+  "passed": false,
+  "coverage": {
+    "a": false,
+    "b": false
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": true,
+    "declared_case_native_waits_fresh_completion_order": false,
+    "declared_case_native_event_linkage_actual_modes": false,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true,
+    "namespace_launch_source_snapshots": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "a",
+      "required_cases": [
+        "a"
+      ]
+    },
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": "need declared distinct native spawn results",
+    "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "declared_case_native_waits_fresh_completion_order": "required task/final count mismatch",
+    "declared_case_native_event_linkage_actual_modes": "missing/duplicate native dispatch event",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 2,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 2
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    },
+    "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+  },
+  "auditor_sha256": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666",
+  "input_sha256": {
+    "summary.json": "aaad530c3e35a0ee596b971ddb7a30ea1af78fb1dcdcaa2bf8fc93965abb175a",
+    "wire.json": "7d751dc2485a225b07a3398a5c59f96391a47d9ac4071e117fe390b1f4babe87",
+    "rollouts-sanitized.json": "ca97b6cfe84f292786ee7007d212cf77ca1f1d802cf7be9ef4372c419ae3838f",
+    "native-rollout-supplement.json": "07945296b316c01c96120a4c3b0d2dbf06ea72bf1fd76c57d23dedeee70986a8",
+    "launch.json": "f2625e69be646bceef65e878451190c37857b78e09f139f6273e2ed7809851ef"
+  }
+}

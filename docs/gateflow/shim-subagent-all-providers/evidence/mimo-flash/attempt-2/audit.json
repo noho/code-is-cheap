@@ -1,0 +1,66 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "2",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": false,
+    "B_child_owned_call_result_execution_exact_final": false,
+    "wire_helper_and_exact_allowed_outbound_stages": false,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": "need two distinct native spawn results",
+    "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b68a-bc91-7cb1-8983-c07b213b086e",
+        "text": "LIVE_INITIAL_8d20dc29276b",
+        "completed_at": 1794063915
+      },
+      {
+        "turn_id": "01a1b68a-f6dd-7f42-8386-f5c93c5f8a35",
+        "text": "LIVE_FOLLOWUP_f901ba4a81e9",
+        "completed_at": 1794063925
+      },
+      {
+        "turn_id": "01a1b68b-42f9-7eb2-96ef-7f8ed0fd7551",
+        "text": "LIVE_MESSAGE_OK_5d8bb2ac1f26",
+        "completed_at": 1794063947
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": "separate native MESSAGE consumed; token absent from followup",
+    "B_fixture_absent_from_prompts": "list index out of range",
+    "B_child_owned_call_result_execution_exact_final": "wrong child final",
+    "wire_helper_and_exact_allowed_outbound_stages": "'identity'",
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "2ce698d62b8cedaecd3b7103438239fc31d594827f89fb131ff738d3a90d6a66",
+    "wire.json": "ffced49e47efd9542ff0feea10dd2f0538da32cc7d88d5d8b82f1604b44c71c0",
+    "rollouts-sanitized.json": "7e09656bcc24deb09c639cf1f22db03779dee083f1a92b0d523cc2a4eace5fed",
+    "native-rollout-supplement.json": "f0fbb36f6ef65e9c7c96c7200c45b7e94b8b398ade0a4872aa3bc44d091e7ea7"
+  }
+}

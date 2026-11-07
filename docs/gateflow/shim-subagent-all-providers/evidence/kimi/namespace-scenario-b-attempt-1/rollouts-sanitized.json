@@ -1,0 +1,275 @@
+[
+  {
+    "file": "rollout-2026-11-08T00-02-08-01a1b6be-ef54-7dd2-9c63-c5357864013b.jsonl",
+    "identity": {
+      "id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e"
+          },
+          "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "started_at": 1794067328,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_000000000000038d_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "I'll execute scenario B exactly once: spawn one fresh child with no inherited context, then natively wait for its completed final.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 14,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_spawn_agent:0",
+          "name": "spawn_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"message\": \"NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.\", \"fork_context\": false}",
+          "call_id": "spawn_agent:0",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e"
+          }
+        }
+      },
+      {
+        "line": 17,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6bf-105e-7ae0-a9d1-7b2515b4cd0d",
+          "call_id": "spawn_agent:0",
+          "output": "{\"agent_id\":\"01a1b6bf-1043-79a3-afab-bc0e0350430a\",\"nickname\":\"Aristotle\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "create_time": 1794067337.310953
+          }
+        }
+      },
+      {
+        "line": 22,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_wait_agent:1",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\": [\"01a1b6bf-1043-79a3-afab-bc0e0350430a\"], \"timeout_ms\": 600000}",
+          "call_id": "wait_agent:1",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e"
+          }
+        }
+      },
+      {
+        "line": 25,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6bf-28a8-74f0-b110-6c7a4158b6f5",
+          "call_id": "wait_agent:1",
+          "output": "{\"status\":{\"01a1b6bf-1043-79a3-afab-bc0e0350430a\":{\"completed\":\"HARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "create_time": 1794067343.528977
+          }
+        }
+      },
+      {
+        "line": 31,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_00000000000003b5_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "Diagnostic complete. Executed scenario B exactly once, in sequence, using only the advertised native `multi_agent_v1` tools.\n\n**Sequence performed**\n1. `multi_agent_v1.spawn_agent` — one fresh child, `fork_context=false` (no inherited conversation), no model/effort overrides. The v1 descriptor has no `name` parameter, so `delivery_b` could not be set; the tool assigned nickname \"Aristotle\".\n   - Returned canonical `agent_id`: `01a1b6bf-1043-79a3-afab-bc0e0350430a`\n2. `multi_agent_v1.wait_agent` — targeted wait on the exact returned `agent_id`.\n   - Result: `timed_out: false`, status `completed`.\n\n**Observed child final (verbatim, entire contents of the fixture as returned by the child):**\n```\nHARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8\n```\n\n**Unavailable / not-applicable capabilities observed**\n- `collaboration` (v2) namespace was not advertised in this environment; only `multi_agent_v1` (v1) was available, so v1 descriptors were used.\n- v1 `spawn_agent` descriptor exposes no `name` field, so the requested child name `delivery_b` was unsupported; the exact returned `agent_id` was used for the wait instead.\n- No dispatches were retried, no agents were interrupted or closed, and the parent made no file, shell, JavaScript, or resource-discovery calls. The parent never read the fixture itself; the contents above come solely from the child's native completed final.\n\nParent self-report is informational only; acceptance is determined by independent wire/native evidence.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 34,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "last_agent_message": "Diagnostic complete. Executed scenario B exactly once, in sequence, using only the advertised native `multi_agent_v1` tools.\n\n**Sequence performed**\n1. `multi_agent_v1.spawn_agent` — one fresh child, `fork_context=false` (no inherited conversation), no model/effort overrides. The v1 descriptor has no `name` parameter, so `delivery_b` could not be set; the tool assigned nickname \"Aristotle\".\n   - Returned canonical `agent_id`: `01a1b6bf-1043-79a3-afab-bc0e0350430a`\n2. `multi_agent_v1.wait_agent` — targeted wait on the exact returned `agent_id`.\n   - Result: `timed_out: false`, status `completed`.\n\n**Observed child final (verbatim, entire contents of the fixture as returned by the child):**\n```\nHARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8\n```\n\n**Unavailable / not-applicable capabilities observed**\n- `collaboration` (v2) namespace was not advertised in this environment; only `multi_agent_v1` (v1) was available, so v1 descriptors were used.\n- v1 `spawn_agent` descriptor exposes no `name` field, so the requested child name `delivery_b` was unsupported; the exact returned `agent_id` was used for the wait instead.\n- No dispatches were retried, no agents were interrupted or closed, and the parent made no file, shell, JavaScript, or resource-discovery calls. The parent never read the fixture itself; the contents above come solely from the child's native completed final.\n\nParent self-report is informational only; acceptance is determined by independent wire/native evidence.",
+          "started_at": 1794067328,
+          "completed_at": 1794067351,
+          "duration_ms": 22563,
+          "time_to_first_token_ms": 4590
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-08T00-02-17-01a1b6bf-1043-79a3-afab-bc0e0350430a.jsonl",
+    "identity": {
+      "id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+      "parent_thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+            "depth": 1,
+            "agent_path": null,
+            "agent_nickname": "Aristotle",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e"
+          },
+          "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+          "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "started_at": 1794067337,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 12,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_exec_command:0",
+          "name": "exec_command",
+          "arguments": "{\"cmd\": \"cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt\"}",
+          "call_id": "exec_command:0",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293"
+          }
+        }
+      },
+      {
+        "line": 15,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6bf-20f5-7af3-8dee-aa905b785c58",
+          "call_id": "exec_command:0",
+          "output": "Chunk ID: 8eb649\nWall time: 0.0000 seconds\nProcess exited with code 0\nOriginal token count: 14\nOutput:\nHARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+            "create_time": 1794067341.557437
+          }
+        }
+      },
+      {
+        "line": 18,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_0000000000000388_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "HARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 21,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+          "last_agent_message": "HARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8",
+          "started_at": 1794067337,
+          "completed_at": 1794067343,
+          "duration_ms": 6228,
+          "time_to_first_token_ms": 3370
+        }
+      }
+    ]
+  }
+]

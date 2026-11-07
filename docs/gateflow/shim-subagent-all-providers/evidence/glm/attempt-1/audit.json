@@ -1,0 +1,35 @@
+{
+  "profile": "glm",
+  "attempt": "1",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": false,
+    "B_fixture_absent_from_prompts": false,
+    "B_child_owned_call_result_execution_exact_final": false,
+    "wire_helper_and_exact_allowed_outbound_stages": false,
+    "native_lifecycle": false
+  },
+  "details": {
+    "observed_mode": "unavailable",
+    "advertised_names": [
+      "exec_command"
+    ],
+    "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+    "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": "AssertionError",
+    "B_fixture_absent_from_prompts": "list index out of range",
+    "B_child_owned_call_result_execution_exact_final": "wrong child final",
+    "wire_helper_and_exact_allowed_outbound_stages": "incomplete observer stage schema (pre-fix attempt)",
+    "native_lifecycle": "AssertionError"
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "af9d07e022b6d5599ee2b45e50478a2481e43d02b104b3945519e6d044864ae6",
+    "wire.json": "0bbaa986a00d97d1363876175e15df2f2c9b4a097f6fdeb454559ff3fd9314c3",
+    "rollouts-sanitized.json": "7746c83d1481f54b52fb86e24b9438b76a7a7f82ef2e0477f2878270e97d3368"
+  }
+}

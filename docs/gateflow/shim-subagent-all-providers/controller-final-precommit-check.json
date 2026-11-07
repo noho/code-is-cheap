@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-07T18:34:57.558557+00:00",
+  "freeze_v2_files_checked": 536,
+  "mismatches": [],
+  "json_files_screened": 291,
+  "nonempty_direct_secret_fields": [],
+  "scope": "Frozen bytes, intended paths and metadata-key privacy screen; no exhaustive secret-attestation or new provider request claim"
+}

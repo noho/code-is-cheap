@@ -1,0 +1,47 @@
+............................WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: no compatible direct-tool session template in Codex's catalog; template shape changed or compatible models were removed; nothing written
+WARNING: renamed-direct: already present in Codex's catalog; refusing to replace built-in metadata
+..
+----------------------------------------------------------------------
+Ran 30 tests in 39.258s
+
+OK
+Actual native staged rejection (synthetic fixture):
+WARNING: ds-flash: staged /private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpgiy9q5u7/catalog-validate.7havqonk/ds-flash.json: native parser failed (exit 1): WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpgiy9q5u7" (codex_home: AbsolutePathBuf("/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpgiy9q5u7/catalog-src.abanthbp"))
+Error: failed to parse model_catalog_json path `/private/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmpgiy9q5u7/catalog-validate.7havqonk/ds-flash.json` as JSON: unknown variant `native-invalid-enum`, expected `bytes` or `tokens` at line 235 column 5
+
+1 warning(s) — catalog may be stale; see above
+
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmprs8vaomw/not-created/kimi.json
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmprs8vaomw/not-created/mimo.json
+dry-run: would write /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/tmprs8vaomw/not-created/qwen.json
+note: mimo: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-fast: MiMo max is user-confirmed; official effort metadata is preserved
+note: mimo-flash: MiMo max is user-confirmed; official effort metadata is preserved
+note: qwen: Qwen max is selected but unadvertised; official effort metadata is preserved

@@ -1,0 +1,42 @@
+{
+  "codex-agent/bin/codex-auto-review-shim": {
+    "sha256": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d.source.gz"
+  },
+  "codex-agent/shim-routes.json": {
+    "sha256": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6.source.gz"
+  },
+  "docs/gateflow/shim-subagent-delivery/native-probe.py": {
+    "sha256": "efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2.source.gz"
+  },
+  "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": {
+    "sha256": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146.source.gz"
+  },
+  "tests/test_shim_native_namespace.py": {
+    "sha256": "4cf56584a9ac1b971df51b22de2e21943c9f596703d4f7abc77344d0570a745f",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/4cf56584a9ac1b971df51b22de2e21943c9f596703d4f7abc77344d0570a745f.source.gz"
+  },
+  "tests/test_shim_native_evidence.py": {
+    "sha256": "7da611208e5f1bfcd29921149ecf6a360e8bb7c5aa4aaef4fc8464e81ee0dd80",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/7da611208e5f1bfcd29921149ecf6a360e8bb7c5aa4aaef4fc8464e81ee0dd80.source.gz"
+  },
+  "README.md": {
+    "sha256": "88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e.source.gz"
+  },
+  "README.zh.md": {
+    "sha256": "448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a.source.gz"
+  },
+  "docs/gateflow/shim-subagent-all-providers/implementation-native-namespace.md": {
+    "sha256": "f571ab58d4e723f241f3f2d31d01bc9aac3c822cfe66d1c73ef68f78fa61d766",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/f571ab58d4e723f241f3f2d31d01bc9aac3c822cfe66d1c73ef68f78fa61d766.source.gz"
+  },
+  "docs/gateflow/shim-subagent-all-providers/evidence/namespace-current-matrix.json": {
+    "sha256": "3457908fdb70cc1735cb04f2100c156ce9c21d9e11099ac22c2a48fdf56eef16",
+    "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-snapshots/3457908fdb70cc1735cb04f2100c156ce9c21d9e11099ac22c2a48fdf56eef16.source.gz"
+  }
+}

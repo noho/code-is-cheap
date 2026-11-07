@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-07T16:52:47.537215+00:00",
+  "reason": "Confirmed contradictory v2 diagnostic completion prompt repeatedly awaits a new mailbox edge after exact fresh child FINAL receipts; preserve incomplete attempt before bounded harness correction",
+  "scope": "Only isolated A3 app-server fixture; external gpt-6-sol delegate, original user sessions and live shim untouched",
+  "identity": [
+    {
+      "pid": 9451,
+      "fds": [
+        "2"
+      ],
+      "names": [
+        "/Users/leo/workspace/code-is-cheap/docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/app-server.stderr"
+      ],
+      "command": "codex"
+    }
+  ],
+  "signal": "SIGINT",
+  "driver_preserved": true,
+  "result": "signal_sent"
+}

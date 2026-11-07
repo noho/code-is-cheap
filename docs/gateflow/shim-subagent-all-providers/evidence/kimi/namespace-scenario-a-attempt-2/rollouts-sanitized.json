@@ -1,0 +1,345 @@
+[
+  {
+    "file": "rollout-2026-11-08T00-17-34-01a1b6cd-0e76-7ed3-8c72-faf7e3769713.jsonl",
+    "identity": {
+      "id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-rfj39xr_"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          },
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "started_at": 1794068254,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 12,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_spawn_agent_0_f5511f86",
+          "name": "spawn_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"fork_context\":false,\"message\":\"只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件\"}",
+          "call_id": "spawn_agent_0_f5511f86",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          }
+        }
+      },
+      {
+        "line": 15,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6cd-5263-73c2-ae0f-5788aa989799",
+          "call_id": "spawn_agent_0_f5511f86",
+          "output": "{\"agent_id\":\"01a1b6cd-524f-7072-914d-00d725a7c5ce\",\"nickname\":\"Dirac\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "create_time": 1794068271.715324
+          }
+        }
+      },
+      {
+        "line": 20,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_wait_agent_1_0eb860a8",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\":[\"01a1b6cd-524f-7072-914d-00d725a7c5ce\"],\"timeout_ms\":30000}",
+          "call_id": "wait_agent_1_0eb860a8",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          }
+        }
+      },
+      {
+        "line": 23,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6cd-6481-71c3-b9aa-e500681a75ce",
+          "call_id": "wait_agent_1_0eb860a8",
+          "output": "{\"status\":{\"01a1b6cd-524f-7072-914d-00d725a7c5ce\":{\"completed\":\"LIVE_PROBE_OK\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "create_time": 1794068276.353691
+          }
+        }
+      },
+      {
+        "line": 28,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_send_input_2_9b9c21f9",
+          "name": "send_input",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"message\":\"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_6effeee1095c. Do not use tools, read/write files, or delegate.\",\"target\":\"01a1b6cd-524f-7072-914d-00d725a7c5ce\"}",
+          "call_id": "send_input_2_9b9c21f9",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          }
+        }
+      },
+      {
+        "line": 31,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6cd-72da-7e93-bebf-7fe101f96280",
+          "call_id": "send_input_2_9b9c21f9",
+          "output": "{\"submission_id\":\"01a1b6cd-72b5-7f33-9b31-b57844d50f58\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "create_time": 1794068280.026288
+          }
+        }
+      },
+      {
+        "line": 35,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_wait_agent_3_34e85d77",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\":[\"01a1b6cd-524f-7072-914d-00d725a7c5ce\"],\"timeout_ms\":30000}",
+          "call_id": "wait_agent_3_34e85d77",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          }
+        }
+      },
+      {
+        "line": 38,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6cd-865d-73d2-8be9-1e2b67d124f4",
+          "call_id": "wait_agent_3_34e85d77",
+          "output": "{\"status\":{\"01a1b6cd-524f-7072-914d-00d725a7c5ce\":{\"completed\":\"LIVE_FOLLOWUP_6effeee1095c\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "create_time": 1794068285.021225
+          }
+        }
+      },
+      {
+        "line": 43,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_00000000000002e6_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "Observed native `multi_agent_v1` results:\n\n- A1 spawn target: `01a1b6cd-524f-7072-914d-00d725a7c5ce`\n- A1 completed final: `LIVE_PROBE_OK`\n- A2 completed final: `LIVE_FOLLOWUP_6effeee1095c`\n\nA3: N/A. The actual advertised `multi_agent_v1` descriptors do not include a separate `send_message` capability; they include `send_input` for continuation messaging, so no separate MESSAGE/send_message step was performed.\n\nNo explicit tool errors observed.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 46,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "last_agent_message": "Observed native `multi_agent_v1` results:\n\n- A1 spawn target: `01a1b6cd-524f-7072-914d-00d725a7c5ce`\n- A1 completed final: `LIVE_PROBE_OK`\n- A2 completed final: `LIVE_FOLLOWUP_6effeee1095c`\n\nA3: N/A. The actual advertised `multi_agent_v1` descriptors do not include a separate `send_message` capability; they include `send_input` for continuation messaging, so no separate MESSAGE/send_message step was performed.\n\nNo explicit tool errors observed.",
+          "started_at": 1794068254,
+          "completed_at": 1794068295,
+          "duration_ms": 40815,
+          "time_to_first_token_ms": 5120
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-08T00-17-51-01a1b6cd-524f-7072-914d-00d725a7c5ce.jsonl",
+    "identity": {
+      "id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+      "parent_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+            "depth": 1,
+            "agent_path": null,
+            "agent_nickname": "Dirac",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-rfj39xr_"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b6cd-5258-75e2-af64-73645e18e1fc",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      },
+      {
+        "turn_id": "01a1b6cd-72b5-7f33-9b31-b57844d50f58",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6cd-5258-75e2-af64-73645e18e1fc",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          },
+          "turn_id": "01a1b6cd-5258-75e2-af64-73645e18e1fc",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "started_at": 1794068271,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_00000000000002cc_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_PROBE_OK",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-5258-75e2-af64-73645e18e1fc",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 16,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "turn_id": "01a1b6cd-5258-75e2-af64-73645e18e1fc",
+          "last_agent_message": "LIVE_PROBE_OK",
+          "started_at": 1794068271,
+          "completed_at": 1794068276,
+          "duration_ms": 4640,
+          "time_to_first_token_ms": 3715
+        }
+      },
+      {
+        "line": 17,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6cd-72b5-7f33-9b31-b57844d50f58",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542"
+          },
+          "turn_id": "01a1b6cd-72b5-7f33-9b31-b57844d50f58",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "started_at": 1794068279,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 24,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_000000000000019e_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_FOLLOWUP_6effeee1095c",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6cd-72b5-7f33-9b31-b57844d50f58",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 27,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "turn_id": "01a1b6cd-72b5-7f33-9b31-b57844d50f58",
+          "last_agent_message": "LIVE_FOLLOWUP_6effeee1095c",
+          "started_at": 1794068279,
+          "completed_at": 1794068285,
+          "duration_ms": 5021,
+          "time_to_first_token_ms": 3372
+        }
+      }
+    ]
+  }
+]

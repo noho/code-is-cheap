@@ -1,0 +1,183 @@
+{
+  "profile": "hy",
+  "attempt": "2",
+  "passed": true,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b688-11e3-7551-95e9-5b350beff9a7": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b688-11f5-75b0-9bb2-880d71629b25",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b689-2956-7fe0-8bc7-947b3e67aab2": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b689-2961-76e0-b4b5-1bec893cedcb",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b689-4464-7f91-aadb-d6bacc8fcc87",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b689-71df-7803-8bc2-38f954df994c": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b689-71eb-7ea3-9583-4216d7fcfd49",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "chatcmpl-tool-9b2e14a738393f3c",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_80a45656ecc9. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "send_input",
+        "call_id": "chatcmpl-tool-8a779be623297560",
+        "args": {
+          "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_ceed9e9c00e5. Do not use tools, read/write files, or delegate.",
+          "target": "01a1b689-2956-7fe0-8bc7-947b3e67aab2"
+        }
+      },
+      {
+        "name": "spawn_agent",
+        "call_id": "chatcmpl-tool-8c82346d7f5fb421",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-krejtofw/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b689-2961-76e0-b4b5-1bec893cedcb",
+        "text": "LIVE_INITIAL_80a45656ecc9",
+        "completed_at": 1794063808
+      },
+      {
+        "turn_id": "01a1b689-4464-7f91-aadb-d6bacc8fcc87",
+        "text": "LIVE_FOLLOWUP_ceed9e9c00e5",
+        "completed_at": 1794063813
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "chatcmpl-tool-956ca3cd3e95f53c",
+      "tool": "exec_command",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "chatcmpl-tool-956ca3cd3e95f53c",
+        "process_id": "6616",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-krejtofw/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-krejtofw",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-krejtofw/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-krejtofw/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_a10d24b588a9443187c90ef3d5276224",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 17167
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b689-71eb-7ea3-9583-4216d7fcfd49",
+          "text": "HARMLESS_NATIVE_CONTENT_a10d24b588a9443187c90ef3d5276224",
+          "completed_at": 1794063830
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 11,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 11
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "b929e1915ad830f7a0807819c15a2891228cf888b0f9a5cbbdbc402a388e872c",
+    "wire.json": "1b41c8efd3bcba9076a64798f3627dbd833ecaaa360c5b224166be812b6c5bd5",
+    "rollouts-sanitized.json": "f227d587be75ef6c9f35c7db22ee044831cb038bb875fbace781a67799a7f5e3",
+    "native-rollout-supplement.json": "00c7abc91b87013189a8b51fd11c9285faaca5907e3e71a51ef71aa3642c0513"
+  }
+}

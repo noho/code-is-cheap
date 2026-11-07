@@ -1,0 +1,175 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "1",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b675-aacb-7db1-9394-4a71ec1cd681": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b675-aadc-7f02-ab9a-bc822a5ff1b8",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b675-c95f-73d1-8492-89152c1004ee": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b675-c962-7783-8586-7c4f05bbabcb",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b676-a899-7af1-a8c2-2b0ac2b773f7",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b677-5166-7800-b877-a8755a6716b7",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b677-7208-75d0-b312-932eb18798f5": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b677-7214-7962-bd9a-41374dcb3862",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b675-c962-7783-8586-7c4f05bbabcb",
+        "text": "LIVE_INITIAL_7590ae64ed63",
+        "completed_at": 1794062576
+      },
+      {
+        "turn_id": "01a1b676-a899-7af1-a8c2-2b0ac2b773f7",
+        "text": "LIVE_FOLLOWUP_f67b93936d1f",
+        "completed_at": 1794062595
+      },
+      {
+        "turn_id": "01a1b677-5166-7800-b877-a8755a6716b7",
+        "text": "LIVE_MESSAGE_OK_3dcfb075731e",
+        "completed_at": 1794062638
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": "separate native MESSAGE consumed; token absent from followup",
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "ctc_c90ca8d839114c39b57399cbfdb5d3f5",
+      "tool": "exec",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "exec-44cc2069-1f46-4225-baaf-8f38eb11568e",
+        "process_id": "11960",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-0dr8s_ty/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-0dr8s_ty",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-0dr8s_ty/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-0dr8s_ty/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_ce72b042cc1b4dc1855f09d774c56d51",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 18333
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b677-7214-7962-bd9a-41374dcb3862",
+          "text": "HARMLESS_NATIVE_CONTENT_ce72b042cc1b4dc1855f09d774c56d51",
+          "completed_at": 1794062655
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 17,
+      "converted_including_history": 32,
+      "http_statuses": {
+        "200": 17
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "4cdc1fb82400d7f6ffc4bd635bd5b40a541f3aba24254aac8b944ffec477c747",
+    "wire.json": "c3657cb7b36ab67be0099f08f591d410d328a7caff3bc5fff89ec7002875c105",
+    "rollouts-sanitized.json": "5976e4542be26feb744d3ec648b1c7786e00d74f222bec522e297b90e51d69e3",
+    "native-rollout-supplement.json": "5ce1e6fd1d02d6791396b7221e464bc41bb87593c30e8217357437efb14257f7"
+  }
+}

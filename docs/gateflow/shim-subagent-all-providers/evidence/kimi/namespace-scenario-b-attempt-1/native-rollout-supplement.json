@@ -1,0 +1,172 @@
+[
+  {
+    "thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+    "source_rollout_sha256": "c8274af0b047e4dd2806df07d75a7480d0baa7cf81956f1a4a8fa2d95ebafb49",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "k3",
+          "model_provider_id": "kimi",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv"
+        }
+      },
+      {
+        "line": 15,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+          "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "spawn_agent:0",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+            "receiver_thread_ids": [
+              "01a1b6bf-1043-79a3-afab-bc0e0350430a"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+                "agent_nickname": "Aristotle"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.",
+            "model": "k3",
+            "reasoning_effort": "max",
+            "agents_states": {
+              "01a1b6bf-1043-79a3-afab-bc0e0350430a": "pending_init"
+            }
+          },
+          "started_at_ms": 1794067337283,
+          "completed_at_ms": 1794067337295
+        }
+      },
+      {
+        "line": 24,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+          "turn_id": "01a1b6be-ef73-7f31-b02d-ea0149f0217e",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "wait_agent:1",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+            "receiver_thread_ids": [
+              "01a1b6bf-1043-79a3-afab-bc0e0350430a"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+                "agent_nickname": "Aristotle"
+              }
+            ],
+            "agents_states": {
+              "01a1b6bf-1043-79a3-afab-bc0e0350430a": {
+                "completed": "HARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8"
+              }
+            }
+          },
+          "started_at_ms": 1794067340435,
+          "completed_at_ms": 1794067343525
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+    "source_rollout_sha256": "ca40d9bcf761ec12c56b2955dc2bf3055be60da237daed919918dd27e7744583",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "k3",
+          "model_provider_id": "kimi",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv"
+        }
+      },
+      {
+        "line": 14,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+          "turn_id": "01a1b6bf-104c-7431-951e-5fe085303293",
+          "item": {
+            "type": "CommandExecution",
+            "id": "exec_command:0",
+            "process_id": "76687",
+            "command": [
+              "/bin/zsh",
+              "-c",
+              "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt"
+            ],
+            "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv",
+            "parsed_cmd": [
+              {
+                "type": "read",
+                "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt",
+                "name": "harmless-target.txt",
+                "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-oyw8ysnv/harmless-target.txt"
+              }
+            ],
+            "source": "unified_exec_startup",
+            "status": "completed",
+            "aggregated_output": "HARMLESS_NATIVE_CONTENT_1f2743d96ff94490afdb5e6003209db8",
+            "exit_code": 0,
+            "duration": {
+              "secs": 0,
+              "nanos": 18833
+            }
+          },
+          "started_at_ms": 1794067341554,
+          "completed_at_ms": 1794067341554
+        }
+      }
+    ]
+  }
+]

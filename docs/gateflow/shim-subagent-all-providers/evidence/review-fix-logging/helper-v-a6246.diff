@@ -1,0 +1,39 @@
+--- a6246-baseline/codex-agent/bin/codex-auto-review-shim
++++ logging-fix/codex-agent/bin/codex-auto-review-shim
+@@ -552,7 +552,8 @@
+         if not isinstance(doc, dict):
+             return "?", "-"
+         names = []
+-        for t in doc.get("tools") or []:
++        tools = doc.get("tools")
++        for t in tools if isinstance(tools, list) else []:
+             if not isinstance(t, dict):
+                 names.append("?"); continue
+             fn = t.get("function") if isinstance(t.get("function"), dict) else {}
+@@ -744,19 +745,19 @@
+             self.close_connection = True
+             return
+ 
+-        if native_map and 200 <= resp.status < 300:
+-            self._relay_native_response(resp, native_map)
+-            return
+-
+-        if not (200 <= resp.status < 300) and body:
+-            self._dump(body, str(resp.status))
+-
+         warn = "" if how.split("+")[0] in ("bytes", "json", "none") else f"  <<< 未能改写（{how}）"
+         model, tools = self._summary(body, encoding)
+         self._log(
+             f"{self.command} {self.path} -> {resp.status} "
+             f"model={model} enc={encoding or '-'} rewrite={how} tools={tools}{warn}"
+         )
++
++        if native_map and 200 <= resp.status < 300:
++            self._relay_native_response(resp, native_map)
++            return
++
++        if not (200 <= resp.status < 300) and body:
++            self._dump(body, str(resp.status))
+ 
+         self.send_response(resp.status)
+         for k, v in resp.headers.items():

@@ -1,0 +1,114 @@
+{
+  "created_at": "2026-11-07T16:35:49.508270+00:00",
+  "current_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "baseline_helper_sha256": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+  "baseline_retrievable": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d.source.gz",
+  "changed_function_or_class_ASTs": [
+    "native_agent_request"
+  ],
+  "unchanged_function_or_class_ASTs": [
+    "Handler",
+    "NativeProtocolError",
+    "NoRedirect",
+    "_make_server",
+    "_swap",
+    "drop_tools_item",
+    "endpoint_module",
+    "fix_agent_messages",
+    "fix_message_ids",
+    "json_object_format",
+    "load_routes",
+    "main",
+    "native_sse_events",
+    "restore_native_response",
+    "restore_native_sse_event",
+    "rewrite",
+    "route_url",
+    "upstream_open",
+    "upstream_url"
+  ],
+  "all_other_existing_files_unchanged": true,
+  "changed_existing_files": [
+    "tests/test_shim_native_evidence.py",
+    "tests/test_shim_native_namespace.py",
+    "codex-agent/bin/codex-auto-review-shim",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py"
+  ],
+  "Kimi": {
+    "reuse": [
+      "kimi/namespace-scenario-a-attempt-2",
+      "kimi/namespace-scenario-b-attempt-2"
+    ],
+    "comparison": "Actual A2+B2 before_tools replayed with captured agent-message items plus namespaced function_call/additional_tools history; equal full returned bytes and map vs 7cdaf baseline. flatten=True selects exactly top tools; same collision inspection of both known containers; all response and Handler AST unchanged.",
+    "test": "LiteLocationContracts.test_kimi_baseline_top_only_actual_a2_b2_and_history_equivalence",
+    "no_new_inference": true,
+    "B1_prior_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/final-source-native-applicability.json",
+    "prior_helper_5d_to_7c": "Retained prior applicability: 2xx and no group-label collision; stronger same-source A2+B2 preferred.",
+    "route_registry_profile_exact_launch_equality": true
+  },
+  "seven_routes": {
+    "prior_proof": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/seven-route-bounded-reuse.json",
+    "current_validation": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline, rerun namespace-final.log; seven routes explicit false flags, 200+429, gzip/identity complete request/response bytes vs cd8e baseline.",
+    "registry_routes_profiles_catalog_sources": "all repository source files identical to entry manifest; no configuration/model/effort/policy/catalog modifications",
+    "external_settings": "No external configurations changed in this delegate; bounded reuse inherits prior captured effective settings and prior catalog equality, not a new external-service availability claim."
+  },
+  "historical_evidence_contract": "Old 5d/7cdaf source hashes retain top-only map audit; no new container fields required retroactively. Current other helper hashes require source version2/container/type/path/map/parser evidence.",
+  "limitations": [
+    "Source/path applicability plus offline checks is not fresh inference on final helper for Kimi or seven unaffected routes.",
+    "DS remains conditional historical reuse.",
+    "No A2 success claimed after startup OS permission failure."
+  ],
+  "subsequent_controller_decision": "preservation-check.json records the separately observed controller-owned control.md append and declared A3 setup correction; no delegate edits to control.md.",
+  "extra_final_Kimi_auditor_case": {
+    "script": "kimi-auditor-container-check.py",
+    "sha256": "fa068daee0f27d92bc12dbbeeb0f54bf28d965f698f428f87cb2970b94879396",
+    "log": "kimi-auditor-container-check.log",
+    "real_handler_cases": 2,
+    "passed": true,
+    "scope": "Current-version auditor/observer confirms flatten=True top-only map with both sources and empty top-level source."
+  },
+  "protected_repository_source_hashes_equal_entry": {
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "codex-agent/profiles/gpt-6-sol/config.toml": "7a1bfdd0f4490eb3d0696b8eb3a3ca776c525a14fcb5268fa1b41f7f07799e92",
+    "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+    "codex-agent/profiles/hy/config.toml": "a9ab4e2d9b6d5dcc08f2238a26cce143acf97a107f4cd0cac22e97a3852aeca6",
+    "codex-agent/profiles/mimo/config.toml": "84d415a340929289f0c5ac882b8f79f725999d9ef0517d5bed1c0ae1d10d11ed",
+    "codex-agent/profiles/gpt-6-astra-max/config.toml": "9f186f38ac952bdda61414728d06040aa3f5f37ff371b5037b3d9c7f4914c7d7",
+    "codex-agent/profiles/gpt-6-astra/config.toml": "0b3ad5994231e4a42e2cfda3fb54d83b9013b41b3b3a2bdf0011212099955d10",
+    "codex-agent/profiles/gpt-6-luna/config.toml": "869f6829a312e9234546790cb9b40dbab830903b8bce82ba586ecdd9d5216221",
+    "codex-agent/profiles/qwen/config.toml": "5b852047b207be262837fb57a5bfe2ac04c44f688bec273e7af55551436a47a1",
+    "codex-agent/profiles/local/config.toml": "4f0a37e4480eb3a6536af2c2c9a92b1b65f1579c4df5b49ed7b96579659d33d5",
+    "codex-agent/profiles/gpt-6-astra-x/config.toml": "8110f0950d8c7118b9aa21205372e4b232efee3c4956734cc1b0a6c6300314e0",
+    "codex-agent/profiles/gpt-6-sol-x/config.toml": "f79e015d249fd7ac2feae24dfdd30cd1c005be31596c8df11ad2852b6f535d32",
+    "codex-agent/profiles/ds-flash/config.toml": "3efa69426008d77307386b1039c610d1a12e9b6fba5a17eb5b3c31dbe922ae66",
+    "codex-agent/profiles/gpt-6-sol-max/config.toml": "45386cb3e6035b2910ec0c8965b08cfce7d055b56fdb35bb78b12efe5c641d74",
+    "codex-agent/profiles/mimo-fast/config.toml": "79ab29f958e6031fbae9d9fd7a436cd04204043394975363728f2a88c503fc81",
+    "codex-agent/profiles/glm/config.toml": "dcb511ad76f9d81efaad221fceb3c5dfe21d328a294a5021867110f29179807e",
+    "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+    "codex-agent/profiles/glm-flash/config.toml": "8fe06eb38332b03fbc84508130aa30d96d12588b05e0eac156b7edef2a6c31b2",
+    "codex-agent/catalog-sources/kimi-model-catalogs.json": "61990fe840fe299eafc08460b16da5b53c720cc34ccd147e820265dd2f1f50d4",
+    "codex-agent/catalog-sources/mimo-model-catalogs.json": "8834dc34d879b8489b7376a5a1788f0d1b696f8410fc2df3544ad38ab145601a",
+    "codex-agent/catalog-sources/README.md": "7b3b7e663459b775beefe7d9d86a4b7f9304d337553b83c713608849be0785e0",
+    "codex-agent/catalog-sources/ds-model-catalogs.json": "d47876f3bca395fe2d9d3c7fc7312282a60da8a2479dd13b995cb8e0fe2695dd",
+    "codex-agent/catalog-sources/glm-model-catalogs.json": "94cf9e8df540be39aa2948bf14ae665ec76699b1740d5344f499dd67fc71d1a3",
+    "codex-agent/catalog-sources/qwen-model-catalogs.json": "4bc94831cb66e43aaf4c375543f92883bfa1d3116a4065c5796c5de29e8a019c"
+  },
+  "harness_only_receipt_correction": {
+    "authority": "control.md Controller validation fix: contradictory update-wait prompt",
+    "production_helper_unchanged": true,
+    "Kimi_v1_and_all_prompt_guard": "New prompt function is called only within declared short-case branch when actual selected catalog multi_agent_version is v2. Kimi v1 unchanged; no fresh Kimi inference.",
+    "B2_applicability": "Same production helper/routes/registry/profile/catalog/model/effort/runtime/policy. Changed future v2 completion prose neither edits B2 immutable tasks/results nor native history. Current strict auditor revalidates B2 exact FINAL receipt and actual wait, child-owned linked fixture exec/result/exit0. Every old audit/source snapshot retained.",
+    "B2_final_reaudit": "../mimo-flash/namespace-scenario-b-attempt-2/audit-receipt-final.json",
+    "Kimi_final_aggregate": "kimi-a2-b2-final-receipt-reader-aggregate.json",
+    "tests": "evidence-receipt-fix-initial.log (33), observer-receipt-fix.log (2), kimi-auditor-receipt-fix.log (2 real-handler cases)",
+    "final_hashes": {
+      "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7"
+    }
+  }
+}

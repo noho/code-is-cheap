@@ -1,0 +1,158 @@
+{
+  "profile": "hy",
+  "attempt": "1",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b676-73a1-7321-a21e-8ad09ed7832b": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b676-73b2-7130-9776-1552486ec5f7",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b677-64b0-70d2-909b-30e0b08ed6f9": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b677-64bb-7762-b186-fe30fd1f6e61",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b677-8203-73b2-84c8-3baecb04e5e7",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b677-c401-7460-948a-7d0b48a726fd": {
+        "provider": "hy",
+        "contexts": [
+          {
+            "turn_id": "01a1b677-c408-7333-a881-67bcbb3ade52",
+            "model": "hy4",
+            "model_provider": null,
+            "effort": "high",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": "parent used non-collaboration tool",
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b677-64bb-7762-b186-fe30fd1f6e61",
+        "text": "LIVE_INITIAL_ed582d2cdf71",
+        "completed_at": 1794062644
+      },
+      {
+        "turn_id": "01a1b677-8203-73b2-84c8-3baecb04e5e7",
+        "text": "LIVE_FOLLOWUP_8421ce4050ca",
+        "completed_at": 1794062650
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "chatcmpl-tool-b9cfa78eb7af084c",
+      "tool": "exec_command",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "chatcmpl-tool-b9cfa78eb7af084c",
+        "process_id": "82120",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-hy-eguyg42o/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_a38c29e303ff447b9a29bf262c43a566",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 18458
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b677-c408-7333-a881-67bcbb3ade52",
+          "text": "HARMLESS_NATIVE_CONTENT_a38c29e303ff447b9a29bf262c43a566",
+          "completed_at": 1794062672
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 14,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 14
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "2b2408a12c937d2598ac9bdbbc87b4270a636d9b9b82421f069916703f7cbde7",
+    "wire.json": "f6380fb5f8cd57be650439e1684e4177f4b9e38216ede5098b2b64dfefadcd81",
+    "rollouts-sanitized.json": "b8878c3edadafebf9d8633ee1b6d478954369ed6d86fdf28334000651fbfbf2e",
+    "native-rollout-supplement.json": "c8091add29074cc59b66b0538fca0b75998beb29d1ebb0ac59fc1a031d777eb3"
+  }
+}

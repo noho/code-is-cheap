@@ -1,0 +1,55 @@
+{
+  "declared_at_utc": "2026-11-07T16:17:29.499704+00:00",
+  "controller_authorization": "control.md final entry and controller-wait-receipt-decision.md require fresh corrected Kimi A; failed attempts retained.",
+  "concrete_fix": "Short-case prompt now unambiguously distinguishes v1 boolean fork_context=false from v2 string fork_turns=none, prohibiting unsupported v2-only fields in v1. Default all prompt remains unchanged. No source adapter/schema/arguments fallback.",
+  "bounded_retest": "One new Kimi A, then independent B because the shared short-case spawn guidance changed and the strict A+B aggregate requires matched launch sources. Earlier B/1 positive remains intact. No MiMo inference rerun.",
+  "offline_tests": {
+    "namespace": 19,
+    "delivery": 13,
+    "auditor": 27,
+    "all_pass": true
+  },
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146"
+  },
+  "max_concurrency": 1,
+  "attempts": [
+    {
+      "scenario": "a",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "kimi",
+        "--scenario",
+        "a",
+        "--attempt",
+        "2",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2",
+        "--initial-marker",
+        "LIVE_PROBE_OK"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2"
+    },
+    {
+      "scenario": "b",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "kimi",
+        "--scenario",
+        "b",
+        "--attempt",
+        "2",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2"
+    }
+  ]
+}

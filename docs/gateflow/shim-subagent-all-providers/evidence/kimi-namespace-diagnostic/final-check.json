@@ -1,0 +1,32 @@
+{
+  "scope": "Diagnostic source integrity and evidence consistency only; no production test suite run",
+  "version": "codex-cli 0.167.0",
+  "harness_snapshot_matches_launch": true,
+  "json_parse": true,
+  "earlier_integrity_check_attempt": "Initial final-check applied a trailing-newline assertion to raw driver JSON, which intentionally has no trailing newline; narrowed that cosmetic assertion to the authored plan. Second attempt looked for parent_id in pre-start launch.json; corrected to completed summary.json. No raw evidence changed.",
+  "production_helper_unchanged": true,
+  "route_profile_registry_catalog_hashes_unchanged_since_launch": true,
+  "new_test_ids_only": [
+    "01a1b688-143c-7771-a243-6d553ea9e735"
+  ],
+  "concurrency": "One Kimi profile; no other native profile started by this delegate",
+  "all_attempts_retained": [
+    "namespace-prototype-1"
+  ],
+  "no_native_success_claim": true,
+  "no_production_implementation": true,
+  "no_response_rewrite": true,
+  "auth_values_in_evidence": false,
+  "private_destination": "Only equality/key-present booleans and wire model retained",
+  "files_at_final": {
+    "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+    "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+    "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21"
+  },
+  "baseline_copies": {
+    "/private/tmp/shim-kimi-namespace-baseline/native-probe.py": "f14aee11f19d9998442355ce8b291e9d5bfc57954e84f9101120e017ae03ca13",
+    "/private/tmp/shim-kimi-namespace-baseline/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+  }
+}

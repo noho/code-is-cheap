@@ -176,7 +176,7 @@ class DeliveryTests(unittest.TestCase):
         self.assertEqual(out['input'][0]['role'], 'user')
         self.assertEqual(h.wfile.getvalue(), b'event: response.completed\n')
 
-    def test_route_flag_explicit_default_off_ds_only(self):
+    def test_route_flag_explicit_default_off_all_managed(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / 'routes.json'
             path.write_text(json.dumps({'agent_message_fix': True, 'routes': [
@@ -185,7 +185,60 @@ class DeliveryTests(unittest.TestCase):
             with patch.dict(os.environ, {'SHIM_ROUTES': str(path)}):
                 self.assertEqual([r['agent_message_fix'] for r in shim.load_routes()], [False, True])
         routes = json.loads((ROOT / 'codex-agent/shim-routes.json').read_text())['routes']
-        self.assertEqual([r['endpoint_id'] for r in routes if r.get('agent_message_fix')], ['ds-flash'])
+        self.assertEqual({r['endpoint_id'] for r in routes if r.get('agent_message_fix')},
+                         {'ds-flash', 'glm', 'glm-flash', 'kimi', 'mimo', 'mimo-fast', 'mimo-flash', 'qwen', 'hy'})
+        self.assertEqual(len(routes), 9)
+        self.assertFalse(any(r.get('drop_tools_item') for r in routes))
+
+    def test_all_routes_preserve_native_items_and_existing_transform_contracts(self):
+        routes = json.loads((ROOT / 'codex-agent/shim-routes.json').read_text())['routes']
+        for route in routes:
+            for encoding in ('identity', 'gzip', 'deflate'):
+                with self.subTest(route=route['endpoint_id'], encoding=encoding):
+                    doc = {'model': route['to'], 'stream': True,
+                           'input': [agent(), {'type': 'additional_tools', 'id': 'at_native', 'tools': [{'type': 'custom', 'name': 'exec'}]},
+                                     {'type': 'custom_tool_call', 'call_id': 'call_x', 'input': 'text(await tools.exec_command({cmd:"cat fixture"}))'},
+                                     {'type': 'custom_tool_call_output', 'call_id': 'call_x', 'output': 'preserved'},
+                                     {'type': 'agent_message_future', 'content': {'opaque': True}}],
+                           'reasoning': {'context': 'OPAQUE'},
+                           'text': {'format': {'type': 'json_schema', 'name': 'result', 'schema': {}}}}
+                    raw = encode(doc)
+                    body = shim.ENCODERS.get(encoding, lambda b: b)(raw)
+                    h = Mock(spec=shim.Handler)
+                    h.route = {**route, 'from': 'codex-auto-review'}
+                    h.headers = {'Content-Length': str(len(body)), 'Content-Encoding': encoding, 'X-Responses-Lite': 'true', 'Authorization': 'WRONG'}
+                    h.rfile, h.wfile = io.BytesIO(body), io.BytesIO()
+                    h.command, h.path, h._summary = 'POST', route['request_prefix'] + '/responses', shim.Handler._summary
+                    response = Mock(status=200, headers={})
+                    response.read1.side_effect = [b'event: response.completed\n', b'']
+                    with patch.object(shim, 'endpoint_module') as endpoint, patch.object(shim, 'upstream_open', return_value=response) as opening:
+                        endpoint.return_value.connection.return_value = {'base_url': 'https://example.invalid/v1', 'upstream_model': 'wire/model', 'api_key': 'FAKE'}
+                        shim.Handler._handle(h)
+                        endpoint.return_value.connection.assert_called_once_with(route['endpoint_id'], 'codex', require_key=True)
+                    req = opening.call_args.args[0]
+                    actual = json.loads(shim.DECODERS.get(encoding, lambda b: b)(req.data))
+                    expected, _ = shim.fix_agent_messages(raw)
+                    expected = json.loads(expected)
+                    expected['model'] = 'wire/model'
+                    if route['id_fix']:
+                        expected['input'][1]['id'] = 'msg_native'
+                    if route['json_fmt_fix']:
+                        expected['text']['format'] = {'type': 'json_object'}
+                    self.assertEqual(actual, expected)
+                    self.assertEqual(req.full_url, 'https://example.invalid/v1/responses')
+                    self.assertEqual(req.get_header('X-responses-lite'), 'true')
+                    self.assertEqual(req.get_header('Authorization'), 'Bearer FAKE')
+                    # Candidate chaining must retain the installed route prefix.
+                    relay = {'upstream': 'http://127.0.0.1:' + str(route['port'])}
+                    self.assertEqual(shim.route_url(relay, h.path), relay['upstream'] + h.path)
+
+    def test_environment_only_route_does_not_enable_adapter(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / 'routes.json'
+            with patch.dict(os.environ, {'SHIM_ROUTES': ''}), patch.object(shim, 'DEFAULT_ROUTES', str(path)), patch.object(shim.sys, 'argv', ['shim']), patch.object(shim, '_make_server', side_effect=RuntimeError('captured')) as make:
+                with self.assertRaisesRegex(RuntimeError, 'captured'):
+                    shim.main()
+                self.assertFalse(make.call_args.args[0].get('agent_message_fix', False))
 
     def test_actual_http_handler_framing_compression_and_sanitized_400(self):
         requests = []

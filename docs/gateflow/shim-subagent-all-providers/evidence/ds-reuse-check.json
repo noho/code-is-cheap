@@ -1,0 +1,13 @@
+{
+  "historical_source_head": "901cea16928ef2db01ce774c99652f62fb3dca68",
+  "shim_source_hash_unchanged": true,
+  "shim_sha256": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+  "ds_route_object_unchanged": true,
+  "installed_ds_catalog_sha256": "58ca2d8599ccbbfb64733b30ee83acf78b424bcc7729f32815826677f2e2ceb8",
+  "selected_wire_model": "deepseek/deepseek-flash",
+  "historical_native_audit_passed": true,
+  "scope": "Historical DS assertions only: two real v2 runs; unchanged helper/handler, route, catalog and effective model. New generic assertions are not retroactively claimed for these captures.",
+  "installed_shim_sha256": "7ae5d6d7dc86050b466d06cc63685eb1589d873cf730fa0ac3479dfed44d7cc7",
+  "installed_routes_sha256": "afd1e15ca3a914993987382abaf148227ef6a97a796cdb73791b4787bea26bfe",
+  "legacy_audit_assertion_AST_unchanged": true
+}
