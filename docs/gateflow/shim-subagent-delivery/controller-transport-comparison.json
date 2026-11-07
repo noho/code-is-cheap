@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-07",
+  "method": "Two sequential POSTs to configured ds-flash Codex endpoint, credentials resolved in memory by agent-endpoint.py; stream=false, same model and context",
+  "context": "环境已准备好。",
+  "task": "只回复 SHIM_TRANSPORT_OK，不要询问任务。",
+  "native_agent_message": {
+    "shape": "input includes agent_message(author=/root,recipient=/root/transport_probe,content=[input_text header,encrypted_content task])",
+    "http_status": 200,
+    "output": "好的，环境就绪。不过我还不知道具体要做什么——能说明一下任务吗？比如：\n\n- 要我在哪个目录/仓库里工作，目标是什么（写代码、调试、跑测试、分析数据、写文档……）？\n- 有没有需要先读的文件或规范（README、任务说明、issue 等）？\n\n告诉我目标，我就开始动手；如果你想让我先自行勘察，也可以说一声，我先看看当前目录结构和关键配置文件再向你汇报。"
+  },
+  "standard_message": {
+    "shape": "same header and task in input message(role=user,content=[input_text])",
+    "http_status": 200,
+    "output": "SHIM_TRANSPORT_OK"
+  },
+  "conclusion": "Task is present locally. Configured gateway accepts native agent_message with HTTP 200 but model behavior indicates task is ignored; standard Responses input_text succeeds. Gateway internals unavailable, so exact internal drop function not claimed.",
+  "not_native_regression": true
+}

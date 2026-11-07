@@ -1,0 +1,38 @@
+[
+  {
+    "run": "candidate-run-1",
+    "parent_id": "01a1b629-e2e7-7561-bee5-e21e57608f8b",
+    "requests": 15,
+    "target_items_including_replayed_history": 27,
+    "final_turn_ids": {
+      "/root/delivery_a": [
+        "01a1b629-faaa-70b2-9fa0-76cc7863d25e",
+        "01a1b62a-0b6c-7143-aa0e-4abb6ee6fbe6",
+        "01a1b62a-1e80-7e13-b1e5-975a10154a0b"
+      ],
+      "/root/delivery_b": [
+        "01a1b62a-2df9-7320-ac8f-3e36b9c0fed6"
+      ]
+    },
+    "child_file_tool_call_id": "call_00_ET_tLDHTnOhpTL2UUFL9B9p8159",
+    "all_checks_passed": true
+  },
+  {
+    "run": "candidate-run-2",
+    "parent_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "requests": 15,
+    "target_items_including_replayed_history": 27,
+    "final_turn_ids": {
+      "/root/delivery_a": [
+        "01a1b62c-23b8-70c3-9ec8-d0695466361c",
+        "01a1b62c-3413-73a1-b157-2b6f501103a6",
+        "01a1b62c-48af-7b81-803f-53c1eca1f29c"
+      ],
+      "/root/delivery_b": [
+        "01a1b62c-5646-70d3-b255-11f3b3c8e30f"
+      ]
+    },
+    "child_file_tool_call_id": "call_00_ET_jLQFt3bLaVEmJkbxVdzI8637",
+    "all_checks_passed": true
+  }
+]

@@ -503,7 +503,7 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + patched catalog |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + native agent-message adapter + patched catalog |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite + patched catalog |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite + patched catalog |
 | `kimi` | `k3` | api.kimi.com | 8790 | + patched catalog |
@@ -520,6 +520,8 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 | `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
 | `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+
+The DeepSeek route alone enables `agent_message_fix` (default off elsewhere). It adapts Codex 0.167.0 native inter-agent items to standard user messages, preserving content order and routing metadata as text; native rollouts remain unchanged. It assumes the observed `agent_message` `encrypted_content` slots hold plaintext, and cannot decrypt actual opaque ciphertext. Reasoning and tool arguments are untouched. Unknown or invalid agent content fails with a sanitized HTTP 400 rather than forwarding a partial task. Deploy shim code/routes with `./scripts/sync-codex-agent.sh` only when authorized; the installed service needs the updated code/routes loaded.
 
 Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the seven OpenAI profiles across three upstream models share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
 

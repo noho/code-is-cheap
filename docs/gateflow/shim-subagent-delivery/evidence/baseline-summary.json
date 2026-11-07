@@ -1,0 +1,20 @@
+{
+  "version": "codex-cli 0.167.0",
+  "parent_id": "01a1b621-382e-7830-bf3b-8ed286860bd9",
+  "child_id": "01a1b621-4922-7a50-9ca8-3d6d12ca8f96",
+  "child_path": "/root/wire_probe_a",
+  "request_count": 10,
+  "expected_initial": "LIVE_PROBE_OK",
+  "expected_followup": "LIVE_PROBE_OK",
+  "actual_child_finals": [
+    "Diagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (agent tree visible via `list_agents`)\n- Spawned further children: none\n- Files read/written, shell tools, external integrations, settings: untouched\n\nNo blockers or issues encountered. Ready for the next communication check.",
+    "Diagnostic received and completed within the stated constraints.\n\n- Identity: `/root/wire_probe_a` (child of `/root`)\n- Native collaboration communication: confirmed working (`list_agents` returned the live tree)\n- Spawned further children: none\n- Files, shell tools, external integrations, settings: untouched\n\nNo blockers. Ready for the next communication check."
+  ],
+  "passed": false,
+  "app_server_exit": 0,
+  "adapter_enabled": false,
+  "observer": "temporary unchanged loopback relay -> installed managed 8788",
+  "wire_sha256": "bbfa9a1e9f85730261de1fbc8c0b8514e99891991fe8cd633dc1e3f89c1e5c3a",
+  "exact_original_driver_argv_retained": false,
+  "provenance": "Planner baseline; see plan.md. Original native rollouts read-only, sanitized selection copied by implementation delegate."
+}
