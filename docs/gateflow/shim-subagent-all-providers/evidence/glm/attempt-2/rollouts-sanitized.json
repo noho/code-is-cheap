@@ -1,0 +1,517 @@
+[
+  {
+    "file": "rollout-2026-11-07T22-37-01-01a1b671-001a-7ab1-a443-fea7a15ab833.jsonl",
+    "identity": {
+      "id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "glm",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+        "model": "glm-5.3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          },
+          "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "started_at": 1794062221,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 12,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_eaf1e8912ce3419cb0ab872c",
+          "name": "spawn_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"fork_context\":false,\"message\":\"NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_90f1cb6bd85b. Do not use tools, read/write files, or delegate.\"}",
+          "call_id": "call_eaf1e8912ce3419cb0ab872c",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 15,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-31dc-7ea2-9106-73b3b411ae17",
+          "call_id": "call_eaf1e8912ce3419cb0ab872c",
+          "output": "{\"agent_id\":\"01a1b671-31c6-70b3-a734-f6545f305b1a\",\"nickname\":\"Cicero\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062234.076749
+          }
+        }
+      },
+      {
+        "line": 20,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_57efae43b90046858594201b",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\":[\"01a1b671-31c6-70b3-a734-f6545f305b1a\"],\"timeout_ms\":3600000}",
+          "call_id": "call_57efae43b90046858594201b",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 23,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-47e0-7433-9026-118c99eaa9a5",
+          "call_id": "call_57efae43b90046858594201b",
+          "output": "{\"status\":{\"01a1b671-31c6-70b3-a734-f6545f305b1a\":{\"completed\":\"LIVE_INITIAL_90f1cb6bd85b\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062239.712344
+          }
+        }
+      },
+      {
+        "line": 28,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_6ad69bcb7e9844bb9df9e968",
+          "name": "send_input",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"items\":[{\"text\": \"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_5b4e0dbb3f38. Do not use tools, read/write files, or delegate.\", \"type\": \"text\"}],\"target\":\"01a1b671-31c6-70b3-a734-f6545f305b1a\"}",
+          "call_id": "call_6ad69bcb7e9844bb9df9e968",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 31,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-5a9c-7993-816d-c626fc05af7b",
+          "call_id": "call_6ad69bcb7e9844bb9df9e968",
+          "output": "{\"submission_id\":\"01a1b671-5a98-7982-905c-cd9a7271a116\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062244.508134
+          }
+        }
+      },
+      {
+        "line": 35,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_2bb9516262dc4ae196c52fa6",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\":[\"01a1b671-31c6-70b3-a734-f6545f305b1a\"],\"timeout_ms\":3600000}",
+          "call_id": "call_2bb9516262dc4ae196c52fa6",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 38,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-6ca3-7360-a696-328ffb11ba41",
+          "call_id": "call_2bb9516262dc4ae196c52fa6",
+          "output": "{\"status\":{\"01a1b671-31c6-70b3-a734-f6545f305b1a\":{\"completed\":\"LIVE_FOLLOWUP_5b4e0dbb3f38\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062249.123077
+          }
+        }
+      },
+      {
+        "line": 42,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_a69fbe61c3374711b484b4f6",
+          "name": "spawn_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"fork_context\":false,\"message\":\"NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.\"}",
+          "call_id": "call_a69fbe61c3374711b484b4f6",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 45,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-8b58-7ea3-9fa3-bd4f703c6392",
+          "call_id": "call_a69fbe61c3374711b484b4f6",
+          "output": "{\"agent_id\":\"01a1b671-8b44-7e60-a252-9f9673cdea95\",\"nickname\":\"Carson\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062256.984295
+          }
+        }
+      },
+      {
+        "line": 50,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_54973e64c2bb4430a0f98d68",
+          "name": "wait_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"targets\":[\"01a1b671-8b44-7e60-a252-9f9673cdea95\"],\"timeout_ms\":3600000}",
+          "call_id": "call_54973e64c2bb4430a0f98d68",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          }
+        }
+      },
+      {
+        "line": 53,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-b69d-7890-8e08-23cf7a0ce9b5",
+          "call_id": "call_54973e64c2bb4430a0f98d68",
+          "output": "{\"status\":{\"01a1b671-8b44-7e60-a252-9f9673cdea95\":{\"completed\":\"HARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8\"}},\"timed_out\":false}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "create_time": 1794062268.061492
+          }
+        }
+      },
+      {
+        "line": 59,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_resp_20261107223748d27f515ae66843f4",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "- A1 fresh child (`01a1b671-31c6-70b3-a734-f6545f305b1a`, nickname `Cicero`): `LIVE_INITIAL_90f1cb6bd85b`\n- A2 same child continuation: `LIVE_FOLLOWUP_5b4e0dbb3f38`\n- A3: N/A — no separate `send_message` capability is advertised; the available continuation API is `send_input`, so the MESSAGE-token test was not run.\n- B fresh child (`01a1b671-8b44-7e60-a252-9f9673cdea95`, nickname `Carson`): `HARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8`\n- Unavailable capabilities: separate `send_message`, and explicit child naming (`delivery_a` / `delivery_b`). Fresh no-inheritance spawning was used via `fork_context: false`.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 62,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "last_agent_message": "- A1 fresh child (`01a1b671-31c6-70b3-a734-f6545f305b1a`, nickname `Cicero`): `LIVE_INITIAL_90f1cb6bd85b`\n- A2 same child continuation: `LIVE_FOLLOWUP_5b4e0dbb3f38`\n- A3: N/A — no separate `send_message` capability is advertised; the available continuation API is `send_input`, so the MESSAGE-token test was not run.\n- B fresh child (`01a1b671-8b44-7e60-a252-9f9673cdea95`, nickname `Carson`): `HARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8`\n- Unavailable capabilities: separate `send_message`, and explicit child naming (`delivery_a` / `delivery_b`). Fresh no-inheritance spawning was used via `fork_context: false`.",
+          "started_at": 1794062221,
+          "completed_at": 1794062278,
+          "duration_ms": 56773,
+          "time_to_first_token_ms": 8296
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-07T22-37-14-01a1b671-31c6-70b3-a734-f6545f305b1a.jsonl",
+    "identity": {
+      "id": "01a1b671-31c6-70b3-a734-f6545f305b1a",
+      "parent_thread_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+      "cli_version": "0.167.0",
+      "model_provider": "glm",
+      "agent_path": null,
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+            "depth": 1,
+            "agent_path": null,
+            "agent_nickname": "Cicero",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b671-31d2-7dc0-b7ab-3d449ef671d2",
+        "model": "glm-5.3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      },
+      {
+        "turn_id": "01a1b671-5a98-7982-905c-cd9a7271a116",
+        "model": "glm-5.3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b671-31d2-7dc0-b7ab-3d449ef671d2",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          },
+          "turn_id": "01a1b671-31d2-7dc0-b7ab-3d449ef671d2",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "started_at": 1794062234,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 11,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_resp_20261107223715dd2eaf18858543e7",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_INITIAL_90f1cb6bd85b",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-31d2-7dc0-b7ab-3d449ef671d2",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 14,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "turn_id": "01a1b671-31d2-7dc0-b7ab-3d449ef671d2",
+          "last_agent_message": "LIVE_INITIAL_90f1cb6bd85b",
+          "started_at": 1794062234,
+          "completed_at": 1794062239,
+          "duration_ms": 5341,
+          "time_to_first_token_ms": 5260
+        }
+      },
+      {
+        "line": 15,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b671-5a98-7982-905c-cd9a7271a116",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          },
+          "turn_id": "01a1b671-5a98-7982-905c-cd9a7271a116",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "started_at": 1794062244,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 20,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_resp_202611072237240ded0fd6491340aa",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_FOLLOWUP_5b4e0dbb3f38",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-5a98-7982-905c-cd9a7271a116",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 23,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "turn_id": "01a1b671-5a98-7982-905c-cd9a7271a116",
+          "last_agent_message": "LIVE_FOLLOWUP_5b4e0dbb3f38",
+          "started_at": 1794062244,
+          "completed_at": 1794062249,
+          "duration_ms": 4543,
+          "time_to_first_token_ms": 4423
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-07T22-37-36-01a1b671-8b44-7e60-a252-9f9673cdea95.jsonl",
+    "identity": {
+      "id": "01a1b671-8b44-7e60-a252-9f9673cdea95",
+      "parent_thread_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+      "cli_version": "0.167.0",
+      "model_provider": "glm",
+      "agent_path": null,
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+            "depth": 1,
+            "agent_path": null,
+            "agent_nickname": "Carson",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+        "model": "glm-5.3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c"
+          },
+          "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "started_at": 1794062256,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 12,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_call_07dbe0a3c6bb4796815a7851",
+          "name": "exec_command",
+          "arguments": "{\"cmd\":\"cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq/harmless-target.txt\",\"login\":false,\"shell\":\"zsh\",\"tty\":false,\"workdir\":\"/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-hgs4ufpq\",\"yield_time_ms\":10000,\"max_output_tokens\":10000,\"sandbox_permissions\":\"use_default\"}",
+          "call_id": "call_07dbe0a3c6bb4796815a7851",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b"
+          }
+        }
+      },
+      {
+        "line": 15,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b671-a678-7150-8a8a-2309da5ad41c",
+          "call_id": "call_07dbe0a3c6bb4796815a7851",
+          "output": "Chunk ID: 823e02\nWall time: 0.0000 seconds\nProcess exited with code 0\nOriginal token count: 14\nOutput:\nHARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+            "create_time": 1794062263.928543
+          }
+        }
+      },
+      {
+        "line": 20,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_resp_20261107223743d60f2f376cc24fd6",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "HARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 23,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b671-002b-71f3-81d1-d3c7e036357c",
+          "turn_id": "01a1b671-8b50-7643-90f7-4a98c8aa938b",
+          "last_agent_message": "HARMLESS_NATIVE_CONTENT_e5337161cbbd4acbb86c23ffa68529a8",
+          "started_at": 1794062256,
+          "completed_at": 1794062268,
+          "duration_ms": 11074,
+          "time_to_first_token_ms": 5325
+        }
+      }
+    ]
+  }
+]

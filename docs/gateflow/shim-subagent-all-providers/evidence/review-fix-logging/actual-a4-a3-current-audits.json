@@ -1,0 +1,68 @@
+{
+  "A3": {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3",
+    "passed": false,
+    "coverage": {
+      "a": false,
+      "b": false
+    },
+    "checks": {
+      "declared_scenario_matches_driver_launch": true,
+      "actual_parent_child_identity_policy": true,
+      "native_dispatch_order_same_child_no_parent_read": false,
+      "A_exact_distinct_completed_child_turns": false,
+      "A3_message_or_descriptor_backed_NA": false,
+      "declared_case_native_waits_fresh_completion_order": false,
+      "declared_case_native_event_linkage_actual_modes": true,
+      "wire_helper_and_exact_allowed_outbound_stages": true,
+      "native_lifecycle": false,
+      "namespace_launch_source_snapshots": true
+    },
+    "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+    "input_sha256": {
+      "summary.json": "cb7bb9659a77d006db61a7ade8b0cdcd0cded930a3ae8954e4bf2824f8fb0b5a",
+      "wire.json": "7b190cc07ed8ac7431754b177de886fa501a7117e08e5328663aac7ec0dcba69",
+      "rollouts-sanitized.json": "3c6685e3e91e2173512bce098563212319231ef83e945ea6b7f74a56df6b1b35",
+      "native-rollout-supplement.json": "aaba799121c4bbe38439a1403a0822527511c3ef0f7aa89638802d264e39994b",
+      "launch.json": "8310d175c8d2fa1075160b643fd14a4f490b1d0638eff16ce316ea1c57917d32"
+    },
+    "capture_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "requests": 11,
+    "active_maps": 11,
+    "parent_receipts_verified": 0,
+    "namespace_additions": 0
+  },
+  "A4": {
+    "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+    "passed": true,
+    "coverage": {
+      "a": true,
+      "b": false
+    },
+    "checks": {
+      "declared_scenario_matches_driver_launch": true,
+      "actual_parent_child_identity_policy": true,
+      "native_dispatch_order_same_child_no_parent_read": true,
+      "A_exact_distinct_completed_child_turns": true,
+      "A3_message_or_descriptor_backed_NA": true,
+      "declared_case_native_waits_fresh_completion_order": true,
+      "declared_case_native_event_linkage_actual_modes": true,
+      "wire_helper_and_exact_allowed_outbound_stages": true,
+      "native_lifecycle": true,
+      "namespace_launch_source_snapshots": true
+    },
+    "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+    "input_sha256": {
+      "summary.json": "508f24fa77a3c450077fe22c10d2d2cbff3423276b8c64bfeceedb9154355ebe",
+      "wire.json": "773838fe92f7e9bf39ab6449601f48b82dc88001b97180e9fc842676c51f472e",
+      "rollouts-sanitized.json": "517041fb0e792547c92e47cce1baec9c7ce3db5f4aad97dd1fab6cfd16ed3a00",
+      "native-rollout-supplement.json": "18e45366dc457ddb4763648ba94b51752801b0a111e61b9d6906f8defc6eda38",
+      "launch.json": "5cda0b1bea14ffed10994732de818a436a9ad41ff6a1c4fb869595c94cde7adb"
+    },
+    "capture_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "requests": 11,
+    "active_maps": 11,
+    "parent_receipts_verified": 3,
+    "namespace_additions": 0
+  }
+}

@@ -1,0 +1,131 @@
+[
+  {
+    "file": "rollout-2026-11-07T23-59-10-01a1b6bc-3889-7780-a011-9e0351097e2f.jsonl",
+    "identity": {
+      "id": "01a1b6bc-3889-7780-a011-9e0351097e2f",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-cr_ejtdl"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861"
+          },
+          "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+          "root_turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+          "started_at": 1794067151,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_0000000000000718_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "I'll perform the declared scenario A using the advertised native **collaboration (v2)** namespace, which supports the complete A1→A2→A3 chain (named child spawn, followup_task continuation, send_message, and wait_agent). No parent file/shell/JS/resource calls will be used — only the native collaboration tools, once each, in sequence.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 14,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_spawn_agent_0_f93a4048",
+          "name": "spawn_agent",
+          "namespace": "multi_agent_v1",
+          "arguments": "{\"task_name\":\"delivery_a\",\"agent_type\":\"worker\",\"fork_context\":\"none\",\"message\":\"只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件\"}",
+          "call_id": "spawn_agent_0_f93a4048",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861"
+          }
+        }
+      },
+      {
+        "line": 16,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b6be-3b75-7de0-a405-949f0a9b4e06",
+          "call_id": "spawn_agent_0_f93a4048",
+          "output": "failed to parse function arguments: invalid type: string \"none\", expected a boolean at line 1 column 69",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+            "create_time": 1794067282.805496
+          }
+        }
+      },
+      {
+        "line": 21,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_000000000000017e_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "**Error observed (explicit tool error, stopping as instructed):**\n\n- **Where:** A1 — `collaboration.spawn_agent`\n- **Error:** `failed to parse function arguments: invalid type: string \"none\", expected a boolean at line 1 column 69`\n\n**What happened:** I passed `fork_context: \"none\"` (a string, matching the prompt's own `fork_turns=\"none\"` wording). The live native descriptor for `collaboration.spawn_agent` instead declares `fork_context` as a **boolean** (`true` = inherit, `false` = no inherited conversation).\n\n**Resolution per the probe's rules:** On an explicit tool error, I report the error and stop — I will not retry dispatches, attempt alternate invocation spellings/hosts, repair/re-send, interrupt, or close agents.\n\n**Observed finals:** none (the dispatch errored before any agent ran; no child final exists).\n**Unavailable capability:** `collaboration.spawn_agent` as invoked (`fork_context` does not accept the string `\"none\"`).\n\nNo further steps (A2, A3) were performed.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 24,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+          "turn_id": "01a1b6bc-389a-7163-85c5-4236fa43e861",
+          "last_agent_message": "**Error observed (explicit tool error, stopping as instructed):**\n\n- **Where:** A1 — `collaboration.spawn_agent`\n- **Error:** `failed to parse function arguments: invalid type: string \"none\", expected a boolean at line 1 column 69`\n\n**What happened:** I passed `fork_context: \"none\"` (a string, matching the prompt's own `fork_turns=\"none\"` wording). The live native descriptor for `collaboration.spawn_agent` instead declares `fork_context` as a **boolean** (`true` = inherit, `false` = no inherited conversation).\n\n**Resolution per the probe's rules:** On an explicit tool error, I report the error and stop — I will not retry dispatches, attempt alternate invocation spellings/hosts, repair/re-send, interrupt, or close agents.\n\n**Observed finals:** none (the dispatch errored before any agent ran; no child final exists).\n**Unavailable capability:** `collaboration.spawn_agent` as invoked (`fork_context` does not accept the string `\"none\"`).\n\nNo further steps (A2, A3) were performed.",
+          "started_at": 1794067151,
+          "completed_at": 1794067290,
+          "duration_ms": 139801,
+          "time_to_first_token_ms": 5325
+        }
+      }
+    ]
+  }
+]

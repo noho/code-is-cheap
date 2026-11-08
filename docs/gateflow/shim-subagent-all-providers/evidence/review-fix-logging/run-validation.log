@@ -1,0 +1,83 @@
+{
+  "helper_before": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+  "helper_after": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+  "helper_unchanged_during_run": true,
+  "suites": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_native_namespace.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 37,
+      "seconds": 62.766,
+      "log": "test_shim_native_namespace.py.log"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_native_evidence.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 36,
+      "seconds": 0.526,
+      "log": "test_shim_native_evidence.py.log"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_subagent_delivery.py",
+        "-v"
+      ],
+      "exit": 0,
+      "tests": 13,
+      "seconds": 0.617,
+      "log": "test_shim_subagent_delivery.py.log"
+    }
+  ],
+  "total_tests": 86,
+  "py_compile": {
+    "command": [
+      "/opt/homebrew/opt/python@3.11/bin/python3.11",
+      "-m",
+      "py_compile",
+      "codex-agent/bin/codex-auto-review-shim",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "tests/test_shim_native_namespace.py",
+      "tests/test_shim_native_evidence.py",
+      "tests/test_shim_subagent_delivery.py"
+    ],
+    "exit": 0,
+    "output": ""
+  },
+  "diff_check": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0,
+    "output": ""
+  }
+}

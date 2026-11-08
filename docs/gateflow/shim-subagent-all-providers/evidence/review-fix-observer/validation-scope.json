@@ -1,0 +1,53 @@
+{
+  "branch": "fix/shim-observer-review-20261108",
+  "baseline_file_count": 1503,
+  "changed_existing_files": {
+    "tests/test_shim_native_namespace.py": {
+      "before": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "after": "f83b342505afb142c2b2f278e84eb67192f36fd2ec3a0e9cc156a7b0450f853b"
+    },
+    "README.md": {
+      "before": "88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e",
+      "after": "1e0ce5ecc708d49121b7adb5e9b149b43180f6ba51524e994025f94fdec07139"
+    },
+    "README.zh.md": {
+      "before": "448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a",
+      "after": "e9c3919586bde84484c947bb75d8894ad63f9b617f58061a082ee166ba40f571"
+    },
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": {
+      "before": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "after": "8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73"
+    }
+  },
+  "new_files": [
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/before-counterexamples.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/before-counterexamples.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/before-counterexamples.py",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/before-native-probe.py.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/before-sha256.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/normal-observer-equivalence.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/normal-observer-equivalence.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/normal-observer-equivalence.py",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/test_shim_native_evidence.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/test_shim_native_namespace.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/test_shim_subagent_delivery.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/validation-scope.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/verify-scope.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-observer/verify-scope.py",
+    "docs/gateflow/shim-subagent-all-providers/review-fix-validation.md"
+  ],
+  "all_other_baseline_files_unchanged": true,
+  "git_diff_check_exit": 0,
+  "py_compile_passed": [
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "tests/test_shim_native_namespace.py",
+    "tests/test_shim_native_evidence.py",
+    "tests/test_shim_subagent_delivery.py"
+  ],
+  "protected_sha256": {
+    "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+    "docs/gateflow/shim-subagent-all-providers/review-freeze-v1.json": "193f8e2b6b449c0a9d4103a62ded74e95127766f5b7802bd7b8875823559f925"
+  }
+}

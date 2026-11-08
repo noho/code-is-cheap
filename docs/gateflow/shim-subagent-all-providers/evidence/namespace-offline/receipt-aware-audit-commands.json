@@ -1,0 +1,38 @@
+[
+  {
+    "argv": [
+      "python3",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "--evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1",
+      "--scenario",
+      "a"
+    ],
+    "exit": 0,
+    "output": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/audit-receipt-aware.json"
+  },
+  {
+    "argv": [
+      "python3",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "--evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1",
+      "--scenario",
+      "b"
+    ],
+    "exit": 0,
+    "output": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/audit-receipt-aware.json"
+  },
+  {
+    "argv": [
+      "python3",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "--aggregate-evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1",
+      "--aggregate-evidence-dir",
+      "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1"
+    ],
+    "exit": 0,
+    "output": "mimo-flash-receipt-aware-aggregate.json"
+  }
+]

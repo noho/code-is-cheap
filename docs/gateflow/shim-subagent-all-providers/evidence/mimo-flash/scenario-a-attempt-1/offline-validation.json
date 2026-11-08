@@ -1,0 +1,132 @@
+{
+  "final_checks": [
+    {
+      "command": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1",
+        "--scenario",
+        "a"
+      ],
+      "exit": 1,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1",
+        "--scenario",
+        "b"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+        "--aggregate-evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1",
+        "--aggregate-evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1"
+      ],
+      "exit": 1,
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_native_evidence.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "........................\n----------------------------------------------------------------------\nRan 24 tests in 0.182s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "py_compile",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py"
+      ],
+      "exit": 0,
+      "stdout": "[\n  {\n    \"run\": \"candidate-run-1\",\n    \"parent_id\": \"01a1b629-e2e7-7561-bee5-e21e57608f8b\",\n    \"requests\": 15,\n    \"target_items_including_replayed_history\": 27,\n    \"final_turn_ids\": {\n      \"/root/delivery_a\": [\n        \"01a1b629-faaa-70b2-9fa0-76cc7863d25e\",\n        \"01a1b62a-0b6c-7143-aa0e-4abb6ee6fbe6\",\n        \"01a1b62a-1e80-7e13-b1e5-975a10154a0b\"\n      ],\n      \"/root/delivery_b\": [\n        \"01a1b62a-2df9-7320-ac8f-3e36b9c0fed6\"\n      ]\n    },\n    \"child_file_tool_call_id\": \"call_00_ET_tLDHTnOhpTL2UUFL9B9p8159\",\n    \"all_checks_passed\": true\n  },\n  {\n    \"run\": \"candidate-run-2\",\n    \"parent_id\": \"01a1b62c-12cb-77a3-a479-f14f6e38b218\",\n    \"requests\": 15,\n    \"target_items_including_replayed_history\": 27,\n    \"final_turn_ids\": {\n      \"/root/delivery_a\": [\n        \"01a1b62c-23b8-70c3-9ec8-d0695466361c\",\n        \"01a1b62c-3413-73a1-b157-2b6f501103a6\",\n        \"01a1b62c-48af-7b81-803f-53c1eca1f29c\"\n      ],\n      \"/root/delivery_b\": [\n        \"01a1b62c-5646-70d3-b255-11f3b3c8e30f\"\n      ]\n    },\n    \"child_file_tool_call_id\": \"call_00_ET_jLQFt3bLaVEmJkbxVdzI8637\",\n    \"all_checks_passed\": true\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "final_source_hashes": {
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "54329420f48692f26d97512f6a8cca365307b81db3a9c06f22dc69d3a185c3c5",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42",
+    "tests/test_shim_native_evidence.py": "99f56efeed08c47b1b0a387b864946c872ffdc847a09ceb59745549a53aab536"
+  },
+  "development_failures": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_shim_native_evidence.py"
+      ],
+      "tests": 21,
+      "exit": 1,
+      "failures": 1,
+      "errors": 1,
+      "causes": [
+        "Old MiMoFlash all/1 A3 subcheck changed from pass to fail by duplicate-MESSAGE assertion; restored old all behavior, leaving dispatch strict failure.",
+        "History glob included independent kimi-namespace-diagnostic directory without audit.json; bounded glob to original nine profiles."
+      ]
+    }
+  ],
+  "native_attempts": [
+    {
+      "scenario": "a",
+      "driver_exit": 0,
+      "attempt": 1,
+      "retry": false
+    },
+    {
+      "scenario": "b",
+      "driver_exit": 0,
+      "attempt": 1,
+      "retry": false
+    }
+  ],
+  "launch_auditor_retained": "1b2d47852afa6ee0b489dcad72da8105aea0631297dc86e911856c915a761653",
+  "postcapture_audit_changes": [
+    "Reject unqualified/error/timeout-only/stale native waits and require full task counts in declared short cases.",
+    "Add explicit --scenario auditor CLI selection with mismatch rejection."
+  ]
+}

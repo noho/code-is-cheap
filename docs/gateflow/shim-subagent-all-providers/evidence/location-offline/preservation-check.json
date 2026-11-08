@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-11-07T16:58:55.219697+00:00",
+  "preexisting_files": 1380,
+  "delegate_changed_existing_files": [
+    "codex-agent/bin/codex-auto-review-shim",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "tests/test_shim_native_evidence.py",
+    "tests/test_shim_native_namespace.py"
+  ],
+  "allowed": [
+    "codex-agent/bin/codex-auto-review-shim",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "tests/test_shim_native_evidence.py",
+    "tests/test_shim_native_namespace.py"
+  ],
+  "external_change_observed": {
+    "path": "docs/gateflow/shim-subagent-all-providers/control.md",
+    "entry_sha256": "5c6b73423f56b8184263162ad12973b8ac5bd83451424bf60f834b8c375da014",
+    "current_sha256": "e5d1ddef06ca3aa73ba62fb82514242baa263be1937ad863a509394744a9eb03",
+    "reason": "Controller appended A3 setup correction and later concrete v2 prompt/auditor/A3 fixture cleanup/A4 authorization. Delegate never edited control.md.",
+    "declaration": "declared-mimo-flash-a3-setup-correction.json"
+  },
+  "all_other_existing_files_sha256_identical": true,
+  "includes": "old plans/reviews/captures/audit versions/matrices/source snapshots/private-endpoint proof/unrelated runner artifacts"
+}

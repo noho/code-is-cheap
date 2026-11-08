@@ -1,0 +1,218 @@
+{
+  "profile": "mimo",
+  "attempt": "2",
+  "passed": true,
+  "checks": {
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "A_exact_distinct_completed_child_turns": true,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b670-f686-7b51-a242-c38452690c97": {
+        "provider": "mimo",
+        "contexts": [
+          {
+            "turn_id": "01a1b670-f695-7381-bad4-2d02e0d0ed1a",
+            "model": "mimo-v2.6-pro",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "on-request",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b671-1069-78c2-8f59-95a3932a4bf5": {
+        "provider": "mimo",
+        "contexts": [
+          {
+            "turn_id": "01a1b671-1074-7cd0-a664-0a95112fda23",
+            "model": "mimo-v2.6-pro",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "on-request",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b671-2f02-7c70-a10e-f4f9160f8c01",
+            "model": "mimo-v2.6-pro",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "on-request",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          },
+          {
+            "turn_id": "01a1b671-5155-77f1-9934-cff7d6f06591",
+            "model": "mimo-v2.6-pro",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "on-request",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b671-7114-7b43-a073-3c976e065465": {
+        "provider": "mimo",
+        "contexts": [
+          {
+            "turn_id": "01a1b671-7120-7b43-93f7-db40752a9015",
+            "model": "mimo-v2.6-pro",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "on-request",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "fc_5ac1d34bdf1a49b7bc0b23712e154c47",
+        "args": {
+          "task_name": "delivery_a",
+          "fork_turns": "none",
+          "message": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_cb7cafc30e36. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "followup_task",
+        "call_id": "fc_448914cc3a294ac6bbb99a7abfe58893",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_333941dd8a28. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "send_message",
+        "call_id": "fc_8d8deacb80c94e8fbf19038794c7e50c",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_7e6fceeb2c77. Remember this token for the next task."
+        }
+      },
+      {
+        "name": "followup_task",
+        "call_id": "fc_3820cd7ab83a434eac4714880db2f0b1",
+        "args": {
+          "target": "/root/delivery_a",
+          "message": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+        }
+      },
+      {
+        "name": "spawn_agent",
+        "call_id": "fc_dc73c7237b7c4927b7e4e0136e988a7f",
+        "args": {
+          "task_name": "delivery_b",
+          "fork_turns": "none",
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-4s1vtj7n/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "A_exact_distinct_completed_child_turns": [
+      {
+        "turn_id": "01a1b671-1074-7cd0-a664-0a95112fda23",
+        "text": "LIVE_INITIAL_cb7cafc30e36",
+        "completed_at": 1794062231
+      },
+      {
+        "turn_id": "01a1b671-2f02-7c70-a10e-f4f9160f8c01",
+        "text": "LIVE_FOLLOWUP_333941dd8a28",
+        "completed_at": 1794062235
+      },
+      {
+        "turn_id": "01a1b671-5155-77f1-9934-cff7d6f06591",
+        "text": "LIVE_MESSAGE_OK_7e6fceeb2c77",
+        "completed_at": 1794062246
+      }
+    ],
+    "A3_message_or_descriptor_backed_NA": "separate native MESSAGE consumed; token absent from followup",
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "ctc_01311d73a1cb4f50859bd5aa6829df29",
+      "tool": "exec",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "exec-f9ddbac2-0bf6-4696-861d-9cd7c23689ce",
+        "process_id": "27721",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-4s1vtj7n/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-4s1vtj7n",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-4s1vtj7n/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-4s1vtj7n/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_818e8aa4c7d6472393c21926cea5fffd",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 10250
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b671-7120-7b43-93f7-db40752a9015",
+          "text": "HARMLESS_NATIVE_CONTENT_818e8aa4c7d6472393c21926cea5fffd",
+          "completed_at": 1794062258
+        }
+      ]
+    },
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 15,
+      "converted_including_history": 27,
+      "http_statuses": {
+        "200": 15
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "a9f0e399265635224d11cc50b344987feb3151b90411e3343ea3b44a90d2c705",
+    "wire.json": "1c7274c5bea11e15f61d923c10a10beddf600c41b7cbee7199372296725c487b",
+    "rollouts-sanitized.json": "edfb5c66ede06d5bfba5d183e194f4189f64a80c38da33eb5f5984084185d8c7",
+    "native-rollout-supplement.json": "cc1b9781fa22e2871c7cc535319f0b7c5fbdf6991f12cb75472731a18901b11e"
+  }
+}

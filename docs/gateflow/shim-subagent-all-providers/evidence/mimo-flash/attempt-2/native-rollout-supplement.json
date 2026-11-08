@@ -1,0 +1,225 @@
+[
+  {
+    "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+    "source_rollout_sha256": "617ae78cd1dd6f9fa4f2f5d929f5ca948b804b23a86dd16ed96796f5ff5b7cd4",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-flash",
+          "model_provider_id": "mimo_flash",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-9vxj4j96"
+        }
+      },
+      {
+        "line": 18,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": "mimo-v2.6-flash",
+            "reasoning_effort": "max",
+            "id": "fc_3e339bbfeba3475fa9125aebb9a0b6a9",
+            "kind": "started",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063907985,
+          "completed_at_ms": 1794063907986
+        }
+      },
+      {
+        "line": 28,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b68a-bc91-7cb1-8983-c07b213b086e",
+            "kind": "completed",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063915644,
+          "completed_at_ms": 1794063915644
+        }
+      },
+      {
+        "line": 29,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "fc_a994f0ec3c1c49268637229a5d29d173",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+            "receiver_thread_ids": [],
+            "receiver_agents": [],
+            "agents_states": {}
+          },
+          "started_at_ms": 1794063913082,
+          "completed_at_ms": 1794063915646
+        }
+      },
+      {
+        "line": 38,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_851b08b1ec724842bd9b429461a9b269",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063922909,
+          "completed_at_ms": 1794063922909
+        }
+      },
+      {
+        "line": 41,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b68a-f6dd-7f42-8386-f5c93c5f8a35",
+            "kind": "completed",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063925250,
+          "completed_at_ms": 1794063925250
+        }
+      },
+      {
+        "line": 51,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_75471db369584d50b8d226e5af046faf",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063937983,
+          "completed_at_ms": 1794063937983
+        }
+      },
+      {
+        "line": 58,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_594227f3dad94aa985b38e1a3c56d8f1",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063942394,
+          "completed_at_ms": 1794063942394
+        }
+      },
+      {
+        "line": 61,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+          "turn_id": "01a1b68a-3c27-7563-a618-e4812b61d769",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b68b-42f9-7eb2-96ef-7f8ed0fd7551",
+            "kind": "completed",
+            "agent_thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794063947060,
+          "completed_at_ms": 1794063947060
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b68a-bc86-7140-9aa9-c87b403b1412",
+    "source_rollout_sha256": "0c1f803c05f3a14da96aac4ef81b1e792e05ea339123e4e4c381bd52d241ed6e",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-flash",
+          "model_provider_id": "mimo_flash",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-9vxj4j96"
+        }
+      }
+    ]
+  }
+]

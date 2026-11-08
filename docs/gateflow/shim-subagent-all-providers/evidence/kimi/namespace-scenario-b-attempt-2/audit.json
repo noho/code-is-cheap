@@ -1,0 +1,146 @@
+{
+  "profile": "kimi",
+  "attempt": "2",
+  "scenario": "b",
+  "passed": true,
+  "coverage": {
+    "a": false,
+    "b": true
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "declared_case_native_waits_fresh_completion_order": true,
+    "declared_case_native_event_linkage_actual_modes": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true,
+    "namespace_launch_source_snapshots": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "b",
+      "required_cases": [
+        "b"
+      ]
+    },
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b6cd-e355-7ae3-b4c3-639bd066f66f": {
+        "provider": "kimi",
+        "contexts": [
+          {
+            "turn_id": "01a1b6cd-e364-78c2-afaa-d48a2d604039",
+            "model": "k3",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b6ce-0733-7ec2-99db-c276587ff930": {
+        "provider": "kimi",
+        "contexts": [
+          {
+            "turn_id": "01a1b6ce-073c-78d2-b665-caa5a2cb57e8",
+            "model": "k3",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "spawn_agent:0",
+        "args": {
+          "fork_context": false,
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-vo1lnkt3/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "exec_command:0",
+      "tool": "exec_command",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "exec_command:0",
+        "process_id": "51736",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-vo1lnkt3/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-vo1lnkt3",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-vo1lnkt3/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-vo1lnkt3/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_cdd8d02dcb364216be519b814553ee8b",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 17458
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b6ce-073c-78d2-b665-caa5a2cb57e8",
+          "text": "HARMLESS_NATIVE_CONTENT_cdd8d02dcb364216be519b814553ee8b",
+          "completed_at": 1794068326
+        }
+      ]
+    },
+    "declared_case_native_waits_fresh_completion_order": {
+      "contract": "explicit native waits; v2 exact parent FINAL receipts, v1 persistent wait status",
+      "v2_receipts": []
+    },
+    "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 5,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 5
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    },
+    "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+  },
+  "auditor_sha256": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146",
+  "input_sha256": {
+    "summary.json": "c0a8f0ae55065101195972035b21755bf015acfe138d4e71b80a70890d6656f6",
+    "wire.json": "aad34d720c353c05f8c27d8237f1b725f595f092b05b6f76c49e26c149f29eff",
+    "rollouts-sanitized.json": "58cfe73ce78daea314b620b9e8bfea27913461aa60fbcab82461f0c917500301",
+    "native-rollout-supplement.json": "fa7c62718b88a9d64586219c3045cfa2d0c9201d7a5a3cc061562ae5971a6f81",
+    "launch.json": "4738361e112d48533877f0ee5fdb251568c92db3bc63363f6fbe04ab791197e1"
+  }
+}

@@ -1,0 +1,1139 @@
+[
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "38c92ebbbc54c5aa10d8aee1c346bb6ad3dbdfa760486fd2391516e3c8cd81f1",
+    "egress_sha256": "38c92ebbbc54c5aa10d8aee1c346bb6ad3dbdfa760486fd2391516e3c8cd81f1",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 6
+    },
+    "converted": 0,
+    "items": [],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "dcf352cd9bb06b37a932ec65d799fbe1e26c60dd52465179a33ba828c0e0191c",
+    "egress_sha256": "dcf352cd9bb06b37a932ec65d799fbe1e26c60dd52465179a33ba828c0e0191c",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 1,
+      "function_call": 1,
+      "function_call_output": 1
+    },
+    "converted": 0,
+    "items": [],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-23b6-7f42-aca0-a3e3b2568035",
+    "ingress_sha256": "4e60377d4865a82441c210d8b0c494f79734aed699a47d60ff0dfdeba1aebdf8",
+    "egress_sha256": "2dd6be5a86a76487d934e89132cb08bf9c02bdef0a5da27d6e8fcfe6b81c7a82",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 5,
+      "agent_message": 1
+    },
+    "converted": 1,
+    "items": [
+      {
+        "index": 5,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "2e4e8857e917710b1eb04b3702d243793fb68d20bf1d0f305c51653555b0c2eb",
+    "egress_sha256": "e2cbc7a70c7aa8433352e49a253a6d5eb0ab87c920b6a7923a47b5a3ef6037a9",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 2,
+      "function_call": 2,
+      "function_call_output": 2,
+      "agent_message": 1
+    },
+    "converted": 1,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "64f4a6d427d2571fa8418b2f30398c6a8ab5d8fa3c07c058a1feb7aac672824b",
+    "egress_sha256": "747542e10a3c66739287ba857bbc4043f0f03e1e3a0d89e3e89e37ba0599da76",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 3,
+      "function_call": 3,
+      "function_call_output": 3,
+      "agent_message": 1
+    },
+    "converted": 1,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-23b6-7f42-aca0-a3e3b2568035",
+    "ingress_sha256": "9abece5c7e9181f28000200120c34d372fc22b0db4e8d767a43914342728b615",
+    "egress_sha256": "09f1dc137cd09f6deb9070511ed93187bd40155e79244868243fd61bf8d7ac8b",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 6,
+      "agent_message": 2,
+      "reasoning": 1
+    },
+    "converted": 2,
+    "items": [
+      {
+        "index": 5,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      },
+      {
+        "index": 8,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-3421-70a3-8f1f-0f80701f9544",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-3421-70a3-8f1f-0f80701f9544\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "27dacc71596b357ed63a68d3e4b92bfa3775475bd7d2aa251de02832bebfba2e",
+    "egress_sha256": "592b52dc9d22ace9cf4713d11b23003e98f0315624047f582ffd1bad437f6447",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 4,
+      "function_call": 3,
+      "function_call_output": 3,
+      "agent_message": 2
+    },
+    "converted": 2,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "57a6d95ee37d4659b9632c708ad1674db71d7477562c4ae115d581b203940d19",
+    "egress_sha256": "e2b20d8677899ee7f2befb21f3d13d937bc74c147e5e5718d7ffedca88e7218b",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 5,
+      "function_call": 4,
+      "function_call_output": 4,
+      "agent_message": 2
+    },
+    "converted": 2,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "c92747c4e5ea2dc0407699f588d028df665f907a3265f5918d5a0d6733695380",
+    "egress_sha256": "de1465098ac89a7039cf3c4775fa49a79d5b09c3eb39014d012d85625d0be8fc",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 6,
+      "function_call": 5,
+      "function_call_output": 5,
+      "agent_message": 2
+    },
+    "converted": 2,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-23b6-7f42-aca0-a3e3b2568035",
+    "ingress_sha256": "b7674b22dffee512beabe1b5fcb088c99c603b02980e7e7d626bbc20ba1d1163",
+    "egress_sha256": "ca10e8cb184e1a025ef6c6403ddad2c2674854f40e0d0fbbabcdacfcde7e6d60",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "agent_message": 4,
+      "reasoning": 1
+    },
+    "converted": 4,
+    "items": [
+      {
+        "index": 5,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2991-78b0-97f0-de7a96b89fb6\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_PROBE_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      },
+      {
+        "index": 8,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-3421-70a3-8f1f-0f80701f9544",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-3421-70a3-8f1f-0f80701f9544\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_OK. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      },
+      {
+        "index": 10,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-48b3-7d70-939d-40833c8ad74b",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: MESSAGE\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_cde52a2ce9de. Remember this token for the next task."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-48b3-7d70-939d-40833c8ad74b\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: MESSAGE\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_cde52a2ce9de. Remember this token for the next task."
+            }
+          ]
+        }
+      },
+      {
+        "index": 11,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-48b6-7b02-ae71-2d7ff3061fd5",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-48b6-7b02-ae71-2d7ff3061fd5\",\"author\":\"/root\",\"recipient\":\"/root/delivery_a\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate."
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "caa7419d74b865176c104c2a47ddc5c0db0f864bd0c2de8b488f028046ed8a68",
+    "egress_sha256": "f5e758f3e4a96cf9810c28b373a53032eee53a08216fe4d897fc34068ffb3b5a",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 7,
+      "function_call": 6,
+      "function_call_output": 6,
+      "agent_message": 3
+    },
+    "converted": 3,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 28,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "d13783fddea0338f2264840068a8789ba891406bcbf8c8b6add9c5f46aa0ba9d",
+    "egress_sha256": "5f585eb20214dc52635bfb56aed8496775511a2a7839948e13e1246a756bc9e6",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 8,
+      "function_call": 7,
+      "function_call_output": 7,
+      "agent_message": 3
+    },
+    "converted": 3,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 28,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-5643-7b33-bf4b-c9cb869260fe",
+    "ingress_sha256": "9e3bfe9a93a4d677878786169988fc0621d76af44a0404d00f4e304fb27c2913",
+    "egress_sha256": "bebb8659fa717244ed06ede3429c0f129c5dfa87f622c14d393098a86d360b7e",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 5,
+      "agent_message": 1
+    },
+    "converted": 1,
+    "items": [
+      {
+        "index": 5,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-5c13-7221-be9e-9efd83e3b7ee",
+          "author": "/root",
+          "recipient": "/root/delivery_b",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_b\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE file task. Use exec_command to read only the harmless fixture /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-c0k0o17q/workspace/harmless-target.txt with cat. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-5c13-7221-be9e-9efd83e3b7ee\",\"author\":\"/root\",\"recipient\":\"/root/delivery_b\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_b\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE file task. Use exec_command to read only the harmless fixture /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-c0k0o17q/workspace/harmless-target.txt with cat. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-5643-7b33-bf4b-c9cb869260fe",
+    "ingress_sha256": "100b6dc940819fc2351a006c0dd554511f0f641d86f5d0edb9dd79140b7ea1c1",
+    "egress_sha256": "7a6f5fbf89e393cf49e3e2bca16674a3ad89bb186d9bd631a05e7b5e800db9f7",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 5,
+      "agent_message": 1,
+      "function_call": 1,
+      "function_call_output": 1
+    },
+    "converted": 1,
+    "items": [
+      {
+        "index": 5,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-5c13-7221-be9e-9efd83e3b7ee",
+          "author": "/root",
+          "recipient": "/root/delivery_b",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_b\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE file task. Use exec_command to read only the harmless fixture /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-c0k0o17q/workspace/harmless-target.txt with cat. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-5c13-7221-be9e-9efd83e3b7ee\",\"author\":\"/root\",\"recipient\":\"/root/delivery_b\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_b\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "input_text",
+              "text": "NATIVE_CANDIDATE_PROBE file task. Use exec_command to read only the harmless fixture /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-subagent-candidate-c0k0o17q/workspace/harmless-target.txt with cat. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b62c-12cb-77a3-a479-f14f6e38b218",
+    "ingress_sha256": "328d9e7fa34adeb71484e2060773e269978c4361adec55a1b9d98b8afccd2bae",
+    "egress_sha256": "d46cff8cfef966ace4bb44754d4b18283ed965e5b0ae1af3b3f560ef7d2d95fd",
+    "model": "deepseek-flash",
+    "stream": true,
+    "types": {
+      "message": 7,
+      "reasoning": 9,
+      "function_call": 8,
+      "function_call_output": 8,
+      "agent_message": 4
+    },
+    "converted": 4,
+    "items": [
+      {
+        "index": 13,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-2ec8-7801-94a9-f20ecf49110c\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 18,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-39d3-7102-b7ae-45be3e00e06e\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_OK"
+            }
+          ]
+        }
+      },
+      {
+        "index": 28,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-4e38-7be0-bf3a-b47df79667c2\",\"author\":\"/root/delivery_a\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_MESSAGE_OK_cde52a2ce9de"
+            }
+          ]
+        }
+      },
+      {
+        "index": 35,
+        "ingress": {
+          "type": "agent_message",
+          "id": "amsg_01a1b62c-6a93-7ee1-93df-eca8ea116cd0",
+          "author": "/root/delivery_b",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_b\nPayload:\nHARMLESS_NATIVE_CONTENT_4a241c793f3046468799c225b0502ade"
+            }
+          ]
+        },
+        "egress": {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Native agent_message metadata: {\"id\":\"amsg_01a1b62c-6a93-7ee1-93df-eca8ea116cd0\",\"author\":\"/root/delivery_b\",\"recipient\":\"/root\"}\n"
+            },
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_b\nPayload:\nHARMLESS_NATIVE_CONTENT_4a241c793f3046468799c225b0502ade"
+            }
+          ]
+        }
+      }
+    ],
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "actual_upstream_body_verified": true
+  }
+]

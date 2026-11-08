@@ -1,0 +1,355 @@
+[
+  {
+    "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+    "source_rollout_sha256": "ec6259f3b1e4441545bb4880f528aab2acac05b59bb117b1c549ae5f526327ca",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-pro-ultraspeed",
+          "model_provider_id": "mimo_fast",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+        }
+      },
+      {
+        "line": 18,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": "mimo-v2.6-pro-ultraspeed",
+            "reasoning_effort": "max",
+            "id": "fc_2ea48584cd7e4aed86db206588039c00",
+            "kind": "started",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062474792,
+          "completed_at_ms": 1794062474792
+        }
+      },
+      {
+        "line": 28,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b674-de28-74a0-90a1-00a7975d109e",
+            "kind": "completed",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062477362,
+          "completed_at_ms": 1794062477362
+        }
+      },
+      {
+        "line": 29,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "fc_3af59c5ea25347f98938162e5524a59c",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+            "receiver_thread_ids": [],
+            "receiver_agents": [],
+            "agents_states": {}
+          },
+          "started_at_ms": 1794062476039,
+          "completed_at_ms": 1794062477364
+        }
+      },
+      {
+        "line": 38,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_5ad94c261e2b4d8097f993920ba6cd7a",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062480629,
+          "completed_at_ms": 1794062480629
+        }
+      },
+      {
+        "line": 41,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b674-f4f4-7082-a6b3-c8b49c86969b",
+            "kind": "completed",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062481864,
+          "completed_at_ms": 1794062481864
+        }
+      },
+      {
+        "line": 51,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_91b5cd5afab24bb9a6f225018e5970e0",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062490794,
+          "completed_at_ms": 1794062490794
+        }
+      },
+      {
+        "line": 58,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "fc_29caa82467ad434bb160c871d34e008e",
+            "kind": "interacted",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062494403,
+          "completed_at_ms": 1794062494403
+        }
+      },
+      {
+        "line": 61,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b675-2ac3-7d21-9086-a7177b467909",
+            "kind": "completed",
+            "agent_thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+            "agent_path": "/root/delivery_a"
+          },
+          "started_at_ms": 1794062495708,
+          "completed_at_ms": 1794062495708
+        }
+      },
+      {
+        "line": 71,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": "mimo-v2.6-pro-ultraspeed",
+            "reasoning_effort": "max",
+            "id": "fc_c84643ffba264aee8ce096a315dc1004",
+            "kind": "started",
+            "agent_thread_id": "01a1b675-3b9c-7493-8132-2515ffe72f64",
+            "agent_path": "/root/delivery_b"
+          },
+          "started_at_ms": 1794062498728,
+          "completed_at_ms": 1794062498728
+        }
+      },
+      {
+        "line": 79,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "SubAgentActivity",
+            "model": null,
+            "reasoning_effort": null,
+            "id": "subagent-completed-01a1b675-3ba7-7330-b76e-e53546382a62",
+            "kind": "completed",
+            "agent_thread_id": "01a1b675-3b9c-7493-8132-2515ffe72f64",
+            "agent_path": "/root/delivery_b"
+          },
+          "started_at_ms": 1794062503859,
+          "completed_at_ms": 1794062503859
+        }
+      },
+      {
+        "line": 80,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+          "turn_id": "01a1b674-cb49-7891-8766-da66dcb5b093",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "fc_64e7b555914742b9b792d9a75f72ea8f",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+            "receiver_thread_ids": [],
+            "receiver_agents": [],
+            "agents_states": {}
+          },
+          "started_at_ms": 1794062499979,
+          "completed_at_ms": 1794062503861
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b674-de1f-7823-b643-c5567e053ee6",
+    "source_rollout_sha256": "b8113ac040b520bb547e89cdf43cb3a7843900e0a1ea92b4f764c4d116253981",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-pro-ultraspeed",
+          "model_provider_id": "mimo_fast",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b675-3b9c-7493-8132-2515ffe72f64",
+    "source_rollout_sha256": "480068191ac99b1e18c94ebe7861e11ad8e20292174a65c88213c35a9189ec27",
+    "events": [
+      {
+        "line": 11,
+        "settings": {
+          "model": "mimo-v2.6-pro-ultraspeed",
+          "model_provider_id": "mimo_fast",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q"
+        }
+      },
+      {
+        "line": 18,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b675-3b9c-7493-8132-2515ffe72f64",
+          "turn_id": "01a1b675-3ba7-7330-b76e-e53546382a62",
+          "item": {
+            "type": "CommandExecution",
+            "id": "exec-aaa2a9c6-d2a5-4977-9ccf-0f1d05dfb608",
+            "process_id": "98182",
+            "command": [
+              "/bin/zsh",
+              "-c",
+              "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt"
+            ],
+            "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q",
+            "parsed_cmd": [
+              {
+                "type": "read",
+                "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt",
+                "name": "harmless-target.txt",
+                "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-fast-sa2nbn2q/harmless-target.txt"
+              }
+            ],
+            "source": "unified_exec_startup",
+            "status": "completed",
+            "aggregated_output": "HARMLESS_NATIVE_CONTENT_26fe67de6ea44e7f8ba68767da249813",
+            "exit_code": 0,
+            "duration": {
+              "secs": 0,
+              "nanos": 9000
+            }
+          },
+          "started_at_ms": 1794062502370,
+          "completed_at_ms": 1794062502370
+        }
+      }
+    ]
+  }
+]

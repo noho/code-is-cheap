@@ -1,0 +1,44 @@
+{
+  "declared_at": "2026-11-07T16:56:03.067179+00:00",
+  "command": [
+    "python3",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "--profile",
+    "mimo-flash",
+    "--scenario",
+    "a",
+    "--attempt",
+    "4",
+    "--evidence-dir",
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+    "--initial-marker",
+    "LIVE_PROBE_OK"
+  ],
+  "permission": "require_escalated, same fixture setup as B2/A3",
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+    "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+    "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+    "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+  },
+  "authority": {
+    "path": "docs/gateflow/shim-subagent-all-providers/control.md",
+    "sha256": "e5d1ddef06ca3aa73ba62fb82514242baa263be1937ad863a509394744a9eb03",
+    "section": "Controller validation fix: contradictory update-wait prompt"
+  },
+  "concrete_correction": "Short-case v2 exact fresh parent-received native FINAL is completion; wait only absent receipt, bounded diagnostic30s, never redispatch after timeout. Auditor requires exact receipts/completed turns, validates every actual wait but no extra v2 wait. V1/all prompts and persistent waits unchanged.",
+  "prechecks": {
+    "evidence_tests": 33,
+    "log": "evidence-receipt-fix-initial.log",
+    "observer_rechecks": 2,
+    "py_compile": 0,
+    "diff_check": 0
+  },
+  "max_native_concurrency": 1,
+  "limit": "Exactly one A4. Preserve A2 setup failure, A3 real incomplete/aborted and all audit versions. Reuse B2 only after exact production/settings + explicit harness applicability. No fallback/argument/policy/catalog/production changes."
+}

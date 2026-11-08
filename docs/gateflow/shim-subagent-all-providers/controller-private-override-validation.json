@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-07T17:11:39.309965+00:00",
+  "private_file_mode": "0o600",
+  "runtime_checks": {
+    "codex": {
+      "base_url_equals_ds_flash": true,
+      "api_key_equals_ds_flash": true,
+      "key_present": true,
+      "model": "kimi-k3"
+    },
+    "claude": {
+      "base_url_equals_ds_flash": true,
+      "api_key_equals_ds_flash": true,
+      "key_present": true,
+      "model": "kimi-k3[1m]"
+    }
+  },
+  "no_secret_or_private_url_captured": true,
+  "no_config_write_or_provider_request": true
+}

@@ -1,0 +1,289 @@
+[
+  {
+    "file": "rollout-2026-11-07T23-24-53-01a1b69c-d26f-72a2-83cc-47ea05d6b51c.jsonl",
+    "identity": {
+      "id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "mimo_flash",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-k30_5piy"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+        "model": "mimo-v2.6-flash",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4"
+          },
+          "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "started_at": 1794065093,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 16,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_9d9923f2ed9249119c4fc7c3bb922aa5",
+          "name": "spawn_agent",
+          "namespace": "collaboration",
+          "arguments": "{\"task_name\":\"delivery_a\",\"fork_turns\":\"none\",\"message\":\"NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_77430cc6e9f9. Do not use tools, read/write files, or delegate.\"}",
+          "call_id": "fc_813e8041fb684edcbf85ce613f05bac7",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4"
+          }
+        }
+      },
+      {
+        "line": 19,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b69c-f50f-7752-8a1a-c67856edd34b",
+          "call_id": "fc_813e8041fb684edcbf85ce613f05bac7",
+          "output": "{\"task_name\":\"/root/delivery_a\"}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "create_time": 1794065102.095086
+          }
+        }
+      },
+      {
+        "line": 29,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b69d-069e-7032-9429-ccbb69e16f57",
+          "author": "/root/delivery_a",
+          "recipient": "/root",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_INITIAL_77430cc6e9f9"
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "create_time": 1794065106.590979,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 32,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_b7f5efab2c4c458abca78fef35e1e53a",
+          "name": "wait_agent",
+          "arguments": "{}",
+          "call_id": "fc_6c4b3899ba1b4a10b39e4619c3622b0f",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4"
+          }
+        }
+      },
+      {
+        "line": 34,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b69d-1936-76f2-a891-64b719c40c39",
+          "call_id": "fc_6c4b3899ba1b4a10b39e4619c3622b0f",
+          "output": "unsupported call: wait_agent",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "create_time": 1794065111.350677
+          }
+        }
+      },
+      {
+        "line": 39,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_df0c5f35d08041b1b6d59cb2e4a34c58",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "Stopped after A1 due to an explicit tool error.\n\n- A1 final: `LIVE_INITIAL_77430cc6e9f9`\n- Error: `unsupported call: wait_agent`\n- Unavailable capability: native `wait_agent`\n- A2 and A3 not attempted; no retries or alternate invocation paths used.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 42,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "last_agent_message": "Stopped after A1 due to an explicit tool error.\n\n- A1 final: `LIVE_INITIAL_77430cc6e9f9`\n- Error: `unsupported call: wait_agent`\n- Unavailable capability: native `wait_agent`\n- A2 and A3 not attempted; no retries or alternate invocation paths used.",
+          "started_at": 1794065093,
+          "completed_at": 1794065139,
+          "duration_ms": 46184,
+          "time_to_first_token_ms": 5766
+        }
+      }
+    ]
+  },
+  {
+    "file": "rollout-2026-11-07T23-25-02-01a1b69c-f506-7fe0-b93b-7180f2f3b084.jsonl",
+    "identity": {
+      "id": "01a1b69c-f506-7fe0-b93b-7180f2f3b084",
+      "parent_thread_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+      "cli_version": "0.167.0",
+      "model_provider": "mimo_flash",
+      "agent_path": "/root/delivery_a",
+      "source": {
+        "subagent": {
+          "thread_spawn": {
+            "parent_thread_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+            "depth": 1,
+            "agent_path": "/root/delivery_a",
+            "agent_nickname": "Lagrange",
+            "agent_role": null
+          }
+        }
+      },
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-k30_5piy"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+        "model": "mimo-v2.6-flash",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+            "turn_trigger": null,
+            "parent_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+            "initiating_agent_path": "/root",
+            "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4"
+          },
+          "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+          "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "started_at": 1794065102,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "agent_message",
+          "id": "amsg_01a1b69c-fb1b-7231-8770-6503eb159510",
+          "author": "/root",
+          "recipient": "/root/delivery_a",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Message Type: NEW_TASK\nTask name: /root/delivery_a\nSender: /root\nPayload:\n"
+            },
+            {
+              "type": "encrypted_content",
+              "encrypted_content": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_77430cc6e9f9. Do not use tools, read/write files, or delegate."
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+            "create_time": 1794065103.643863,
+            "content_item_metadata": [
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              },
+              {
+                "provenance": {
+                  "type": "tool",
+                  "namespace": "collaboration"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "line": 17,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "msg_81726e13a5bf451994ae7865e539c3e1",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "LIVE_INITIAL_77430cc6e9f9",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 20,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b69c-d280-7e50-9181-f998be2f9fe4",
+          "turn_id": "01a1b69c-f50c-7493-ac57-fabee0a7ad36",
+          "last_agent_message": "LIVE_INITIAL_77430cc6e9f9",
+          "started_at": 1794065102,
+          "completed_at": 1794065105,
+          "duration_ms": 3117,
+          "time_to_first_token_ms": 2694
+        }
+      }
+    ]
+  }
+]

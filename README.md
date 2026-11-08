@@ -503,7 +503,7 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 
 | Profile | Model | Gateway | Shim port | Gateway fix |
 | --- | --- | --- | --- | --- |
-| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + patched catalog |
+| `ds-flash` | `deepseek-flash` | api.deepseek.com | 8788 | model-name rewrite + native agent-message adapter + patched catalog |
 | `glm` | `glm-5.3` | open.bigmodel.cn | 8789 | model-name rewrite + patched catalog |
 | `glm-flash` | `glm-5.3-flash` | open.bigmodel.cn | 8795 | model-name rewrite + patched catalog |
 | `kimi` | `k3` | api.kimi.com | 8790 | + patched catalog |
@@ -520,6 +520,10 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 | `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
 | `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+
+All nine managed cloud routes (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `hy`) explicitly enable `agent_message_fix`; unrelated, new, and environment-only routes default to off. `local` and OpenAI subscription profiles do not use this shim. It adapts Codex 0.167.0 native inter-agent items to standard user messages, preserving content order and routing metadata as text; native rollouts remain unchanged. It assumes the observed `agent_message` `encrypted_content` slots hold plaintext, and cannot decrypt actual opaque ciphertext. Reasoning, tool arguments, and other native top-level item types are untouched. Unknown or invalid content within an actual `agent_message` fails with a sanitized HTTP 400 rather than forwarding a partial task. Deploy shim code/routes with `./scripts/sync-codex-agent.sh` only when authorized; the installed service needs the updated code/routes loaded.
+
+The compatibility flags `agent_message_fix`, `native_agent_request_flatten`, and `native_agent_response_restore` are route-level only and default to off: enable them explicitly in each route; file-level defaults do not apply. Existing legacy flags retain their historical inheritance. Kimi enables both for its advertised `multi_agent_v1` / `collaboration` groups; MiMo Flash enables response restoration only. The request-local map restores only missing/null namespaces on advertised native function calls, preserving their arguments and IDs. Unrelated MCP/Code Mode groups and history remain intact. Active mapped Responses require identity response encoding and SSE or JSON; SSE is relayed incrementally with an 8 MiB per-event limit (also the nonstream JSON limit). Guardian requests explicitly bypass both stages. Kimi request flattening and mapping use only top-level `tools` native descriptors. MiMo Flash's response-only map reads native descriptors from the current request's top-level `tools` and immediate `input[type=additional_tools].tools` containers, preserving the complete request bytes.
 
 Cloud credentials come from the private connection JSON and are added by the shim. `local` needs none; the seven OpenAI profiles across three upstream models share the shared home's `auth.json`, and `business` keeps its own login under `~/.codex-agent/business/`.
 

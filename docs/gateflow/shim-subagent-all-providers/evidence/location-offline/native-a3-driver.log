@@ -1,0 +1,36 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3
+PARENT_ID=01a1b6e0-f72b-7112-8aa6-71bf8608f188
+[shim:52497] native response: restored=0 relayed=17692B
+[shim:52497] native response: restored=0 relayed=5233B
+[shim:52497] native response: restored=0 relayed=4412B
+[shim:52497] native response: restored=0 relayed=7277B
+[shim:52497] native response: restored=0 relayed=4818B
+[shim:52497] native response: restored=0 relayed=29073B
+[shim:52497] native response: restored=0 relayed=8347B
+WAITING elapsed=61 requests=7
+[shim:52497] native response: restored=0 relayed=13152B
+WAITING elapsed=99 requests=8
+WAITING elapsed=129 requests=8
+WAITING elapsed=159 requests=8
+[shim:52497] native response: restored=0 relayed=5770B
+WAITING elapsed=222 requests=9
+WAITING elapsed=252 requests=9
+WAITING elapsed=282 requests=9
+WAITING elapsed=312 requests=9
+WAITING elapsed=342 requests=9
+WAITING elapsed=372 requests=9
+WAITING elapsed=402 requests=9
+WAITING elapsed=432 requests=9
+WAITING elapsed=462 requests=9
+[shim:52497] native response: restored=0 relayed=7252B
+WAITING elapsed=527 requests=10
+WAITING elapsed=557 requests=10
+WAITING elapsed=587 requests=10
+WAITING elapsed=617 requests=10
+WAITING elapsed=647 requests=10
+WAITING elapsed=677 requests=10
+WAITING elapsed=707 requests=10
+WAITING elapsed=737 requests=10
+WAITING elapsed=767 requests=10
+[shim:52497] native response: restored=0 relayed=8080B
+{"profile": "mimo-flash", "parent_completed": false, "app_server_exit": -2, "errors": [{"process_eof_before_completed": true}], "requests": 11, "elapsed_seconds": 808.86}

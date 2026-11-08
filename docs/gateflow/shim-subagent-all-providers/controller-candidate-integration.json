@@ -1,0 +1,13 @@
+{
+  "source_checkout": "/private/tmp/code-is-cheap-shim-review-fix-20261108",
+  "files_integrated": [
+    "README.md",
+    "README.zh.md",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "tests/test_shim_native_namespace.py"
+  ],
+  "production_helper_routes_auditor_unchanged": true,
+  "v1_freeze_preserved": true,
+  "both_full_reviewers_exited_before_integration": true,
+  "scope": "Exact gpt-6-sol authored candidate copies, no controller code edits"
+}

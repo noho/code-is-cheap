@@ -1,0 +1,87 @@
+{
+  "results": [
+    {
+      "log": "native-unit-prelaunch.log",
+      "exit": 0,
+      "tests": 19
+    },
+    {
+      "log": "native-audit-prelaunch.log",
+      "exit": 0,
+      "tests": 24
+    },
+    {
+      "log": "native-legacy-prelaunch.json",
+      "exit": 0,
+      "tests": null
+    },
+    {
+      "log": "namespace-test_shim_subagent_delivery.py.log",
+      "exit": 0,
+      "tests": 13
+    },
+    {
+      "log": "namespace-test_install_endpoints.py.log",
+      "exit": 0,
+      "tests": 38
+    },
+    {
+      "log": "namespace-test_provider_registry.py.log",
+      "exit": 0,
+      "tests": 11
+    },
+    {
+      "log": "namespace-test_shim_service.py.log",
+      "exit": 0,
+      "tests": 11
+    },
+    {
+      "log": "namespace-test_model_catalog_generation.py.log",
+      "exit": 0,
+      "tests": 30
+    }
+  ],
+  "total_tests": 146,
+  "py_compile_exit": 0,
+  "legacy_ds_audit_exit": 0,
+  "git_diff_check_exit": 0,
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+  },
+  "final_applicable_total_tests": 150,
+  "final_affected_reruns": [
+    {
+      "pattern": "test_shim_native_namespace.py",
+      "tests": 19,
+      "exit": 0,
+      "log": "native-namespace-before-kimi2.log"
+    },
+    {
+      "pattern": "test_shim_subagent_delivery.py",
+      "tests": 13,
+      "exit": 0,
+      "log": "native-delivery-before-kimi2.log"
+    },
+    {
+      "pattern": "test_shim_native_evidence.py",
+      "tests": 28,
+      "exit": 0,
+      "log": "native-audit-final-28.log"
+    }
+  ],
+  "final_helper_sha256": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+  "final_source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146",
+    "tests/test_shim_native_namespace.py": "4cf56584a9ac1b971df51b22de2e21943c9f596703d4f7abc77344d0570a745f",
+    "tests/test_shim_native_evidence.py": "7da611208e5f1bfcd29921149ecf6a360e8bb7c5aa4aaef4fc8464e81ee0dd80"
+  },
+  "final_py_compile_exit": 0,
+  "final_legacy_ds_audit_exit": 0,
+  "final_diff_check_exit": 0
+}

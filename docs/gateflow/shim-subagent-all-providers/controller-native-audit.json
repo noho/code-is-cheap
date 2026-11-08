@@ -1,0 +1,83 @@
+{
+  "observed_at": "2026-11-07T17:04:34.009009+00:00",
+  "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+  "source_freeze_unchanged": true,
+  "changed_sources": [],
+  "profiles": [
+    {
+      "profile": "ds-flash",
+      "passed": true,
+      "detail": {
+        "legacy_runs": 2,
+        "conditional_reuse": true
+      }
+    },
+    {
+      "profile": "glm",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "glm-flash",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "mimo",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "mimo-fast",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "qwen",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "hy",
+      "passed": true,
+      "detail": {
+        "failed_checks": []
+      }
+    },
+    {
+      "profile": "kimi",
+      "passed": true,
+      "detail": {
+        "coverage": {
+          "a": true,
+          "b": true
+        },
+        "errors": []
+      }
+    },
+    {
+      "profile": "mimo-flash",
+      "passed": true,
+      "detail": {
+        "coverage": {
+          "a": true,
+          "b": true
+        },
+        "errors": []
+      }
+    }
+  ],
+  "all_nine_stored_evidence_pass": true,
+  "no_provider_or_live_requests": true,
+  "scope": "Independent controller audit of stored native evidence; current-source applicability retains the explicit bounded-reuse proof, not a fresh all-nine inference claim"
+}

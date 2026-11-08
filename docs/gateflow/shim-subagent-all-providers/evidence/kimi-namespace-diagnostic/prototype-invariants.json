@@ -1,0 +1,21 @@
+{
+  "scope": "Offline diagnostic-harness invariants only, not production regression/acceptance",
+  "source_sha256": "28f751309b10dcf4062ba3743f749b72cec46277a3f18f159c99ac32590a8813",
+  "checks": {
+    "input_immutable": true,
+    "only_tools_changed": true,
+    "unique_original_name_retained": true,
+    "function_schema_and_extra_fields_retained": true,
+    "namespace_semantics_description_retained": true,
+    "flat_tool_unchanged": true,
+    "flat_request_semantic_noop": true,
+    "duplicate_across_namespaces_rejected": true,
+    "duplicate_flat_and_namespace_rejected": true,
+    "nested_namespace_rejected": true,
+    "custom_child_rejected": true,
+    "unknown_namespace_metadata_rejected": true,
+    "non_array_tools_rejected": true,
+    "malformed_namespace_description_rejected": true
+  },
+  "all_passed": true
+}

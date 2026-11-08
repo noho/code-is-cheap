@@ -1,0 +1,188 @@
+test_a4_baseline_all_nonlogging_source_semantics_unchanged (test_shim_native_namespace.LoggingContracts.test_a4_baseline_all_nonlogging_source_semantics_unchanged) ... ok
+test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) ... 
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='gzip') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='deflate') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='gzip') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='deflate') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='gzip') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='deflate') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='gzip') ... FAIL
+  test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='deflate') ... FAIL
+test_both_active_paths_log_before_first_event_without_waiting_for_eof (test_shim_native_namespace.LoggingContracts.test_both_active_paths_log_before_first_event_without_waiting_for_eof) ... FAIL
+test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) ... 
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top='absent') ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=None) ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top={}) ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=42) ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=True) ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top='TOOLS_OFFLINE_PRIVATE') ... FAIL
+  test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top={'secret': 'TOOLS_OFFLINE_PRIVATE'}) ... FAIL
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=199B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='gzip')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=199B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='text/event-stream', encoding='deflate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=199B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=157B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='gzip')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=157B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=True, media='application/json', encoding='deflate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=157B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=198B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='gzip')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=198B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='text/event-stream', encoding='deflate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=198B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=156B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='gzip')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=156B']
+
+======================================================================
+FAIL: test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence (test_shim_native_namespace.LoggingContracts.test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence) (flatten=False, media='application/json', encoding='deflate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 334, in test_active_sse_and_json_standard_logs_private_payload_and_byte_equivalence
+    self.assertEqual(len(standard),1,lines)
+AssertionError: 0 != 1 : ['[shim:0] native response: restored=1 relayed=156B']
+
+======================================================================
+FAIL: test_both_active_paths_log_before_first_event_without_waiting_for_eof (test_shim_native_namespace.LoggingContracts.test_both_active_paths_log_before_first_event_without_waiting_for_eof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 379, in test_both_active_paths_log_before_first_event_without_waiting_for_eof
+    self.assertIn('POST /responses -> 200 model=test enc=- rewrite=none tools=',logs.getvalue())
+AssertionError: 'POST /responses -> 200 model=test enc=- rewrite=none tools=' not found in ''
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top='absent')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=42)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top='TOOLS_OFFLINE_PRIVATE')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_response_only_non_array_top_tools_still_restores_and_logs (test_shim_native_namespace.LoggingContracts.test_response_only_non_array_top_tools_still_restores_and_logs) (top={'secret': 'TOOLS_OFFLINE_PRIVATE'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leo/workspace/code-is-cheap/tests/test_shim_native_namespace.py", line 354, in test_response_only_non_array_top_tools_still_restores_and_logs
+    self.assertEqual(sum('rewrite=' in line for line in logs.getvalue().splitlines()),1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 4 tests in 17.503s
+
+FAILED (failures=20)

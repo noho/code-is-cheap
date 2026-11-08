@@ -1,0 +1,127 @@
+{
+  "schema": 2,
+  "profile": "glm",
+  "attempt": "1",
+  "source_head": "901cea16928ef2db01ce774c99652f62fb3dca68",
+  "source_hashes_at_launch": {
+    "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+    "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+    "codex-agent/profiles/glm/config.toml": "dcb511ad76f9d81efaad221fceb3c5dfe21d328a294a5021867110f29179807e",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "/Users/leo/.codex/model-catalogs/glm.json": "6426256863dab72c101db5f0bb170bc3e56302d9bd3435df1386813fe5d852e7",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "23d6e459aaa2436c0645a2f3310e11afc8fd6b3ed509db44355fcd26041a7764",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+  },
+  "version": "codex-cli 0.167.0",
+  "model": "glm-5.3",
+  "provider": "glm",
+  "effort": "max",
+  "catalog_selected": {
+    "slug": "glm-5.3",
+    "multi_agent_version": null,
+    "tool_mode": null,
+    "use_responses_lite": null,
+    "node_repl_auto_review_required": null,
+    "node_repl_disabled": null,
+    "shell_type": "shell_command"
+  },
+  "effective_endpoint": {
+    "wire_model": "glm-5.3",
+    "key_present": true
+  },
+  "route": {
+    "port": 8789,
+    "to": "glm-5.3",
+    "id_fix": false,
+    "json_fmt_fix": false,
+    "drop_tools_item": false,
+    "endpoint_id": "glm",
+    "request_prefix": "/api/v1",
+    "agent_message_fix": true
+  },
+  "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-90ciq4so",
+  "candidate_port": 57629,
+  "command": [
+    "codex",
+    "app-server",
+    "-c",
+    "model=\"glm-5.3\"",
+    "-c",
+    "model_provider=\"glm\"",
+    "-c",
+    "model_reasoning_effort=\"max\"",
+    "-c",
+    "model_context_window=1048576",
+    "-c",
+    "model_auto_compact_token_limit=786432",
+    "-c",
+    "model_catalog_json=\"/Users/leo/.codex/model-catalogs/glm.json\"",
+    "-c",
+    "web_search=\"disabled\"",
+    "-c",
+    "model_providers.glm.base_url=\"http://127.0.0.1:57629/api/v1\"",
+    "-c",
+    "features.apps=false",
+    "-c",
+    "features.plugins=false",
+    "-c",
+    "approval_policy=\"never\"",
+    "-c",
+    "sandbox_mode=\"read-only\""
+  ],
+  "driver_argv": [
+    "/opt/homebrew/opt/python@3.11/bin/python3.11",
+    "/Users/leo/workspace/code-is-cheap/docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "--profile",
+    "glm",
+    "--evidence-dir",
+    "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1",
+    "--attempt",
+    "1"
+  ],
+  "settings": {
+    "model": "glm-5.3",
+    "model_provider": "glm",
+    "model_reasoning_effort": "max",
+    "model_context_window": 1048576,
+    "model_auto_compact_token_limit": 786432,
+    "model_catalog_json": "/Users/leo/.codex/model-catalogs/glm.json",
+    "web_search": "disabled",
+    "model_providers.glm.base_url": "http://127.0.0.1:57629/api/v1",
+    "features.apps": false,
+    "features.plugins": false,
+    "approval_policy": "never",
+    "sandbox_mode": "read-only"
+  },
+  "inherited_approval_reviewer": "auto_review",
+  "fixture": {
+    "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-90ciq4so/harmless-target.txt",
+    "contents": "HARMLESS_NATIVE_CONTENT_1bc3b8f14b24464e98f7e38807665b90",
+    "sha256": "7687e53d5b8694fb52a68adbdc1197dfa9ff640cdb524c0e373e3775a1d9d02e"
+  },
+  "initial_marker": "LIVE_INITIAL_eea6039e72c4",
+  "followup_marker": "LIVE_FOLLOWUP_3f6272be55d2",
+  "message_token": "LIVE_MESSAGE_OK_7c97d2b0ccf4",
+  "parent_prompt": "NATIVE_CANDIDATE_PROBE: explicitly authorized isolated collaboration diagnostic. Perform once, in sequence, using actual advertised native APIs. Do not retry, repair, interrupt or close agents. Parent must only use native collaboration; never read files or use shell/node file APIs. Follow the tool descriptors; do not simulate calls. If collaboration is hosted in Code Mode, invoke its native functions through that host.\nA1: Spawn a fresh child (name delivery_a when supported), with no inherited conversation if supported. Its complete task: \"NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_eea6039e72c4. Do not use tools, read/write files, or delegate.\" Wait for its actual final.\nA2: Continue the SAME child using its actual native continuation API (followup_task or send_input as advertised). Complete task: \"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_3f6272be55d2. Do not use tools, read/write files, or delegate.\" Wait for its NEW final, not its old final.\nA3: If and only if a separate send_message capability exists, send the SAME idle child this MESSAGE: \"NATIVE_CANDIDATE_PROBE MESSAGE token: LIVE_MESSAGE_OK_7c97d2b0ccf4. Remember this token for the next task.\" Then continue that same child with task: \"NATIVE_CANDIDATE_PROBE consume-message. Reply exactly the token in your most recent MESSAGE. Do not use tools, read/write files, or delegate.\" This continuation task must NOT contain the token. Wait for its new final. If descriptors lack separate send_message, explicitly report A3 N/A and proceed to B.\nB: Spawn a DIFFERENT fresh child (name delivery_b when supported) with no inherited conversation if supported. Complete task: \"NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-glm-90ciq4so/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.\" Wait for its actual final. The fixture contents are unknown to you; never read it yourself, guess it, or give contents to any child.\nFinally report observed finals and any unavailable capability. Parent self-report is informational; independent wire/native evidence determines acceptance.",
+  "thread_start_identity": {
+    "model": "glm-5.3",
+    "modelProvider": "glm",
+    "reasoningEffort": "max",
+    "approvalPolicy": "never",
+    "sandbox": {
+      "type": "readOnly",
+      "networkAccess": false
+    }
+  },
+  "parent_turn_status": "failed",
+  "parent_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+  "app_server_exit": 0,
+  "errors": [
+    {
+      "turn_status": "failed"
+    }
+  ],
+  "parent_completed": false,
+  "elapsed_seconds": 30.14,
+  "request_count": 30
+}

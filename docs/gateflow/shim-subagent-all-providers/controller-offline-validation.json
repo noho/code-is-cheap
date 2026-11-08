@@ -1,0 +1,58 @@
+{
+  "observed_at": "2026-11-07T17:04:53.925501+00:00",
+  "exit_code": 0,
+  "tests": 73,
+  "result_tail": [
+    "[shim:0]   ^ status=429 stream=http429 relayed=0B completed=False",
+    "...............................................",
+    "----------------------------------------------------------------------",
+    "Ran 73 tests in 37.612s",
+    "",
+    "OK"
+  ],
+  "test_command": "python3 unittest.TestSuite: discover test_shim_native_namespace.py, test_shim_native_evidence.py, test_shim_subagent_delivery.py",
+  "log_path": "/private/tmp/shim-controller-offline73.log",
+  "log_sha256": "362fb4a6f29d2dbd413e8871d909e1fe1aa726dbd72f65b8bce19c8cf45a96d1",
+  "log_bytes": 11113,
+  "source_files": {
+    "README.md": {
+      "sha256": "88381c2d4e5e21a63ba012be47944f6f4952b874320ee100282a7de8d065826e",
+      "bytes": 69814
+    },
+    "README.zh.md": {
+      "sha256": "448c4b3af1ef3abb6bd711b981e7599681784e6c2d0fcc02bd65134fe2d3497a",
+      "bytes": 63070
+    },
+    "codex-agent/bin/codex-auto-review-shim": {
+      "sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "bytes": 37422
+    },
+    "codex-agent/shim-routes.json": {
+      "sha256": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "bytes": 3062
+    },
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": {
+      "sha256": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "bytes": 35476
+    },
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": {
+      "sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "bytes": 47700
+    },
+    "tests/test_shim_subagent_delivery.py": {
+      "sha256": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4",
+      "bytes": 18312
+    },
+    "tests/test_shim_native_evidence.py": {
+      "sha256": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "bytes": 28691
+    },
+    "tests/test_shim_native_namespace.py": {
+      "sha256": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "bytes": 40850
+    }
+  },
+  "source_unchanged": true,
+  "scope": "Controller independent rerun of affected offline tests on final frozen source; 90 remaining unchanged-path checks retain traceable prior execution and explicit applicability.",
+  "repository_log_path": "docs/gateflow/shim-subagent-all-providers/controller-offline73.log"
+}

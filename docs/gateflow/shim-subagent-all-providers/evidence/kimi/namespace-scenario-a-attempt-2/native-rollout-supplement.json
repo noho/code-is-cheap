@@ -1,0 +1,198 @@
+[
+  {
+    "thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+    "source_rollout_sha256": "c2e6bb8f3c1f20e002274f8d995aee487095596b7ccdaeda62bb6e09cd5ad195",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "k3",
+          "model_provider_id": "kimi",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-rfj39xr_"
+        }
+      },
+      {
+        "line": 13,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "spawn_agent_0_f5511f86",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+            "receiver_thread_ids": [
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+                "agent_nickname": "Dirac"
+              }
+            ],
+            "prompt": "只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件",
+            "model": "k3",
+            "reasoning_effort": "max",
+            "agents_states": {
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce": "pending_init"
+            }
+          },
+          "started_at_ms": 1794068271694,
+          "completed_at_ms": 1794068271708
+        }
+      },
+      {
+        "line": 22,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "wait_agent_1_0eb860a8",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+            "receiver_thread_ids": [
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+                "agent_nickname": "Dirac"
+              }
+            ],
+            "agents_states": {
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce": {
+                "completed": "LIVE_PROBE_OK"
+              }
+            }
+          },
+          "started_at_ms": 1794068275006,
+          "completed_at_ms": 1794068276348
+        }
+      },
+      {
+        "line": 29,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "send_input_2_9b9c21f9",
+            "tool": "send_input",
+            "status": "completed",
+            "sender_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+            "receiver_thread_ids": [
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+                "agent_nickname": "Dirac"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_6effeee1095c. Do not use tools, read/write files, or delegate.",
+            "agents_states": {
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce": {
+                "completed": "LIVE_PROBE_OK"
+              }
+            }
+          },
+          "started_at_ms": 1794068279989,
+          "completed_at_ms": 1794068279992
+        }
+      },
+      {
+        "line": 37,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+          "turn_id": "01a1b6cd-0e87-7002-9fdc-807f81fe8542",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "wait_agent_3_34e85d77",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+            "receiver_thread_ids": [
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+                "agent_nickname": "Dirac"
+              }
+            ],
+            "agents_states": {
+              "01a1b6cd-524f-7072-914d-00d725a7c5ce": {
+                "completed": "LIVE_FOLLOWUP_6effeee1095c"
+              }
+            }
+          },
+          "started_at_ms": 1794068283070,
+          "completed_at_ms": 1794068285015
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+    "source_rollout_sha256": "dde4f3df0b657b2adba6f312c29683cd8dbd79776db8e420482d2f41a1154ada",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "k3",
+          "model_provider_id": "kimi",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-rfj39xr_"
+        }
+      }
+    ]
+  }
+]

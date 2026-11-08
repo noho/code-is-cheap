@@ -1,0 +1,34 @@
+{
+  "offline_only": true,
+  "source_driver_sha256": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+  "results": [
+    {
+      "method": "GET",
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observer_error_class": "TypeError",
+      "original_open_calls": 0
+    },
+    {
+      "method": "POST",
+      "body_bytes": 0,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "observer_error_class": "JSONDecodeError",
+      "original_open_calls": 0
+    },
+    {
+      "method": "POST",
+      "body_bytes": 8,
+      "body_sha256": "0c21a879c732a67910d80988df4919d794f6a070aab610ef865032a28046b021",
+      "observer_error_class": "JSONDecodeError",
+      "original_open_calls": 0
+    },
+    {
+      "method": "POST",
+      "body_bytes": 2,
+      "body_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "observer_error_class": "AttributeError",
+      "original_open_calls": 0
+    }
+  ]
+}

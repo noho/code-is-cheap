@@ -1,0 +1,57 @@
+[
+  {
+    "thread_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+    "request_body_sha256": "d2570461cf7f765e8230cb1538a406442c1370e66739fab8a77e1081886749c6",
+    "http_status": 200,
+    "raw_function_call_sse": [
+      "data: {\"type\":\"response.output_item.added\",\"sequence_number\":54,\"output_index\":1,\"item\":{\"type\":\"function_call\",\"id\":\"fc_spawn_agent:0\",\"status\":\"in_progress\",\"name\":\"spawn_agent\",\"call_id\":\"spawn_agent:0\"}}",
+      "data: {\"type\":\"response.output_item.done\",\"sequence_number\":70,\"output_index\":1,\"item\":{\"type\":\"function_call\",\"id\":\"fc_spawn_agent:0\",\"status\":\"completed\",\"name\":\"spawn_agent\",\"call_id\":\"spawn_agent:0\",\"arguments\":\"{\\\"message\\\": \\\"KIMI_NAMESPACE_ROUTING_DIAGNOSTIC. Reply exactly one line LIVE_INITIAL_cbda008fdb10. Do not use tools, read/write files, or delegate.\\\", \\\"fork_context\\\": false}\"}}"
+    ],
+    "lifecycle": [
+      {
+        "type": "response.created",
+        "status": "in_progress",
+        "error": null,
+        "output_types": []
+      },
+      {
+        "type": "response.completed",
+        "status": "completed",
+        "error": null,
+        "output_types": [
+          "reasoning",
+          "function_call"
+        ]
+      }
+    ],
+    "response_rewrite": false,
+    "stream_sha256": "6cf01226cd81f143c6a46966ac43100e4c29fea2ceee2eef2a0829fb1455ebf5",
+    "stream_bytes": 134915
+  },
+  {
+    "thread_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+    "request_body_sha256": "292812d18f297c9ee8a119c7245fa490bf35135ccd8fd73a5a6eebfa49224679",
+    "http_status": 200,
+    "raw_function_call_sse": [],
+    "lifecycle": [
+      {
+        "type": "response.created",
+        "status": "in_progress",
+        "error": null,
+        "output_types": []
+      },
+      {
+        "type": "response.completed",
+        "status": "completed",
+        "error": null,
+        "output_types": [
+          "reasoning",
+          "message"
+        ]
+      }
+    ],
+    "response_rewrite": false,
+    "stream_sha256": "5af899062fa2500728bc5b5168318870d48ef08f314f1f595569148401ad1c50",
+    "stream_bytes": 230347
+  }
+]

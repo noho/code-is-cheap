@@ -1,0 +1,82 @@
+{
+  "baseline_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "final_helper_sha256": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+  "A4_baseline_snapshot_identical": true,
+  "entry_file_count": 1524,
+  "changed_existing_files": {
+    "README.md": {
+      "before": "1e0ce5ecc708d49121b7adb5e9b149b43180f6ba51524e994025f94fdec07139",
+      "after": "bf644dc0c5b7915d54addc45b9333786f052b0b1d74cf8633ea91ebaa6742e95"
+    },
+    "README.zh.md": {
+      "before": "e9c3919586bde84484c947bb75d8894ad63f9b617f58061a082ee166ba40f571",
+      "after": "afed954925fd190f2d4317af6cfedb448a8b8b424f42cd3e8bbfacf265d26b31"
+    },
+    "codex-agent/bin/codex-auto-review-shim": {
+      "before": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "after": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a"
+    },
+    "tests/test_shim_native_evidence.py": {
+      "before": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "after": "914d80e559a38b94d968b00db1946e1887ae3784ce6bd92a1d898b0f33eedc8e"
+    },
+    "tests/test_shim_native_namespace.py": {
+      "before": "f83b342505afb142c2b2f278e84eb67192f36fd2ec3a0e9cc156a7b0450f853b",
+      "after": "381ffc9bf40f5b16abc6d4dc38b110d6afc65ae05e968d707dc4047799d81bd2"
+    }
+  },
+  "new_files": [
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/actual-a4-a3-current-audits.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/all-authored-changes.diff",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-README.md.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-README.zh.md.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-codex-auto-review-shim.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-logging-tests.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-test_shim_native_evidence.py.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/before-test_shim_native_namespace.py.gz",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/concurrent-controller-additions.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/entry-manifest.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/helper-v-a6246.diff",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/run-validation.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/run-validation.py",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_native_evidence.py.initial.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_native_evidence.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_native_namespace.py.initial.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_native_namespace.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_subagent_delivery.py.initial.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/test_shim_subagent_delivery.py.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/validation-corrections.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/validation-results.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/validation-scope.json",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/verify-scope.initial.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/verify-scope.log",
+    "docs/gateflow/shim-subagent-all-providers/evidence/review-fix-logging/verify-scope.py",
+    "docs/gateflow/shim-subagent-all-providers/review-logging-fix-validation.md"
+  ],
+  "concurrent_controller_preservation_additions_unchanged": {
+    "docs/gateflow/shim-subagent-all-providers/controller-candidate-source.json": "79164ec417e05e02b48478d1b7865f68e62e5640c595f02eaf3d426b752311bd",
+    "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/1e0ce5ecc708d49121b7adb5e9b149b43180f6ba51524e994025f94fdec07139.source.gz": "7642055c713e7587f351a9cf3b0070d9310809d796720b3dabb3cac85cb24023",
+    "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73.source.gz": "a2d92ffe47952a11994dc3705839d0a2c8bb5b871b3a881c2f74176f1ee80d08",
+    "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/e9c3919586bde84484c947bb75d8894ad63f9b617f58061a082ee166ba40f571.source.gz": "08d1a49e66452d38f31b24f82c5d89e819587d867093878e407a8529aeed002a",
+    "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/f83b342505afb142c2b2f278e84eb67192f36fd2ec3a0e9cc156a7b0450f853b.source.gz": "addfc5e97e9be099402ae77cee5189105349b41c307edc0c47236423839d9396"
+  },
+  "all_other_entry_files_unchanged": true,
+  "unchanged_existing_file_count": 1519,
+  "changed_handler_methods": [
+    "_summary",
+    "_handle"
+  ],
+  "standard_log_AST_unchanged": true,
+  "handler_nonlogging_AST_unchanged": true,
+  "all_other_module_AST_unchanged": true,
+  "unchanged_handler_methods": [
+    "log_message",
+    "route",
+    "_log",
+    "_dump",
+    "_relay_native_response"
+  ],
+  "native_source_applicability": "Old captures remain attributed to their exact launch helper. Only diagnostics change from a6246; all transforms, relay, routes/auth/model/guardian/retry control flow and module globals match after removing the unchanged standard diagnostic block and its summary owner.",
+  "prior_90_check_reuse": "All nonlogging implementation/configuration files unchanged vs entry; prior 90-check applicability remains bounded by the archived manifests and settings, not current provider availability.",
+  "no_new_provider_inference": true
+}

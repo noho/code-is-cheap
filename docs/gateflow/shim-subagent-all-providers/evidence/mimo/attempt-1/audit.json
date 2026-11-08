@@ -1,0 +1,33 @@
+{
+  "profile": "mimo",
+  "attempt": "1",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": false,
+    "B_fixture_absent_from_prompts": false,
+    "B_child_owned_call_result_execution_exact_final": false,
+    "wire_helper_and_exact_allowed_outbound_stages": false,
+    "native_lifecycle": false
+  },
+  "details": {
+    "observed_mode": "unavailable",
+    "advertised_names": [],
+    "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+    "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": "AssertionError",
+    "B_fixture_absent_from_prompts": "list index out of range",
+    "B_child_owned_call_result_execution_exact_final": "wrong child final",
+    "wire_helper_and_exact_allowed_outbound_stages": "incomplete observer stage schema (pre-fix attempt)",
+    "native_lifecycle": "AssertionError"
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "a4fd9d5d793d338fe3cd78116f8ad91bed50fb7901a2eaab37a4771ec367a301",
+    "wire.json": "8a3a1e1e6988617afbd242b5ba09a39ff811280453c09676be990622bbdf8dea",
+    "rollouts-sanitized.json": "07c32a6ba10f37023caa5b524e676ce2ee92d53f37d8cbd86743edf22056ae65"
+  }
+}

@@ -1,0 +1,12 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2
+PARENT_ID=01a1b6cd-0e76-7ed3-8c72-faf7e3769713
+[shim:50317] native response: restored=3 relayed=256513B
+[shim:50317] native response: restored=3 relayed=207305B
+[shim:50317] POST /coding/v1/responses -> 200 model=k3 enc=- rewrite=none tools=[exec_command,write_stdin,list_mcp_resources,list_mcp_resource_templates,read_mcp_resource,request_user_input,view_image,mcp__context7,mcp__github,mcp__node_repl,mcp__openaiDeveloperDocs,mcp__playwright,+3]
+[shim:50317]   ^ status=200 stream=ok relayed=166891B completed=True
+[shim:50317] native response: restored=3 relayed=213257B
+[shim:50317] native response: restored=3 relayed=201129B
+[shim:50317] POST /coding/v1/responses -> 200 model=k3 enc=- rewrite=none tools=[exec_command,write_stdin,list_mcp_resources,list_mcp_resource_templates,read_mcp_resource,request_user_input,view_image,mcp__context7,mcp__github,mcp__node_repl,mcp__openaiDeveloperDocs,mcp__playwright,+3]
+[shim:50317]   ^ status=200 stream=ok relayed=176755B completed=True
+[shim:50317] native response: restored=0 relayed=278566B
+{"profile": "kimi", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 7, "elapsed_seconds": 41.39}

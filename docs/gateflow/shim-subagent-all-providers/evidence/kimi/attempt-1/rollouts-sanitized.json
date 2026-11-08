@@ -1,0 +1,400 @@
+[
+  {
+    "file": "rollout-2026-11-07T22-38-16-01a1b672-279d-7112-b228-be9877920140.jsonl",
+    "identity": {
+      "id": "01a1b672-279d-7112-b228-be9877920140",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-ddynlmk0"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          },
+          "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+          "root_turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+          "started_at": 1794062297,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 13,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_000000000000018e_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "I'll first verify what collaboration-capable hosts or MCP servers are advertised in this environment, since the probe requires actual native APIs.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 14,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:0",
+          "name": "list_mcp_resources",
+          "arguments": "{\"server\": \"agents\"}",
+          "call_id": "list_mcp_resources:0",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 15,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:1",
+          "name": "list_mcp_resources",
+          "arguments": "{\"server\": \"collaboration\"}",
+          "call_id": "list_mcp_resources:1",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 16,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:2",
+          "name": "list_mcp_resources",
+          "arguments": "{\"server\": \"code-mode\"}",
+          "call_id": "list_mcp_resources:2",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 17,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:3",
+          "name": "list_mcp_resources",
+          "arguments": "{\"server\": \"subagents\"}",
+          "call_id": "list_mcp_resources:3",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 19,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-75ef-7792-a890-dbdc8b382186",
+          "call_id": "list_mcp_resources:0",
+          "output": "unknown MCP server 'agents'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062317.039833
+          }
+        }
+      },
+      {
+        "line": 20,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-75f0-7313-9c1e-31c54ccd4694",
+          "call_id": "list_mcp_resources:1",
+          "output": "unknown MCP server 'collaboration'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062317.040565
+          }
+        }
+      },
+      {
+        "line": 21,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-75f1-7881-a8a9-89c0f20b7ef9",
+          "call_id": "list_mcp_resources:2",
+          "output": "unknown MCP server 'code-mode'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062317.041284
+          }
+        }
+      },
+      {
+        "line": 22,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-75f1-7881-a8a9-89d04c2e2fff",
+          "call_id": "list_mcp_resources:3",
+          "output": "unknown MCP server 'subagents'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062317.041939
+          }
+        }
+      },
+      {
+        "line": 26,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:4",
+          "name": "list_mcp_resources",
+          "arguments": "{\"cursor\": \"none\", \"server\": \"none\"}",
+          "call_id": "list_mcp_resources:4",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 27,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resource_templates:5",
+          "name": "list_mcp_resource_templates",
+          "arguments": "{\"cursor\": \"none\", \"server\": \"none\"}",
+          "call_id": "list_mcp_resource_templates:5",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 29,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-81b5-73d0-acb0-220d8873d038",
+          "call_id": "list_mcp_resources:4",
+          "output": "unknown MCP server 'none'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062320.053727
+          }
+        }
+      },
+      {
+        "line": 30,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-81b7-7462-b9b0-a36f8ab4f5e1",
+          "call_id": "list_mcp_resource_templates:5",
+          "output": "unknown MCP server 'none'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062320.055687
+          }
+        }
+      },
+      {
+        "line": 34,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:6",
+          "name": "list_mcp_resources",
+          "arguments": "{\"cursor\": \"discovery\", \"server\": \"\"}",
+          "call_id": "list_mcp_resources:6",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 37,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-8c1a-7f53-9194-0199d5ce305f",
+          "call_id": "list_mcp_resources:6",
+          "output": "cursor can only be used when a server is specified",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062322.714113
+          }
+        }
+      },
+      {
+        "line": 39,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:7",
+          "name": "list_mcp_resources",
+          "arguments": "{\"cursor\": \"first-page\", \"server\": \"default\"}",
+          "call_id": "list_mcp_resources:7",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 41,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-9582-7e40-83a9-2ef6d517289b",
+          "call_id": "list_mcp_resources:7",
+          "output": "unknown MCP server 'default'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062325.122444
+          }
+        }
+      },
+      {
+        "line": 45,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:8",
+          "name": "list_mcp_resources",
+          "arguments": "{\"cursor\": \"*\", \"server\": \"*\"}",
+          "call_id": "list_mcp_resources:8",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 47,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-a834-7ba1-a21d-59bac3f8f2c6",
+          "call_id": "list_mcp_resources:8",
+          "output": "unknown MCP server '*'",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062329.908912
+          }
+        }
+      },
+      {
+        "line": 51,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resources:9",
+          "name": "list_mcp_resources",
+          "arguments": "{\"cursor\": \" \", \"server\": \" \"}",
+          "call_id": "list_mcp_resources:9",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 54,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-b46a-7013-a7b9-4a886761179f",
+          "call_id": "list_mcp_resources:9",
+          "output": "{\"resources\":[]}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062333.034744
+          }
+        }
+      },
+      {
+        "line": 58,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_list_mcp_resource_templates:10",
+          "name": "list_mcp_resource_templates",
+          "arguments": "{\"cursor\": \" \", \"server\": \" \"}",
+          "call_id": "list_mcp_resource_templates:10",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71"
+          }
+        }
+      },
+      {
+        "line": 61,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b672-c052-79d0-b5ce-33359b1246ac",
+          "call_id": "list_mcp_resource_templates:10",
+          "output": "{\"resourceTemplates\":[]}",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "create_time": 1794062336.082356
+          }
+        }
+      },
+      {
+        "line": 66,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_0000000000000179_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "**NATIVE_CANDIDATE_PROBE — result report**\n\n**Capability discovery (performed once):** I enumerated my advertised tool descriptors and MCP hosts. Available functions are only: `exec_command`, `write_stdin`, `list_mcp_resources`, `list_mcp_resource_templates`, `read_mcp_resource`, `request_user_input`, `view_image`, `get_goal`, `create_goal`, `update_goal`. Cross-server MCP listing returned `{\"resources\":[]}` and `{\"resourceTemplates\":[]}` — no collaboration or Code Mode host is configured.\n\n**Unavailable native capabilities:**\n- No child-spawn API (no `spawn_agent` / `new_agent` / equivalent)\n- No continuation API (no `followup_task` / `send_input` / `resume_agent`)\n- No `send_message` capability\n- No wait/final-retrieval API for agents\n\n**Step outcomes:**\n- **A1: NOT EXECUTED.** No native spawn API is advertised in this environment, so no child `delivery_a` could be created. No final observed.\n- **A2: NOT EXECUTED.** No continuation API exists and no child from A1 exists. No final observed.\n- **A3: N/A.** No separate `send_message` capability exists in the descriptors (explicitly reported as the probe instructs).\n- **B: NOT EXECUTED.** A second fresh child `delivery_b` cannot be spawned natively. I did not read `harmless-target.txt` myself, will not guess or fabricate its contents, and supplied nothing to any child.\n\n**Compliance notes:** The probe restricts the parent to native collaboration APIs only and forbids shell/file API use and simulation. Shell-mediated agent launchers (e.g., the `sub-agents` skill's CLI wrappers) are not native collaboration functions in my tool descriptors, so using them would violate the probe's constraints; the sandbox is also read-only with approvals disabled. Nothing was retried, repaired, interrupted, or simulated. No observed finals exist to report; independent wire/native evidence should reflect zero collaboration traffic from this host.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 69,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+          "turn_id": "01a1b672-27af-75a1-9490-e1087bfd8e71",
+          "last_agent_message": "**NATIVE_CANDIDATE_PROBE — result report**\n\n**Capability discovery (performed once):** I enumerated my advertised tool descriptors and MCP hosts. Available functions are only: `exec_command`, `write_stdin`, `list_mcp_resources`, `list_mcp_resource_templates`, `read_mcp_resource`, `request_user_input`, `view_image`, `get_goal`, `create_goal`, `update_goal`. Cross-server MCP listing returned `{\"resources\":[]}` and `{\"resourceTemplates\":[]}` — no collaboration or Code Mode host is configured.\n\n**Unavailable native capabilities:**\n- No child-spawn API (no `spawn_agent` / `new_agent` / equivalent)\n- No continuation API (no `followup_task` / `send_input` / `resume_agent`)\n- No `send_message` capability\n- No wait/final-retrieval API for agents\n\n**Step outcomes:**\n- **A1: NOT EXECUTED.** No native spawn API is advertised in this environment, so no child `delivery_a` could be created. No final observed.\n- **A2: NOT EXECUTED.** No continuation API exists and no child from A1 exists. No final observed.\n- **A3: N/A.** No separate `send_message` capability exists in the descriptors (explicitly reported as the probe instructs).\n- **B: NOT EXECUTED.** A second fresh child `delivery_b` cannot be spawned natively. I did not read `harmless-target.txt` myself, will not guess or fabricate its contents, and supplied nothing to any child.\n\n**Compliance notes:** The probe restricts the parent to native collaboration APIs only and forbids shell/file API use and simulation. Shell-mediated agent launchers (e.g., the `sub-agents` skill's CLI wrappers) are not native collaboration functions in my tool descriptors, so using them would violate the probe's constraints; the sandbox is also read-only with approvals disabled. Nothing was retried, repaired, interrupted, or simulated. No observed finals exist to report; independent wire/native evidence should reflect zero collaboration traffic from this host.",
+          "started_at": 1794062297,
+          "completed_at": 1794062350,
+          "duration_ms": 53774,
+          "time_to_first_token_ms": 4467
+        }
+      }
+    ]
+  }
+]

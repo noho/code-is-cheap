@@ -1,0 +1,7 @@
+{
+  "file": "attempt-1/namespace-transform.json",
+  "before_sanitization_sha256": "a15d82f77816c7a80c14e3bf203a75eb30f42cf812463d555a8ebdeeee8084fb",
+  "before_bytes": 302050,
+  "after_sha256": "1b37785e3951b977babb8d2143560975fbe2bb51dcf3ebfdbb18ecc787f4a325",
+  "scope": "Only unrelated global namespace descriptors hash-omitted. Native multi_agent_v1 descriptors, all raw native function-call SSE lines and native call/result evidence retained. No hidden reasoning, global prompts, secrets or private endpoint URLs retained."
+}

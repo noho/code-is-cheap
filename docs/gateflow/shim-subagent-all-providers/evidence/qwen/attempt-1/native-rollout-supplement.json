@@ -1,0 +1,333 @@
+[
+  {
+    "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+    "source_rollout_sha256": "302137fbcc0dc7b748af6001ee30c720c21f004a482030225e1f51045e3c0064",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "qwen3.8-max",
+          "model_provider_id": "qwen",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot"
+        }
+      },
+      {
+        "line": 16,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_436d0f3c9606481bb5409650",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+                "agent_nickname": "James"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE initial. Reply exactly one line LIVE_INITIAL_fef553f9cc3c. Do not use tools, read/write files, or delegate.",
+            "model": "qwen3.8-max",
+            "reasoning_effort": "max",
+            "agents_states": {
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f": "pending_init"
+            }
+          },
+          "started_at_ms": 1794062492228,
+          "completed_at_ms": 1794062492246
+        }
+      },
+      {
+        "line": 23,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_6e47f095fa2e46de96299cfa",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+                "agent_nickname": "James"
+              }
+            ],
+            "agents_states": {
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f": {
+                "completed": "LIVE_INITIAL_fef553f9cc3c"
+              }
+            }
+          },
+          "started_at_ms": 1794062496429,
+          "completed_at_ms": 1794062496430
+        }
+      },
+      {
+        "line": 33,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_85598894fc704124b045ce35",
+            "tool": "send_input",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+                "agent_nickname": "James"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_b9bc61ebbf56. Do not use tools, read/write files, or delegate.",
+            "agents_states": {
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f": {
+                "completed": "LIVE_INITIAL_fef553f9cc3c"
+              }
+            }
+          },
+          "started_at_ms": 1794062503596,
+          "completed_at_ms": 1794062503600
+        }
+      },
+      {
+        "line": 40,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_e4801e512f324c4196d8e832",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+                "agent_nickname": "James"
+              }
+            ],
+            "agents_states": {
+              "01a1b675-2246-7f63-a9d2-6fc3387dee9f": {
+                "completed": "LIVE_FOLLOWUP_b9bc61ebbf56"
+              }
+            }
+          },
+          "started_at_ms": 1794062507350,
+          "completed_at_ms": 1794062507350
+        }
+      },
+      {
+        "line": 49,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_f94017943d8b460f8dc724b8",
+            "tool": "spawn_agent",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-81db-79c2-9dae-7ab15f873f7e"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-81db-79c2-9dae-7ab15f873f7e",
+                "agent_nickname": "McClintock"
+              }
+            ],
+            "prompt": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything.",
+            "model": "qwen3.8-max",
+            "reasoning_effort": "max",
+            "agents_states": {
+              "01a1b675-81db-79c2-9dae-7ab15f873f7e": "pending_init"
+            }
+          },
+          "started_at_ms": 1794062516699,
+          "completed_at_ms": 1794062516704
+        }
+      },
+      {
+        "line": 58,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+          "turn_id": "01a1b674-dfd3-7b22-a663-b52dae436676",
+          "item": {
+            "type": "CollabAgentToolCall",
+            "id": "call_791736cfb94a4b7199cd87cf",
+            "tool": "wait",
+            "status": "completed",
+            "sender_thread_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+            "receiver_thread_ids": [
+              "01a1b675-81db-79c2-9dae-7ab15f873f7e"
+            ],
+            "receiver_agents": [
+              {
+                "thread_id": "01a1b675-81db-79c2-9dae-7ab15f873f7e",
+                "agent_nickname": "McClintock"
+              }
+            ],
+            "agents_states": {
+              "01a1b675-81db-79c2-9dae-7ab15f873f7e": {
+                "completed": "HARMLESS_NATIVE_CONTENT_66a93f570a294d51a3e61706b0c9e1c3"
+              }
+            }
+          },
+          "started_at_ms": 1794062520716,
+          "completed_at_ms": 1794062526961
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b675-2246-7f63-a9d2-6fc3387dee9f",
+    "source_rollout_sha256": "c969dbfc0bd2afdbdad03da183c7d547f40666f3fb1d39935573e05616ec8345",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "qwen3.8-max",
+          "model_provider_id": "qwen",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot"
+        }
+      }
+    ]
+  },
+  {
+    "thread_id": "01a1b675-81db-79c2-9dae-7ab15f873f7e",
+    "source_rollout_sha256": "b0fb6e4e143320e8259825a10d2f797f4847a856adeb8178fc748247abbebfdb",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "qwen3.8-max",
+          "model_provider_id": "qwen",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot"
+        }
+      },
+      {
+        "line": 14,
+        "event": {
+          "type": "item_completed",
+          "thread_id": "01a1b675-81db-79c2-9dae-7ab15f873f7e",
+          "turn_id": "01a1b675-81df-7c02-8ee4-1e1e60d21701",
+          "item": {
+            "type": "CommandExecution",
+            "id": "call_27f6b4c603f4409497abd391",
+            "process_id": "36505",
+            "command": [
+              "/bin/zsh",
+              "-c",
+              "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt"
+            ],
+            "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot",
+            "parsed_cmd": [
+              {
+                "type": "read",
+                "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt",
+                "name": "harmless-target.txt",
+                "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-qwen-xfi2hhot/harmless-target.txt"
+              }
+            ],
+            "source": "unified_exec_startup",
+            "status": "completed",
+            "aggregated_output": "HARMLESS_NATIVE_CONTENT_66a93f570a294d51a3e61706b0c9e1c3",
+            "exit_code": 0,
+            "duration": {
+              "secs": 0,
+              "nanos": 8875
+            }
+          },
+          "started_at_ms": 1794062521907,
+          "completed_at_ms": 1794062521907
+        }
+      }
+    ]
+  }
+]

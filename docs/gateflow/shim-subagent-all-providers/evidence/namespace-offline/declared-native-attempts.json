@@ -1,0 +1,89 @@
+{
+  "declared_at_utc": "2026-11-07T15:59:05.517014+00:00",
+  "max_concurrency": 1,
+  "source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+  },
+  "attempts": [
+    {
+      "profile": "kimi",
+      "scenario": "a",
+      "attempt": "1",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "kimi",
+        "--scenario",
+        "a",
+        "--attempt",
+        "1",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1",
+        "--initial-marker",
+        "LIVE_PROBE_OK"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1"
+    },
+    {
+      "profile": "kimi",
+      "scenario": "b",
+      "attempt": "1",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "kimi",
+        "--scenario",
+        "b",
+        "--attempt",
+        "1",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1"
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "1",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "mimo-flash",
+        "--scenario",
+        "a",
+        "--attempt",
+        "1",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1",
+        "--initial-marker",
+        "LIVE_PROBE_OK"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1"
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "b",
+      "attempt": "1",
+      "argv": [
+        "python3",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py",
+        "--profile",
+        "mimo-flash",
+        "--scenario",
+        "b",
+        "--attempt",
+        "1",
+        "--evidence-dir",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1"
+      ],
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1"
+    }
+  ],
+  "retry_policy": "No blind retry; preserve failures; only concrete bounded fix with new declaration permits a retest."
+}

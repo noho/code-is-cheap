@@ -1,0 +1,31 @@
+[
+  {
+    "stage": "baseline counterexample",
+    "result": "4 logging tests, 20 failing subtests: missing standard active-map log lines",
+    "log": "before-logging-tests.log"
+  },
+  {
+    "stage": "initial suite wrapper",
+    "result": "zsh read-only status variable rejected after tests ran; switched to Python subprocess driver; shell status is not a test verdict",
+    "affected": [
+      "namespace",
+      "evidence",
+      "delivery"
+    ]
+  },
+  {
+    "stage": "initial evidence test",
+    "result": "36 tests, 1 failure: new test incorrectly assumed active A4 must add namespaces. Actual A4 has 11 nonempty maps with already-qualified calls and zero additions. Corrected regression to verify real qualified calls and byte-preserving relay, retaining strict auditor/receipt checks.",
+    "log": "test_shim_native_evidence.py.initial.log"
+  },
+  {
+    "stage": "initial namespace source proof",
+    "result": "Initial helper edit moved native return below the non-2xx dump condition, breaking the normalized control-flow equality assertion. Corrected by moving only the common diagnostic block; nonlogging statement order is now unchanged. Earlier in-flight suite used its already-imported initial helper; retained separately.",
+    "log": "test_shim_native_namespace.py.initial.log"
+  },
+  {
+    "stage": "initial preservation check",
+    "result": "Exact five existing authored files changed; new-file allowlist failed on five concurrent controller candidate-source preservation files outside this delegate scope. Read controller-candidate-source.json to confirm entry source hashes; recorded their immutable hashes separately, no modification.",
+    "log": "verify-scope.initial.log"
+  }
+]

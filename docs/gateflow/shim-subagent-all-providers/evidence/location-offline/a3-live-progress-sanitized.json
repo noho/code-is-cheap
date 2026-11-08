@@ -1,0 +1,95 @@
+{
+  "observed_at": "2026-11-07T16:49:37.767254+00:00",
+  "status": "native A3 still running, no final verdict",
+  "parent_id": "01a1b6e0-f72b-7112-8aa6-71bf8608f188",
+  "helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "actual_native_calls": [
+    {
+      "line": 16,
+      "name": "spawn_agent",
+      "arguments": "{\"task_name\":\"delivery_a\",\"fork_turns\":\"none\",\"message\":\"只回复一行 LIVE_PROBE_OK，不要调用工具、不要读写文件\"}"
+    },
+    {
+      "line": 26,
+      "name": "wait_agent",
+      "arguments": "{\"timeout_ms\":30000}"
+    },
+    {
+      "line": 36,
+      "name": "followup_task",
+      "arguments": "{\"target\":\"/root/delivery_a\",\"message\":\"NATIVE_CANDIDATE_PROBE followup. Reply exactly one line LIVE_FOLLOWUP_e7968eab2ea8. Do not use tools, read/write files, or delegate.\"}"
+    },
+    {
+      "line": 49,
+      "name": "wait_agent",
+      "arguments": "{\"timeout_ms\":30000}"
+    },
+    {
+      "line": 56,
+      "name": "wait_agent",
+      "arguments": "{\"timeout_ms\":120000}"
+    },
+    {
+      "line": 63,
+      "name": "wait_agent",
+      "arguments": "{\"timeout_ms\":300000}"
+    },
+    {
+      "line": 70,
+      "name": "wait_agent",
+      "arguments": "{\"timeout_ms\":300000}"
+    }
+  ],
+  "actual_parent_received_child_messages": [
+    {
+      "line": 33,
+      "author": "/root/delivery_a",
+      "recipient": "/root",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_PROBE_OK"
+        }
+      ],
+      "metadata": {
+        "turn_id": "01a1b6e0-f73b-72d3-b451-5883004b61d0",
+        "create_time": 1794069571.078253,
+        "content_item_metadata": [
+          {
+            "provenance": {
+              "type": "tool",
+              "namespace": "collaboration"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "line": 46,
+      "author": "/root/delivery_a",
+      "recipient": "/root",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "Message Type: FINAL_ANSWER\nTask name: /root\nSender: /root/delivery_a\nPayload:\nLIVE_FOLLOWUP_e7968eab2ea8"
+        }
+      ],
+      "metadata": {
+        "turn_id": "01a1b6e0-f73b-72d3-b451-5883004b61d0",
+        "create_time": 1794069587.100344,
+        "content_item_metadata": [
+          {
+            "provenance": {
+              "type": "tool",
+              "namespace": "collaboration"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "MESSAGE_started": false,
+  "active_native_response_log_count": 10,
+  "read_scope": "Only this explicitly created test parent rollout, no original/business sessions. No intervention or argument rewrite.",
+  "next_owner_if_no_completion": "Controller must adjudicate any new harness/termination decision; current source/probe unchanged and actual waits allowed to run."
+}

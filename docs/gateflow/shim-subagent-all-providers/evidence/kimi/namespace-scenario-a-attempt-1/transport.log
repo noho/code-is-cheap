@@ -1,0 +1,5 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1
+PARENT_ID=01a1b6bc-3889-7780-a011-9e0351097e2f
+[shim:65242] native response: restored=3 relayed=1297043B
+[shim:65242] native response: restored=0 relayed=238987B
+{"profile": "kimi", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 2, "elapsed_seconds": 139.99}

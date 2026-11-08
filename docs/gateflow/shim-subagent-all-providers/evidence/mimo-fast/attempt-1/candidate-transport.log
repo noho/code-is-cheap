@@ -1,0 +1,33 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1
+PARENT_ID=01a1b674-cb39-7723-90ab-4025412af2e0
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=23489B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=4432B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=5002B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=50144B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=none
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg2 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=4141B completed=True
+[shim:58324]   ^ status=200 stream=ok relayed=156001B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg2 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=7476B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg2 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=51026B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg4 tools=none
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg2 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=4461B completed=True
+[shim:58324]   ^ status=200 stream=ok relayed=4766B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg3 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=7636B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg3 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=5682B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=9515B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg1 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=5536B completed=True
+[shim:58324] POST /v1/responses -> 200 model=mimo-v2.6-pro-ultraspeed enc=- rewrite=none+agentmsg4 tools=none
+[shim:58324]   ^ status=200 stream=ok relayed=10793B completed=True
+{"profile": "mimo-fast", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 15, "elapsed_seconds": 36.59}

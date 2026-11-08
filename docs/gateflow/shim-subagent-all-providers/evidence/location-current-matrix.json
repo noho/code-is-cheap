@@ -1,0 +1,1197 @@
+{
+  "generated_at": "2026-11-07T17:00:37.421254+00:00",
+  "current_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "whole_profile_strict_coverage": "9/9, including DS conditional historical reuse; fresh MiMo A4+B2 active-path pass",
+  "implementation_validation_complete": true,
+  "release_closeout_complete": false,
+  "all_nine_pass": true,
+  "all_nine_native_a_b_workflows_pass_on_current_applicable_paths": true,
+  "current_profiles": [
+    {
+      "profile": "ds-flash",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/ds-reuse-check.json",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "glm",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "glm-flash",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo-fast",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "qwen",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "hy",
+      "whole_profile_pass": true,
+      "coverage": "historical strict A+B, bounded reuse",
+      "evidence": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "kimi",
+      "whole_profile_pass": true,
+      "coverage": {
+        "a": true,
+        "b": true
+      },
+      "evidence": [
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2",
+        "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2"
+      ],
+      "namespace_restore_actual_activation": true,
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json"
+    },
+    {
+      "profile": "mimo-flash",
+      "whole_profile_pass": true,
+      "coverage": {
+        "a": true,
+        "b": true
+      },
+      "evidence": [
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+        "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2"
+      ],
+      "receipt_decision": "controller-wait-receipt-decision.md",
+      "namespace_restore_actual_activation": true,
+      "limitation": "Upstream actual calls already had valid namespaces; zero additions is observed, while six-entry maps and actual native parser prove activation. Missing namespace restoration separately replayed/tested.",
+      "final_source_applicability": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json",
+      "historical_a1_workflow_pass": true
+    }
+  ],
+  "fresh_location_attempts": [
+    {
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "2",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2",
+      "audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/audit-location.json",
+      "status": "pre-inference-setup-failure",
+      "parent_completed": false,
+      "strict_pass": false,
+      "coverage": {
+        "a": false,
+        "b": false
+      },
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+        "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "A3_message_or_descriptor_backed_NA": "AssertionError",
+        "declared_case_native_waits_fresh_completion_order": "required task/final count mismatch",
+        "declared_case_native_event_linkage_actual_modes": "None",
+        "wire_helper_and_exact_allowed_outbound_stages": "no requests",
+        "native_lifecycle": "AssertionError"
+      },
+      "parent_id": null,
+      "children": [],
+      "native_exit": 1,
+      "request_count": 0,
+      "elapsed_seconds": 0.41,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+        "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+        "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+        "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+      },
+      "namespace_map_sizes": [],
+      "namespace_added_count": 0,
+      "source_snapshot_directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2",
+      "blocker": "OS permission app-server startup exit1; no parent or HTTP. Retained; not a provider sample. Controller authorized one separately declared A3 using successful B2 execution permissions.",
+      "audit_versions_preserved": [
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2/audit-location.json",
+          "sha256": "6a4b7050fd7255b427932cdfa6198b6adcba1bfa23bc8bf926deffeae0ddb7d5",
+          "passed": false,
+          "auditor_sha256": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2"
+        }
+      ]
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "b",
+      "attempt": "2",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2",
+      "audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/audit-receipt-final.json",
+      "status": "completed",
+      "parent_completed": true,
+      "strict_pass": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6dd-4633-76c1-9f77-40460adc61c3",
+      "children": [
+        "01a1b6dd-60a5-7472-b0d5-03529bc8ad60"
+      ],
+      "native_exit": 0,
+      "request_count": 5,
+      "elapsed_seconds": 29.97,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+        "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+        "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+        "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+      },
+      "namespace_map_sizes": [
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "namespace_added_count": 0,
+      "source_snapshot_directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2",
+      "audit_versions_preserved": [
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/audit-location.json",
+          "sha256": "6d9ef12ca24b6675ea39fdaddee4b5f7533fbef4b13857c1a0badf5af680fdf4",
+          "passed": true,
+          "auditor_sha256": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2"
+        },
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-2/audit-receipt-final.json",
+          "sha256": "f51155169fddfc02e7fb1bc9cfca20d8a3e6252591beae00ff6a9c6d2092a5bf",
+          "passed": true,
+          "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6"
+        }
+      ]
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "3",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3",
+      "audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/audit-location.json",
+      "status": "aborted-incomplete",
+      "parent_completed": false,
+      "strict_pass": false,
+      "coverage": {
+        "a": false,
+        "b": false
+      },
+      "failed_checks": {
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "A3_message_or_descriptor_backed_NA": "AssertionError",
+        "declared_case_native_waits_fresh_completion_order": "'fc_903b8e2f94d34f32ae7efec4d02c19f5'",
+        "native_lifecycle": "AssertionError"
+      },
+      "parent_id": "01a1b6e0-f72b-7112-8aa6-71bf8608f188",
+      "children": [
+        "01a1b6e1-1ba8-7ec1-bdd6-06073a559626"
+      ],
+      "native_exit": -2,
+      "request_count": 11,
+      "elapsed_seconds": 808.86,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+        "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+        "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+        "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+      },
+      "namespace_map_sizes": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "namespace_added_count": 0,
+      "source_snapshot_directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3",
+      "blocker": "Incomplete/aborted after exact initial+followup receipts and contradictory forced waits; no MESSAGE. App-server exit -2 and driver exit1; original launch-reader failure preserved. Controller approved concrete short-v2 harness/auditor fix and one A4.",
+      "audit_versions_preserved": [
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/audit-launch-reader.json",
+          "sha256": "5b29537578263686df0f0d436971a646acc2fe57b792dc816c437b4476cd7b5e",
+          "passed": false,
+          "auditor_sha256": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2"
+        },
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3/audit-location.json",
+          "sha256": "8e1f12dadcf0a2dbc72a565921ce296b5ab57e113781997e405e9796403b399a",
+          "passed": false,
+          "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6"
+        }
+      ]
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "4",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+      "audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/audit-location.json",
+      "status": "completed",
+      "parent_completed": true,
+      "strict_pass": true,
+      "coverage": {
+        "a": true,
+        "b": false
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6f0-9a8e-7bd2-a4a2-a9568adffb5a",
+      "children": [
+        "01a1b6f0-b854-7e60-9bb1-cc6e2483211f"
+      ],
+      "native_exit": 0,
+      "request_count": 11,
+      "elapsed_seconds": 74.83,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+        "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+        "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+        "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+      },
+      "namespace_map_sizes": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "namespace_added_count": 0,
+      "source_snapshot_directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4",
+      "audit_versions_preserved": [
+        {
+          "path": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-4/audit-location.json",
+          "sha256": "49fb939046b1dc6e83d5f563fc295b5b7979388ec4723bebd85b4a8733054b1b",
+          "passed": true,
+          "auditor_sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6"
+        }
+      ]
+    }
+  ],
+  "previous_namespace_attempts_preserved": [
+    {
+      "profile": "kimi",
+      "scenario": "a",
+      "attempt": "1",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1/audit.json",
+      "strict_pass": false,
+      "initial_audit_pass": false,
+      "coverage": {
+        "a": false,
+        "b": false
+      },
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "need declared distinct native spawn results",
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "declared_case_native_waits_fresh_completion_order": "required task/final count mismatch",
+        "declared_case_native_event_linkage_actual_modes": "missing/duplicate native dispatch event"
+      },
+      "parent_id": "01a1b6bc-3889-7780-a011-9e0351097e2f",
+      "children": [],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+      },
+      "namespace_added_count": 3,
+      "namespace_map_sizes": [
+        5
+      ],
+      "descriptor_locations": [
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ]
+      ],
+      "response_encodings": [
+        [],
+        []
+      ],
+      "request_count": 2,
+      "elapsed_seconds": 139.99
+    },
+    {
+      "profile": "kimi",
+      "scenario": "a",
+      "attempt": "2",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-2/audit.json",
+      "strict_pass": true,
+      "initial_audit_pass": true,
+      "coverage": {
+        "a": true,
+        "b": false
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6cd-0e76-7ed3-8c72-faf7e3769713",
+      "children": [
+        {
+          "id": "01a1b6cd-524f-7072-914d-00d725a7c5ce",
+          "agent_path": null
+        }
+      ],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146"
+      },
+      "namespace_added_count": 12,
+      "namespace_map_sizes": [
+        0,
+        5
+      ],
+      "descriptor_locations": [
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ]
+      ],
+      "response_encodings": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "request_count": 7,
+      "elapsed_seconds": 41.39
+    },
+    {
+      "profile": "kimi",
+      "scenario": "b",
+      "attempt": "1",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1/audit.json",
+      "strict_pass": true,
+      "initial_audit_pass": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6be-ef54-7dd2-9c63-c5357864013b",
+      "children": [
+        {
+          "id": "01a1b6bf-1043-79a3-afab-bc0e0350430a",
+          "agent_path": null
+        }
+      ],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+      },
+      "namespace_added_count": 6,
+      "namespace_map_sizes": [
+        0,
+        5
+      ],
+      "descriptor_locations": [
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ]
+      ],
+      "response_encodings": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "request_count": 5,
+      "elapsed_seconds": 22.86
+    },
+    {
+      "profile": "kimi",
+      "scenario": "b",
+      "attempt": "2",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-2/audit.json",
+      "strict_pass": true,
+      "initial_audit_pass": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6cd-e355-7ae3-b4c3-639bd066f66f",
+      "children": [
+        {
+          "id": "01a1b6ce-0733-7ec2-99db-c276587ff930",
+          "agent_path": null
+        }
+      ],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "efe4ba7da1e1e133e7b5192fd3f883e5b40a83a59a7158df404e80782c27d7c2",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "bffb542437fba1868fe36621da88d2f8cbe4a51c84e5e2c05fb14de053de4146"
+      },
+      "namespace_added_count": 6,
+      "namespace_map_sizes": [
+        0,
+        5
+      ],
+      "descriptor_locations": [
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ],
+        [
+          "tools",
+          7
+        ]
+      ],
+      "response_encodings": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "request_count": 5,
+      "elapsed_seconds": 24.68
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "1",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1/audit-receipt-aware.json",
+      "strict_pass": true,
+      "initial_audit_pass": false,
+      "coverage": {
+        "a": true,
+        "b": false
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6be-2464-7403-a828-d7b9676a1d87",
+      "children": [
+        {
+          "id": "01a1b6be-59dd-7750-9b15-f25b5917cd63",
+          "agent_path": "/root/delivery_a"
+        }
+      ],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+      },
+      "namespace_added_count": 0,
+      "namespace_map_sizes": [
+        0
+      ],
+      "descriptor_locations": [
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ]
+      ],
+      "response_encodings": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "request_count": 18,
+      "elapsed_seconds": 331.53
+    },
+    {
+      "profile": "mimo-flash",
+      "scenario": "b",
+      "attempt": "1",
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1",
+      "current_audit": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1/audit-receipt-aware.json",
+      "strict_pass": true,
+      "initial_audit_pass": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "failed_checks": {},
+      "parent_id": "01a1b6c3-c25b-7f13-88a8-536879f1783e",
+      "children": [
+        {
+          "id": "01a1b6c3-e266-7611-8688-f267266d2d82",
+          "agent_path": "/root/delivery_b"
+        }
+      ],
+      "native_exit": 0,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+        "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "576ca6d5d1cd694321cadce87b14bc30d8c2ccdee75eb3714588d3cc097bbdea",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "408a5342b82007f38c69c2a2c11370c257dcdcd678d20dc8516b4a8b93835666"
+      },
+      "namespace_added_count": 0,
+      "namespace_map_sizes": [
+        0
+      ],
+      "descriptor_locations": [
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ],
+        [
+          "input",
+          0,
+          "tools",
+          2
+        ]
+      ],
+      "response_encodings": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "request_count": 5,
+      "elapsed_seconds": 31.36
+    }
+  ],
+  "all_historical_attempts_including_failures": [
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-1",
+      "profile": "glm",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+      "native_exit": 0,
+      "parent_completed": false,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/glm/config.toml": "dcb511ad76f9d81efaad221fceb3c5dfe21d328a294a5021867110f29179807e",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/glm.json": "6426256863dab72c101db5f0bb170bc3e56302d9bd3435df1386813fe5d852e7",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "23d6e459aaa2436c0645a2f3310e11afc8fd6b3ed509db44355fcd26041a7764",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+        "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "A3_message_or_descriptor_backed_NA": "AssertionError",
+        "B_fixture_absent_from_prompts": "list index out of range",
+        "B_child_owned_call_result_execution_exact_final": "wrong child final",
+        "wire_helper_and_exact_allowed_outbound_stages": "incomplete observer stage schema (pre-fix attempt)",
+        "native_lifecycle": "AssertionError"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2",
+      "profile": "glm",
+      "scenario": "all",
+      "attempt": "2",
+      "parent_id": "01a1b671-001a-7ab1-a443-fea7a15ab833",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/glm/config.toml": "dcb511ad76f9d81efaad221fceb3c5dfe21d328a294a5021867110f29179807e",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/glm.json": "6426256863dab72c101db5f0bb170bc3e56302d9bd3435df1386813fe5d852e7",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1",
+      "profile": "glm-flash",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b672-d9c4-7ff1-b4ed-5a917acc1f07",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/glm-flash/config.toml": "8fe06eb38332b03fbc84508130aa30d96d12588b05e0eac156b7edef2a6c31b2",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/glm-flash.json": "c212d4aca30f96bd51b5e4df1a0a51f9dca7ba571c513c23a5d93a697937ed9a",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2409ea17cb1c9c63e4b96c34cbf7d9151df8e6eb94e49aaaa76b932fdfd196f9"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-1",
+      "profile": "hy",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b676-73a1-7321-a21e-8ad09ed7832b",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/hy/config.toml": "a9ab4e2d9b6d5dcc08f2238a26cce143acf97a107f4cd0cac22e97a3852aeca6",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/hy.json": "879431b6811342188dd4297b079f663494e957a46006c7ad5f43d5b5c92bf517",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "native_dispatch_order_same_child_no_parent_read": "parent used non-collaboration tool"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2",
+      "profile": "hy",
+      "scenario": "all",
+      "attempt": "2",
+      "parent_id": "01a1b688-11e3-7551-95e9-5b350beff9a7",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/hy/config.toml": "a9ab4e2d9b6d5dcc08f2238a26cce143acf97a107f4cd0cac22e97a3852aeca6",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/hy.json": "879431b6811342188dd4297b079f663494e957a46006c7ad5f43d5b5c92bf517",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "4f5f65ac6b7b799ef08908b9169fa6065c6c7604f5c5b47c3e64804a1f8885d6",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/attempt-1",
+      "profile": "kimi",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b672-279d-7112-b228-be9877920140",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2409ea17cb1c9c63e4b96c34cbf7d9151df8e6eb94e49aaaa76b932fdfd196f9"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "need two distinct native spawn results",
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "B_fixture_absent_from_prompts": "list index out of range",
+        "B_child_owned_call_result_execution_exact_final": "wrong child final"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi-namespace-diagnostic/attempt-1",
+      "profile": "kimi",
+      "scenario": "all",
+      "attempt": "namespace-prototype-1",
+      "parent_id": "01a1b688-143c-7771-a243-6d553ea9e735",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/kimi/config.toml": "4be4f50b3296aa258fcf6024e9ce31411877e9ecbdce2d5b8670f8c6c7363729",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/kimi.json": "61f9af1da02dc3c96666c0468f4be7abaebfb18b2de89f4a44712e39b38aed21",
+        "/private/tmp/shim-kimi-namespace-work/native-probe.py": "28f751309b10dcf4062ba3743f749b72cec46277a3f18f159c99ac32590a8813",
+        "/private/tmp/shim-kimi-namespace-work/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "diagnostic_only": "No A+B acceptance; request-only routing failure retained."
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-1",
+      "profile": "mimo",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+      "native_exit": 0,
+      "parent_completed": false,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo/config.toml": "84d415a340929289f0c5ac882b8f79f725999d9ef0517d5bed1c0ae1d10d11ed",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "23d6e459aaa2436c0645a2f3310e11afc8fd6b3ed509db44355fcd26041a7764",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+        "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "A3_message_or_descriptor_backed_NA": "AssertionError",
+        "B_fixture_absent_from_prompts": "list index out of range",
+        "B_child_owned_call_result_execution_exact_final": "wrong child final",
+        "wire_helper_and_exact_allowed_outbound_stages": "incomplete observer stage schema (pre-fix attempt)",
+        "native_lifecycle": "AssertionError"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2",
+      "profile": "mimo",
+      "scenario": "all",
+      "attempt": "2",
+      "parent_id": "01a1b670-f686-7b51-a242-c38452690c97",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo/config.toml": "84d415a340929289f0c5ac882b8f79f725999d9ef0517d5bed1c0ae1d10d11ed",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1",
+      "profile": "mimo-fast",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b674-cb39-7723-90ab-4025412af2e0",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-fast/config.toml": "79ab29f958e6031fbae9d9fd7a436cd04204043394975363728f2a88c503fc81",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-fast.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-1",
+      "profile": "mimo-flash",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b675-aacb-7db1-9394-4a71ec1cd681",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2",
+      "profile": "mimo-flash",
+      "scenario": "all",
+      "attempt": "2",
+      "parent_id": "01a1b68a-3c18-75d3-a557-dc6c5a788b83",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "4f5f65ac6b7b799ef08908b9169fa6065c6c7604f5c5b47c3e64804a1f8885d6",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+      },
+      "strict_pass": false,
+      "coverage": null,
+      "failed_checks": {
+        "actual_parent_child_identity_policy": "need two distinct native spawn results",
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+        "B_fixture_absent_from_prompts": "list index out of range",
+        "B_child_owned_call_result_execution_exact_final": "wrong child final",
+        "wire_helper_and_exact_allowed_outbound_stages": "'identity'"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-a-attempt-1",
+      "profile": "mimo-flash",
+      "scenario": "a",
+      "attempt": "1",
+      "parent_id": "01a1b69c-d26f-72a2-83cc-47ea05d6b51c",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "1b2d47852afa6ee0b489dcad72da8105aea0631297dc86e911856c915a761653"
+      },
+      "strict_pass": false,
+      "coverage": {
+        "a": false,
+        "b": false
+      },
+      "failed_checks": {
+        "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+        "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+        "A3_message_or_descriptor_backed_NA": "AssertionError",
+        "declared_case_native_waits_fresh_completion_order": "non-native wait namespace"
+      }
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/scenario-b-attempt-1",
+      "profile": "mimo-flash",
+      "scenario": "b",
+      "attempt": "1",
+      "parent_id": "01a1b69d-eb48-7c11-adc2-262f2bbaadd1",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "cb21acef8005a9744bb57aadc263e290c7d88dd0a06106a2066f9f776b6cef42",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "1b2d47852afa6ee0b489dcad72da8105aea0631297dc86e911856c915a761653"
+      },
+      "strict_pass": true,
+      "coverage": {
+        "a": false,
+        "b": true
+      },
+      "failed_checks": {}
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1",
+      "profile": "qwen",
+      "scenario": "all",
+      "attempt": "1",
+      "parent_id": "01a1b674-dfc3-7c42-8ef3-1559ada7e5ae",
+      "native_exit": 0,
+      "parent_completed": true,
+      "source_hashes_at_launch": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/qwen/config.toml": "5b852047b207be262837fb57a5bfe2ac04c44f688bec273e7af55551436a47a1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/qwen.json": "c21599b8ffeb237231bdee6b4d66a7c99a95616bd199eca1c2d79058e004480f",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "strict_pass": true,
+      "coverage": null,
+      "failed_checks": {}
+    }
+  ],
+  "previous_matrix": {
+    "path": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-current-matrix.json",
+    "sha256": "3457908fdb70cc1735cb04f2100c156ce9c21d9e11099ac22c2a48fdf56eef16",
+    "historical_workflow_coverage": "9/9 native A+B workflows, with DS conditional historical reuse; MiMo restore activation remains unverified",
+    "note": "Historical empty-map MiMo workflows never substitute for fresh active-map A/B."
+  },
+  "immutable_original_matrix": "docs/gateflow/shim-subagent-all-providers/evidence/attempt-matrix.json",
+  "proofs": {
+    "bounded_reuse": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/final-source-bounded-reuse.json",
+    "current_mimo_aggregate": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a4-b2-aggregate.json",
+    "incomplete_a3_aggregate": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a3-b2-aggregate.json",
+    "failed_setup_a2_aggregate": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/mimo-location-a2-b2-aggregate.json",
+    "current_kimi_aggregate": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/kimi-a2-b2-final-receipt-reader-aggregate.json",
+    "offline": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/offline-validation.json",
+    "preservation": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/preservation-check.json"
+  },
+  "remaining_blocker": null,
+  "next_owner": "Controller evidence adjudication, combined parallel independent mimo-flash/ds-flash Claude deepreviews, fixes/affected re-review and PR gates. No delegation performed here.",
+  "deployment": "No sync/restart. Only after user authorization from approved checkout: ./scripts/sync-codex-agent.sh"
+}

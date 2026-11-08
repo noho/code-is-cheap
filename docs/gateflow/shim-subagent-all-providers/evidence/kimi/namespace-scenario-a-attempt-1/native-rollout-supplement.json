@@ -1,0 +1,37 @@
+[
+  {
+    "thread_id": "01a1b6bc-3889-7780-a011-9e0351097e2f",
+    "source_rollout_sha256": "97f872320dfd7cffb0a299e1530b71ee9ef64b8ba0a54d7885f925a2d4f1ae61",
+    "events": [
+      {
+        "line": 7,
+        "settings": {
+          "model": "k3",
+          "model_provider_id": "kimi",
+          "reasoning_effort": "max",
+          "approval_policy": "never",
+          "approvals_reviewer": "auto_review",
+          "permission_profile": {
+            "type": "managed",
+            "file_system": {
+              "type": "restricted",
+              "entries": [
+                {
+                  "path": {
+                    "type": "special",
+                    "value": {
+                      "kind": "root"
+                    }
+                  },
+                  "access": "read"
+                }
+              ]
+            },
+            "network": "restricted"
+          },
+          "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-cr_ejtdl"
+        }
+      }
+    ]
+  }
+]

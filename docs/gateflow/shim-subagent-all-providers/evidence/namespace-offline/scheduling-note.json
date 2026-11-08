@@ -1,0 +1,7 @@
+{
+  "recorded_at_utc": "2026-11-07T16:01:09.206005+00:00",
+  "reason": "Kimi A remains pending with no model results; advance independent MiMo Flash A without any retry.",
+  "actual_max_concurrency": 2,
+  "per_profile_order": "A before B",
+  "attempts": "same four already declared; no new attempts"
+}

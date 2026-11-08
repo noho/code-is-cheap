@@ -1,0 +1,14 @@
+[shim:0] native response: restored=1 relayed=268B
+[shim:0] POST /v1/responses -> 200 model=test enc=- rewrite=none tools=none
+[shim:0]   ^ status=200 stream=ok relayed=237B completed=True
+{
+  "passed": true,
+  "real_handler_cases": 2,
+  "maps": [
+    {
+      "spawn_agent": "multi_agent_v1"
+    },
+    {}
+  ],
+  "scope": "flatten=True additional native descriptors are location-proved but never selected/mapped/rewritten"
+}

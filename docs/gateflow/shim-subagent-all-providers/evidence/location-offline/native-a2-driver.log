@@ -1,0 +1,3 @@
+WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2
+{"profile": "mimo-flash", "parent_completed": false, "app_server_exit": 1, "errors": [{"process_eof_before_completed": true}], "requests": 0, "elapsed_seconds": 0.41}

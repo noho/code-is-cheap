@@ -1,0 +1,54 @@
+{
+  "profile": "kimi",
+  "attempt": "1",
+  "passed": false,
+  "checks": {
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": true,
+    "B_fixture_absent_from_prompts": false,
+    "B_child_owned_call_result_execution_exact_final": false,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true
+  },
+  "details": {
+    "observed_mode": "v1",
+    "advertised_names": [
+      "close_agent",
+      "exec_command",
+      "multi_agent_v1",
+      "resume_agent",
+      "send_input",
+      "spawn_agent",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": "need two distinct native spawn results",
+    "native_dispatch_order_same_child_no_parent_read": "native dispatch order/count",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": {
+      "status": "N/A",
+      "reason": "actual native v1 descriptors expose send_input but no separate send_message"
+    },
+    "B_fixture_absent_from_prompts": "list index out of range",
+    "B_child_owned_call_result_execution_exact_final": "wrong child final",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 8,
+      "converted_including_history": 0,
+      "http_statuses": {
+        "200": 8
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    }
+  },
+  "auditor_sha256": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3",
+  "input_sha256": {
+    "summary.json": "dddbc13d75fde16d8d14c69eca92dd75257ab05aa6a939753c64588dd94d6a10",
+    "wire.json": "ff525695d4682524e46986c952945192e4d8cd9c8c8426c5cf6eea3fea9100de",
+    "rollouts-sanitized.json": "26a02dd45d5aa415c8cc517b26e86f89af4d3dd2c9c882483dab2c037dd9291f",
+    "native-rollout-supplement.json": "4f5f11a256f891472a8524629ca7880347cd3d00c4e1f6fbfa258efa8378b86a"
+  }
+}

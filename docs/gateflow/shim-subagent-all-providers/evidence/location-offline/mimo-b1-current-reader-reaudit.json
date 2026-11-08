@@ -1,0 +1,162 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "1",
+  "scenario": "b",
+  "passed": true,
+  "coverage": {
+    "a": false,
+    "b": true
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": true,
+    "native_dispatch_order_same_child_no_parent_read": true,
+    "B_fixture_absent_from_prompts": true,
+    "B_child_owned_call_result_execution_exact_final": true,
+    "declared_case_native_waits_fresh_completion_order": true,
+    "declared_case_native_event_linkage_actual_modes": true,
+    "wire_helper_and_exact_allowed_outbound_stages": true,
+    "native_lifecycle": true,
+    "namespace_launch_source_snapshots": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "b",
+      "required_cases": [
+        "b"
+      ]
+    },
+    "observed_mode": "v2",
+    "advertised_names": [
+      "collaboration",
+      "exec",
+      "followup_task",
+      "functions",
+      "interrupt_agent",
+      "list_agents",
+      "request_user_input",
+      "request_user_input_async",
+      "send_message",
+      "spawn_agent",
+      "wait",
+      "wait_agent"
+    ],
+    "actual_parent_child_identity_policy": {
+      "01a1b6c3-c25b-7f13-88a8-536879f1783e": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b6c3-c26a-7eb0-955a-ad8f9185d2eb",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      },
+      "01a1b6c3-e266-7611-8688-f267266d2d82": {
+        "provider": "mimo_flash",
+        "contexts": [
+          {
+            "turn_id": "01a1b6c3-e271-7c91-9a55-c743a0badff9",
+            "model": "mimo-v2.6-flash",
+            "model_provider": null,
+            "effort": "max",
+            "approval_policy": "never",
+            "sandbox_policy": {
+              "type": "read-only"
+            }
+          }
+        ]
+      }
+    },
+    "native_dispatch_order_same_child_no_parent_read": [
+      {
+        "name": "spawn_agent",
+        "call_id": "fc_eb3de34cf814440db22857738b0c7c16",
+        "args": {
+          "task_name": "delivery_b",
+          "fork_turns": "none",
+          "message": "NATIVE_CANDIDATE_PROBE file task. Use your advertised file-reading tool (exec_command or equivalent, via Code Mode if required) to run cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-tek1jeir/harmless-target.txt. Return exactly its entire contents as final, no formatting. Do not delegate, read other files or write anything."
+        }
+      }
+    ],
+    "B_fixture_absent_from_prompts": "unpredictable contents absent from parent/task prompts",
+    "B_child_owned_call_result_execution_exact_final": {
+      "call_id": "ctc_51fafe77b24d48a3819080f318adb2ac",
+      "tool": "exec",
+      "execution": {
+        "type": "CommandExecution",
+        "id": "exec-c590e48d-d1e1-4f06-b9f4-7fc499152cf5",
+        "process_id": "34642",
+        "command": [
+          "/bin/zsh",
+          "-c",
+          "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-tek1jeir/harmless-target.txt"
+        ],
+        "cwd": "file:///var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-tek1jeir",
+        "parsed_cmd": [
+          {
+            "type": "read",
+            "cmd": "cat /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-tek1jeir/harmless-target.txt",
+            "name": "harmless-target.txt",
+            "path": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-flash-tek1jeir/harmless-target.txt"
+          }
+        ],
+        "source": "unified_exec_startup",
+        "status": "completed",
+        "aggregated_output": "HARMLESS_NATIVE_CONTENT_8e557cfdaacd4cb582777d0855230acc",
+        "exit_code": 0,
+        "duration": {
+          "secs": 0,
+          "nanos": 7791
+        }
+      },
+      "finals": [
+        {
+          "turn_id": "01a1b6c3-e271-7c91-9a55-c743a0badff9",
+          "text": "HARMLESS_NATIVE_CONTENT_8e557cfdaacd4cb582777d0855230acc",
+          "completed_at": 1794067663
+        }
+      ]
+    },
+    "declared_case_native_waits_fresh_completion_order": {
+      "contract": "explicit native waits; v2 exact parent FINAL receipts, v1 persistent wait status",
+      "v2_receipts": [
+        {
+          "dispatch_call_id": "fc_eb3de34cf814440db22857738b0c7c16",
+          "child_id": "01a1b6c3-e266-7611-8688-f267266d2d82",
+          "child_turn_id": "01a1b6c3-e271-7c91-9a55-c743a0badff9",
+          "text": "HARMLESS_NATIVE_CONTENT_8e557cfdaacd4cb582777d0855230acc",
+          "parent_receipt_line": 33,
+          "received_at": 1794067663.675883,
+          "child_completed_at": 1794067663
+        }
+      ]
+    },
+    "declared_case_native_event_linkage_actual_modes": "native dispatch events, actual catalog modes and Lite header verified",
+    "wire_helper_and_exact_allowed_outbound_stages": {
+      "requests": 5,
+      "converted_including_history": 3,
+      "http_statuses": {
+        "200": 5
+      }
+    },
+    "native_lifecycle": {
+      "exit": 0,
+      "parent_turn_status": "completed"
+    },
+    "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+  },
+  "auditor_sha256": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+  "input_sha256": {
+    "summary.json": "1f7c311e818c0ab84a6942a0b1543b819c1457a9e0f40c1d74ca14422bfd1527",
+    "wire.json": "66ad063e429800598092aafe2eb223fad7feaf0d87c679899044e910323c931f",
+    "rollouts-sanitized.json": "f90ce0c24fc2897ca71b9bea42aed2dc7434ebbbf36baa9a20efc3420ea86b90",
+    "native-rollout-supplement.json": "1d5c26bf8cc21c3db0b231083fd45688ec94f2aff0357f7bf6c2b42216f9a92d",
+    "launch.json": "592015788f18ea794329aeb77e410b8582e79b5934d0d5494965524a16e49143"
+  }
+}

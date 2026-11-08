@@ -1,0 +1,25 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/attempt-2
+PARENT_ID=01a1b68a-3c18-75d3-a557-dc6c5a788b83
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=89326B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=15275B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=4907B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=9053B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=4448B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=7235B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=16295B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=8132B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg4 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=5706B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=6813B completed=True
+[shim:60871] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg3 tools=none
+[shim:60871]   ^ status=200 stream=ok relayed=7341B completed=True
+{"profile": "mimo-flash", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 11, "elapsed_seconds": 84.41}

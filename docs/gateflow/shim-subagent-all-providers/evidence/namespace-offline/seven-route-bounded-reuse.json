@@ -1,0 +1,126 @@
+{
+  "current_helper_sha256": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+  "baseline_helper_sha256": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+  "equivalence_scope": "Seven native-map-disabled success request/response paths; existing guardian tests; 2xx historical positives. Non-2xx consumed-body correction does not change positive evidence. External endpoint stability is not independently re-probed; user changed Kimi only. Final helper also restores original flags-off non-2xx behavior; seven-route baseline tests cover both success and 429 paths.",
+  "profiles": [
+    {
+      "profile": "ds-flash",
+      "status": "conditional historical positive reuse",
+      "historical_reuse": "docs/gateflow/shim-subagent-all-providers/evidence/ds-reuse-check.json",
+      "legacy_audit_rerun": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/native-legacy-prelaunch.json",
+      "catalog_current_equal": true,
+      "both_new_flags": false,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "scope": "Original historical DS assertions only; no retroactive new capture fields claimed."
+    },
+    {
+      "profile": "glm",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm/attempt-2",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/glm/config.toml": "dcb511ad76f9d81efaad221fceb3c5dfe21d328a294a5021867110f29179807e",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/glm.json": "6426256863dab72c101db5f0bb170bc3e56302d9bd3435df1386813fe5d852e7",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    },
+    {
+      "profile": "glm-flash",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/glm-flash/attempt-1",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/glm-flash/config.toml": "8fe06eb38332b03fbc84508130aa30d96d12588b05e0eac156b7edef2a6c31b2",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/glm-flash.json": "c212d4aca30f96bd51b5e4df1a0a51f9dca7ba571c513c23a5d93a697937ed9a",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2409ea17cb1c9c63e4b96c34cbf7d9151df8e6eb94e49aaaa76b932fdfd196f9"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    },
+    {
+      "profile": "mimo",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo/config.toml": "84d415a340929289f0c5ac882b8f79f725999d9ef0517d5bed1c0ae1d10d11ed",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "f4287ad8f28974572887e9486b03a1aa3127e4df7f9acc12557e9d5646d39f68",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    },
+    {
+      "profile": "mimo-fast",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-fast/attempt-1",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/mimo-fast/config.toml": "79ab29f958e6031fbae9d9fd7a436cd04204043394975363728f2a88c503fc81",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/mimo-fast.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    },
+    {
+      "profile": "qwen",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/qwen/attempt-1",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/qwen/config.toml": "5b852047b207be262837fb57a5bfe2ac04c44f688bec273e7af55551436a47a1",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/qwen.json": "c21599b8ffeb237231bdee6b4d66a7c99a95616bd199eca1c2d79058e004480f",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "1014545686e189a423ed3ed27c805d2084a2c864288fcc4ad440a0243693b94c",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "be2fee244d7bbf4ecc3246373b8ab30c24f3522aaee38134cc4a0a5e549e6313"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    },
+    {
+      "profile": "hy",
+      "positive_evidence": "docs/gateflow/shim-subagent-all-providers/evidence/hy/attempt-2",
+      "historical_pass": true,
+      "historical_source_hashes": {
+        "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+        "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+        "codex-agent/profiles/hy/config.toml": "a9ab4e2d9b6d5dcc08f2238a26cce143acf97a107f4cd0cac22e97a3852aeca6",
+        "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+        "/Users/leo/.codex/model-catalogs/hy.json": "879431b6811342188dd4297b079f663494e957a46006c7ad5f43d5b5c92bf517",
+        "docs/gateflow/shim-subagent-delivery/native-probe.py": "4f5f65ac6b7b799ef08908b9169fa6065c6c7604f5c5b47c3e64804a1f8885d6",
+        "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+      },
+      "catalog_hashes_current_equal": true,
+      "route_equal_except_explicit_false_flags": true,
+      "request_response_equivalence_test": "SevenRouteEquivalence.test_flags_off_success_request_and_response_match_saved_baseline",
+      "status": "bounded positive reuse"
+    }
+  ]
+}

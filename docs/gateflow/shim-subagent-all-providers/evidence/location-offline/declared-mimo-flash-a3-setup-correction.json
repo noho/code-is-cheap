@@ -1,0 +1,38 @@
+{
+  "declared_at": "2026-11-07T16:39:10.941707+00:00",
+  "command": [
+    "python3",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py",
+    "--profile",
+    "mimo-flash",
+    "--scenario",
+    "a",
+    "--attempt",
+    "3",
+    "--evidence-dir",
+    "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-3",
+    "--initial-marker",
+    "LIVE_PROBE_OK"
+  ],
+  "execution_permission": "require_escalated, exactly as B2 successful launch",
+  "authority": {
+    "path": "docs/gateflow/shim-subagent-all-providers/control.md",
+    "sha256": "5da578ba3380556f4ac28b5bc25624424e3963cb15eb080eba2e1f32e369d826",
+    "controller_decision": "Controller observed a **pre-inference local setup failure** in MiMo namespace A/2: app-server stderr says `Operation not permitted`, zero HTTP requests, no parent identity and process exit 1. This is not a provider sample and does not justify stopping the authorized validation. Preserve A/2, then explicitly authorize the current gpt-6-sol delegate to launch a new declared **A/3** once using its sanctioned `exec_command` require_escalated execution (as already used for other successful native probes). No model/provider/catalog/policy/source/argument change is authorized by this setup correction. Record exact launch/permission reason and zero-request distinction; never overwrite A/2 or count its setup exit as delivery success. MiMo B/2 completed its five requests and still needs strict evidence adjudication. Do not repeat B solely because A's launch environment was corrected. Current gate remains implementation/validation until actual active-path A+B are proved."
+  },
+  "reason": "A2 exited1 at app-server startup with Operation not permitted, parent=null and zero HTTP. Not a provider sample. A2 unchanged. B2 passed strict audit and is not repeated.",
+  "previous_A2": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-2",
+  "source_hashes_expected_equal_B2": {
+    "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+    "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+    "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+    "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+    "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+    "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+    "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+  },
+  "limit": "Exactly one A3; max native concurrency1; no source/model/provider/policy/catalog/arguments change or fallback; preserve any failure."
+}

@@ -1,0 +1,3482 @@
+[
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "egress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "expected_outbound_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "egress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "expected_outbound_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "egress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "expected_outbound_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "egress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "expected_outbound_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "egress_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "expected_outbound_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "after_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "egress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "expected_outbound_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "egress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "expected_outbound_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "egress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "expected_outbound_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "egress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "expected_outbound_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "egress_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "expected_outbound_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "after_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "egress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "expected_outbound_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "egress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "expected_outbound_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "egress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "expected_outbound_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "egress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "expected_outbound_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "egress_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "expected_outbound_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "after_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "egress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "expected_outbound_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "egress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "expected_outbound_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "egress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "expected_outbound_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "egress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "expected_outbound_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "egress_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "expected_outbound_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "after_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "egress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "expected_outbound_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "egress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "expected_outbound_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "egress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "expected_outbound_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "egress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "expected_outbound_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "egress_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "expected_outbound_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "after_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "egress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "expected_outbound_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "egress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "expected_outbound_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "egress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "expected_outbound_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "egress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "expected_outbound_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-721e-7c82-a385-018854bf61e7",
+    "ingress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "egress_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "expected_outbound_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+    "model": "glm-5.3",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "message": 3
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "after_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+        "path": "/responses",
+        "model": "glm-5.3",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [
+      {
+        "type": "function",
+        "name": "exec_command",
+        "description": "Runs a command in a PTY, returning output or a session ID for ongoing interaction.",
+        "strict": false,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cmd": {
+              "type": "string",
+              "description": "Shell command to execute."
+            },
+            "justification": {
+              "type": "string",
+              "description": "User-facing approval question for `require_escalated`; omit otherwise."
+            },
+            "login": {
+              "type": "boolean",
+              "description": "True runs the shell with -l/-i semantics; false disables them. Defaults to true."
+            },
+            "max_output_tokens": {
+              "type": "number",
+              "description": "Output token budget. Defaults to 10000 tokens; larger requests may be capped by policy."
+            },
+            "prefix_rule": {
+              "type": "array",
+              "description": "Reusable approval prefix for `cmd`, only with `sandbox_permissions: \"require_escalated\"`; for example [\"git\", \"pull\"].",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_permissions": {
+              "type": "string",
+              "description": "Per-command sandbox override. Defaults to `use_default`; use `require_escalated` for unsandboxed execution.",
+              "enum": [
+                "use_default",
+                "require_escalated"
+              ]
+            },
+            "shell": {
+              "type": "string",
+              "description": "Shell binary to launch. Defaults to the user's default shell."
+            },
+            "tty": {
+              "type": "boolean",
+              "description": "True allocates a PTY for the command; false or omitted uses plain pipes."
+            },
+            "workdir": {
+              "type": "string",
+              "description": "Working directory for the command. Defaults to the turn cwd."
+            },
+            "yield_time_ms": {
+              "type": "number",
+              "description": "Wait before yielding output. Defaults to 10000 ms; effective range is 250-30000 ms."
+            }
+          },
+          "required": [
+            "cmd"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "lite_header_observed": {},
+    "actual_upstream_body_verified": true
+  }
+]

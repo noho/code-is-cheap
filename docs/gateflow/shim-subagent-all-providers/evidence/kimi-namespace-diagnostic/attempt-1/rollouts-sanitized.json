@@ -1,0 +1,108 @@
+[
+  {
+    "file": "rollout-2026-11-07T23-02-13-01a1b688-143c-7771-a243-6d553ea9e735.jsonl",
+    "identity": {
+      "id": "01a1b688-143c-7771-a243-6d553ea9e735",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "kimi",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-kimi-_bekt2lk"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+        "model": "k3",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "never",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b"
+          },
+          "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+          "root_turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+          "started_at": 1794063733,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 12,
+        "item": {
+          "type": "function_call",
+          "status": "completed",
+          "id": "fc_spawn_agent:0",
+          "name": "spawn_agent",
+          "arguments": "{\"message\": \"KIMI_NAMESPACE_ROUTING_DIAGNOSTIC. Reply exactly one line LIVE_INITIAL_cbda008fdb10. Do not use tools, read/write files, or delegate.\", \"fork_context\": false}",
+          "call_id": "spawn_agent:0",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b"
+          }
+        }
+      },
+      {
+        "line": 14,
+        "item": {
+          "type": "function_call_output",
+          "id": "fco_01a1b688-321d-7f42-a735-6a6cf8b4e8dd",
+          "call_id": "spawn_agent:0",
+          "output": "unsupported call: spawn_agent",
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+            "create_time": 1794063741.469712
+          }
+        }
+      },
+      {
+        "line": 19,
+        "item": {
+          "type": "message",
+          "status": "completed",
+          "id": "resp_chat_0000000000000674_msg",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "The diagnostic could not be completed as specified. Result:\n\n1. **spawn_agent call**: I invoked the advertised native `spawn_agent` tool exactly once, with `fork_context=false`, no `model`/`reasoning` overrides, and the verbatim task message (`KIMI_NAMESPACE_ROUTING_DIAGNOSTIC. Reply exactly one line LIVE_INITIAL_cbda008fdb10. Do not use tools, read/write files, or delegate.`).\n2. **Observed outcome**: The call did not create a child. It returned the error: `unsupported call: spawn_agent`. No agent ID was produced.\n3. **wait_agent call**: Not possible — there is no child ID to wait on, and the instructions prohibit retries or repair attempts.\n\n**Conclusion**: The `spawn_agent` capability advertised in the tool descriptors is not actually callable in this environment (namespace routing rejected it). No child final message exists to report.",
+              "annotations": []
+            }
+          ],
+          "internal_chat_message_metadata_passthrough": {
+            "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+            "content_item_kinds": [
+              "unknown"
+            ]
+          }
+        }
+      },
+      {
+        "line": 22,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+          "turn_id": "01a1b688-144d-7a63-9aee-1ee5716fc63b",
+          "last_agent_message": "The diagnostic could not be completed as specified. Result:\n\n1. **spawn_agent call**: I invoked the advertised native `spawn_agent` tool exactly once, with `fork_context=false`, no `model`/`reasoning` overrides, and the verbatim task message (`KIMI_NAMESPACE_ROUTING_DIAGNOSTIC. Reply exactly one line LIVE_INITIAL_cbda008fdb10. Do not use tools, read/write files, or delegate.`).\n2. **Observed outcome**: The call did not create a child. It returned the error: `unsupported call: spawn_agent`. No agent ID was produced.\n3. **wait_agent call**: Not possible — there is no child ID to wait on, and the instructions prohibit retries or repair attempts.\n\n**Conclusion**: The `spawn_agent` capability advertised in the tool descriptors is not actually callable in this environment (namespace routing rejected it). No child final message exists to report.",
+          "started_at": 1794063733,
+          "completed_at": 1794063748,
+          "duration_ms": 15132,
+          "time_to_first_token_ms": 4916
+        }
+      }
+    ]
+  }
+]

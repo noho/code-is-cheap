@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-11-07T18:17:10.406560+00:00",
+  "exit_code": 0,
+  "tests": 86,
+  "result_tail": [
+    "..................................................",
+    "----------------------------------------------------------------------",
+    "Ran 86 tests in 65.962s",
+    "",
+    "OK"
+  ],
+  "command": "unittest.TestSuite discovers test_shim_native_namespace.py, test_shim_native_evidence.py, test_shim_subagent_delivery.py",
+  "repository_log": "docs/gateflow/shim-subagent-all-providers/controller-final86.log",
+  "log_sha256": "3eda4d036e61c0901765e5f84f89ede59008d67ae894b9feff8bb2bb863cf7d8",
+  "source_files": {
+    "README.md": {
+      "sha256": "bf644dc0c5b7915d54addc45b9333786f052b0b1d74cf8633ea91ebaa6742e95",
+      "bytes": 70113
+    },
+    "README.zh.md": {
+      "sha256": "afed954925fd190f2d4317af6cfedb448a8b8b424f42cd3e8bbfacf265d26b31",
+      "bytes": 63325
+    },
+    "codex-agent/bin/codex-auto-review-shim": {
+      "sha256": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+      "bytes": 37473
+    },
+    "codex-agent/shim-routes.json": {
+      "sha256": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "bytes": 3062
+    },
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": {
+      "sha256": "8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73",
+      "bytes": 37444
+    },
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": {
+      "sha256": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "bytes": 47700
+    },
+    "tests/test_shim_subagent_delivery.py": {
+      "sha256": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4",
+      "bytes": 18312
+    },
+    "tests/test_shim_native_evidence.py": {
+      "sha256": "914d80e559a38b94d968b00db1946e1887ae3784ce6bd92a1d898b0f33eedc8e",
+      "bytes": 33376
+    },
+    "tests/test_shim_native_namespace.py": {
+      "sha256": "381ffc9bf40f5b16abc6d4dc38b110d6afc65ae05e968d707dc4047799d81bd2",
+      "bytes": 61860
+    }
+  },
+  "source_freeze_v2_unchanged": true,
+  "no_provider_requests": true
+}

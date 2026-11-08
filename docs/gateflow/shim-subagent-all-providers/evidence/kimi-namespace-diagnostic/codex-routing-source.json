@@ -1,0 +1,115 @@
+{
+  "scope": "Public exact-version source corroboration, not gateway implementation evidence or a claim of a reproducible installed-binary build",
+  "tag_object": "cb41599ccbe371272892f156286a236aa097bada",
+  "commit": "086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a",
+  "observed_installed_version": "codex-cli 0.167.0",
+  "installed_binary": {
+    "path": "/opt/homebrew/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+    "sha256": "030316ecfbb41f4e7946e584b0063ef333b7a36cd312ba349f2f6869e39b62cc"
+  },
+  "files": [
+    {
+      "path": "codex-rs/protocol/src/tool_name.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/protocol/src/tool_name.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "2d102304a638001c46ffd5bd31fba05960b88a870e3db5b163b87eb9652c65ac",
+      "file_bytes": 2523,
+      "excerpts": [
+        {
+          "start_line": 6,
+          "end_line": 49,
+          "text": "/// Namespace used for top-level function and custom tools.\npub const DEFAULT_FUNCTION_NAMESPACE: &str = \"functions\";\n\n/// Identifies a callable tool, preserving the namespace split when the model\n/// provides one.\n#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]\npub struct ToolName {\n    pub name: String,\n    pub namespace: Option<String>,\n}\n\nimpl ToolName {\n    pub fn new(namespace: Option<String>, name: impl Into<String>) -> Self {\n        Self {\n            name: name.into(),\n            namespace,\n        }\n    }\n\n    pub fn plain(name: impl Into<String>) -> Self {\n        Self {\n            name: name.into(),\n            namespace: None,\n        }\n    }\n\n    pub fn namespaced(namespace: impl Into<String>, name: impl Into<String>) -> Self {\n        Self {\n            name: name.into(),\n            namespace: Some(namespace.into()),\n        }\n    }\n\n    pub fn with_default_namespace(mut self) -> Self {\n        if self.namespace.as_deref().is_none_or(str::is_empty) {\n            self.namespace = Some(DEFAULT_FUNCTION_NAMESPACE.to_string());\n        }\n        self\n    }\n\n    pub fn is_default_namespace(&self) -> bool {\n        matches!(\n            self.namespace.as_deref(),\n            None | Some(\"\") | Some(DEFAULT_FUNCTION_NAMESPACE)"
+        }
+      ]
+    },
+    {
+      "path": "codex-rs/protocol/src/models.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/protocol/src/models.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "daeb5bd499ed49b364be4c031e3c754f7fb39945531214c0b8fe00896eb3da82",
+      "file_bytes": 169146,
+      "excerpts": [
+        {
+          "start_line": 1134,
+          "end_line": 1156,
+          "text": "    FunctionCall {\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]\n        #[ts(optional)]\n        encrypted_content: Option<String>,\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]\n        #[ts(optional)]\n        status: Option<String>,\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]\n        #[ts(optional)]\n        id: Option<ResponseItemId>,\n        name: String,\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]\n        #[ts(optional)]\n        namespace: Option<String>,\n        // The Responses API returns the function call arguments as a *string* that contains\n        // JSON, not as an already‑parsed object. We keep it as a raw string here and let\n        // Session::handle_function_call parse it into a Value.\n        arguments: String,\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]\n        #[ts(optional)]\n        encrypted_function_args: Option<Vec<String>>,\n        call_id: String,\n        #[serde(default, skip_serializing_if = \"Option::is_none\")]"
+        }
+      ]
+    },
+    {
+      "path": "codex-rs/core/src/tools/router.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/core/src/tools/router.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "e6a7ef92ce0455ace849927c6431334af984e144c8d008af65887c8db5ef7fec",
+      "file_bytes": 16890,
+      "excerpts": [
+        {
+          "start_line": 270,
+          "end_line": 303,
+          "text": "    #[instrument(level = \"trace\", skip_all, err)]\n    pub fn build_tool_call(\n        &self,\n        mut item: ResponseItem,\n    ) -> Result<Option<ToolCall>, FunctionCallError> {\n        match item {\n            ResponseItem::FunctionCall {\n                ref name,\n                ref namespace,\n                ref mut arguments,\n                ref call_id,\n                ref mut encrypted_function_args,\n                ..\n            } => {\n                let tool_name =\n                    ToolName::new(namespace.clone(), name.clone()).with_default_namespace();\n                let retain_native_call = self\n                    .registry\n                    .registered_tool(&tool_name)\n                    .is_some_and(|tool| tool.native_review == NativeReview::Required);\n                let (arguments, encrypted_function_args) = if retain_native_call {\n                    (arguments.clone(), encrypted_function_args.clone())\n                } else {\n                    (std::mem::take(arguments), encrypted_function_args.take())\n                };\n                let call_id = call_id.clone();\n                Ok(Some(ToolCall {\n                    tool_name,\n                    call_id,\n                    payload: ToolPayload::Function { arguments },\n                    encrypted_function_args,\n                    native_call: retain_native_call.then(|| Arc::new(item)),\n                }))\n            }"
+        }
+      ]
+    },
+    {
+      "path": "codex-rs/core/src/tools/registry.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/core/src/tools/registry.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "0baa801551f9c575171298cb812108b5534b8b9e5354affb36bb7454111ce79c",
+      "file_bytes": 42264,
+      "excerpts": [
+        {
+          "start_line": 690,
+          "end_line": 692,
+          "text": "    pub(crate) fn registered_tool(&self, name: &ToolName) -> Option<&RegisteredTool> {\n        self.tools.get(&name.clone().with_default_namespace())\n    }"
+        },
+        {
+          "start_line": 768,
+          "end_line": 788,
+          "text": "        let registered_tool = match self.registered_tool(&tool_name) {\n            Some(tool) => tool,\n            None => {\n                let message = unsupported_tool_call_message(&invocation.payload, &tool_name);\n                let log_payload = tool_log_payload(&invocation.payload, &invocation.source);\n                let mut tool_result_tags = Vec::with_capacity(2);\n                sandbox_tags.append_metric_tags(&mut tool_result_tags);\n                otel.tool_result_with_tags(\n                    &tool_name,\n                    &call_id_owned,\n                    log_payload.as_ref(),\n                    Duration::ZERO,\n                    /*success*/ false,\n                    &message,\n                    &tool_result_tags,\n                    /*extra_trace_fields*/ &[],\n                );\n                let err = FunctionCallError::RespondToModel(message);\n                dispatch_trace.record_failed(&err);\n                return Err(err);\n            }"
+        },
+        {
+          "start_line": 1148,
+          "end_line": 1153,
+          "text": "fn unsupported_tool_call_message(payload: &ToolPayload, tool_name: &ToolName) -> String {\n    match payload {\n        ToolPayload::Custom { .. } => format!(\"unsupported custom tool call: {tool_name}\"),\n        _ => format!(\"unsupported call: {tool_name}\"),\n    }\n}"
+        }
+      ]
+    },
+    {
+      "path": "codex-rs/core/src/tools/handlers/multi_agents/spawn.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/core/src/tools/handlers/multi_agents/spawn.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "da451dfb07553c9e97fbd5157b9c5daf0a69e5b91f32398cbb6f859dd60a29db",
+      "file_bytes": 9044,
+      "excerpts": [
+        {
+          "start_line": 24,
+          "end_line": 35,
+          "text": "    pub(crate) fn new(options: SpawnAgentToolOptions) -> Self {\n        Self { options }\n    }\n}\n\nimpl ToolExecutor<ToolInvocation> for Handler {\n    fn tool_name(&self) -> ToolName {\n        ToolName::namespaced(MULTI_AGENT_V1_NAMESPACE, \"spawn_agent\")\n    }\n\n    fn spec(&self) -> ToolSpec {\n        create_spawn_agent_tool_v1(self.options.clone())"
+        }
+      ]
+    },
+    {
+      "path": "codex-rs/core/src/tools/handlers/multi_agents_spec.rs",
+      "url": "https://github.com/openai/codex/blob/086ccc833bc9cf01024ad2dd6af7dbd421b6bf9a/codex-rs/core/src/tools/handlers/multi_agents_spec.rs",
+      "tag": "rust-v0.167.0",
+      "file_sha256": "e24132911b9da01e84691dd8e3ae1179f8b9a53b6653adc703dee2250abc9d0b",
+      "file_bytes": 37769,
+      "excerpts": [
+        {
+          "start_line": 14,
+          "end_line": 15,
+          "text": "pub const MULTI_AGENT_V1_NAMESPACE: &str = \"multi_agent_v1\";\nconst MULTI_AGENT_V1_NAMESPACE_DESCRIPTION: &str = \"Tools for spawning and managing sub-agents.\";"
+        },
+        {
+          "start_line": 85,
+          "end_line": 94,
+          "text": "        hide_spawn_agent_metadata_options(&mut properties);\n    }\n\n    ToolSpec::Namespace(ResponsesApiNamespace {\n        name: MULTI_AGENT_V1_NAMESPACE.to_string(),\n        description: MULTI_AGENT_V1_NAMESPACE_DESCRIPTION.to_string(),\n        tools: vec![ResponsesApiNamespaceTool::Function(ResponsesApiTool {\n            name: \"spawn_agent\".to_string(),\n            description: spawn_agent_tool_description(\n                available_models_description.as_deref(),"
+        }
+      ]
+    }
+  ],
+  "source_fetch_notes": [
+    "spec.rs fetch returned404 because that legacy path does not exist; no source inference used from it.",
+    "No captured JavaScript executed. Offline code above executes only AST of the author-written diagnostic Python source."
+  ]
+}

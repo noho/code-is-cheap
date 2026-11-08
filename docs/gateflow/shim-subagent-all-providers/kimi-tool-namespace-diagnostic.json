@@ -1,0 +1,56 @@
+{
+  "observed_at": "2026-11-07T22:51:36.109742+08:00",
+  "profile": "kimi",
+  "configured_model": "kimi-k3 on user-selected TokenHub override",
+  "scope": "Non-executing tool advertisement diagnostic, not native subagent acceptance; no tool callback executed",
+  "results": [
+    {
+      "case": "namespace",
+      "http_status": 200,
+      "output": []
+    },
+    {
+      "case": "flat_function",
+      "http_status": 200,
+      "output": [
+        {
+          "type": "function_call",
+          "name": "probe_echo",
+          "arguments": "{\"token\":\"KIMI_NAMESPACE_DIAG_OK\"}"
+        }
+      ]
+    }
+  ],
+  "metadata_from_only_matching_diagnostic_response_dumps": [
+    {
+      "tool_shape": "function",
+      "response_status": "completed",
+      "error": null,
+      "incomplete_details": null,
+      "output_types": [
+        "reasoning",
+        "function_call"
+      ],
+      "non_reasoning_items": [
+        {
+          "type": "function_call",
+          "id": "fc_probe_echo_0_4e0fd5f3",
+          "status": "completed",
+          "name": "probe_echo",
+          "call_id": "probe_echo_0_4e0fd5f3",
+          "arguments": "{\"token\":\"KIMI_NAMESPACE_DIAG_OK\"}"
+        }
+      ]
+    },
+    {
+      "tool_shape": "namespace",
+      "response_status": "completed",
+      "error": null,
+      "incomplete_details": null,
+      "output_types": [
+        "reasoning"
+      ],
+      "non_reasoning_items": []
+    }
+  ]
+}

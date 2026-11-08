@@ -1,0 +1,14 @@
+{
+  "scope_check": "pass",
+  "diff_check": "pass (separate git command)",
+  "new_evidence_scripts_compile": "2/2 pass",
+  "new_source_lines_trailing_whitespace": "none",
+  "final_helper_sha256": "55a5bd5b5e120cac648d9ad86c366430a9a535bf79d796cf58a79b44ffbb9b9a",
+  "current_tests": 86,
+  "reused_checks": 90,
+  "actual_a4_a3": {
+    "A3": false,
+    "A4": true
+  },
+  "report_sha256": "a3016975aadbde8021d9fa9af4da7bc4d05108e05282a2cb1da9785e16289b29"
+}

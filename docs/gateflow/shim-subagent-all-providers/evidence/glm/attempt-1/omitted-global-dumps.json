@@ -1,0 +1,100 @@
+{
+  "reason": "Probe-generated failure dumps omitted to avoid retaining full global context; allowlisted actual wire/native evidence retained.",
+  "files": [
+    {
+      "name": "57629-1794062131-req-503.json",
+      "sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062124-req-503.json",
+      "sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062123-req-503.json",
+      "sha256": "e9b1c16183537bea816884ec0f0b6744a5f1a9c3acba0055903e7664a0c3baa2",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062140-req-503.json",
+      "sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062147-req-503.json",
+      "sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062130-req-503.json",
+      "sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062137-req-503.json",
+      "sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062146-req-503.json",
+      "sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062128-req-503.json",
+      "sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062129-req-503.json",
+      "sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062148-req-503.json",
+      "sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062139-req-503.json",
+      "sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062127-req-503.json",
+      "sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062135-req-503.json",
+      "sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062133-req-503.json",
+      "sha256": "aa8c6323e2e511ea8d0765e42eab3c169163dd046a3c0be166e7e258fafe6e5b",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062134-req-503.json",
+      "sha256": "8e7b304e93381409bc58ab019d57c99716cdd1ec872fffcb6dee3fbc7fefdfe7",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062126-req-503.json",
+      "sha256": "d4286e081c33eca0f172797bab0f295fa66d8d44d23c1c74ca1f810e0480b0f4",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062145-req-503.json",
+      "sha256": "b34dfb2afa49c199a4b548c1968f5605c924a8acf19ddaac8c0f14a0b89dd8e8",
+      "bytes": 69977
+    },
+    {
+      "name": "57629-1794062142-req-503.json",
+      "sha256": "20365522494220dc4661c8d1447d78fe1600a2c6d7a309449551f41d844f97b8",
+      "bytes": 69977
+    }
+  ]
+}

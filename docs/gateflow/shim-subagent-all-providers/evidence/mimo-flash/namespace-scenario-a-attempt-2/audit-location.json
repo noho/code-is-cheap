@@ -1,0 +1,49 @@
+{
+  "profile": "mimo-flash",
+  "attempt": "2",
+  "scenario": "a",
+  "passed": false,
+  "coverage": {
+    "a": false,
+    "b": false
+  },
+  "checks": {
+    "declared_scenario_matches_driver_launch": true,
+    "actual_parent_child_identity_policy": false,
+    "native_dispatch_order_same_child_no_parent_read": false,
+    "A_exact_distinct_completed_child_turns": false,
+    "A3_message_or_descriptor_backed_NA": false,
+    "declared_case_native_waits_fresh_completion_order": false,
+    "declared_case_native_event_linkage_actual_modes": false,
+    "wire_helper_and_exact_allowed_outbound_stages": false,
+    "native_lifecycle": false,
+    "namespace_launch_source_snapshots": true
+  },
+  "details": {
+    "declared_scenario_matches_driver_launch": {
+      "scenario": "a",
+      "required_cases": [
+        "a"
+      ]
+    },
+    "observed_mode": "unavailable",
+    "advertised_names": [],
+    "actual_parent_child_identity_policy": "observed native mode/catalog mismatch",
+    "native_dispatch_order_same_child_no_parent_read": "native continuation not advertised",
+    "A_exact_distinct_completed_child_turns": "initial/continuation finals or distinct turn count",
+    "A3_message_or_descriptor_backed_NA": "AssertionError",
+    "declared_case_native_waits_fresh_completion_order": "required task/final count mismatch",
+    "declared_case_native_event_linkage_actual_modes": "None",
+    "wire_helper_and_exact_allowed_outbound_stages": "no requests",
+    "native_lifecycle": "AssertionError",
+    "namespace_launch_source_snapshots": "all launch sources retrievable and verified; exact route flags"
+  },
+  "auditor_sha256": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+  "input_sha256": {
+    "summary.json": "5252636fc3195fe1f0d3cd8453906563adbda399d739c637997b242fea4f5942",
+    "wire.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "rollouts-sanitized.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "native-rollout-supplement.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "launch.json": "fc4775b6aa54d1c79949f86ccfe3b48e38cb211d80022bc3375895bd501243c9"
+  }
+}

@@ -1,0 +1,1682 @@
+[
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "egress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "expected_outbound_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "egress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "expected_outbound_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "egress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "expected_outbound_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "egress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "expected_outbound_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "egress_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "expected_outbound_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "after_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "039d90c31875144e91b42f80672491747d6fdca7edfbbb1fdbe6c2f96cba235f",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "egress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "expected_outbound_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "egress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "expected_outbound_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "egress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "expected_outbound_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "egress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "expected_outbound_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "egress_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "expected_outbound_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "after_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "2449308617be078fb99e8d000247abdb1eb46c0d23dce318166549a4f90e550d",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "egress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "expected_outbound_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "egress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "expected_outbound_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "egress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "expected_outbound_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "egress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "expected_outbound_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "egress_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "expected_outbound_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "after_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "50f0717ef9ae111c55a4975ad5ac0910edcd4ce1ebe820f226a278b6e60eb2f3",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "egress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "expected_outbound_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "egress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "expected_outbound_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "egress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "expected_outbound_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "egress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "expected_outbound_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "egress_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "expected_outbound_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "after_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "126273839d163d6ae90507a1ece50a608bab94250646bd5df00049242fc7c6ef",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "egress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "expected_outbound_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "egress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "expected_outbound_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "egress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "expected_outbound_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "egress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "expected_outbound_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "egress_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "expected_outbound_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "after_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "9759f20efe90a90a3ef7437bf9bd02f478c5bbb6991adcc9cbce5b9df6724b63",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "egress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "expected_outbound_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "egress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "expected_outbound_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "egress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "expected_outbound_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "egress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "expected_outbound_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  },
+  {
+    "thread_id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+    "ingress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "egress_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "expected_outbound_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+    "model": "mimo-v2.6-pro",
+    "stream": true,
+    "converted": 0,
+    "items": [],
+    "types": {
+      "additional_tools": 1,
+      "message": 6
+    },
+    "non_target_items_equal": true,
+    "non_input_fields_equal": true,
+    "stages": [
+      {
+        "flag": "id_fix",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "json_fmt_fix",
+        "enabled": true,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      },
+      {
+        "flag": "drop_tools_item",
+        "enabled": false,
+        "count": 0,
+        "before_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "after_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "changes": []
+      }
+    ],
+    "outbound_attempts": [
+      {
+        "body_sha256": "8e92968d3824c0dce9951b84293472bcd2569090ff10ee2afed2e35334b3f209",
+        "path": "/responses",
+        "model": "mimo-v2.6-pro",
+        "error_class": "HTTPError",
+        "http_status": 503
+      }
+    ],
+    "native_descriptors": [],
+    "lite_header_observed": {
+      "X-openai-internal-codex-responses-lite": "true"
+    },
+    "actual_upstream_body_verified": true
+  }
+]

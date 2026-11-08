@@ -1,0 +1,9 @@
+2026-11-07T14:38:37.012927Z ERROR codex_core::tools::router: error=unknown MCP server 'agents'
+2026-11-07T14:38:37.013189Z ERROR codex_core::tools::router: error=unknown MCP server 'collaboration'
+2026-11-07T14:38:37.013826Z ERROR codex_core::tools::router: error=unknown MCP server 'code-mode'
+2026-11-07T14:38:37.014287Z ERROR codex_core::tools::router: error=unknown MCP server 'subagents'
+2026-11-07T14:38:39.985372Z ERROR codex_core::tools::router: error=unknown MCP server 'none'
+2026-11-07T14:38:39.986592Z ERROR codex_core::tools::router: error=unknown MCP server 'none'
+2026-11-07T14:38:42.681464Z ERROR codex_core::tools::router: error=cursor can only be used when a server is specified
+2026-11-07T14:38:44.978950Z ERROR codex_core::tools::router: error=unknown MCP server 'default'
+2026-11-07T14:38:49.849468Z ERROR codex_core::tools::router: error=unknown MCP server '*'

@@ -1,0 +1,72 @@
+{
+  "observed_at": "2026-11-07T15:53:44.231014+00:00",
+  "scope": "Installed source/routing files only; no deployment or restart performed",
+  "installed": {
+    "codex-auto-review-shim": {
+      "path": "/Users/leo/.codex-agent/bin/codex-auto-review-shim",
+      "sha256": "7ae5d6d7dc86050b466d06cc63685eb1589d873cf730fa0ac3479dfed44d7cc7"
+    },
+    "shim-routes.json": {
+      "path": "/Users/leo/.codex-agent/shim-routes.json",
+      "sha256": "afd1e15ca3a914993987382abaf148227ef6a97a796cdb73791b4787bea26bfe"
+    }
+  },
+  "routes": [
+    {
+      "endpoint_id": "ds-flash",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "glm",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "kimi",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "mimo",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "qwen",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "mimo-flash",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "mimo-fast",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "glm-flash",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    },
+    {
+      "endpoint_id": "hy",
+      "agent_message_fix": false,
+      "native_agent_request_flatten": false,
+      "native_agent_response_restore": false
+    }
+  ],
+  "private_kimi_override": "Separately user-authorized and already hot-reloaded; credentials/URL not captured",
+  "callback_gate": "No new technical callback to original business parent before authorized code sync"
+}

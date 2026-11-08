@@ -1,0 +1,66 @@
+[
+  {
+    "file": "rollout-2026-11-07T22-35-15-01a1b66f-63c7-76c3-ab84-e6c44e58356d.jsonl",
+    "identity": {
+      "id": "01a1b66f-63c7-76c3-ab84-e6c44e58356d",
+      "parent_thread_id": null,
+      "cli_version": "0.167.0",
+      "model_provider": "mimo",
+      "agent_path": null,
+      "source": "vscode",
+      "cwd": "/var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/shim-fixture-mimo-kxjzalqj"
+    },
+    "contexts": [
+      {
+        "turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+        "model": "mimo-v2.6-pro",
+        "model_provider": null,
+        "effort": "max",
+        "approval_policy": "on-request",
+        "sandbox_policy": {
+          "type": "read-only"
+        }
+      }
+    ],
+    "events": [
+      {
+        "line": 2,
+        "event": {
+          "type": "task_started",
+          "turn_attribution": {
+            "turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+            "turn_trigger": null,
+            "parent_turn_id": null,
+            "initiating_agent_path": null,
+            "root_turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41"
+          },
+          "turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+          "root_turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+          "started_at": 1794062115,
+          "model_context_window": 996147,
+          "collaboration_mode_kind": "default"
+        }
+      },
+      {
+        "line": 14,
+        "event": {
+          "type": "task_complete",
+          "root_turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+          "turn_id": "01a1b66f-63d7-7bd1-8335-caccedfacc41",
+          "last_agent_message": null,
+          "error": {
+            "message": "unexpected status 503 Service Unavailable: Unknown error, url: http://127.0.0.1:57619/v1/responses",
+            "codex_error_info": {
+              "http_connection_failed": {
+                "http_status_code": 503
+              }
+            }
+          },
+          "started_at": 1794062115,
+          "completed_at": 1794062145,
+          "duration_ms": 29220
+        }
+      }
+    ]
+  }
+]

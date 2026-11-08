@@ -1,0 +1,46 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1
+PARENT_ID=01a1b6be-2464-7403-a828-d7b9676a1d87
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=36304B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none tools=none
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=4903B completed=True
+[shim:65312]   ^ status=200 stream=ok relayed=24589B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=11785B completed=True
+WAITING elapsed=58 requests=4
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=40322B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg1 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=4979B completed=True
+[shim:65312]   ^ status=200 stream=ok relayed=28032B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=19861B completed=True
+WAITING elapsed=119 requests=8
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14317B completed=True
+WAITING elapsed=153 requests=9
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14317B completed=True
+WAITING elapsed=188 requests=10
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14713B completed=True
+WAITING elapsed=226 requests=11
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14294B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14515B completed=True
+WAITING elapsed=268 requests=13
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=9944B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg4 tools=none
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg2 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=6151B completed=True
+[shim:65312]   ^ status=200 stream=ok relayed=9744B completed=True
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg3 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=14911B completed=True
+WAITING elapsed=312 requests=17
+[shim:65312] POST /v1/responses -> 200 model=mimo-v2.6-flash enc=- rewrite=none+agentmsg3 tools=none
+[shim:65312]   ^ status=200 stream=ok relayed=73677B completed=True
+{"profile": "mimo-flash", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 18, "elapsed_seconds": 331.53}

@@ -1,0 +1,29 @@
+{
+  "scope": "Exact isolated gpt-6-sol candidate source preserved before later logging-only fix",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "1e0ce5ecc708d49121b7adb5e9b149b43180f6ba51524e994025f94fdec07139",
+      "bytes": 69927,
+      "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/1e0ce5ecc708d49121b7adb5e9b149b43180f6ba51524e994025f94fdec07139.source.gz"
+    },
+    {
+      "file": "README.zh.md",
+      "sha256": "e9c3919586bde84484c947bb75d8894ad63f9b617f58061a082ee166ba40f571",
+      "bytes": 63162,
+      "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/e9c3919586bde84484c947bb75d8894ad63f9b617f58061a082ee166ba40f571.source.gz"
+    },
+    {
+      "file": "docs/gateflow/shim-subagent-delivery/native-probe.py",
+      "sha256": "8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73",
+      "bytes": 37444,
+      "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/8fc7a3e8d9aed70d86855ce534eef544c2c3d9b915221520c66d6aa8a7c98e73.source.gz"
+    },
+    {
+      "file": "tests/test_shim_native_namespace.py",
+      "sha256": "f83b342505afb142c2b2f278e84eb67192f36fd2ec3a0e9cc156a7b0450f853b",
+      "bytes": 50396,
+      "snapshot": "docs/gateflow/shim-subagent-all-providers/evidence/controller-candidate-source/f83b342505afb142c2b2f278e84eb67192f36fd2ec3a0e9cc156a7b0450f853b.source.gz"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "created_at": "2026-11-07T16:58:55.220259+00:00",
+  "aggregate_pass": true,
+  "all_production_source_hashes_match_current_and_both_launches": true,
+  "launch_hashes": [
+    {
+      "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+      "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+      "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+      "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+      "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+    },
+    {
+      "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+      "codex-agent/shim-routes.json": "0dd8e0fdbf4c360470b2102005075a981b1a09393894997faeb18468e59af5c6",
+      "codex-agent/profiles/mimo-flash/config.toml": "ad75db09eeaa6e6a5fdb1e72be45bec41f908114fd43feb6e69d22c52e3166d1",
+      "codex-agent/model-providers.toml": "9a795c852be7c6c140d88c9bb4d2b5aae7440b5dba145fb49f1345cb41cbc4a2",
+      "/Users/leo/.codex/model-catalogs/mimo-flash.json": "b0d169e7a5b287453cb6abd00f59d01ecde10225375c5032a523650048c18955",
+      "docs/gateflow/shim-subagent-delivery/native-probe.py": "0e5294bd7a033a58a1a193827b5adec33122a8076ac9128613a85369c9e78a99",
+      "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "fe15f8071774a40659209aeb3530d13f9c6eb077d9c1fbd6c5219985480ce6a2",
+      "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7",
+      "tests/test_shim_native_evidence.py": "7aeb2b4c70ab077e57fe2862251ea952625d72fa3ad5d04f25ca755bdeab31b2",
+      "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4"
+    }
+  ],
+  "source_comparison": "production/routes/registry/profile/catalog exact; each harness independently audited with retrievable launch hashes",
+  "driver_auditor_differences": "B2 launched original location observer/reader. A4 launched controller-approved short-v2 receipt prompt/optional-wait auditor correction; production helper and captured native B2 call/result/final evidence unchanged. Both snapshots retained, current independent auditor revalidates exact receipt/child execution/active-map stages.",
+  "bounded_applicability": "final-source-bounded-reuse.json",
+  "no_additional_B_or_Kimi_inference": true
+}

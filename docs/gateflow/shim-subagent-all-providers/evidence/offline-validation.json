@@ -1,0 +1,75 @@
+{
+  "time_utc": "2026-11-07T14:49:34.281939+00:00",
+  "files": {
+    "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+    "codex-agent/shim-routes.json": "28fabd9da79ff35f7c0d9be8e160f607715cf817c9533091c75fc21b06991d88",
+    "README.md": "2c26978a9e9bf10b8e904ef7a8d5fd69ef49ae7d56e44c076cc518ef88b6a21a",
+    "README.zh.md": "c1d5632fa8d96bfd8129e8604ab9d294b2abe80e8dadcf2e5601a2c9fa2377c2",
+    "tests/test_shim_subagent_delivery.py": "dda2f5379140879c08761741eb378cbd98dba836a93098548dd3eed3fca42ed4",
+    "tests/test_shim_native_evidence.py": "10c3c92e15a8efe49ffc2df3b97d86a175c652faf37caa6f1a18285c76421125",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "f14aee11f19d9998442355ce8b291e9d5bfc57954e84f9101120e017ae03ca13",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "2c1b96f0263980a614148772982eb3a50b192cc42090938578d90f13a1715bf3"
+  },
+  "final_checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_shim_subagent_delivery.py'",
+      "exit": 0,
+      "tests": 13
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_shim_native_evidence.py'",
+      "exit": 0,
+      "tests": 11
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_install_endpoints.py'",
+      "exit": 0,
+      "tests": 38
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_provider_registry.py'",
+      "exit": 0,
+      "tests": 11
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_shim_service.py'",
+      "exit": 0,
+      "tests": 11
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_model_catalog_generation.py'",
+      "exit": 0,
+      "tests": 30
+    }
+  ],
+  "other_checks": [
+    {
+      "command": "python3 -m py_compile docs/gateflow/shim-subagent-delivery/native-probe.py docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "exit": 0
+    },
+    {
+      "command": "python3 docs/gateflow/shim-subagent-delivery/audit-native-evidence.py",
+      "exit": 0,
+      "result": "Both historical DS runs retain all original assertions; default legacy audit passes."
+    },
+    {
+      "command": "git diff --check",
+      "exit": 0
+    }
+  ],
+  "preliminary_test_failures": [
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_shim_subagent_delivery.py'",
+      "runs": 2,
+      "tests_each": 13,
+      "failures_each": 1,
+      "cause": "New env-only test used an explicit missing routes file, then an explicit empty routes file. Both are intentionally rejected by production load_routes; corrected fixture uses absent default plus empty SHIM_ROUTES to exercise genuine env mode. No production workaround."
+    }
+  ],
+  "native_attempts": "attempt-matrix.json",
+  "native_all_green": false,
+  "final_test_count": 114,
+  "catalog_generation_touched": false,
+  "native_concurrency_limit": 2,
+  "deployment": false
+}

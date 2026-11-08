@@ -1,0 +1,33 @@
+PROBE_DIR=docs/gateflow/shim-subagent-all-providers/evidence/mimo/attempt-2
+PARENT_ID=01a1b670-f686-7b51-a242-c38452690c97
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=13381B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=8575B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=5224B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=5674B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=none
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg2 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=5477B completed=True
+[shim:57869]   ^ status=200 stream=ok relayed=5398B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg2 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=7101B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg2 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=10244B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg2 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=4282B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg4 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=6410B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg3 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=8012B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg3 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=3906B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=5854B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg1 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=5665B completed=True
+[shim:57869] POST /v1/responses -> 200 model=mimo-v2.6-pro enc=- rewrite=none+agentmsg4 tools=none
+[shim:57869]   ^ status=200 stream=ok relayed=35851B completed=True
+{"profile": "mimo", "parent_completed": true, "app_server_exit": 0, "errors": [], "requests": 15, "elapsed_seconds": 48.93}

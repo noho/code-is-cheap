@@ -1,0 +1,7 @@
+{
+  "observed_at": "2026-11-07T17:22:01.638542+00:00",
+  "json_files_scanned": 273,
+  "nonempty_direct_secret_string_fields": [],
+  "values_never_printed": true,
+  "scope": "Metadata-key screen of retained JSON artifacts, plus observer/schema source review; not a claim of exhaustive secret detection. Private configuration is never copied to the repository."
+}

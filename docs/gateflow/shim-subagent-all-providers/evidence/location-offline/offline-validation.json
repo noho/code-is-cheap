@@ -1,0 +1,104 @@
+{
+  "current_runs": [
+    {
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/namespace-final.log",
+      "tests": 27,
+      "exit": 0,
+      "sha256": "fe124c94d8edca3137813197bcdf33017aa99b578c6f671947164190b599ab55"
+    },
+    {
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-receipt-fix-initial.log",
+      "tests": 33,
+      "exit": 0,
+      "sha256": "abbc48efe6167bce567beb1587b5cf8b6493697fe3ef59e82dd2f3e04a2b00d7"
+    },
+    {
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/delivery.log",
+      "tests": 13,
+      "exit": 0,
+      "sha256": "509dd5f030878e01d9ed08746597da61faddbb5319aac43aa997abbb84ae6099"
+    },
+    {
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/observer-source-final.log",
+      "tests": 2,
+      "exit": 0,
+      "sha256": "00967715146539d690eed639e21d0594907216380a480b69a8a4749d052b6668"
+    }
+  ],
+  "current_unique_tests": 73,
+  "targeted_final_observer_rechecks": 2,
+  "reused_mandatory_checks": [
+    {
+      "pattern": "test_install_endpoints.py",
+      "tests": 38,
+      "exit": 0,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_install_endpoints.py.log",
+      "sha256": "26e90ff3324512c61b153f6fb19ef2d1f37aaf032e10067c505035bf6e2d7d2f",
+      "applicability": "Test source and all helper definitions except native_agent_request unchanged; response-only collector affected checks rerun separately."
+    },
+    {
+      "pattern": "test_provider_registry.py",
+      "tests": 11,
+      "exit": 0,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_provider_registry.py.log",
+      "sha256": "82528427ef95263415a46d6220b62d4ad71ee6aff9ff6fab9d0196be0e918248",
+      "applicability": "Test source and all helper definitions except native_agent_request unchanged; response-only collector affected checks rerun separately."
+    },
+    {
+      "pattern": "test_shim_service.py",
+      "tests": 11,
+      "exit": 0,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_shim_service.py.log",
+      "sha256": "02b15a55f95ac4d0e8d7cdb3ba903ce903263bbf5b6b9692741e2f11fd491288",
+      "applicability": "Test source and all helper definitions except native_agent_request unchanged; response-only collector affected checks rerun separately."
+    },
+    {
+      "pattern": "test_model_catalog_generation.py",
+      "tests": 30,
+      "exit": 0,
+      "log": "docs/gateflow/shim-subagent-all-providers/evidence/namespace-offline/namespace-test_model_catalog_generation.py.log",
+      "sha256": "55b322cf07ca0f0f0ff3d1799bfe773c29fb99cdee1f0ca1859d0f825f345c03",
+      "applicability": "Test source and all helper definitions except native_agent_request unchanged; response-only collector affected checks rerun separately."
+    }
+  ],
+  "applicable_total_unique_tests": 163,
+  "py_compile_exit": 0,
+  "diff_check_exit": 0,
+  "legacy_audit": {
+    "path": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/legacy-ds-audit-final.json",
+    "exit": 0
+  },
+  "final_helper_sha256": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+  "scope": "No unrelated broad suite or new Kimi/seven-provider native requests.",
+  "additional_real_handler_container_checks": {
+    "cases": 2,
+    "exit": 0,
+    "log": "kimi-auditor-container-check.log",
+    "script": "kimi-auditor-container-check.py"
+  },
+  "earlier_auditor_run": {
+    "log": "docs/gateflow/shim-subagent-all-providers/evidence/location-offline/evidence-source-final.log",
+    "tests": 30,
+    "exit": 0,
+    "sha256": "09a843a7e9db36a3fe75ca2040755f485b2f1e63b44255987fec7892e08d1a5a"
+  },
+  "receipt_fix_targeted_checks": [
+    {
+      "log": "observer-receipt-fix.log",
+      "tests": 2,
+      "exit": 0
+    },
+    {
+      "log": "kimi-auditor-receipt-fix.log",
+      "real_handler_cases": 2,
+      "exit": 0
+    }
+  ],
+  "final_source_hashes": {
+    "codex-agent/bin/codex-auto-review-shim": "a6246a4bc810125437992791aedcc8f2aa4c072f55e2bcf3691562feecd8e1e6",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "6fde7ff90f47035520f500b618daf993149450c10b38ac515420e32888dd452f",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "5d46cf1c43553c0536454a3877b9e6aa20d3fb00a88a2c24910d77b2ea3014d6",
+    "tests/test_shim_native_evidence.py": "278d57fc55fa39fff06e48af465164cf88b032b60658c33fb22b9369059a1ab7",
+    "tests/test_shim_native_namespace.py": "a78f54c413485000991ab5dc3e182af90fda86804bc1614c8dbbb15e65caf1f7"
+  }
+}

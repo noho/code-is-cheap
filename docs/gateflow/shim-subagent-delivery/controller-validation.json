@@ -1,0 +1,22 @@
+{
+  "base": "0933796",
+  "branch": "fix/shim-subagent-message-delivery",
+  "files": {
+    "codex-agent/bin/codex-auto-review-shim": "cd8e9f218c5a65d65bceff6ffac8b723c075913dad7ca08d999941ee34544dda",
+    "codex-agent/shim-routes.json": "8b04fec825d53d4c60fbbc80256f9d57cc8d3b1f8a91a645cbe83a62bd8ad48d",
+    "tests/test_shim_subagent_delivery.py": "d8dc53ebaa1bdb4bf1d485e1ef5a6dd9334e235d87aedfe8b81d764b07b19b40",
+    "README.md": "bdc0a65cc7264986133705e4b4d71f29f0b90b7feed9b678cb8e0237416f11ee",
+    "README.zh.md": "af0c43a91600341e57873dc12027869aa5bdaeded6d75f62e60a6d818b10673f",
+    "docs/gateflow/shim-subagent-delivery/native-probe.py": "f14b59295fa04f4cb925ae3791c9ff47c4a117749e9db8e6b5153d3001002ab3",
+    "docs/gateflow/shim-subagent-delivery/audit-native-evidence.py": "9cbc234b274ea6149b17ceb4539d484c7c0e21aaea54bf7fd394e8c1ffdb6a37"
+  },
+  "controller_native_audit": "Both retained candidate runs independently audited; native dispatch order, same-child three turns, MESSAGE token absent in subsequent task, no parent shell, B exact child cat call/output verified. No new inference rerun by controller.",
+  "test_results_source": "implementation-validation.md; native runtime exited 0 from codex-agent-run, session 01a1b625-a918-7081-bc30-8264688c3cfc; raw log /var/folders/2t/vbqfkdyj40v8f4jc4x180n5c0000gn/T/agent-run.CIHJio5U/output.jsonl",
+  "test_counts": {
+    "shim_subagent_delivery": 11,
+    "install_endpoints": 38,
+    "provider_registry": 11,
+    "shim_service": 11
+  },
+  "live_deployment": false
+}

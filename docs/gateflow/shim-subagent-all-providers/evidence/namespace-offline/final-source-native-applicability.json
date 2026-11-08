@@ -1,0 +1,34 @@
+{
+  "final_helper_sha256": "7cdaf30d198433d261672185ef11ee12b4f155294c60fbd22b61f0401012493d",
+  "changes_after_native_launch": [
+    "Namespace group labels are not bare callable declarations; recurse known children only.",
+    "Buffered non-2xx error forwarding is limited to active map, preserving original flags-off/empty-map paths."
+  ],
+  "fresh_paths_unchanged_proof": [
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-a-attempt-1",
+      "launch_helper_sha256": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+      "all_http_2xx": true,
+      "no_unrelated_namespace_group_name_equals_mapped_bare_name": true
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/kimi/namespace-scenario-b-attempt-1",
+      "launch_helper_sha256": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+      "all_http_2xx": true,
+      "no_unrelated_namespace_group_name_equals_mapped_bare_name": true
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-a-attempt-1",
+      "launch_helper_sha256": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+      "all_http_2xx": true,
+      "no_unrelated_namespace_group_name_equals_mapped_bare_name": true
+    },
+    {
+      "directory": "docs/gateflow/shim-subagent-all-providers/evidence/mimo-flash/namespace-scenario-b-attempt-1",
+      "launch_helper_sha256": "5d47d38af39bcb1819f4076ee7fc379c3bb98d53071650639115537f9f1aba12",
+      "all_http_2xx": true,
+      "no_unrelated_namespace_group_name_equals_mapped_bare_name": true
+    }
+  ],
+  "limitations": "This is bounded branch applicability, not a fresh run on final source. Model-level A failures remain failures; controller must adjudicate evidence and combined review."
+}

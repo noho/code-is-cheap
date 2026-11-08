@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-07T18:39:06.033410+00:00",
+  "repository": "noho/code-is-cheap",
+  "pr": 70,
+  "base": "09337967910277785b82874326d7f49156c9395b",
+  "source_head": "27e0bf77d9524e9730cfafabd67a44b3c3fad1cd",
+  "fetched_remote_head": "27e0bf77d9524e9730cfafabd67a44b3c3fad1cd",
+  "fetched_remote_base": "09337967910277785b82874326d7f49156c9395b",
+  "full_diff_method": "git diff --binary from fetched complete Git objects; no REST file cap",
+  "full_diff_path": "/private/tmp/shim-all-provider-pr70-source.diff",
+  "full_diff_sha256": "c66de4066f92589b0dc242d58a018d18c654ae8fe91088f16aed17c5e3220f62",
+  "full_diff_bytes": 26502195,
+  "full_diff_files": 581,
+  "local_and_remote_diff_equal": true,
+  "review_freeze_v2_files_verified_in_commit": 536,
+  "unrelated_runner_and_private_endpoints_excluded": true,
+  "repo_workflow_files": [],
+  "format_check": "PASS except byte-preserved raw .diff/.log evidence (three paths); those trailing whitespace diagnostics are artifact data, not edited source",
+  "raw_evidence_whitespace_paths": [
+    "evidence/review-fix-logging/all-authored-changes.diff",
+    "evidence/review-fix-logging/before-logging-tests.log",
+    "evidence/review-fix-logging/helper-v-a6246.diff"
+  ],
+  "gate": "controller-delivery-verification PASS / draft-PR-pass",
+  "live_deployed": false,
+  "original_business_callback_sent": false,
+  "metadata_second_read_at": "2026-11-07T18:39:14.800Z",
+  "metadata_head_base_unchanged": true,
+  "title": "Fix Codex subagent delivery across managed cloud providers",
+  "body_exact_template_match": true,
+  "draft": true,
+  "state": "open",
+  "merged": false,
+  "mergeable": true,
+  "ci": {
+    "workflow_runs": [],
+    "commit_statuses": [],
+    "check_runs": [],
+    "configured_repository_workflows": 0,
+    "result": "N/A: no configured workflow or reported check; local focused validation PASS"
+  },
+  "next_entry": "final closeout, docs-only commit/push, final remote identity check; user manual merge and separate deployment authorization",
+  "live_installed_hashes_at_closeout": {
+    "bin/codex-auto-review-shim": "7ae5d6d7dc86050b466d06cc63685eb1589d873cf730fa0ac3479dfed44d7cc7",
+    "shim-routes.json": "afd1e15ca3a914993987382abaf148227ef6a97a796cdb73791b4787bea26bfe"
+  }
+}
