@@ -23,12 +23,12 @@ import unittest.mock
 
 ROOT = Path(__file__).resolve().parents[1]
 GPT_PROFILES = (
-    ("gpt-6-astra", "gpt-6-astra", "high"),
-    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
-    ("gpt-6-astra-max", "gpt-6-astra", "max"),
-    ("gpt-6-sol", "gpt-6.1-sol", "high"),
-    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
-    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+    ("gpt-6-astra", "gpt-6.2-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6.2-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6.2-astra", "max"),
+    ("gpt-6-sol", "gpt-6.2-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.2-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.2-sol", "max"),
 )
 loader = importlib.machinery.SourceFileLoader('agent_sandbox', str(ROOT/'scripts/agent-sandbox'))
 spec = importlib.util.spec_from_loader(loader.name, loader)
@@ -661,7 +661,7 @@ class CodexCATests(unittest.TestCase):
         (config/'gpt-6-sol.config.toml').write_text('')
         provider = subscription or 'gpt-6-sol'
         if subscription:
-            (config/'config.toml').write_text('model = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\nsandbox_mode = "workspace-write"\n')
+            (config/'config.toml').write_text('model = "gpt-6.2-sol"\nmodel_reasoning_effort = "medium"\nsandbox_mode = "workspace-write"\n')
             shutil.copyfile(ROOT/f'codex-agent/profiles/{provider}/config.toml', config/f'{provider}.config.toml')
             auth = config/'auth.json'
             auth.write_text('{"synthetic":"subscription-login"}\n'); auth.chmod(0o600)

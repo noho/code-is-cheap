@@ -487,9 +487,9 @@ The launcher leaves that flow to Codex without changing session metadata or sele
 
 `gpt-6-astra` is kept for important, low-volume work; `gpt-6-sol` runs the high-volume daily tasks and
 `gpt-6-luna` the low-cost bulk work. Astra and Sol each have three providers: the base name uses high,
-`-x` uses xhigh, and `-max` uses max. All Astra variants select `gpt-6-astra`; all Sol variants select
-`gpt-6.1-sol`. Luna stays at max. These subscription providers use account login without API keys or shim.
-`sync-codex-agent.sh` copies the base Sol card's two defaults (GPT-6.1 Sol / high) into the separate
+`-x` uses xhigh, and `-max` uses max. All Astra variants select `gpt-6.2-astra`; all Sol variants select
+`gpt-6.2-sol`. Luna stays at max. These subscription providers use account login without API keys or shim.
+`sync-codex-agent.sh` copies the base Sol card's two defaults (GPT-6.2 Sol / high) into the separate
 `business` CODEX_HOME, leaving its account and other local settings intact.
 `gpt_codex` selects `gpt-6-sol`, including its resume handling and arguments; runner aliases `sol` and `astra`
 still select their base high providers.
@@ -513,12 +513,12 @@ Sourcing alone does not remove old functions. Reopen Agent sessions to load upda
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + patched catalog + message-id prefix fix |
 | `hy` | `hy4` | tokenhub.tencentmaas.com | 8796 | authored compatibility catalog |
 | `local` | `qwen3.8-27b-local` | user-configurable (default 127.0.0.1:8080) | none | patched catalog, runs unsandboxed, no shim |
-| `gpt-6-astra` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
-| `gpt-6-astra-x` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
-| `gpt-6-astra-max` | `gpt-6-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
-| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
-| `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
-| `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+| `gpt-6-astra` | `gpt-6.2-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
+| `gpt-6-astra-x` | `gpt-6.2-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
+| `gpt-6-astra-max` | `gpt-6.2-astra` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
+| `gpt-6-sol` | `gpt-6.2-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, high effort |
+| `gpt-6-sol-x` | `gpt-6.2-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, xhigh effort |
+| `gpt-6-sol-max` | `gpt-6.2-sol` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI (ChatGPT login) | none | no shim, subscription-backed, max effort |
 
 All nine managed cloud routes (`ds-flash`, `glm`, `glm-flash`, `kimi`, `mimo`, `mimo-fast`, `mimo-flash`, `qwen`, `hy`) explicitly enable `agent_message_fix`; unrelated, new, and environment-only routes default to off. `local` and OpenAI subscription profiles do not use this shim. It adapts Codex 0.167.0 native inter-agent items to standard user messages, preserving content order and routing metadata as text; native rollouts remain unchanged. It assumes the observed `agent_message` `encrypted_content` slots hold plaintext, and cannot decrypt actual opaque ciphertext. Reasoning, tool arguments, and other native top-level item types are untouched. Unknown or invalid content within an actual `agent_message` fails with a sanitized HTTP 400 rather than forwarding a partial task. Deploy shim code/routes with `./scripts/sync-codex-agent.sh` only when authorized; the installed service needs the updated code/routes loaded.

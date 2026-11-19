@@ -15,12 +15,12 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 GPT_PROFILES = (
-    ("gpt-6-astra", "gpt-6-astra", "high"),
-    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
-    ("gpt-6-astra-max", "gpt-6-astra", "max"),
-    ("gpt-6-sol", "gpt-6.1-sol", "high"),
-    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
-    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+    ("gpt-6-astra", "gpt-6.2-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6.2-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6.2-astra", "max"),
+    ("gpt-6-sol", "gpt-6.2-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.2-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.2-sol", "max"),
 )
 REGISTRY = ROOT / "codex-agent/model-providers.toml"
 SYNC = ROOT / "scripts/sync-codex-providers.py"
@@ -171,10 +171,10 @@ class ProviderRegistryTests(unittest.TestCase):
             root = Path(tmp)
             base, out = root / "base.toml", root / "app.toml"
             base.write_text(sync_providers.compose(
-                'model = "gpt-6.1-sol"\nmodel_reasoning_effort = "medium"\n'
+                'model = "gpt-6.2-sol"\nmodel_reasoning_effort = "medium"\n'
                 'sandbox_mode = "workspace-write"\napproval_policy = "on-request"\n'
                 '[projects."/work"]\ntrust_level = "trusted"\n', REGISTRY.read_text()))
-            out.write_text(base.read_text().replace('model = "gpt-6.1-sol"', 'model = "old"') + '\n[desktop]\nstate = "keep"\n')
+            out.write_text(base.read_text().replace('model = "gpt-6.2-sol"', 'model = "old"') + '\n[desktop]\nstate = "keep"\n')
             for profile, model, effort in GPT_PROFILES:
                 with self.subTest(profile=profile):
                     command = [sys.executable, str(COMPOSE), "--base", str(base), "--card",

@@ -447,9 +447,9 @@ launcher 将流程交给 Codex，不改写会话元数据，也不自动选择�
 
 `gpt-6-astra` 留给重要、低频的任务；`gpt-6-sol` 用于日常消耗量大的任务，`gpt-6-luna` 负责低成本的批量任务。
 Astra 和 Sol 均提供三档 provider：默认名称使用 high，`-x` 使用 xhigh，`-max` 使用 max。
-Astra 三档上游均为 `gpt-6-astra`，Sol 三档上游均为 `gpt-6.1-sol`；Luna 保持 max。
+Astra 三档上游均为 `gpt-6.2-astra`，Sol 三档上游均为 `gpt-6.2-sol`；Luna 保持 max。
 这些订阅制 provider 使用账号登录，不需要 API key 或 shim。
-`sync-codex-agent.sh` 将 Sol 默认卡的模型和推理等级（GPT-6.1 Sol / high）同步到 `business` 的独立
+`sync-codex-agent.sh` 将 Sol 默认卡的模型和推理等级（GPT-6.2 Sol / high）同步到 `business` 的独立
 CODEX_HOME，只更新这两个顶层键，保留账号及其他本机设置。`gpt_codex` 仍选择 `gpt-6-sol`，
 runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 
@@ -471,12 +471,12 @@ runner 的 `sol` 和 `astra` 别名仍选择各自默认 high provider。
 | `qwen` | `qwen3.8-max` | dashscope.aliyuncs.com | 8792 | + 目录补丁 + message-id 前缀修正 |
 | `hy` | `hy4` | tokenhub.tencentmaas.com | 8796 | 仓库编写的兼容目录 |
 | `local` | `qwen3.8-27b-local` | 用户可配置（默认 127.0.0.1:8080） | 无 | 目录补丁、不走沙箱或 shim |
-| `gpt-6-astra` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
-| `gpt-6-astra-x` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
-| `gpt-6-astra-max` | `gpt-6-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
-| `gpt-6-sol` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
-| `gpt-6-sol-x` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
-| `gpt-6-sol-max` | `gpt-6.1-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
+| `gpt-6-astra` | `gpt-6.2-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
+| `gpt-6-astra-x` | `gpt-6.2-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
+| `gpt-6-astra-max` | `gpt-6.2-astra` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
+| `gpt-6-sol` | `gpt-6.2-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，high 推理 |
+| `gpt-6-sol-x` | `gpt-6.2-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，xhigh 推理 |
+| `gpt-6-sol-max` | `gpt-6.2-sol` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 | `gpt-6-luna` | `gpt-6-luna` | OpenAI（ChatGPT 登录） | 无 | 不走 shim，订阅制，max 推理 |
 
 九条 managed cloud 路由（`ds-flash`、`glm`、`glm-flash`、`kimi`、`mimo`、`mimo-fast`、`mimo-flash`、`qwen`、`hy`）均显式启用 `agent_message_fix`；其他、新增及环境变量单路由默认关闭。`local` 和 OpenAI 订阅 profiles 不走此 shim。该适配将 Codex 0.167.0 原生 Agent 间消息适配为标准 user 消息，保留内容顺序，以文本携带来源、接收者与元数据；原生 rollout 不变。适配假设实测 `agent_message` 的 `encrypted_content` 槽内是明文，无法解密真正的不透明密文；reasoning、工具参数和其他原生顶层 item 类型保持原样。实际 `agent_message` 中的未知或非法内容返回不含正文的 HTTP 400，避免转发残缺任务。仅在获授权后通过 `./scripts/sync-codex-agent.sh` 部署代码与路由，安装服务需要加载更新后的代码和路由。
