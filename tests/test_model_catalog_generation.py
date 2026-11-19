@@ -17,12 +17,12 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 GPT_PROFILES = (
-    ("gpt-6-astra", "gpt-6-astra", "high"),
-    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
-    ("gpt-6-astra-max", "gpt-6-astra", "max"),
-    ("gpt-6-sol", "gpt-6.1-sol", "high"),
-    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
-    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+    ("gpt-6-astra", "gpt-6.2-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6.2-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6.2-astra", "max"),
+    ("gpt-6-sol", "gpt-6.2-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.2-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.2-sol", "max"),
 )
 SCRIPT = ROOT / 'scripts/patch-codex-model-catalog.py'
 CARDS = ROOT / 'codex-agent/profiles'
@@ -380,7 +380,7 @@ sys.exit(r.returncode)
         old_card = self.home / 'gpt-6-astra-xhigh.config.toml'
         old_card.write_text('model="gpt-6-astra"\nmodel_reasoning_effort="xhigh"\n'); old_card.chmod(0o600)
         first=self.run_sync(); self.assertEqual(first.returncode,0,first.stderr)
-        expected = tomllib.loads(original) | {"model": "gpt-6.1-sol", "model_reasoning_effort": "high"}
+        expected = tomllib.loads(original) | {"model": "gpt-6.2-sol", "model_reasoning_effort": "high"}
         self.assertEqual(tomllib.loads(business_config.read_text()), expected)
         self.assertEqual(business_config.stat().st_mode & 0o777, 0o640)
         business_bytes = business_config.read_bytes()

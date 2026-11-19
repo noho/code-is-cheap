@@ -53,7 +53,7 @@ class RepairReasoningHistoryTests(unittest.TestCase):
             codex_home = home / ".codex"
             folder = codex_home / "sessions" / "2026" / "09" / "25"
             folder.mkdir(parents=True)
-            (codex_home / "gpt-6-sol.config.toml").write_text('model = "gpt-6.1-sol"\n')
+            (codex_home / "gpt-6-sol.config.toml").write_text('model = "gpt-6.2-sol"\n')
             rollout = folder / f"rollout-2026-09-25T00-00-00-{session_id}.jsonl"
             original = (
                 row("session_meta", {"id": session_id, "model_provider": "openai"})

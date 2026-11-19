@@ -25,12 +25,12 @@ from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 GPT_PROFILES = (
-    ("gpt-6-astra", "gpt-6-astra", "high"),
-    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
-    ("gpt-6-astra-max", "gpt-6-astra", "max"),
-    ("gpt-6-sol", "gpt-6.1-sol", "high"),
-    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
-    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+    ("gpt-6-astra", "gpt-6.2-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6.2-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6.2-astra", "max"),
+    ("gpt-6-sol", "gpt-6.2-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.2-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.2-sol", "max"),
 )
 loader = importlib.machinery.SourceFileLoader(
     "endpoint_shim", str(ROOT / "codex-agent/bin/codex-auto-review-shim")
@@ -1413,7 +1413,7 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
         for profile, _, _ in GPT_PROFILES:
             shutil.copyfile(ROOT / f"codex-agent/profiles/{profile}/config.toml",
                             self.home / f".codex/{profile}.config.toml")
-        (self.home / ".codex/config.toml").write_text('model="gpt-6.1-sol"\nmodel_reasoning_effort="medium"\nsandbox_mode="workspace-write"\n')
+        (self.home / ".codex/config.toml").write_text('model="gpt-6.2-sol"\nmodel_reasoning_effort="medium"\nsandbox_mode="workspace-write"\n')
         self.config.unlink()
         self.selection = self.home / "selection.json"
         self.helper_calls = self.home / "helper-calls.jsonl"
@@ -1440,8 +1440,8 @@ sys.exit(int(os.environ.get('NATIVE_EXIT','0')))
     def test_subscription_runner_selection_aliases_and_resume_use_no_connections(self):
         self.stage_subscription_profiles()
         selections = [(p, p, m, e) for p, m, e in GPT_PROFILES]
-        selections += [("astra", "gpt-6-astra", "gpt-6-astra", "high"),
-                       ("sol", "gpt-6-sol", "gpt-6.1-sol", "high")]
+        selections += [("astra", "gpt-6-astra", "gpt-6.2-astra", "high"),
+                       ("sol", "gpt-6-sol", "gpt-6.2-sol", "high")]
         for provider, selected, model, effort in selections:
             for args in ((), ("--resume", "01a0d626-0a68-7913-8394-a73c79d0f977")):
                 with self.subTest(provider=provider, args=args):

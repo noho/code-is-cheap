@@ -15,12 +15,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GPT_PROFILES = (
-    ("gpt-6-astra", "gpt-6-astra", "high"),
-    ("gpt-6-astra-x", "gpt-6-astra", "xhigh"),
-    ("gpt-6-astra-max", "gpt-6-astra", "max"),
-    ("gpt-6-sol", "gpt-6.1-sol", "high"),
-    ("gpt-6-sol-x", "gpt-6.1-sol", "xhigh"),
-    ("gpt-6-sol-max", "gpt-6.1-sol", "max"),
+    ("gpt-6-astra", "gpt-6.2-astra", "high"),
+    ("gpt-6-astra-x", "gpt-6.2-astra", "xhigh"),
+    ("gpt-6-astra-max", "gpt-6.2-astra", "max"),
+    ("gpt-6-sol", "gpt-6.2-sol", "high"),
+    ("gpt-6-sol-x", "gpt-6.2-sol", "xhigh"),
+    ("gpt-6-sol-max", "gpt-6.2-sol", "max"),
 )
 SCRIPT = ROOT / "scripts/sync-codex-model-defaults.py"
 CARD = ROOT / "codex-agent/profiles/gpt-6-sol/config.toml"
@@ -52,7 +52,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
             config.chmod(0o600)
             self.assertTrue(module.sync(config, CARD))
             updated = tomllib.loads(config.read_text())
-            self.assertEqual(updated["model"], "gpt-6.1-sol")
+            self.assertEqual(updated["model"], "gpt-6.2-sol")
             self.assertEqual(updated["model_reasoning_effort"], "high")
             self.assertEqual({k: v for k, v in updated.items() if k not in module.KEYS},
                              {k: v for k, v in tomllib.loads(original).items() if k not in module.KEYS})
@@ -63,7 +63,7 @@ class BusinessModelDefaultsTests(unittest.TestCase):
 
     def test_inserts_missing_defaults_before_tables(self) -> None:
         result = module.compose('[projects."/work"]\ntrust_level = "trusted"\n', CARD.read_text())
-        self.assertEqual(tomllib.loads(result)["model"], "gpt-6.1-sol")
+        self.assertEqual(tomllib.loads(result)["model"], "gpt-6.2-sol")
         self.assertEqual(tomllib.loads(result)["model_reasoning_effort"], "high")
         self.assertIn('[projects."/work"]\ntrust_level = "trusted"\n', result)
 
